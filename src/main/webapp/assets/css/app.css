@@ -1,3 +1,30 @@
+/* Animation section */
+.animate-enter, 
+.animate-leave
+{ 
+    -webkit-transition: 625ms cubic-bezier(0.600, 0.040, 0.980, 0.335) all;
+    -moz-transition: 625ms cubic-bezier(0.600, 0.040, 0.980, 0.335) all;
+    -ms-transition: 625ms cubic-bezier(0.600, 0.040, 0.980, 0.335) all;
+    -o-transition: 625ms cubic-bezier(0.600, 0.040, 0.980, 0.335) all;
+    transition: 625ms cubic-bezier(0.600, 0.040, 0.980, 0.335) all;
+} 
+ 
+.animate-enter {
+    left: 100%;
+}
+.animate-enter.animate-enter-active {
+    left: 0;
+}
+ 
+.animate-leave {
+    left: 0;
+}
+.animate-leave.animate-leave-active{
+    left: -100%;
+}
+
+/* End of animation section */
+
 .main.container{
 	padding-top: 40px;
 }
