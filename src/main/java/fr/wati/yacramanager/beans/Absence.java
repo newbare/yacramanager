@@ -26,6 +26,10 @@ public class Absence implements Serializable {
 	
 	
 	
+	
+	public Absence() {
+		super();
+	}
 	public Absence(String description, boolean morning, boolean afternoon,
 			boolean validated) {
 		super();

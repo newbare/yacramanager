@@ -10,21 +10,20 @@ App.run(function($rootScope) {
 
 App.controller('NavCtrl', 
 		['$scope', '$location', function ($scope, $location) {
-		  $scope.navClass = function (page) {
+		 $scope.navClass = function (page) {
 		    var currentRoute = $location.path().substring(1) || 'home';
 		    return page === currentRoute ? 'active' : '';
 		  };
-		  
 		  $scope.loadHome = function () {
 		        $location.url('/home');
 		    };
 		    
-		      $scope.loadAbout = function () {
-		        $location.url('/about');
+		      $scope.loadCRA = function () {
+		        $location.url('/cra');
 		    };
 		    
-		      $scope.loadContact = function () {
-		        $location.url('/contact');
+		      $scope.loadAbsences= function () {
+		        $location.url('/absences');
 		    };
 		    
 		}]);
@@ -39,7 +38,12 @@ App.config(
 			.when('/cra', {
 				templateUrl : 'views/cra.html',
 				controller : CraController
-			}).when('/user-settings', {
+			})
+			.when('/absences', {
+				templateUrl : 'views/absences.html',
+				controller : AbsencesController
+			})
+			.when('/user-settings', {
 				templateUrl : 'views/user-settings.html',
 				controller : UserSettingsController
 			}).when('/user-profile', {

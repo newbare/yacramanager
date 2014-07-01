@@ -1,8 +1,12 @@
-body {
-	padding-top: 70px;
+.main.container{
+	padding-top: 40px;
 }
 
 .user-menu > li > a > i{
+margin-right: 6px;
+font-size: 120%;
+}
+i.fa.fa-user{
 margin-right: 6px;
 font-size: 120%;
 }

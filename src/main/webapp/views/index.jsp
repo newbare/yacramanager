@@ -41,11 +41,11 @@
 			<div class="navbar-collapse collapse">
 				<ul class="nav navbar-nav navbar-right">
 					<li ng-class="navClass('home')"><a href='' ng-click="loadHome()">Home</a></li>
-					<li class="active"><a href="#cra">CRA</a></li>
-					<li><a href="../navbar-static-top/">Static top</a></li>
+					<li ng-class="navClass('cra')"><a href='' ng-click="loadCRA()">CRA</a></li>
+					<li ng-class="navClass('absences')"><a href='' ng-click="loadAbsences()">Absences</a></li>
 
 					<li class="dropdown"><a href="#" class="dropdown-toggle"
-						data-toggle="dropdown">${userName} <span class="caret"></span></a>
+						data-toggle="dropdown"><i class="fa fa-user"></i>${userName} <span class="caret"></span></a>
 						<ul class="user-menu dropdown-menu" role="menu">
 							<li><a href="#user-settings"><i class="fa fa-cog"></i>Settings</a></li>
 							<li><a href="#user-profile"><i class="fa fa-user"></i> Profile</a></li>
@@ -60,10 +60,10 @@
 	</div>
 	<!-- End of header navbar -->
 
-	<div class="container">
+	<div class="main container">
 		<div class="page-header">
 			<h2>
-				{{page.title}} <small><i class="fa fa-chevron-right" style="font-size: 40%"></i><i class="fa fa-chevron-right" style="font-size: 40%"></i>{{page.description}}</small>
+				{{page.title}} <small><i class="fa fa-chevron-right" style="font-size: 40%"></i><i class="fa fa-chevron-right" style="font-size: 40%"></i> {{page.description}}</small>
 			</h2>
 		</div>
 		<div ng-view></div>
@@ -80,6 +80,7 @@
 	<script src="assets/js/app/application.js"></script>
 	<script src="assets/js/app/services.js"></script>
 	<script src="assets/js/app/home-controller.js"></script>
+	<script src="assets/js/app/absences-controller.js"></script>
 	<script src="assets/js/app/cra-controller.js"></script>
 	<script src="assets/js/app/user-settings-controller.js"></script>
 	<script src="assets/js/app/user-profile-controller.js"></script>
