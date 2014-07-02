@@ -29,12 +29,15 @@ public class CraController {
 	@RequestMapping(method=RequestMethod.GET)
 	public @ResponseBody CraDTO getCra(@RequestParam(value="start", required=true) Date startDate, @RequestParam(value="end", required=true) Date endDate){
 		Day day1=new Day();
+		day1.setDate(new Date());
 		day1.setMorning(new DayElement());
 		day1.setAfternoon(new DayElement());
 		Day day2=new Day();
+		day2.setDate(new Date());
 		day2.setMorning(new DayElement());
 		day2.setAfternoon(new DayElement());
 		Day day3=new Day();
+		day3.setDate(new Date());
 		day3.setMorning(new DayElement());
 		day3.setAfternoon(new DayElement());
 		CraDTO craDTO=new CraDTO(startDate, endDate);

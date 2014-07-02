@@ -1,5 +1,19 @@
 <div class="panel panel-default">
-  <div class="panel-body">
-    CRa
-  </div>
+	<div class="panel-body">
+		<h3><span class="label label-primary">Compte rendu d'activité sur la période du {{startDate}} au {{endDate}}</span></h3>
+		<table class="table table-condensed table-bordered">
+			<tr>
+				<td></td>
+				<th ng-repeat="day in cra.days">{{day.date}}</th>
+			</tr>
+			<tr>
+				<td>Morning</td>
+				<td ng-repeat="day in cra.days"><input type="checkbox" value="{{day.morning.worked}}"/> </td>
+			</tr>
+			<tr>
+				<td>Afternoon</td>
+				<td ng-repeat="day in cra.days"><input type="checkbox" value="{{day.afternoon.worked}}"/></td>
+			</tr>
+		</table>
+	</div>
 </div>

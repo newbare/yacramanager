@@ -2,7 +2,7 @@
 
 var yaCRAApp = {};
 
-var App = angular.module('yaCRAApp', []);
+var App = angular.module('yaCRAApp', ['ngResource']);
 
 App.run(function($rootScope) {
     $rootScope.page = ''; 

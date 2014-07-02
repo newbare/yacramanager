@@ -81,7 +81,7 @@
 	<script src="assets/js/app/services.js"></script>
 	<script src="assets/js/app/controllers/home-controller.js"></script>
 	<script src="assets/js/app/controllers/absences-controller.js"></script>
-	<script src="assets/js/app/services/cra-service.js"></script>
+	<script src="assets/js/app/factories/cra-factories.js"></script>
 	<script src="assets/js/app/controllers/cra-controller.js"></script>
 	<script src="assets/js/app/controllers/user-settings-controller.js"></script>
 	<script src="assets/js/app/controllers/user-profile-controller.js"></script>

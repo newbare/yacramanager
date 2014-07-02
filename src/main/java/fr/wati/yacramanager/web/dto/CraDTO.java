@@ -57,6 +57,7 @@ public class CraDTO {
 	}
 	
 	public static class Day {
+		private Date date;
 		private DayElement morning;
 		private DayElement afternoon;
 		public DayElement getMorning() {
@@ -70,6 +71,12 @@ public class CraDTO {
 		}
 		public void setAfternoon(DayElement afternoon) {
 			this.afternoon = afternoon;
+		}
+		public Date getDate() {
+			return date;
+		}
+		public void setDate(Date date) {
+			this.date = date;
 		}
 		
 	}
