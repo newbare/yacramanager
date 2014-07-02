@@ -37,3 +37,30 @@ i.fa.fa-user{
 margin-right: 6px;
 font-size: 120%;
 }
+
+/* Datepicker section */
+ .datepicker.dropdown-menu {
+  /* width: 250px;
+  height: 250px; */
+  padding: 0px;
+} 
+.datepicker.dropdown-menu button {
+  outline: none;
+  border: 0px;
+}
+.datepicker.dropdown-menu tbody {
+  height: 120px;
+}
+.datepicker.dropdown-menu tbody button {
+  padding: 1px;
+}
+.datepicker.dropdown-menu.datepicker-mode-1 tbody button, .datepicker.dropdown-menu.datepicker-mode-2 tbody button {
+  height: 25px;
+}
+
+/* End of Date picker section */
+
+#cra-container{
+	max-width: 100%;
+	overflow: auto;
+}

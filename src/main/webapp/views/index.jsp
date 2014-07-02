@@ -8,17 +8,21 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
+<link rel="stylesheet" href="assets/css/app.css">
+<!-- <link rel="stylesheet" href="assets/css/datepicker/datepicker.css"> -->
 <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet"
 	href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 <link rel="stylesheet"
 	href="assets/css/font-awesome/css/font-awesome.min.css">
+	
 
 
 <!-- Optional theme -->
 <!-- <link rel="stylesheet"
 	href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css"> -->
-<link rel="stylesheet" href="assets/css/app.css">
+
+
 
 <!-- Latest compiled and minified JavaScript -->
 <!-- <script
@@ -36,7 +40,7 @@
 						class="icon-bar"></span> <span class="icon-bar"></span> <span
 						class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="#">YACRA manager</a>
+				<a class="navbar-brand" href="#"><i class="fa fa-calendar fa-2x"></i><span> YACRA manager</span></a>
 			</div>
 			<div class="navbar-collapse collapse">
 				<ul class="nav navbar-nav navbar-right">
@@ -77,6 +81,12 @@
 	<script src="assets/js/bootstrap.min.js"></script>
 	<script src="assets/js/angular.min.js"></script>
 	<script src="assets/js/angular-resource.min.js"></script>
+	<script src="assets/js/angular-route.min.js"></script>
+	<!-- <script src="assets/js/i18n/angular-locale_fr.js"></script> -->
+	<script src="assets/js/plugins/angular-strap/angular-strap.min.js"></script>
+	<script src="assets/js/plugins/angular-strap/angular-strap.tpl.min.js"></script>
+	<script src="assets/js/plugins/angular-strap/datepicker.js"></script>
+	<script src="assets/js/plugins/angular-strap/tooltip.js"></script>
 	<script src="assets/js/app/application.js"></script>
 	<script src="assets/js/app/services.js"></script>
 	<script src="assets/js/app/controllers/home-controller.js"></script>

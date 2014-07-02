@@ -60,6 +60,7 @@ public class CraDTO {
 		private Date date;
 		private DayElement morning;
 		private DayElement afternoon;
+		private boolean dayOff=false;
 		public DayElement getMorning() {
 			return morning;
 		}
@@ -77,6 +78,12 @@ public class CraDTO {
 		}
 		public void setDate(Date date) {
 			this.date = date;
+		}
+		public boolean isDayOff() {
+			return dayOff;
+		}
+		public void setDayOff(boolean dayOff) {
+			this.dayOff = dayOff;
 		}
 		
 	}

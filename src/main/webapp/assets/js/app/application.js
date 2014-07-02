@@ -2,11 +2,22 @@
 
 var yaCRAApp = {};
 
-var App = angular.module('yaCRAApp', ['ngResource']);
+var App = angular.module('yaCRAApp', ['ngResource','mgcrea.ngStrap','ngRoute']);
 
 App.run(function($rootScope) {
     $rootScope.page = ''; 
  });
+
+App.config(function($datepickerProvider) {
+  angular.extend($datepickerProvider.defaults, {
+    dateFormat: 'dd/MM/yyyy',
+    startWeek: 1,
+    template: 'assets/others/datepicker/datepicker.tpl.html',
+    autoclose : true,
+    modelDateFormat: 'dd/MM/yyyy',
+    todayHighlight: true
+  });
+})
 
 App.controller('NavCtrl', 
 		['$scope', '$location', function ($scope, $location) {
