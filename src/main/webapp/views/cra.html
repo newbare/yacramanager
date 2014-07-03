@@ -23,21 +23,24 @@
 			<span class="label label-primary">Compte rendu d'activité sur
 				la période du {{respStartDate | date : dateFormat}} au {{respEndDate | date : dateFormat}}</span>
 		</h3>
+		<br>
 		<div id="cra-container">
-			<table class="table table-condensed table-bordered" ng-show="cra.days.length>=1">
+			<table class="table cra-table table-condensed table-bordered" ng-show="cra.days.length>=1">
 				<tr>
 					<td></td>
-					<th ng-repeat="day in cra.days"><small>{{day.date | date : craDateFormat}}</small></th>
+					<th ng-repeat="day in cra.days" ng-class="{'cra-we' : day.dayOff}"><small>{{day.date | date : craDateFormat}}</small></th>
 				</tr>
 				<tr>
-					<td>Morning</td>
-					<td ng-repeat="day in cra.days"><input type="checkbox"
-						value="{{day.morning.worked}}" /></td>
+					<td>M</td>
+					<td ng-repeat="day in cra.days" ng-class="{'cra-we' : day.dayOff}">
+						<input class="" ng-class="{'disabled' : day.dayOff}"type="checkbox"	value="{{day.morning.worked}}" ng-disabled="day.dayOff" />
+					</td>
 				</tr>
 				<tr>
-					<td>Afternoon</td>
-					<td ng-repeat="day in cra.days"><input type="checkbox"
-						value="{{day.afternoon.worked}}" /></td>
+					<td>A</td>
+					<td ng-repeat="day in cra.days" ng-class="{'cra-we' : day.dayOff}">
+						<input type="checkbox"	value="{{day.afternoon.worked}}" ng-disabled="day.dayOff"/>
+					</td>
 				</tr>
 			</table>
 			<div class="alert alert-info" role="alert" ng-show="cra.days.length<1"">

@@ -1,66 +1,86 @@
 /* Animation section */
-.animate-enter, 
-.animate-leave
-{ 
-    -webkit-transition: 625ms cubic-bezier(0.600, 0.040, 0.980, 0.335) all;
-    -moz-transition: 625ms cubic-bezier(0.600, 0.040, 0.980, 0.335) all;
-    -ms-transition: 625ms cubic-bezier(0.600, 0.040, 0.980, 0.335) all;
-    -o-transition: 625ms cubic-bezier(0.600, 0.040, 0.980, 0.335) all;
-    transition: 625ms cubic-bezier(0.600, 0.040, 0.980, 0.335) all;
-} 
- 
+.animate-enter,.animate-leave {
+	-webkit-transition: 625ms cubic-bezier(0.600, 0.040, 0.980, 0.335) all;
+	-moz-transition: 625ms cubic-bezier(0.600, 0.040, 0.980, 0.335) all;
+	-ms-transition: 625ms cubic-bezier(0.600, 0.040, 0.980, 0.335) all;
+	-o-transition: 625ms cubic-bezier(0.600, 0.040, 0.980, 0.335) all;
+	transition: 625ms cubic-bezier(0.600, 0.040, 0.980, 0.335) all;
+}
+
 .animate-enter {
-    left: 100%;
+	left: 100%;
 }
+
 .animate-enter.animate-enter-active {
-    left: 0;
+	left: 0;
 }
- 
+
 .animate-leave {
-    left: 0;
+	left: 0;
 }
-.animate-leave.animate-leave-active{
-    left: -100%;
+
+.animate-leave.animate-leave-active {
+	left: -100%;
 }
 
 /* End of animation section */
-
-.main.container{
+.main.container {
 	padding-top: 40px;
 }
 
-.user-menu > li > a > i{
-margin-right: 6px;
-font-size: 120%;
+.user-menu>li>a>i {
+	margin-right: 6px;
+	font-size: 120%;
 }
-i.fa.fa-user{
-margin-right: 6px;
-font-size: 120%;
+
+a i.fa {
+	margin-right: 6px;
+	font-size: 120%;
+}
+a .badge{
+	margin-left: 5px;
+}
+.panel-body .row {
+	margin-right: inherit;
+	margin-left: inherit;
+	margin-bottom: 15px;
 }
 
 /* Datepicker section */
- .datepicker.dropdown-menu {
-  /* width: 250px;
+.datepicker.dropdown-menu {
+	/* width: 250px;
   height: 250px; */
-  padding: 0px;
-} 
+	padding: 0px;
+}
+
 .datepicker.dropdown-menu button {
-  outline: none;
-  border: 0px;
+	outline: none;
+	border: 0px;
 }
+
 .datepicker.dropdown-menu tbody {
-  height: 120px;
+	height: 120px;
 }
+
 .datepicker.dropdown-menu tbody button {
-  padding: 1px;
+	padding: 1px;
 }
-.datepicker.dropdown-menu.datepicker-mode-1 tbody button, .datepicker.dropdown-menu.datepicker-mode-2 tbody button {
-  height: 25px;
+
+.datepicker.dropdown-menu.datepicker-mode-1 tbody button,.datepicker.dropdown-menu.datepicker-mode-2 tbody button
+	{
+	height: 25px;
 }
 
 /* End of Date picker section */
-
-#cra-container{
+#cra-container {
 	max-width: 100%;
 	overflow: auto;
+}
+
+.cra-we {
+	background-color: LightGray;
+}
+
+.cra-table td {
+	text-align: center;
 }

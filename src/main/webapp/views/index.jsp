@@ -15,6 +15,8 @@
 	href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 <link rel="stylesheet"
 	href="assets/css/font-awesome/css/font-awesome.min.css">
+	<link rel="stylesheet"
+	href="assets/css/ace.min.css">
 	
 
 
@@ -40,23 +42,30 @@
 						class="icon-bar"></span> <span class="icon-bar"></span> <span
 						class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="#"><i class="fa fa-calendar fa-2x"></i><span> YACRA manager</span></a>
+				<a class="navbar-brand" href="#"><i class="fa fa-bolt fa-1x"></i><span> YACRA manager</span></a>
 			</div>
 			<div class="navbar-collapse collapse">
 				<ul class="nav navbar-nav navbar-right">
-					<li ng-class="navClass('home')"><a href='' ng-click="loadHome()">Home</a></li>
-					<li ng-class="navClass('cra')"><a href='' ng-click="loadCRA()">CRA</a></li>
-					<li ng-class="navClass('absences')"><a href='' ng-click="loadAbsences()">Absences</a></li>
-
-					<li class="dropdown"><a href="" class="dropdown-toggle"
-						data-toggle="dropdown"><i class="fa fa-user"></i>${userName} <span class="caret"></span></a>
+					<li ng-class="navClass('home')"><a href='' ng-click="loadHome()"><i class="fa fa-home"></i>Home</a></li>
+					<li ng-class="navClass('cra')"><a href='' ng-click="loadCRA()"><i class="fa fa-calendar"></i>CRA</a></li>
+					<li ng-class="navClass('consulter-absences') + navClass('declarer-absence')" class="dropdown"><a href="" class="dropdown-toggle"
+						data-toggle="dropdown">Absences <span class="fa fa-chevron-circle-down"></span></a>
+						<ul class="user-menu dropdown-menu" role="menu">
+							<li><a href="#declarer-absence">Déclarer</a></li>
+							<li><a href="#consulter-absences">Consulter</a></li>
+						</ul>
+					</li>
+					<li ng-class="navClass('notifications')"><a href='' ng-click="loadHome()"><i class="fa fa-bell"></i>Notifications<span class="badge pull-right">42</span></a></li>
+					<li ng-class="navClass('user-settings') + navClass('user-profile')" class="dropdown"><a href="" class="dropdown-toggle"
+						data-toggle="dropdown"><i class="fa fa-user"></i>${userName} <span class="fa fa-chevron-circle-down"></span></a>
 						<ul class="user-menu dropdown-menu" role="menu">
 							<li><a href="#user-settings"><i class="fa fa-cog"></i>Settings</a></li>
 							<li><a href="#user-profile"><i class="fa fa-user"></i> Profile</a></li>
 							<li class="divider"></li>
 							<li><a href="logout"><i
 									class="fa fa-power-off"></i>Logout</a></li>
-						</ul></li>
+						</ul>
+					</li>
 				</ul>
 			</div>
 			<!--/.nav-collapse -->
@@ -79,7 +88,7 @@
 	<script
 		src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 	<script src="assets/js/bootstrap.min.js"></script>
-	<script src="assets/js/angular.min.js"></script>
+	<script src="assets/js/angular.js"></script>
 	<script src="assets/js/angular-resource.min.js"></script>
 	<script src="assets/js/angular-route.min.js"></script>
 	<!-- <script src="assets/js/i18n/angular-locale_fr.js"></script> -->
@@ -90,8 +99,10 @@
 	<script src="assets/js/app/application.js"></script>
 	<script src="assets/js/app/services.js"></script>
 	<script src="assets/js/app/controllers/home-controller.js"></script>
-	<script src="assets/js/app/controllers/absences-controller.js"></script>
 	<script src="assets/js/app/factories/cra-factories.js"></script>
+	<script src="assets/js/app/factories/absences-factories.js"></script>
+	<script src="assets/js/app/controllers/consulter-absences-controller.js"></script>
+	<script src="assets/js/app/controllers/declarer-absences-controller.js"></script>
 	<script src="assets/js/app/controllers/cra-controller.js"></script>
 	<script src="assets/js/app/controllers/user-settings-controller.js"></script>
 	<script src="assets/js/app/controllers/user-profile-controller.js"></script>

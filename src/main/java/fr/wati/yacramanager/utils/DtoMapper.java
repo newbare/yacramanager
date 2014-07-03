@@ -5,10 +5,12 @@ import java.util.List;
 
 import org.springframework.data.domain.Page;
 
+import fr.wati.yacramanager.beans.Absence;
 import fr.wati.yacramanager.beans.Personne;
 import fr.wati.yacramanager.beans.Users;
 import fr.wati.yacramanager.dao.PersonneDto;
 import fr.wati.yacramanager.dao.UserDto;
+import fr.wati.yacramanager.web.dto.AbsenceDTO;
 
 public class DtoMapper {
 
@@ -27,8 +29,19 @@ public class DtoMapper {
 		return dtos;
 	}
 
-	
+	public static AbsenceDTO map(Absence absence) {
+		AbsenceDTO dto = new AbsenceDTO();
+		return dto;
+	}
 
+	public static List<AbsenceDTO> mapAbsences(Page<Absence> absences) {
+		List<AbsenceDTO> dtos = new ArrayList<AbsenceDTO>();
+		for (Absence absence : absences) {
+			dtos.add(map(absence));
+		}
+		return dtos;
+	}
+	
 	public static PersonneDto map(Personne personne) {
 		PersonneDto dto = new PersonneDto();
 		dto.setId(Long.valueOf(personne.getId().toString()));

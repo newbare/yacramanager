@@ -3,6 +3,7 @@ package fr.wati.yacramanager.config;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -29,6 +30,8 @@ import fr.wati.yacramanager.utils.CustomObjectMapper;
 @EnableAspectJAutoProxy(proxyTargetClass= true)
 @EnableWebMvc
 public class WebConfig extends WebMvcConfigurerAdapter {
+	@Autowired
+	private CustomObjectMapper customObjectMapper;
 	
 	@Bean
     public ViewResolver getViewResolver(ResourceLoader resourceLoader) {
@@ -49,7 +52,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 	public void configureMessageConverters(
 			List<HttpMessageConverter<?>> converters) {
 		MappingJackson2HttpMessageConverter mappingJacksonHttpMessageConverter = new MappingJackson2HttpMessageConverter();
-		mappingJacksonHttpMessageConverter.setObjectMapper(new CustomObjectMapper());
+		mappingJacksonHttpMessageConverter.setObjectMapper(customObjectMapper);
 		List<MediaType> mediaTypes=new ArrayList<>();
 		mediaTypes.add(MediaType.APPLICATION_JSON);
 		mappingJacksonHttpMessageConverter.setSupportedMediaTypes(mediaTypes);

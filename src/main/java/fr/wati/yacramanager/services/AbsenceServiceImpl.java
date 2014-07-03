@@ -13,11 +13,6 @@ import fr.wati.yacramanager.dao.AbsenceRepository;
 public class AbsenceServiceImpl implements AbsenceService {
 
 	private AbsenceRepository absenceRepository;
-	
-	@Override
-	public Absence save(Absence absence) {
-		return absenceRepository.save(absence);
-	}
 
 	@Override
 	public Page<Absence> findByStartDateBetween(Date dateDebut, Date dateFin,
@@ -25,15 +20,77 @@ public class AbsenceServiceImpl implements AbsenceService {
 		return absenceRepository.findByDateBetween(dateDebut, dateFin, pageable);
 	}
 
-	@Override
-	public void delete(Absence absence) {
-		absenceRepository.delete(absence);
-	}
 
 	@Override
 	public void validateAbsence(Absence absence) {
 		// TODO Auto-generated method stub
 
+	}
+
+
+	@Override
+	public <S extends Absence> S save(S entity) {
+		return absenceRepository.save(entity);
+	}
+
+
+	@Override
+	public <S extends Absence> Iterable<S> save(Iterable<S> entities) {
+		return absenceRepository.save(entities);
+	}
+
+
+	@Override
+	public Absence findOne(Long id) {
+		return absenceRepository.findOne(id);
+	}
+
+
+	@Override
+	public boolean exists(Long id) {
+		return absenceRepository.exists(id);
+	}
+
+
+	@Override
+	public Iterable<Absence> findAll() {
+		return absenceRepository.findAll();
+	}
+
+
+	@Override
+	public Iterable<Absence> findAll(Iterable<Long> ids) {
+		return absenceRepository.findAll(ids);
+	}
+
+
+	@Override
+	public long count() {
+		return absenceRepository.count();
+	}
+
+
+	@Override
+	public void delete(Long id) {
+		absenceRepository.delete(id);
+	}
+
+
+	@Override
+	public void delete(Absence entity) {
+		absenceRepository.delete(entity);
+	}
+
+
+	@Override
+	public void delete(Iterable<? extends Absence> entities) {
+		absenceRepository.delete(entities);
+	}
+
+
+	@Override
+	public void deleteAll() {
+		absenceRepository.deleteAll();
 	}
 
 }

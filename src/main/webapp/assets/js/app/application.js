@@ -50,9 +50,13 @@ App.config(
 				templateUrl : 'views/cra.html',
 				controller : CraController
 			})
-			.when('/absences', {
-				templateUrl : 'views/absences.html',
-				controller : AbsencesController
+			.when('/declarer-absence', {
+				templateUrl : 'views/declarer-absence.html',
+				controller : DeclarationAbsencesController
+			})
+			.when('/consulter-absences', {
+				templateUrl : 'views/consulter-absences.html',
+				controller : ConsultationAbsencesController
 			})
 			.when('/user-settings', {
 				templateUrl : 'views/user-settings.html',

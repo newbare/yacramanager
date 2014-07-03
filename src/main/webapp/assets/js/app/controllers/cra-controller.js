@@ -18,6 +18,6 @@ function CraController($scope,$rootScope,CraREST,$filter) {
 		    $scope.respStartDate=data.startDate;
 		    $scope.respEndDate=data.endDate;
 		});
-	}	
+	};	
 	$scope.retrieveCra();
 }

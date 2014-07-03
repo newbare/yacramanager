@@ -7,13 +7,10 @@ import org.springframework.data.domain.Pageable;
 
 import fr.wati.yacramanager.beans.Absence;
 
-public interface AbsenceService {
-
-	Absence save(Absence absence);
+public interface AbsenceService extends CrudService<Absence, Long>{
 	
 	Page<Absence> findByStartDateBetween(Date dateDebut,Date dateFin,Pageable pageable);
 	
-	void delete(Absence absence);
 	
 	void validateAbsence(Absence absence);
 }
