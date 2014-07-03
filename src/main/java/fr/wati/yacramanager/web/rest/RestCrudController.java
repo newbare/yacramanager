@@ -11,7 +11,7 @@ public interface RestCrudController<DTO, ID extends Serializable> {
 
 	void update(ID id, DTO dto);
 	
-	List<DTO> getAll();
+	List<DTO> getAll(Integer page,Integer Integer,String orderBy);
 
 	ResponseEntity<String> create(DTO dto);
 

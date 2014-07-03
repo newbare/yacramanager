@@ -4,12 +4,16 @@ import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
-import javax.persistence.Transient;
+import javax.persistence.ManyToOne;
+
+import fr.wati.yacramanager.web.dto.AbsenceDTO.TypeAbsence;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -19,10 +23,16 @@ public class Absence implements Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	private Date date;
-	private boolean morning;
-	private boolean afternoon;
+	private boolean endMorning;
+	private boolean startAfternoon;
+	private Date startDate;
+	private Date endDate;
 	private String description;
 	private boolean validated;
+	@ManyToOne
+	private Personne personne;
+	@Enumerated(EnumType.STRING)
+	private TypeAbsence typeAbsence;
 	
 	
 	
@@ -30,32 +40,24 @@ public class Absence implements Serializable {
 	public Absence() {
 		super();
 	}
-	public Absence(String description, boolean morning, boolean afternoon,
-			boolean validated) {
+	
+	public Absence(boolean endMorning, boolean startAfternoon, Date startDate,
+			Date endDate, String description) {
 		super();
+		this.endMorning = endMorning;
+		this.startAfternoon = startAfternoon;
+		this.startDate = startDate;
+		this.endDate = endDate;
 		this.description = description;
-		this.morning = morning;
-		this.afternoon = afternoon;
-		this.validated = validated;
 	}
+
 	public Long getId() {
 		return id;
 	}
 	public void setId(Long id) {
 		this.id = id;
 	}
-	public boolean isMorning() {
-		return morning;
-	}
-	public void setMorning(boolean morning) {
-		this.morning = morning;
-	}
-	public boolean isAfternoon() {
-		return afternoon;
-	}
-	public void setAfternoon(boolean afternoon) {
-		this.afternoon = afternoon;
-	}
+	
 	public String getDescription() {
 		return description;
 	}
@@ -75,9 +77,54 @@ public class Absence implements Serializable {
 	public void setDate(Date date) {
 		this.date = date;
 	}
-	@Transient
-	public boolean isAllDay() {
-		return (isMorning() && isAfternoon());
+
+	public boolean isEndMorning() {
+		return endMorning;
 	}
+
+	public void setEndMorning(boolean endMorning) {
+		this.endMorning = endMorning;
+	}
+
+	public boolean isStartAfternoon() {
+		return startAfternoon;
+	}
+
+	public void setStartAfternoon(boolean startAfternoon) {
+		this.startAfternoon = startAfternoon;
+	}
+
+	public Date getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(Date startDate) {
+		this.startDate = startDate;
+	}
+
+	public Date getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(Date endDate) {
+		this.endDate = endDate;
+	}
+
+	public Personne getPersonne() {
+		return personne;
+	}
+
+	public void setPersonne(Personne personne) {
+		this.personne = personne;
+	}
+
+	public TypeAbsence getTypeAbsence() {
+		return typeAbsence;
+	}
+
+	public void setTypeAbsence(TypeAbsence typeAbsence) {
+		this.typeAbsence = typeAbsence;
+	}
+	
 	
 }

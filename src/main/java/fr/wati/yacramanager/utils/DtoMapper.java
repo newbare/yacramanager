@@ -31,10 +31,17 @@ public class DtoMapper {
 
 	public static AbsenceDTO map(Absence absence) {
 		AbsenceDTO dto = new AbsenceDTO();
+		dto.setDescription(absence.getDescription());
+		dto.setStartDate(absence.getStartDate());
+		dto.setEndDate(absence.getEndDate());
+		dto.setType(String.valueOf(absence.getTypeAbsence()));
+		dto.setPostedDate(absence.getDate());
+		dto.setId(absence.getId());
+		dto.setValidated(absence.isValidated());
 		return dto;
 	}
-
-	public static List<AbsenceDTO> mapAbsences(Page<Absence> absences) {
+	
+	public static List<AbsenceDTO> mapAbsences(Iterable<Absence> absences) {
 		List<AbsenceDTO> dtos = new ArrayList<AbsenceDTO>();
 		for (Absence absence : absences) {
 			dtos.add(map(absence));

@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -141,9 +143,15 @@ public class UserRestController implements RestCrudController<PersonneDto, Long>
   }
 
 @Override
-@RequestMapping(value="/all",method=RequestMethod.GET)
-public @ResponseBody List<PersonneDto> getAll() {
-	Pageable pageRequest = new PageRequest(0, 100);
+@RequestMapping(method=RequestMethod.GET)
+public @ResponseBody List<PersonneDto> getAll(@RequestParam(required=false) Integer page,@RequestParam(required=false) Integer size,@RequestParam(required=false,defaultValue="id") String orderBy) {
+	if(page==null){
+		page=0;
+	}
+	if(size==null){
+		size=100;
+	}
+	Pageable pageRequest = new PageRequest(page, size,new Sort(new Order(orderBy)));
 	return DtoMapper.mapPersonne(personRepository.findAll(pageRequest));
 }
 

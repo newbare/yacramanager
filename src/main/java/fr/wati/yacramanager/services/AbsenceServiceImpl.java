@@ -2,16 +2,19 @@ package fr.wati.yacramanager.services;
 
 import java.util.Date;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import fr.wati.yacramanager.beans.Absence;
+import fr.wati.yacramanager.beans.Personne;
 import fr.wati.yacramanager.dao.AbsenceRepository;
 
 @Service
 public class AbsenceServiceImpl implements AbsenceService {
 
+	@Autowired
 	private AbsenceRepository absenceRepository;
 
 	@Override
@@ -91,6 +94,19 @@ public class AbsenceServiceImpl implements AbsenceService {
 	@Override
 	public void deleteAll() {
 		absenceRepository.deleteAll();
+	}
+
+
+	@Override
+	public Page<Absence> findByPersonneAndStartDateBetween(Personne personne,
+			Date dateDebut, Date dateFin, Pageable pageable) {
+		return absenceRepository.findByPersonneAndStartDateBetween(personne, dateDebut, dateFin, pageable);
+	}
+
+
+	@Override
+	public Page<Absence> findByPersonne(Personne personne, Pageable pageable) {
+		return absenceRepository.findByPersonne(personne, pageable);
 	}
 
 }

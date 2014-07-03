@@ -7,58 +7,63 @@ import java.util.List;
 
 public class CalendarUtil {
 
+	private static List<Date> datesFeries;
+	
 	public static List<Date> getJourFeries(int annee) {
-		List<Date> datesFeries = new ArrayList<Date>();
+		if(datesFeries==null){
+			datesFeries= new ArrayList<Date>();
 
-		// Jour de l'an
-		GregorianCalendar jourAn = new GregorianCalendar(annee, 0, 1);
-		datesFeries.add(jourAn.getTime());
+			// Jour de l'an
+			GregorianCalendar jourAn = new GregorianCalendar(annee, 0, 1);
+			datesFeries.add(jourAn.getTime());
 
-		// Lundi de pacques
-		GregorianCalendar pacques = calculLundiPacques(annee);
-		datesFeries.add(pacques.getTime());
+			// Lundi de pacques
+			GregorianCalendar pacques = calculLundiPacques(annee);
+			datesFeries.add(pacques.getTime());
 
-		// Fete du travail
-		GregorianCalendar premierMai = new GregorianCalendar(annee, 4, 1);
-		datesFeries.add(premierMai.getTime());
+			// Fete du travail
+			GregorianCalendar premierMai = new GregorianCalendar(annee, 4, 1);
+			datesFeries.add(premierMai.getTime());
 
-		// 8 mai
-		GregorianCalendar huitMai = new GregorianCalendar(annee, 4, 8);
-		datesFeries.add(huitMai.getTime());
+			// 8 mai
+			GregorianCalendar huitMai = new GregorianCalendar(annee, 4, 8);
+			datesFeries.add(huitMai.getTime());
 
-		// Ascension (= pâques + 38 jours)
-		GregorianCalendar ascension = new GregorianCalendar(annee,
-				pacques.get(GregorianCalendar.MONTH),
-				pacques.get(GregorianCalendar.DAY_OF_MONTH));
-		ascension.add(GregorianCalendar.DAY_OF_MONTH, 38);
-		datesFeries.add(ascension.getTime());
+			// Ascension (= pâques + 38 jours)
+			GregorianCalendar ascension = new GregorianCalendar(annee,
+					pacques.get(GregorianCalendar.MONTH),
+					pacques.get(GregorianCalendar.DAY_OF_MONTH));
+			ascension.add(GregorianCalendar.DAY_OF_MONTH, 38);
+			datesFeries.add(ascension.getTime());
 
-		// Pentecôte (= pâques + 49 jours)
-		GregorianCalendar pentecote = new GregorianCalendar(annee,
-				pacques.get(GregorianCalendar.MONTH),
-				pacques.get(GregorianCalendar.DAY_OF_MONTH));
-		pentecote.add(GregorianCalendar.DAY_OF_MONTH, 49);
-		datesFeries.add(pentecote.getTime());
+			// Pentecôte (= pâques + 49 jours)
+			GregorianCalendar pentecote = new GregorianCalendar(annee,
+					pacques.get(GregorianCalendar.MONTH),
+					pacques.get(GregorianCalendar.DAY_OF_MONTH));
+			pentecote.add(GregorianCalendar.DAY_OF_MONTH, 49);
+			datesFeries.add(pentecote.getTime());
 
-		// Fête Nationale
-		GregorianCalendar quatorzeJuillet = new GregorianCalendar(annee, 6, 14);
-		datesFeries.add(quatorzeJuillet.getTime());
+			// Fête Nationale
+			GregorianCalendar quatorzeJuillet = new GregorianCalendar(annee, 6, 14);
+			datesFeries.add(quatorzeJuillet.getTime());
 
-		// Assomption
-		GregorianCalendar assomption = new GregorianCalendar(annee, 7, 15);
-		datesFeries.add(assomption.getTime());
+			// Assomption
+			GregorianCalendar assomption = new GregorianCalendar(annee, 7, 15);
+			datesFeries.add(assomption.getTime());
 
-		// La Toussaint
-		GregorianCalendar toussaint = new GregorianCalendar(annee, 10, 1);
-		datesFeries.add(toussaint.getTime());
+			// La Toussaint
+			GregorianCalendar toussaint = new GregorianCalendar(annee, 10, 1);
+			datesFeries.add(toussaint.getTime());
 
-		// L'Armistice
-		GregorianCalendar armistice = new GregorianCalendar(annee, 10, 11);
-		datesFeries.add(armistice.getTime());
+			// L'Armistice
+			GregorianCalendar armistice = new GregorianCalendar(annee, 10, 11);
+			datesFeries.add(armistice.getTime());
 
-		// Noël
-		GregorianCalendar noel = new GregorianCalendar(annee, 11, 25);
-		datesFeries.add(noel.getTime());
+			// Noël
+			GregorianCalendar noel = new GregorianCalendar(annee, 11, 25);
+			datesFeries.add(noel.getTime());
+		} 
+		
 
 		return datesFeries;
 	}

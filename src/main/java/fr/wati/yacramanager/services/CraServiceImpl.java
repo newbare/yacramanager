@@ -33,14 +33,31 @@ public class CraServiceImpl implements CraService {
 			Date currentDate = dateIterator.next();
 			day = new Day();
 			day.setDate(currentDate);
-			day.setDayOff(isWeekEnd(currentDate) || jourFerie(currentDate));
-			day.setMorning(new DayElement());
-			day.setAfternoon(new DayElement());
+			day.setDayOff(isDayOff(currentDate));
+			DayElement morningDayElement=new DayElement();
+			boolean worked = isDateInPast(currentDate) && !isDayOff(currentDate);
+			morningDayElement.setWorked(worked);
+			DayElement afternoonDayElement=new DayElement();
+			afternoonDayElement.setWorked(worked);
+			day.setMorning(morningDayElement);
+			day.setAfternoon(afternoonDayElement);
 			craDTO.addDay(day);
 		}
 		return craDTO;
 	}
 
+	private boolean isDayOff(Date date){
+		return isWeekEnd(date) || jourFerie(date);
+	}
+	
+	private boolean isDateInPast(Date date){
+		Calendar nowCalendar = Calendar.getInstance();
+		nowCalendar.setTime(new Date());
+		Calendar testDateCalendar = Calendar.getInstance();
+		testDateCalendar.setTime(date);
+		return testDateCalendar.before(nowCalendar);
+	}
+	
 	private boolean isWeekEnd(Date date) {
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(date);
@@ -48,7 +65,6 @@ public class CraServiceImpl implements CraService {
 		return (Calendar.SUNDAY == dayOfWeek || Calendar.SATURDAY == dayOfWeek);
 	}
 	
-	@SuppressWarnings("deprecation")
 	private boolean jourFerie(final Date date) {
 		Calendar calendar = DateUtils.toCalendar(date);
 		List<Date> jourFeries=CalendarUtil.getJourFeries(calendar.get(Calendar.YEAR));

@@ -23,6 +23,11 @@
 	left: -100%;
 }
 
+/* body {
+  padding: 40px !important;
+} */
+
+
 /* End of animation section */
 .main.container {
 	padding-top: 40px;
@@ -83,4 +88,44 @@ a .badge{
 
 .cra-table td {
 	text-align: center;
+}
+
+input[type="radio"],
+input[type="checkbox"] {
+  display:none;
+}
+
+ input[type="radio"] + span:before,
+ input[type="checkbox"] + span:before {
+  font-family: 'FontAwesome';
+  padding-right: 1px;
+  font-size: 15px;
+}
+
+ input[type="radio"] + span:before {
+  content: "\f10c"; /* circle-blank */
+}
+
+ input[type="radio"]:checked + span:before {
+  content: "\f111"; /* circle */
+}
+
+ input[type="checkbox"] + span:before {
+  content: "\f096"; /* check-empty */
+}
+
+ input[type="checkbox"]:checked + span:before {
+  content: "\f046"; /* check */
+  color: green;
+}
+
+span.icon{
+	 font-family: FontAwesome;
+}
+span.validated.icon{
+	color: green;
+}
+span.not-validated.icon{
+	color: red;
+	content: "\f057";
 }

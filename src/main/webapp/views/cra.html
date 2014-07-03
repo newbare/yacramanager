@@ -33,13 +33,20 @@
 				<tr>
 					<td>M</td>
 					<td ng-repeat="day in cra.days" ng-class="{'cra-we' : day.dayOff}">
-						<input class="" ng-class="{'disabled' : day.dayOff}"type="checkbox"	value="{{day.morning.worked}}" ng-disabled="day.dayOff" />
+						<label>
+  							<input type="checkbox"	ng-model="day.morning.worked" value="{{day.morning.worked}}" ng-disabled="day.dayOff" />
+							<span></span>
+						</label>
 					</td>
 				</tr>
 				<tr>
 					<td>A</td>
 					<td ng-repeat="day in cra.days" ng-class="{'cra-we' : day.dayOff}">
-						<input type="checkbox"	value="{{day.afternoon.worked}}" ng-disabled="day.dayOff"/>
+						<label>
+  							<input type="checkbox" ng-model="day.afternoon.worked" value="{{day.afternoon.worked}}" ng-disabled="day.dayOff"/>
+							<span></span>
+						</label>
+						
 					</td>
 				</tr>
 			</table>

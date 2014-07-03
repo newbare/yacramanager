@@ -9,14 +9,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <link rel="stylesheet" href="assets/css/app.css">
-<!-- <link rel="stylesheet" href="assets/css/datepicker/datepicker.css"> -->
+<link rel="stylesheet" href="assets/css/bootstrap-additions.min.css">
+
 <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet"
 	href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 <link rel="stylesheet"
 	href="assets/css/font-awesome/css/font-awesome.min.css">
-	<link rel="stylesheet"
-	href="assets/css/ace.min.css">
 	
 
 
@@ -93,6 +92,8 @@
 	<script src="assets/js/angular-route.min.js"></script>
 	<!-- <script src="assets/js/i18n/angular-locale_fr.js"></script> -->
 	<script src="assets/js/plugins/angular-strap/angular-strap.min.js"></script>
+	<script src="assets/js/plugins/angular-strap/alert.js"></script>
+	<script src="assets/js/plugins/angular-strap/modal.js"></script>
 	<script src="assets/js/plugins/angular-strap/angular-strap.tpl.min.js"></script>
 	<script src="assets/js/plugins/angular-strap/datepicker.js"></script>
 	<script src="assets/js/plugins/angular-strap/tooltip.js"></script>
@@ -101,6 +102,7 @@
 	<script src="assets/js/app/controllers/home-controller.js"></script>
 	<script src="assets/js/app/factories/cra-factories.js"></script>
 	<script src="assets/js/app/factories/absences-factories.js"></script>
+	<script src="assets/js/app/services/common-services.js"></script>
 	<script src="assets/js/app/controllers/consulter-absences-controller.js"></script>
 	<script src="assets/js/app/controllers/declarer-absences-controller.js"></script>
 	<script src="assets/js/app/controllers/cra-controller.js"></script>
