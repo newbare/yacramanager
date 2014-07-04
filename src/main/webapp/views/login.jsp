@@ -3,13 +3,37 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Sign in &middot; Stock Trading Portfolio Sign in</title>
+<title>Sign in &middot; Yacra Manager</title>
 <link href="assets/css/bootstrap.min.css" rel="stylesheet">
-<link href="assets/css/login.css" rel="stylesheet">
+<link href="assets/css/signin.css" rel="stylesheet">
 </head>
 <body>
+	
+	
+	 <div class="container">
+		<c:if test="${error==true}">
+			<div class="alert alert-danger alert-dismissable">
+				<a class="close" data-dismiss="alert" href="#" aria-hidden="true">&times;</a>
+				<c:if test="${not empty errorMessage}">
+	  				${errorMessage}	
+	  			</c:if>
+			</div>
+		</c:if>
+      <form class="form-signin" role="form" method="post" action="login">
+        <h2 class="form-signin-heading">Please sign in</h2>
+        <input type="text" class="form-control" placeholder="Username" name="username" required autofocus>
+        <input type="password" class="form-control" placeholder="Password" name="password" required>
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" name="remember-me"> Remember me
+          </label>
+        </div>
+        <button class="btn btn-lg btn-primary btn-block" type="submit"><i class="ace-icon fa fa-key"></i><span class="bigger-110">Login</span></button>
+      </form>
 
-	<div class="container">
+    </div> <!-- /container -->
+	
+	<%-- <div class="container">
 		<c:if test="${error==true}">
 			<div class="alert alert-danger alert-dismissable">
 				<a class="close" data-dismiss="alert" href="#" aria-hidden="true">&times;</a>
@@ -48,7 +72,7 @@
 			</fieldset>
 		</form>
 	</div>
-	<!-- /container -->
+	<!-- /container --> --%>
 
 	<script src="assets/js/bootstrap.min.js"></script>
 	<script src="assets/js/jquery.js"></script>

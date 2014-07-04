@@ -1,32 +1,3 @@
-'use strict';
-$(function() {
-	var stompClient = null;
-	function connect() {
-		var socket = new SockJS('/yacramanager/yacra');
-		stompClient = Stomp.over(socket);
-		stompClient.connect({}, function(frame) {
-			console.log('Connected: ' + frame);
-			var user = frame.headers['user-name'];
-			stompClient.subscribe('/topic/yacra', function(msg) {
-				$.gritter.add({
-					title: 'Hey!!',
-					text: msg.body,
-					class_name: 'gritter-info gritter-light'
-				});
-//				showGreeting(JSON.parse(greeting.body).content);
-			});
-			stompClient.subscribe("/user/queue/errors", function(msg) {
-				console.log(msg);
-				$.gritter.add({
-					title: 'An error occured',
-					text: msg.body,
-					class_name: 'gritter-error gritter-light'
-				});
-			  });
-		});
-	}
-	connect();
-});
 var yaCRAApp = {};
 
 var App = angular.module('yaCRAApp', ['ngResource','mgcrea.ngStrap','ngRoute','ngAnimate','ngTable']);

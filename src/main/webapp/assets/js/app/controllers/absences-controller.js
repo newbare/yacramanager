@@ -1,7 +1,7 @@
 'use strict';
 
 function AbsencesController($scope, $rootScope, AbsenceCRUDREST,
-		AbsenceTypeREST, alertService,ngTableParams) {
+		AbsenceTypeREST, alertService,ngTableParams,notifService) {
 	$rootScope.page = {
 		"title" : "Absences",
 		"description" : "Dï¿½clarer vos absences"
@@ -53,6 +53,7 @@ function AbsencesController($scope, $rootScope, AbsenceCRUDREST,
 	$scope.postAbsence = function() {
 		AbsenceCRUDREST.save(clone(absence)).$promise.then(function(result) {
 			alertService.showInfo('Confirmation', 'Donnï¿½ sauvegardï¿½');
+			notifService.notify('info','Created','Nouvelle absence enregistré')
 			$scope.reset();
 			$scope.tableParams.reload();
 		});

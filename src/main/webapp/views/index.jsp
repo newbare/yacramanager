@@ -13,6 +13,7 @@
 <link rel="stylesheet" href="assets/css/angular-motion.min.css">
 <link rel="stylesheet" href="assets/css/ng-table.min.css">
 <link rel="stylesheet" href="assets/css/jquery-ui.min.css">
+<link rel="stylesheet" href="assets/css/gritter.css">
 <link rel="stylesheet" href="assets/css/jquery.gritter.css">
 
 
@@ -35,7 +36,7 @@
 <!-- <script
 	src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script> -->
 </head>
-<body>
+<body web-socket>
 	<!-- Header nav bar -->
 	<!-- Fixed navbar -->
 	<div class="navbar navbar-default navbar-fixed-top" role="navigation" ng-controller="NavCtrl">
@@ -100,18 +101,15 @@
 	<script src="assets/js/plugins/angular-strap/datepicker.js"></script>
 	<script src="assets/js/plugins/angular-strap/tooltip.js"></script>
 	<script src="assets/js/plugins/angular-strap/tooltip.js"></script>
-<<<<<<< HEAD
 	<script src="assets/js/plugins/gritter/jquery.gritter.min.js"></script>
-=======
->>>>>>> branch 'master' of https://github.com/orachid/yacramanager.git
 	<script src="assets/js/sockjs-0.3.4.js"></script>
 	<script src="assets/js/stomp.js"></script>
 	<script src="assets/js/app/application.js"></script>
-	<script src="assets/js/app/services.js"></script>
 	<script src="assets/js/app/controllers/home-controller.js"></script>
 	<script src="assets/js/app/factories/cra-factories.js"></script>
 	<script src="assets/js/app/factories/absences-factories.js"></script>
 	<script src="assets/js/app/services/common-services.js"></script>
+	<script src="assets/js/app/directives/commons-directives.js"></script>
 	<script src="assets/js/app/controllers/absences-controller.js"></script>
 	<script src="assets/js/app/controllers/cra-controller.js"></script>
 	<script src="assets/js/app/controllers/user-settings-controller.js"></script>
