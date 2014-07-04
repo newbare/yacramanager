@@ -1,20 +1,21 @@
 package fr.wati.yacramanager.web.rest;
 
-import java.io.Serializable;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 
-public interface RestCrudController<DTO, ID extends Serializable> {
+import fr.wati.yacramanager.web.dto.ResponseWrapper;
 
-	DTO read(ID id);
+public interface RestCrudController<DTO> {
 
-	void update(ID id, DTO dto);
+	DTO read(Long id);
+
+	void update(Long id, DTO dto);
 	
-	List<DTO> getAll(Integer page,Integer Integer,String orderBy);
+	ResponseWrapper<List<DTO>> getAll(Integer page,Integer Integer,String orderBy);
 
 	ResponseEntity<String> create(DTO dto);
 
-	void delete(long ID);
+	void delete(Long ID);
 
 }

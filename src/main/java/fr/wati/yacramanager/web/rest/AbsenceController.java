@@ -12,6 +12,7 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.domain.Sort.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -27,10 +28,11 @@ import fr.wati.yacramanager.utils.SecurityUtils;
 import fr.wati.yacramanager.web.dto.AbsenceDTO;
 import fr.wati.yacramanager.web.dto.AbsenceDTO.TypeAbsence;
 import fr.wati.yacramanager.web.dto.AbsenceDTO.TypeAbsenceDTO;
+import fr.wati.yacramanager.web.dto.ResponseWrapper;
 
 @RestController()
 @RequestMapping("/rest/absences")
-public class AbsenceController implements RestCrudController<AbsenceDTO, Long> {
+public class AbsenceController implements RestCrudController<AbsenceDTO> {
 
 	@Autowired
 	private AbsenceService absenceService;
@@ -44,14 +46,14 @@ public class AbsenceController implements RestCrudController<AbsenceDTO, Long> {
 	@Override
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void update(Long id, AbsenceDTO dto) {
+	public void update(@PathVariable("id") Long id, AbsenceDTO dto) {
 		Absence findOne = absenceService.findOne(id);
 		absenceService.save(dto.toAbsence(findOne));
 	}
 
 	@Override
 	@RequestMapping(method = RequestMethod.GET)
-	public List<AbsenceDTO> getAll(@RequestParam(required=false) Integer page,@RequestParam(required=false) Integer size,@RequestParam(required=false,defaultValue="date") String orderBy) {
+	public ResponseWrapper<List<AbsenceDTO>> getAll(@RequestParam(required=false) Integer page,@RequestParam(required=false) Integer size,@RequestParam(required=false,defaultValue="date") String orderBy) {
 		if(page==null){
 			page=0;
 		}
@@ -60,7 +62,7 @@ public class AbsenceController implements RestCrudController<AbsenceDTO, Long> {
 		}
 		PageRequest pageable=new PageRequest(page, size,new Sort(new Order(Direction.DESC,orderBy)));
 		Page<Absence> findByPersonne = absenceService.findByPersonne(SecurityUtils.getConnectedUser(), pageable);
-		return DtoMapper.mapAbsences(findByPersonne);
+		return new ResponseWrapper<List<AbsenceDTO>>(DtoMapper.mapAbsences(findByPersonne),findByPersonne.getTotalElements());
 	}
 
 	@Override
@@ -74,7 +76,8 @@ public class AbsenceController implements RestCrudController<AbsenceDTO, Long> {
 	}
 
 	@Override
-	public void delete(long id) {
+	@RequestMapping(value = "/{id}",method=RequestMethod.DELETE)
+	public void delete(@PathVariable("id") Long id) {
 		absenceService.delete(id);
 	}
 

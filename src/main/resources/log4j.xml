@@ -11,7 +11,7 @@
 	</appender>
 
 	<logger name="org.hibernate">
-		<level value="debug" />
+		<level value="info" />
 	</logger>
 
 	<logger name="org.springframework.messaging">
@@ -19,7 +19,7 @@
 	</logger>
 
 	<logger name="org.springframework.web">
-		<level value="debug" />
+		<level value="info" />
 	</logger>
 
 	<logger name="org.springframework.web.socket">
@@ -27,7 +27,7 @@
 	</logger>
 
 	<logger name="org.springframework.security">
-		<level value="debug" />
+		<level value="info" />
 	</logger>
 
 	<logger name="fr.wati">
