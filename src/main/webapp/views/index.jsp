@@ -10,6 +10,9 @@
 
 <link rel="stylesheet" href="assets/css/app.css">
 <link rel="stylesheet" href="assets/css/bootstrap-additions.min.css">
+<link rel="stylesheet" href="assets/css/angular-motion.min.css">
+<link rel="stylesheet" href="assets/css/ng-table.min.css">
+
 
 <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet"
@@ -47,13 +50,7 @@
 				<ul class="nav navbar-nav navbar-right">
 					<li ng-class="navClass('home')"><a href='' ng-click="loadHome()"><i class="fa fa-home"></i>Home</a></li>
 					<li ng-class="navClass('cra')"><a href='' ng-click="loadCRA()"><i class="fa fa-calendar"></i>CRA</a></li>
-					<li ng-class="navClass('consulter-absences') + navClass('declarer-absence')" class="dropdown"><a href="" class="dropdown-toggle"
-						data-toggle="dropdown">Absences <span class="fa fa-chevron-circle-down"></span></a>
-						<ul class="user-menu dropdown-menu" role="menu">
-							<li><a href="#declarer-absence">Déclarer</a></li>
-							<li><a href="#consulter-absences">Consulter</a></li>
-						</ul>
-					</li>
+					<li ng-class="navClass('absences')"><a href="" ng-click="loadAbsences()" >Absences</a></li>
 					<li ng-class="navClass('notifications')"><a href='' ng-click="loadHome()"><i class="fa fa-bell"></i>Notifications<span class="badge pull-right">42</span></a></li>
 					<li ng-class="navClass('user-settings') + navClass('user-profile')" class="dropdown"><a href="" class="dropdown-toggle"
 						data-toggle="dropdown"><i class="fa fa-user"></i>${userName} <span class="fa fa-chevron-circle-down"></span></a>
@@ -92,19 +89,23 @@
 	<script src="assets/js/angular-route.min.js"></script>
 	<!-- <script src="assets/js/i18n/angular-locale_fr.js"></script> -->
 	<script src="assets/js/plugins/angular-strap/angular-strap.min.js"></script>
+	<script src="assets/js/angular-animate.min.js"></script>
+	<script src="assets/js/ng-table.min.js"></script>
 	<script src="assets/js/plugins/angular-strap/alert.js"></script>
 	<script src="assets/js/plugins/angular-strap/modal.js"></script>
 	<script src="assets/js/plugins/angular-strap/angular-strap.tpl.min.js"></script>
 	<script src="assets/js/plugins/angular-strap/datepicker.js"></script>
 	<script src="assets/js/plugins/angular-strap/tooltip.js"></script>
+	<script src="assets/js/plugins/angular-strap/tooltip.js"></script>
+	<script src="assets/js/sockjs-0.3.4.js"></script>
+	<script src="assets/js/stomp.js"></script>
 	<script src="assets/js/app/application.js"></script>
 	<script src="assets/js/app/services.js"></script>
 	<script src="assets/js/app/controllers/home-controller.js"></script>
 	<script src="assets/js/app/factories/cra-factories.js"></script>
 	<script src="assets/js/app/factories/absences-factories.js"></script>
 	<script src="assets/js/app/services/common-services.js"></script>
-	<script src="assets/js/app/controllers/consulter-absences-controller.js"></script>
-	<script src="assets/js/app/controllers/declarer-absences-controller.js"></script>
+	<script src="assets/js/app/controllers/absences-controller.js"></script>
 	<script src="assets/js/app/controllers/cra-controller.js"></script>
 	<script src="assets/js/app/controllers/user-settings-controller.js"></script>
 	<script src="assets/js/app/controllers/user-profile-controller.js"></script>

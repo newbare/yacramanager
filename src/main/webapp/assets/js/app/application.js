@@ -1,8 +1,31 @@
 'use strict';
-
+$(function() {
+	var stompClient = null;
+	function connect() {
+		var socket = new SockJS('/yacramanager/yacra');
+		stompClient = Stomp.over(socket);
+		stompClient.connect('admin', 'admin', function(frame) {
+			setConnected(true);
+			console.log('Connected: ' + frame);
+			var user = frame.headers['user-name'];
+			stompClient.subscribe('/topic/yacra', function(greeting) {
+				showGreeting(JSON.parse(greeting.body).content);
+			});
+			stompClient.subscribe("/user/queue/errors", function(msg) {
+				console.log(msg);
+				/*$.gritter.add({
+					title: 'An error occured',
+					text: msg.body,
+					class_name: 'gritter-error gritter-light'
+				});*/
+			  });
+		});
+	}
+	connect();
+});
 var yaCRAApp = {};
 
-var App = angular.module('yaCRAApp', ['ngResource','mgcrea.ngStrap','ngRoute']);
+var App = angular.module('yaCRAApp', ['ngResource','mgcrea.ngStrap','ngRoute','ngAnimate','ngTable']);
 
 App.run(function($rootScope) {
     $rootScope.page = ''; 
@@ -17,7 +40,7 @@ App.config(function($datepickerProvider) {
     modelDateFormat: 'dd/MM/yyyy',
     todayHighlight: true
   });
-})
+});
 
 App.controller('NavCtrl', 
 		['$scope', '$location', function ($scope, $location) {
@@ -50,13 +73,9 @@ App.config(
 				templateUrl : 'views/cra.html',
 				controller : CraController
 			})
-			.when('/declarer-absence', {
-				templateUrl : 'views/declarer-absence.html',
-				controller : DeclarationAbsencesController
-			})
-			.when('/consulter-absences', {
-				templateUrl : 'views/consulter-absences.html',
-				controller : ConsultationAbsencesController
+			.when('/absences', {
+				templateUrl : 'views/absences.html',
+				controller : AbsencesController
 			})
 			.when('/user-settings', {
 				templateUrl : 'views/user-settings.html',

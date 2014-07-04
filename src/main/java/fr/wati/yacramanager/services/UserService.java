@@ -28,26 +28,31 @@ public class UserService implements CrudService<Users, Long>{
 	}
 
 	@Override
+	@Transactional(readOnly=true)
 	public Users findOne(Long id) {
 		return usersRepository.findOne(id);
 	}
 
 	@Override
+	@Transactional(readOnly=true)
 	public boolean exists(Long id) {
 		return usersRepository.exists(id);
 	}
 
 	@Override
+	@Transactional(readOnly=true)
 	public Iterable<Users> findAll() {
 		return usersRepository.findAll();
 	}
 
 	@Override
+	@Transactional(readOnly=true)
 	public Iterable<Users> findAll(Iterable<Long> ids) {
 		return usersRepository.findAll(ids);
 	}
 
 	@Override
+	@Transactional(readOnly=true)
 	public long count() {
 		return usersRepository.count();
 	}

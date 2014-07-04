@@ -24,13 +24,11 @@ import fr.wati.yacramanager.dao.PersonRepository;
 import fr.wati.yacramanager.dao.PersonneDto;
 import fr.wati.yacramanager.services.PersonService;
 import fr.wati.yacramanager.utils.DtoMapper;
-import fr.wati.yacramanager.utils.JqgridFilter;
-import fr.wati.yacramanager.utils.JqgridObjectMapper;
-import fr.wati.yacramanager.web.dto.JqgridResponse;
+import fr.wati.yacramanager.web.dto.ResponseWrapper;
 
 @Controller
 @RequestMapping(value = "/rest/users")
-public class UserRestController implements RestCrudController<PersonneDto, Long>{
+public class UserRestController implements RestCrudController<PersonneDto>{
 
 	@Autowired
 	private PersonService personneService;
@@ -40,79 +38,17 @@ public class UserRestController implements RestCrudController<PersonneDto, Long>
   @RequestMapping(value = "/{id}", method = RequestMethod.GET)
   public @ResponseBody PersonneDto read(@PathVariable("id") Long id) {
 	  
-	Personne findOne = personRepository.findOne(Long.valueOf(String.valueOf(id)));
+	Personne findOne = personRepository.findOne(id);
 	if(findOne!=null){
 		return DtoMapper.map(findOne);
 	}
     return null;
   }
 
-  @RequestMapping(value="/jqgrid",method = RequestMethod.GET)
-  public
-  @ResponseBody
-  JqgridResponse<PersonneDto> records(@RequestParam(value="_search",required=false) Boolean search,
-			@RequestParam(value = "filters", required = false) String filters,
-			@RequestParam(value = "page", required = false) Integer page,
-			@RequestParam(value = "rows", required = false) Integer rows,
-			@RequestParam(value = "sidx", required = false) String sidx,
-			@RequestParam(value = "sord", required = false) String sord) {
-
-		Pageable pageRequest = new PageRequest(page - 1, rows);
-
-		if(search==null) search=false;
-		if (search == true) {
-			return getFilteredRecords(filters, pageRequest);
-
-		}
-
-		Page<Personne> personnes = personRepository.findAll(pageRequest);
-		List<PersonneDto> dtos=DtoMapper.mapPersonne(personnes);
-		JqgridResponse<PersonneDto> response = new JqgridResponse<PersonneDto>();
-		response.setRows(dtos);
-		response.setRecords(Long.valueOf(personnes.getTotalElements()).toString());
-		response.setTotal(Integer.valueOf(personnes.getTotalPages()).toString());
-		response.setPage(Integer.valueOf(personnes.getNumber() + 1).toString());
-
-		return response;
-	}
-
-  /**
-	 * Helper method for returning filtered records
-	 */
-	public JqgridResponse<PersonneDto> getFilteredRecords(String filters,
-			Pageable pageRequest) {
-		String qnom = null;
-		String qprenom = null;
-
-		JqgridFilter jqgridFilter = JqgridObjectMapper.map(filters);
-		for (JqgridFilter.Rule rule : jqgridFilter.getRules()) {
-			if (rule.getField().equals("nom"))
-				qnom = rule.getData();
-			else if (rule.getField().equals("prenom"))
-				qprenom = rule.getData();
-		}
-
-		Page<Personne> personnes = null;
-		if (qnom != null)
-			personnes = personRepository.findByNomLike("%" + qnom + "%",
-					pageRequest);
-		if (qprenom != null)
-			personnes = personRepository.findByPrenomLike("%" + qprenom + "%",
-					pageRequest);
-
-		List<PersonneDto> matieresDtos = DtoMapper.mapPersonne(personnes);
-		JqgridResponse<PersonneDto> response = new JqgridResponse<PersonneDto>();
-		response.setRows(matieresDtos);
-		response.setRecords(Long.valueOf(personnes.getTotalElements()).toString());
-		response.setTotal(Integer.valueOf(personnes.getTotalPages()).toString());
-		response.setPage(Integer.valueOf(personnes.getNumber() + 1).toString());
-		return response;
-	}
-  
   @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
   @ResponseStatus(HttpStatus.NO_CONTENT)
   public void update(@PathVariable("id") Long id, @RequestBody PersonneDto personneDto) {
-	  Personne personne = personRepository.findOne(id);
+	  Personne personne = personRepository.findOne(id.longValue());
 	  personne.setPrenom(personneDto.getPrenom());
 	  personne.setNom(personneDto.getNom());
 	  personne.setUsername(personneDto.getUsername());
@@ -138,13 +74,13 @@ public class UserRestController implements RestCrudController<PersonneDto, Long>
 
   @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
   @ResponseStatus(HttpStatus.NO_CONTENT)
-  public void delete(@PathVariable("id") long id) {
-	  personneService.delete(id);
+  public void delete(@PathVariable("id") Long id) {
+	  personneService.delete(id.longValue());
   }
 
 @Override
 @RequestMapping(method=RequestMethod.GET)
-public @ResponseBody List<PersonneDto> getAll(@RequestParam(required=false) Integer page,@RequestParam(required=false) Integer size,@RequestParam(required=false,defaultValue="id") String orderBy) {
+public @ResponseBody ResponseWrapper<List<PersonneDto>> getAll(@RequestParam(required=false) Integer page,@RequestParam(required=false) Integer size,@RequestParam(required=false,defaultValue="id") String orderBy) {
 	if(page==null){
 		page=0;
 	}
@@ -152,7 +88,8 @@ public @ResponseBody List<PersonneDto> getAll(@RequestParam(required=false) Inte
 		size=100;
 	}
 	Pageable pageRequest = new PageRequest(page, size,new Sort(new Order(orderBy)));
-	return DtoMapper.mapPersonne(personRepository.findAll(pageRequest));
+	Page<Personne> all = personRepository.findAll(pageRequest);
+	return new ResponseWrapper<List<PersonneDto>>(DtoMapper.mapPersonne(all),all.getTotalElements());
 }
 
 
