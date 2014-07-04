@@ -100,7 +100,10 @@
 	<script src="assets/js/plugins/angular-strap/datepicker.js"></script>
 	<script src="assets/js/plugins/angular-strap/tooltip.js"></script>
 	<script src="assets/js/plugins/angular-strap/tooltip.js"></script>
+<<<<<<< HEAD
 	<script src="assets/js/plugins/gritter/jquery.gritter.min.js"></script>
+=======
+>>>>>>> branch 'master' of https://github.com/orachid/yacramanager.git
 	<script src="assets/js/sockjs-0.3.4.js"></script>
 	<script src="assets/js/stomp.js"></script>
 	<script src="assets/js/app/application.js"></script>
