@@ -1,19 +1,25 @@
 package fr.wati.yacramanager.services;
 
+import org.dozer.Mapper;
+import org.dozer.spring.DozerBeanMapperFactoryBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import fr.wati.yacramanager.beans.Personne;
 import fr.wati.yacramanager.dao.PersonRepository;
+import fr.wati.yacramanager.web.dto.UserInfoDTO;
 
 @Transactional
 @Service
-public class PersonService implements CrudService<Personne, Long>{
+public class PersonService implements CrudService<Personne, Long> {
 
 	@Autowired
 	private PersonRepository personRepository;
-	
+
+	@Autowired
+	private DozerBeanMapperFactoryBean dozerBeanMapper;
+
 	public PersonService() {
 	}
 
@@ -72,10 +78,16 @@ public class PersonService implements CrudService<Personne, Long>{
 		personRepository.deleteAll();
 	}
 
-	@Transactional(readOnly=true)
-	public Personne findByUsername(String username){
+	@Transactional(readOnly = true)
+	public Personne findByUsername(String username) {
 		return personRepository.findByUsername(username);
 	}
-	
-}
 
+	@Transactional
+	public UserInfoDTO toUserInfoDTO(Long idPersonne) throws Exception {
+		Personne loadPersonne = personRepository.findOne(idPersonne);
+		UserInfoDTO userInfoDTO = new UserInfoDTO();
+		((Mapper) dozerBeanMapper.getObject()).map(loadPersonne, userInfoDTO);
+		return userInfoDTO;
+	}
+}

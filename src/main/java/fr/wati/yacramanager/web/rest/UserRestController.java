@@ -2,6 +2,8 @@ package fr.wati.yacramanager.web.rest;
 
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -24,12 +26,15 @@ import fr.wati.yacramanager.dao.PersonRepository;
 import fr.wati.yacramanager.dao.PersonneDto;
 import fr.wati.yacramanager.services.PersonService;
 import fr.wati.yacramanager.utils.DtoMapper;
+import fr.wati.yacramanager.utils.SecurityUtils;
 import fr.wati.yacramanager.web.dto.ResponseWrapper;
+import fr.wati.yacramanager.web.dto.UserInfoDTO;
 
 @Controller
 @RequestMapping(value = "/rest/users")
 public class UserRestController implements RestCrudController<PersonneDto>{
 
+	private static final Log LOG=LogFactory.getLog(UserRestController.class);
 	@Autowired
 	private PersonService personneService;
 	@Autowired
@@ -92,6 +97,15 @@ public @ResponseBody ResponseWrapper<List<PersonneDto>> getAll(@RequestParam(req
 	return new ResponseWrapper<List<PersonneDto>>(DtoMapper.mapPersonne(all),all.getTotalElements());
 }
 
+@RequestMapping(value="/user-info", method=RequestMethod.GET)
+public @ResponseBody UserInfoDTO getConnectedUserInfo() throws Exception{
+	try {
+		return personneService.toUserInfoDTO(SecurityUtils.getConnectedUser().getId());
+	} catch (Exception e) {
+		LOG.error(e.getMessage(), e);
+		throw e;
+	}
+}
 
 
 }

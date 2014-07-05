@@ -3,12 +3,14 @@ package fr.wati.yacramanager.config;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.dozer.spring.DozerBeanMapperFactoryBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -30,9 +32,10 @@ import fr.wati.yacramanager.utils.CustomObjectMapper;
 @PropertySource(value = { "classpath:database-yacra.properties" })
 @EnableAspectJAutoProxy(proxyTargetClass= true)
 @EnableWebMvc
-public class WebConfig extends WebMvcConfigurerAdapter {
+public class WebConfig extends WebMvcConfigurerAdapter{
 	@Autowired
 	private CustomObjectMapper customObjectMapper;
+	
 	
 	@Bean
     public ViewResolver getViewResolver(ResourceLoader resourceLoader) {
@@ -44,10 +47,19 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         return internalResourceViewResolver;
     }
 
+	@Bean
+	public DozerBeanMapperFactoryBean dozerBeanMapper(ResourceLoader resourceLoader) {
+		DozerBeanMapperFactoryBean dozerBeanMapper = new DozerBeanMapperFactoryBean();
+		List<Resource> resources=new ArrayList<>();
+		resources.add(resourceLoader.getResource("classpath:dozer-mapping.xml"));
+		dozerBeanMapper.setMappingFiles(resources.toArray(new Resource[resources.size()]));
+		return dozerBeanMapper;
+	}
+	
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        ResourceHandlerRegistration resourceHandlerRegistration = registry.addResourceHandler("*/resources/**");
-        resourceHandlerRegistration.addResourceLocations("/resources/");
+        ResourceHandlerRegistration resourceHandlerRegistration = registry.addResourceHandler("*/assets/**");
+        resourceHandlerRegistration.addResourceLocations("/assets/");
         resourceHandlerRegistration.setCachePeriod(0);
     }
 

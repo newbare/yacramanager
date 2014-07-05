@@ -6,7 +6,7 @@ function CraController($scope,$rootScope,CraREST,$filter) {
 	$scope.craDateFormat="EEE dd/MM";
 	var formatDate=function(date){
 		return $filter('date')(date, 'yyyy-MM-dd');
-	}
+	};
 	var date = new Date();
 	var firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
 	var lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);

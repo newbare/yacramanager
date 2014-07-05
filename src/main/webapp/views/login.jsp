@@ -4,13 +4,15 @@
 <head>
 <meta charset="utf-8">
 <title>Sign in &middot; Yacra Manager</title>
+<link href="assets/css/site.css" rel="stylesheet">
 <link href="assets/css/bootstrap.min.css" rel="stylesheet">
 <link href="assets/css/signin.css" rel="stylesheet">
+
+<link rel="stylesheet"
+	href="assets/css/font-awesome/css/font-awesome.min.css">
 </head>
 <body>
-	
-	
-	 <div class="container">
+	<div class="container">
 		<c:if test="${error==true}">
 			<div class="alert alert-danger alert-dismissable">
 				<a class="close" data-dismiss="alert" href="#" aria-hidden="true">&times;</a>
@@ -19,20 +21,32 @@
 	  			</c:if>
 			</div>
 		</c:if>
-      <form class="form-signin" role="form" method="post" action="login">
-        <h2 class="form-signin-heading">Please sign in</h2>
-        <input type="text" class="form-control" placeholder="Username" name="username" required autofocus>
-        <input type="password" class="form-control" placeholder="Password" name="password" required>
-        <div class="checkbox">
-          <label>
-            <input type="checkbox" name="remember-me"> Remember me
-          </label>
-        </div>
-        <button class="btn btn-lg btn-primary btn-block" type="submit"><i class="ace-icon fa fa-key"></i><span class="bigger-110">Login</span></button>
-      </form>
-
-    </div> <!-- /container -->
-	
+		<form class="form-signin" role="form" method="post" action="login">
+			<h2 class="form-signin-heading">Please sign in</h2>
+			<div class="margin-bottom">
+				<div class="input-group margin-bottom-sm">
+					<span class="input-group-addon"><i class="fa fa-user fa-fw"></i></span>
+					<input class="form-control" type="text" name="username" placeholder="Username" required autofocus>
+				</div>
+				<div class="input-group">
+					<span class="input-group-addon"><i class="fa fa-key fa-fw"></i></span>
+					<input class="form-control" type="password"  name="password" placeholder="Password">
+				</div>
+			</div>
+			<!-- <input type="text" class="form-control" placeholder="Username"
+				name="username" required autofocus> <input type="password"
+				class="form-control" placeholder="Password" name="password" required> -->
+			<div class="checkbox">
+				<label> <input type="checkbox" name="remember-me">
+					Remember me
+				</label>
+			</div>
+			<button class="btn btn-lg btn-primary btn-block" type="submit">
+				<i class="ace-icon fa fa-key"></i><span class="bigger-110">Login</span>
+			</button>
+		</form>
+	</div>
+	<!-- /container -->
 	<%-- <div class="container">
 		<c:if test="${error==true}">
 			<div class="alert alert-danger alert-dismissable">
@@ -73,9 +87,8 @@
 		</form>
 	</div>
 	<!-- /container --> --%>
-
-	<script src="assets/js/bootstrap.min.js"></script>
 	<script src="assets/js/jquery.js"></script>
-
+	<script src="assets/js/bootstrap.min.js"></script>
+	
 </body>
 </html>

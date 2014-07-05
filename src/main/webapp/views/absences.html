@@ -1,4 +1,4 @@
-<div class="panel panel-default">
+<div class="panel panel-default am-fade">
 	<div class="panel-body">
 		<div class="row">
 			<div class="col-md-4">
@@ -76,25 +76,39 @@
 						<th>Description</th>
 						<th style="width:20px;">Validation</th>
 						<th style="width:20px;"></th>
-						<th style="width:20px;"></th>
+						<!-- <th style="width:20px;"></th>
+						<th style="width:20px;"></th> -->
 					</tr>
 				</thead>
 				<tbody>
-					<tr align="left" ng-repeat="absence in $data">
+					<tr align="left" data-ng-repeat="absence in $data">
 						<td>{{ absence.postedDate | date : 'medium'}}</td>
 						<td>{{ absence.startDate | date : dateFormat }}</td>
 						<td>{{ absence.endDate | date : dateFormat }}</td>
 						<td>{{ absence.description }}</td>
-						<td align="center"><span class="icon" ng-class="{'validated fa fa-check-circle' : absence.validated , 'not-validated fa fa-times-circle' : !absence.validated}"></span></td>
-						<td>
+						<td align="center"><span class="icon" data-ng-class="{'validated fa fa-check-circle' : absence.validated , 'not-validated fa fa-times-circle' : !absence.validated}"></span></td>
+						<!-- <td>
 							<button type="button" class="btn btn-default">
 							<span class="fa fa-pencil-square-o"></span><small>Edit</small>
 							</button>
 						</td>
 						<td>
 							<button type="button" class="btn btn-danger" data-ng-click="deleteAbsence(absence.id)">
-							<span class="fa fa-times"></span><small>Delete</small>
+							<span class="fa fa-trash-o"></span><small>Delete</small>
 							</button>
+						</td> -->
+						<td>
+							<div class="btn-group">
+							  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+							    <i class="fa fa-cog"></i>
+							  </button>
+							  <ul class="dropdown-menu" role="menu">
+							    <li data-ng-show="!absence.validated"><a href="" data-ng-click="validateAbsence(absence.id)"><i class="fa fa-check" style="color: green;"></i>Validate</a></li>
+							    <li><a href="" data-ng-click="editAbsence(absence.id)"><i class="fa fa-pencil-square-o"></i>Edit</a></li>
+							    <li class="divider"></li>
+							    <li><a href="" data-ng-click="deleteAbsence(absence.id)"><i class="fa fa-trash-o" style="color: red;"></i>Delete</a></li>
+							  </ul>
+							</div>
 						</td>
 					</tr>
 				</tbody>

@@ -9,12 +9,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <link rel="stylesheet" href="assets/css/app.css">
+<!-- <link rel="stylesheet" href="assets/css/datepicker/datepicker3.css"> -->
 <link rel="stylesheet" href="assets/css/bootstrap-additions.min.css">
 <link rel="stylesheet" href="assets/css/angular-motion.min.css">
 <link rel="stylesheet" href="assets/css/ng-table.min.css">
 <link rel="stylesheet" href="assets/css/jquery-ui.min.css">
-<link rel="stylesheet" href="assets/css/gritter.css">
 <link rel="stylesheet" href="assets/css/jquery.gritter.css">
+<link rel="stylesheet" href="assets/css/gritter.css">
+
 
 
 
@@ -40,7 +42,7 @@
 	<!-- Header nav bar -->
 	<!-- Fixed navbar -->
 	<div class="navbar navbar-default navbar-fixed-top" role="navigation" ng-controller="NavCtrl">
-		<div class="container">
+		<div class="container" ng-controller="UsersController">
 			<div class="navbar-header">
 				<button type="button" class="navbar-toggle" data-toggle="collapse"
 					data-target=".navbar-collapse">
@@ -56,8 +58,9 @@
 					<li ng-class="navClass('cra')"><a href='' ng-click="loadCRA()"><i class="fa fa-calendar"></i>CRA</a></li>
 					<li ng-class="navClass('absences')"><a href="" ng-click="loadAbsences()" >Absences</a></li>
 					<li ng-class="navClass('notifications')"><a href='' ng-click="loadHome()"><i class="fa fa-bell"></i>Notifications<span class="badge pull-right">42</span></a></li>
+					<li ng-class="navClass('notifications')"><a href='' ng-click="loadAdmin()"><i class="fa fa-bell"></i>Admin</a></li>
 					<li ng-class="navClass('user-settings') + navClass('user-profile')" class="dropdown"><a href="" class="dropdown-toggle"
-						data-toggle="dropdown"><i class="fa fa-user"></i>${userName} <span class="fa fa-chevron-circle-down"></span></a>
+						data-toggle="dropdown"><i class="fa fa-user"></i>{{userInfo.fullName}} <span class="fa fa-chevron-circle-down"></span></a>
 						<ul class="user-menu dropdown-menu" role="menu">
 							<li><a href="#user-settings"><i class="fa fa-cog"></i>Settings</a></li>
 							<li><a href="#user-profile"><i class="fa fa-user"></i> Profile</a></li>
@@ -79,7 +82,7 @@
 				{{page.title}} <small><i class="fa fa-chevron-right" style="font-size: 40%"></i><i class="fa fa-chevron-right" style="font-size: 40%"></i> {{page.description}}</small>
 			</h2>
 		</div>
-		<div ng-view ng-switch ng-animate="'animate'"></div>
+		<div ng-view="" class="am-fade-and-scale"></div>
 	</div>
 
 	<!-- Bootstrap core JavaScript
@@ -100,16 +103,18 @@
 	<script src="assets/js/plugins/angular-strap/angular-strap.tpl.min.js"></script>
 	<script src="assets/js/plugins/angular-strap/datepicker.js"></script>
 	<script src="assets/js/plugins/angular-strap/tooltip.js"></script>
-	<script src="assets/js/plugins/angular-strap/tooltip.js"></script>
 	<script src="assets/js/plugins/gritter/jquery.gritter.min.js"></script>
 	<script src="assets/js/sockjs-0.3.4.js"></script>
 	<script src="assets/js/stomp.js"></script>
 	<script src="assets/js/app/application.js"></script>
+	<script src="assets/js/app/factories/users-factories.js"></script>
 	<script src="assets/js/app/controllers/home-controller.js"></script>
 	<script src="assets/js/app/factories/cra-factories.js"></script>
+	
 	<script src="assets/js/app/factories/absences-factories.js"></script>
 	<script src="assets/js/app/services/common-services.js"></script>
 	<script src="assets/js/app/directives/commons-directives.js"></script>
+	<script src="assets/js/app/controllers/users-controller.js"></script>
 	<script src="assets/js/app/controllers/absences-controller.js"></script>
 	<script src="assets/js/app/controllers/cra-controller.js"></script>
 	<script src="assets/js/app/controllers/user-settings-controller.js"></script>

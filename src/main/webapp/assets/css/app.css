@@ -1,3 +1,8 @@
+.container {
+	padding-right: 5px !important;
+	padding-left: 5px !important;
+}
+
 /* Animation section */
 .animate-enter,.animate-leave {
 	-webkit-transition: 625ms cubic-bezier(0.600, 0.040, 0.980, 0.335) all;
@@ -27,7 +32,6 @@
   padding: 40px !important;
 } */
 
-
 /* End of animation section */
 .main.container {
 	padding-top: 40px;
@@ -42,9 +46,11 @@ a i.fa {
 	margin-right: 6px;
 	font-size: 120%;
 }
-a .badge{
+
+a .badge {
 	margin-left: 5px;
 }
+
 .panel-body .row {
 	margin-right: inherit;
 	margin-left: inherit;
@@ -52,9 +58,12 @@ a .badge{
 }
 
 /* Datepicker section */
+/* .datepicker{
+	z-index: 99999999999999 !important;
+	}
 .datepicker.dropdown-menu {
-	/* width: 250px;
-  height: 250px; */
+	width: 250px;
+  height: 250px;
 	padding: 0px;
 }
 
@@ -74,6 +83,15 @@ a .badge{
 .datepicker.dropdown-menu.datepicker-mode-1 tbody button,.datepicker.dropdown-menu.datepicker-mode-2 tbody button
 	{
 	height: 25px;
+} */
+.datepicker.table>thead>tr>th,
+.datepicker.table>tbody>tr>th,
+.datepicker.table>tfoot>tr>th,
+.datepicker.table>thead>tr>td,
+.datepicker.table>tbody>tr>td,
+.datepicker.table>tfoot>tr>td
+{
+	padding: 0px !important;
 }
 
 /* End of Date picker section */
@@ -90,42 +108,42 @@ a .badge{
 	text-align: center;
 }
 
-input[type="radio"],
-input[type="checkbox"] {
-  display:none;
+input[type="radio"],input[type="checkbox"] {
+	display: none;
 }
 
- input[type="radio"] + span:before,
- input[type="checkbox"] + span:before {
-  font-family: 'FontAwesome';
-  padding-right: 1px;
-  font-size: 15px;
+input[type="radio"]+span:before,input[type="checkbox"]+span:before {
+	font-family: 'FontAwesome';
+	padding-right: 1px;
+	font-size: 15px;
 }
 
- input[type="radio"] + span:before {
-  content: "\f10c"; /* circle-blank */
+input[type="radio"]+span:before {
+	content: "\f10c"; /* circle-blank */
 }
 
- input[type="radio"]:checked + span:before {
-  content: "\f111"; /* circle */
+input[type="radio"]:checked+span:before {
+	content: "\f111"; /* circle */
 }
 
- input[type="checkbox"] + span:before {
-  content: "\f096"; /* check-empty */
+input[type="checkbox"]+span:before {
+	content: "\f096"; /* check-empty */
 }
 
- input[type="checkbox"]:checked + span:before {
-  content: "\f046"; /* check */
-  color: green;
-}
-
-span.icon{
-	 font-family: FontAwesome;
-}
-span.validated.icon{
+input[type="checkbox"]:checked+span:before {
+	content: "\f046"; /* check */
 	color: green;
 }
-span.not-validated.icon{
+
+span.icon {
+	font-family: FontAwesome;
+}
+
+span.validated.icon {
+	color: green;
+}
+
+span.not-validated.icon {
 	color: red;
 	content: "\f057";
 }

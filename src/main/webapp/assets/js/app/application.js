@@ -37,6 +37,7 @@ App.controller('NavCtrl',
 		    
 		}]);
 
+
 App.config(
 		[ '$routeProvider', function($routeProvider) {
 			$routeProvider

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://dozer.sourceforge.net
+          http://dozer.sourceforge.net/schema/beanmapping.xsd">
+	<mapping>
+		<class-a>fr.wati.yacramanager.beans.Personne</class-a>
+		<class-b>fr.wati.yacramanager.web.dto.UserInfoDTO</class-b>
+		<field-exclude>
+			<a>absences</a>
+			<b>absences</b>
+		</field-exclude>
+		<field-exclude type="one-way">
+			<a>roles.users</a>
+			<b>roles.users</b>
+		</field-exclude>
+		<field-exclude>
+			<a>entreprise.persones</a>
+			<b>entreprise.persones</b>
+		</field-exclude>
+	</mapping>
+	<mapping>
+		<class-a>fr.wati.yacramanager.beans.Role</class-a>
+		<class-b>fr.wati.yacramanager.beans.Role</class-b>
+		<field-exclude>
+			<a>users</a>
+			<b>users</b>
+		</field-exclude>
+	</mapping>
+</mappings> 
