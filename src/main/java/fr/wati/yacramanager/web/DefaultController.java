@@ -16,7 +16,7 @@ public class DefaultController {
 
 	@RequestMapping(value = "/")
 	public ModelAndView index(Principal principal){
-		ModelAndView modelAndView=new ModelAndView("index");
+		ModelAndView modelAndView=new ModelAndView("app/index");
 		modelAndView.addObject("userName", SecurityUtils.getConnectedUser().getFullName());
 		return modelAndView;
 	}

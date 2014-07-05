@@ -38,7 +38,7 @@
 <!-- <script
 	src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script> -->
 </head>
-<body web-socket>
+<body data-ng-controller="AppCtrl" data-web-socket>
 	<!-- Header nav bar -->
 	<!-- Fixed navbar -->
 	<div class="navbar navbar-default navbar-fixed-top" role="navigation" ng-controller="NavCtrl">

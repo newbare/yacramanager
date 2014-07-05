@@ -8,18 +8,13 @@ function AbsencesController($scope, $rootScope, AbsenceCRUDREST,
 	};
 	$scope.initialActionLabel = "Ajouter une absence";
 	$scope.dateFormat = "dd MMMM yyyy";
+	$scope.hasDatas=false;
 	AbsenceTypeREST.query(function(data) {
 		$scope.absencesType = data;
 	});
 
 	var absence = $scope.currentAbsence = {};
 	var today = new Date();
-
-	/*$scope.fetchTableDatas = function() {
-		AbsenceCRUDREST.query(function(data) {
-			$scope.absences = data;
-		});
-	};*/
 
 	$scope.reset = function() {
 		$scope.initialSelectionChanged = false;
@@ -52,7 +47,7 @@ function AbsencesController($scope, $rootScope, AbsenceCRUDREST,
 
 	$scope.postAbsence = function() {
 		AbsenceCRUDREST.save(clone(absence)).$promise.then(function(result) {
-			alertService.showInfo('Confirmation', 'Donn� sauvegard�');
+			//alertService.showInfo('Confirmation', 'Donn� sauvegard�');
 			notifService.notify('info','Created','Nouvelle absence enregistr�')
 			$scope.reset();
 			$scope.tableParams.reload();
@@ -63,10 +58,10 @@ function AbsencesController($scope, $rootScope, AbsenceCRUDREST,
 			id : id
 		}).$promise.then(function(result) {
 			$scope.tableParams.reload();
-			alertService.showInfo('Confirmation', 'Absence supprimé');
+			notifService.notify('info','Confirmation', 'Absence supprimé');
 		}, function(error) {
 			// console.log(error);
-			alertService.showError('' + error.status, error.data);
+			notifService.notify('error','' + error.status, error.data);
 		});
 
 	};
@@ -87,21 +82,19 @@ function AbsencesController($scope, $rootScope, AbsenceCRUDREST,
 						size:params.$params.count
 					},function(data) {
 				params.total(data.totalCount);
+				if(data.totalCount>=1){
+					$scope.hasDatas=true;
+				}else {
+					$scope.hasDatas=false;
+					
+				}
+				
 				// set new data
 				$defer.resolve(data.result);
 				/*data.$promise.then(function(data){
 					$scope.absences=data;
 				});*/
 			});
-			// ajax request to api
-			/*Api.get(params.url(), function(data) {
-				$timeout(function() {
-					// update table params
-					params.total(data.total);
-					// set new data
-					$defer.resolve(data.result);
-				}, 500);
-			});*/
 		}
 	});
 

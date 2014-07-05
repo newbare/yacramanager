@@ -32,7 +32,7 @@ public class UserPasswordEntityListener {
 	@PostLoad
 	public void load(Users users){
 		//Preserve viewing password
-		users.setPassword(null);
+		//users.setPassword(null);
 	}
 	
 }

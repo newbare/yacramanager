@@ -1,0 +1,32 @@
+<div class="container">
+	<div class="alert alert-danger alert-dismissable" data-ng-show="error">
+		<a class="close" data-dismiss="alert" href="#" aria-hidden="true">&times;</a>
+		{{errorMessage}}
+	</div>
+	<form class="form-signin" role="form" method="post" action="login">
+		<h2 class="form-signin-heading">Please sign in</h2>
+		<div class="margin-bottom">
+			<div class="input-group margin-bottom-sm">
+				<span class="input-group-addon"><i class="fa fa-user fa-fw"></i></span>
+				<input class="form-control" type="text" name="username"
+					placeholder="Username" required autofocus>
+			</div>
+			<div class="input-group">
+				<span class="input-group-addon"><i class="fa fa-key fa-fw"></i></span>
+				<input class="form-control" type="password" name="password"
+					placeholder="Password">
+			</div>
+		</div>
+		<!-- <input type="text" class="form-control" placeholder="Username"
+				name="username" required autofocus> <input type="password"
+				class="form-control" placeholder="Password" name="password" required> -->
+		<div class="checkbox">
+			<label> <input type="checkbox" name="remember-me">
+				Remember me
+			</label>
+		</div>
+		<button class="btn btn-lg btn-primary btn-block" type="submit">
+			<i class="ace-icon fa fa-key"></i><span class="bigger-110">Login</span>
+		</button>
+	</form>
+</div>

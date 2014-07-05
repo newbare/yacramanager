@@ -83,7 +83,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 								Integer.class))
 				.and()
 				.authorizeRequests()
-				.antMatchers("/**")
+				.antMatchers("/app/**")
 				.hasAnyRole(
 						new String[] { "ADMIN", "SSII_ADMIN", "SALARIE",
 								"INDEP" }).and().authorizeRequests()
