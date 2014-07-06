@@ -50,28 +50,22 @@
 						class="icon-bar"></span> <span class="icon-bar"></span> <span
 						class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="#"><i class="fa fa-bolt fa-1x"></i><span> YACRA manager</span></a>
+				<a class="navbar-brand" href="#"><i class="fa fa-bolt fa-1x"></i><span> YACRA</span></a>
 			</div>
 			<div class="navbar-collapse collapse">
 				<ul class="nav navbar-nav navbar-right">
-					<li ng-class="navClass('home')"><a href='' ng-click="loadHome()"><i class="fa fa-home"></i>Home</a></li>
-					<li ng-class="navClass('cra')"><a href='' ng-click="loadCRA()"><i class="fa fa-calendar"></i>CRA</a></li>
-					<li ng-class="navClass('absences')"><a href="" ng-click="loadAbsences()" >Absences</a></li>
-					<li ng-class="navClass('notifications')"><a href='' ng-click="loadHome()"><i class="fa fa-bell"></i>Notifications<span class="badge pull-right">42</span></a></li>
-					<li data-has-role="ROLE_SSII_ADMIN" ng-class="navClass('user-settings') + navClass('user-profile')" class="dropdown"><a href="" class="dropdown-toggle"
-						data-toggle="dropdown"><i class="fa fa-university"></i>Entreprise <span class="caret"></span></a>
-						<ul class="user-menu dropdown-menu" role="menu">
-							<li><a href="#user-settings"><i class="fa fa-users"></i>Salariés</a></li>
-							<li class="divider"></li>
-							<li><a href="#user-settings"><i class="fa fa-cog"></i>Settings</a></li>
-						</ul>
-					</li>
-					<li data-has-role="ROLE_ADMIN" ng-class="navClass('notifications')"><a href='' ng-click="loadAdmin()"><i class="fa fa-gear fa-spin"></i>Admin</a></li>
+					<li ng-class="navClass('home')"><a ui-sref="home"><i class="fa fa-home"></i>Home</a></li>
+					<li ng-class="navClass('frais')"><a ui-sref="frais"><i class="fa fa-eur"></i>Frais</a></li>
+					<li ng-class="navClass('cra')"><a ui-sref="cra"><i class="fa fa-calendar"></i>CRA</a></li>
+					<li ng-class="navClass('absences')"><a ui-sref="absences" ><i class="fa fa-clock-o"></i>Absences</a></li>
+					<li data-has-role="ROLE_SSII_ADMIN" ng-class="navClass('entreprise')"><a ui-sref="entreprise" ><i class="fa fa-university"></i>Entreprise</a></li>
+					<li data-has-role="ROLE_ADMIN" ng-class="navClass('admin')"><a ui-sref="admin"><i class="fa fa-gear fa-spin"></i>Admin</a></li>
+					<li ng-class="navClass('notifications')"><a ui-sref="notifications"><i class="fa fa-bell"></i>Notifications<span class="badge pull-right">42</span></a></li>
 					<li ng-class="navClass('user-settings') + navClass('user-profile')" class="dropdown"><a href="" class="dropdown-toggle"
 						data-toggle="dropdown"><i class="fa fa-user"></i>{{userInfo.prenom}} <span class="caret"></span></a>
 						<ul class="user-menu dropdown-menu" role="menu">
-							<li><a href="#user-settings"><i class="fa fa-cog"></i>Settings</a></li>
-							<li><a href="#user-profile"><i class="fa fa-user"></i> Profile</a></li>
+							<li><a ui-sref="user-settings"><i class="fa fa-cog"></i>Settings</a></li>
+							<li><a ui-sref="user-profile"><i class="fa fa-user"></i> Profile</a></li>
 							<li class="divider"></li>
 							<li><a href="logout"><i
 									class="fa fa-power-off"></i>Logout</a></li>
@@ -90,14 +84,14 @@
 				{{page.title}} <small><i class="fa fa-chevron-right" style="font-size: 40%"></i><i class="fa fa-chevron-right" style="font-size: 40%"></i> {{page.description}}</small>
 			</h2>
 		</div>
-		<div ng-view="" class="am-fade-and-scale"></div>
+		<div  data-ui-view="" class="am-fade-and-scale"></div>
 	</div>
 	<!-- Footer -->
-	<div class="footer">
+	<!-- <div class="footer">
       <div class="container">
         <p class="text-muted">Place sticky footer content here.</p>
       </div>
-    </div>
+    </div> -->
 	<!-- Bootstrap core JavaScript
     ================================================== -->
 	<!-- Placed at the end of the document so the pages load faster -->
@@ -105,6 +99,7 @@
 		src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 	<script src="assets/js/bootstrap.min.js"></script>
 	<script src="assets/js/angular.js"></script>
+	<script src="assets/bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
 	<script src="assets/js/angular-resource.min.js"></script>
 	<script src="assets/js/angular-route.min.js"></script>
 	<!-- <script src="assets/js/i18n/angular-locale_fr.js"></script> -->
@@ -123,8 +118,11 @@
 		<script src="assets/js/app/controllers/app-controller.js"></script>
 	<script src="assets/js/app/factories/users-factories.js"></script>
 	<script src="assets/js/app/controllers/home-controller.js"></script>
+	<script src="assets/js/app/controllers/admin-controller.js"></script>
+	<script src="assets/js/app/controllers/frais-controllers.js"></script>
+	<script src="assets/js/app/controllers/entreprise-controller.js"></script>
 	<script src="assets/js/app/factories/cra-factories.js"></script>
-	
+	<script src="assets/js/app/factories/notes-factories.js"></script>
 	<script src="assets/js/app/factories/absences-factories.js"></script>
 	<script src="assets/js/app/services/common-services.js"></script>
 	<script src="assets/js/app/directives/commons-directives.js"></script>

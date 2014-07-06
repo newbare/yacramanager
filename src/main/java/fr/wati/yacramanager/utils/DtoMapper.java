@@ -6,11 +6,13 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 
 import fr.wati.yacramanager.beans.Absence;
+import fr.wati.yacramanager.beans.NoteDeFrais;
 import fr.wati.yacramanager.beans.Personne;
 import fr.wati.yacramanager.beans.Users;
 import fr.wati.yacramanager.dao.PersonneDto;
 import fr.wati.yacramanager.dao.UserDto;
 import fr.wati.yacramanager.web.dto.AbsenceDTO;
+import fr.wati.yacramanager.web.dto.NoteDeFraisDTO;
 
 public class DtoMapper {
 
@@ -41,10 +43,27 @@ public class DtoMapper {
 		return dto;
 	}
 	
+	public static NoteDeFraisDTO map(NoteDeFrais noteDeFrais) {
+		NoteDeFraisDTO dto = new NoteDeFraisDTO();
+		dto.setDate(noteDeFrais.getDate());
+		dto.setDescription(noteDeFrais.getDescription());
+		dto.setAmount(noteDeFrais.getAmount());
+		dto.setId(noteDeFrais.getId());
+		return dto;
+	}
+	
 	public static List<AbsenceDTO> mapAbsences(Iterable<Absence> absences) {
 		List<AbsenceDTO> dtos = new ArrayList<AbsenceDTO>();
 		for (Absence absence : absences) {
 			dtos.add(map(absence));
+		}
+		return dtos;
+	}
+	
+	public static List<NoteDeFraisDTO> mapNoteDeFrais(Iterable<NoteDeFrais> noteDeFrais) {
+		List<NoteDeFraisDTO> dtos = new ArrayList<NoteDeFraisDTO>();
+		for (NoteDeFrais noteDeFrai : noteDeFrais) {
+			dtos.add(map(noteDeFrai));
 		}
 		return dtos;
 	}

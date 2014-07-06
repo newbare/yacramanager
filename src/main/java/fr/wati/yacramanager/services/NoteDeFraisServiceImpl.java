@@ -1,0 +1,146 @@
+package fr.wati.yacramanager.services;
+
+import java.util.Date;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
+import fr.wati.yacramanager.beans.NoteDeFrais;
+import fr.wati.yacramanager.beans.Personne;
+import fr.wati.yacramanager.dao.NoteDeFraisRepository;
+
+@Service
+public class NoteDeFraisServiceImpl implements NoteDeFraisService {
+
+	@Autowired
+	private NoteDeFraisRepository noteDeFraisRepository;
+	
+	/* (non-Javadoc)
+	 * @see fr.wati.yacramanager.services.CrudService#save(java.lang.Object)
+	 */
+	@Override
+	public <S extends NoteDeFrais> S save(S entity) {
+		return noteDeFraisRepository.save(entity);
+	}
+
+	/* (non-Javadoc)
+	 * @see fr.wati.yacramanager.services.CrudService#save(java.lang.Iterable)
+	 */
+	@Override
+	public <S extends NoteDeFrais> Iterable<S> save(Iterable<S> entities) {
+		return noteDeFraisRepository.save(entities);
+	}
+
+	/* (non-Javadoc)
+	 * @see fr.wati.yacramanager.services.CrudService#findOne(java.io.Serializable)
+	 */
+	@Override
+	public NoteDeFrais findOne(Long id) {
+		return noteDeFraisRepository.findOne(id);
+	}
+
+	/* (non-Javadoc)
+	 * @see fr.wati.yacramanager.services.CrudService#exists(java.io.Serializable)
+	 */
+	@Override
+	public boolean exists(Long id) {
+		return noteDeFraisRepository.exists(id);
+	}
+
+	/* (non-Javadoc)
+	 * @see fr.wati.yacramanager.services.CrudService#findAll()
+	 */
+	@Override
+	public Iterable<NoteDeFrais> findAll() {
+		return noteDeFraisRepository.findAll();
+	}
+
+	/* (non-Javadoc)
+	 * @see fr.wati.yacramanager.services.CrudService#findAll(java.lang.Iterable)
+	 */
+	@Override
+	public Iterable<NoteDeFrais> findAll(Iterable<Long> ids) {
+		return noteDeFraisRepository.findAll(ids);
+	}
+
+	/* (non-Javadoc)
+	 * @see fr.wati.yacramanager.services.CrudService#count()
+	 */
+	@Override
+	public long count() {
+		return noteDeFraisRepository.count();
+	}
+
+	/* (non-Javadoc)
+	 * @see fr.wati.yacramanager.services.CrudService#delete(java.io.Serializable)
+	 */
+	@Override
+	public void delete(Long id) {
+		noteDeFraisRepository.delete(id);
+	}
+
+	/* (non-Javadoc)
+	 * @see fr.wati.yacramanager.services.CrudService#delete(java.lang.Object)
+	 */
+	@Override
+	public void delete(NoteDeFrais entity) {
+		noteDeFraisRepository.delete(entity);
+	}
+
+	/* (non-Javadoc)
+	 * @see fr.wati.yacramanager.services.CrudService#delete(java.lang.Iterable)
+	 */
+	@Override
+	public void delete(Iterable<? extends NoteDeFrais> entities) {
+		noteDeFraisRepository.delete(entities);
+	}
+
+	/* (non-Javadoc)
+	 * @see fr.wati.yacramanager.services.CrudService#deleteAll()
+	 */
+	@Override
+	public void deleteAll() {
+		noteDeFraisRepository.deleteAll();
+	}
+
+	/* (non-Javadoc)
+	 * @see fr.wati.yacramanager.services.NoteDeFraisService#findByDateBetween(java.util.Date, java.util.Date, org.springframework.data.domain.Pageable)
+	 */
+	@Override
+	public Page<NoteDeFrais> findByDateBetween(Date dateDebut,
+			Date dateFin, Pageable pageable) {
+		return noteDeFraisRepository.findByDateBetween(dateDebut, dateFin, pageable);
+	}
+
+	/* (non-Javadoc)
+	 * @see fr.wati.yacramanager.services.NoteDeFraisService#findByPersonneAndDateBetween(fr.wati.yacramanager.beans.Personne, java.util.Date, java.util.Date, org.springframework.data.domain.Pageable)
+	 */
+	@Override
+	public Page<NoteDeFrais> findByPersonneAndDateBetween(
+			Personne personne, Date dateDebut, Date dateFin, Pageable pageable) {
+		return noteDeFraisRepository.findByPersonneAndDateBetween(personne, dateDebut, dateFin, pageable);
+	}
+
+	/* (non-Javadoc)
+	 * @see fr.wati.yacramanager.services.NoteDeFraisService#findByPersonneAndDateBetween(fr.wati.yacramanager.beans.Personne, java.util.Date, java.util.Date)
+	 */
+	@Override
+	public List<NoteDeFrais> findByPersonneAndDateBetween(
+			Personne personne, Date dateDebut, Date dateFin) {
+		return noteDeFraisRepository.findByPersonneAndDateBetween(personne, dateDebut, dateFin);
+	}
+
+	/* (non-Javadoc)
+	 * @see fr.wati.yacramanager.services.NoteDeFraisService#findByPersonne(fr.wati.yacramanager.beans.Personne, org.springframework.data.domain.Pageable)
+	 */
+	@Override
+	public Page<NoteDeFrais> findByPersonne(Personne personne, Pageable pageable) {
+		return noteDeFraisRepository.findByPersonne(personne, pageable);
+	}
+
+	
+
+}

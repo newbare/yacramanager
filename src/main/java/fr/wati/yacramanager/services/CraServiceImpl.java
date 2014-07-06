@@ -51,8 +51,12 @@ public class CraServiceImpl implements CraService {
 						absence.getEndDate())) {
 					if (absence.isStartAfternoon() && DateUtils.isSameDay(absence.getStartDate(), currentDate)) {
 						afternoonDayElement.setWorked(false);
+						afternoonDayElement.setAbsenceDTO(AbsenceDTO
+								.fromAbsence(absence));
 					}else if (absence.isEndMorning() && DateUtils.isSameDay(absence.getEndDate(), currentDate)) {
 						morningDayElement.setWorked(false);
+						morningDayElement.setAbsenceDTO(AbsenceDTO
+								.fromAbsence(absence));
 					}else {
 						afternoonDayElement.setWorked(false);
 						morningDayElement.setWorked(false);

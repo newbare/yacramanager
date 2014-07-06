@@ -16,12 +16,13 @@ function AbsencesController($scope, $rootScope, AbsenceCRUDREST,
 	AbsenceTypeREST.query(function(data) {
 		$scope.absencesType = data;
 	});
-	console.log('create AbsencesCtrl');
 	var absence = $scope.currentAbsence = {};
 	var today = new Date();
 	$scope.selectAbsence=function(absence){
-		$scope.selectedAbsences.push(absence);
-		console.log($scope.selectedAbsences.length);
+		var index = $scope.selectedAbsences.indexOf(absence);
+		if(index==-1){
+			$scope.selectedAbsences.push(absence);
+		}
 	};
 	
 	$scope.deSelectAbsence=function(absence){
@@ -29,7 +30,6 @@ function AbsencesController($scope, $rootScope, AbsenceCRUDREST,
 		if(index!=-1){
 			$scope.selectedAbsences.splice(index, 1);
 		}
-		console.log($scope.selectedAbsences.length);
 	};
 	
 	$scope.reset = function() {
@@ -102,7 +102,7 @@ function AbsencesController($scope, $rootScope, AbsenceCRUDREST,
 			$scope.tableParams.reload();
 			notifService.notify('info','Confirmation', 'Absence supprimé');
 		}, function(error) {
-			// console.log(error);
+			console.log(error);
 			notifService.notify('error','' + error.status, error.data);
 		});
 

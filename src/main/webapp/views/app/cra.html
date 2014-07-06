@@ -19,11 +19,12 @@
 				</div>
 			</div>
 		</div>
-		<h3>
+		<div class="row">
+			<h3>
 			<span class="label label-primary"><small style="color: white;">Compte rendu d'activité sur
 				la période du</small> {{respStartDate | date : dateFormat}} <small style="color: white;">au</small> {{respEndDate | date : dateFormat}}</span>
-		</h3>
-		<br>
+			</h3>
+		</div>
 		<div id="cra-container">
 			<table class="table cra-table table-condensed table-bordered" ng-show="cra.days.length>=1">
 				<tr>
@@ -33,8 +34,8 @@
 				<tr>
 					<td>M</td>
 					<td ng-repeat="day in cra.days" ng-class="{'cra-we' : day.dayOff}">
-						<label>
-  							<input type="checkbox" class="cra-checkbox"	ng-model="day.morning.worked" value="{{day.morning.worked}}" ng-disabled="day.dayOff" />
+						<label data-placement="bottom-left" data-type="info" data-animation="am-fade-and-scale" bs-tooltip="{'title':day.morning.absenceDTO.type +' '+ day.morning.absenceDTO.description}">
+  							<input type="checkbox" class="custom-checkbox"	ng-model="day.morning.worked" value="{{day.morning.worked}}" ng-disabled="day.dayOff || day.morning.absenceDTO!=null" />
 							<span></span>
 						</label>
 					</td>
@@ -42,11 +43,10 @@
 				<tr>
 					<td>A</td>
 					<td ng-repeat="day in cra.days" ng-class="{'cra-we' : day.dayOff}">
-						<label>
-  							<input type="checkbox" class="cra-checkbox" ng-model="day.afternoon.worked" value="{{day.afternoon.worked}}" ng-disabled="day.dayOff"/>
+						<label data-placement="bottom-left" data-type="info" data-animation="am-fade-and-scale" bs-tooltip="{'title':day.afternoon.absenceDTO.type +' '+ day.afternoon.absenceDTO.description}">
+  							<input type="checkbox" class="custom-checkbox" ng-model="day.afternoon.worked" value="{{day.afternoon.worked}}" ng-disabled="day.dayOff || day.afternoon.absenceDTO!=null"/>
 							<span></span>
 						</label>
-						
 					</td>
 				</tr>
 			</table>

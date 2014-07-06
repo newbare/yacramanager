@@ -40,6 +40,9 @@ public class Personne extends Users {
 	private List<Absence> absences=new ArrayList<>();
 	@ManyToOne
 	private Enterprise enterprise;
+	@OneToMany(mappedBy="personne")
+	private List<NoteDeFrais> noteDeFrais=new ArrayList<>();
+	
 	/**
 	 * @return the nom
 	 */
