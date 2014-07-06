@@ -1,8 +1,22 @@
+body > .container{
+padding-top: 60px;
+	}	
+.footerh {
+  height: 40px;
+  background-color: #f5f5f5;
+   position: fixed;
+    height: 100px;
+    bottom: 0;
+    width: 100%;
+}
 .container {
 	padding-right: 5px !important;
 	padding-left: 5px !important;
 }
 
+.navbar-right{
+	font-size: 12px;
+}
 /* Animation section */
 .animate-enter,.animate-leave {
 	-webkit-transition: 625ms cubic-bezier(0.600, 0.040, 0.980, 0.335) all;
@@ -108,10 +122,12 @@ a .badge {
 	text-align: center;
 }
 
-input[type="radio"],input[type="checkbox"] {
-	display: none;
+.cra-checkbox{
+	 display: none;
 }
-
+.ng-table th{
+		text-align: left !important;
+}
 input[type="radio"]+span:before,input[type="checkbox"]+span:before {
 	font-family: 'FontAwesome';
 	padding-right: 1px;

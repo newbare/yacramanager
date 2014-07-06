@@ -1,6 +1,7 @@
 package fr.wati.yacramanager.dao;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,6 +15,8 @@ public interface AbsenceRepository extends JpaRepository<Absence, Long> {
 	Page<Absence> findByDateBetween(Date dateDebut,Date dateFin,Pageable pageable);
 	
 	Page<Absence> findByPersonneAndStartDateBetween(Personne personne,Date dateDebut,Date dateFin,Pageable pageable);
+	
+	List<Absence> findByPersonneAndStartDateBetween(Personne personne,Date dateDebut,Date dateFin);
 	
 	Page<Absence> findByPersonne(Personne personne,Pageable pageable);
 }

@@ -10,11 +10,21 @@ App.config(function($datepickerProvider) {
 });
 
 App.controller('AppCtrl', 
-		['$scope', '$location', function ($scope, $location) {
+		['$scope', '$location','UsersREST', function ($scope, $location,UsersREST) {
 			$scope.navClass = function (page) {
 		    var currentRoute = $location.path().substring(1) || 'home';
 		    return page === currentRoute ? 'active' : '';
 		  };
+		  console.log('create AppCtrl');
+		  var loadUserInfo = function() {
+				UsersREST.get({
+					service : 'user-info'
+				}, function(data) {
+					$scope.userInfo = data;
+					$scope.$broadcast('userInfo',data);
+				});
+			};
+			loadUserInfo();
 		  $scope.loadHome = function () {
 		        $location.url('/home');
 		    };
@@ -34,22 +44,22 @@ App.config(
 		[ '$routeProvider', function($routeProvider) {
 			$routeProvider
 			.when('/', {
-				templateUrl : 'views/home.html',
+				templateUrl : 'views/app/home.html',
 				controller : HomeController
 			})
 			.when('/cra', {
-				templateUrl : 'views/cra.html',
+				templateUrl : 'views/app/cra.html',
 				controller : CraController
 			})
 			.when('/absences', {
-				templateUrl : 'views/absences.html',
+				templateUrl : 'views/app/absences.html',
 				controller : AbsencesController
 			})
 			.when('/user-settings', {
-				templateUrl : 'views/user-settings.html',
+				templateUrl : 'views/app/user-settings.html',
 				controller : UserSettingsController
 			}).when('/user-profile', {
-				templateUrl : 'views/user-profile.html',
+				templateUrl : 'views/app/user-profile.html',
 				controller : UserProfileController
 			}).otherwise({
 				redirectTo : '/'

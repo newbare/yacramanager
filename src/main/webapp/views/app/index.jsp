@@ -41,8 +41,8 @@
 <body data-ng-controller="AppCtrl" data-web-socket>
 	<!-- Header nav bar -->
 	<!-- Fixed navbar -->
-	<div class="navbar navbar-default navbar-fixed-top" role="navigation" ng-controller="NavCtrl">
-		<div class="container" ng-controller="UsersController">
+	<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+		<div class="container">
 			<div class="navbar-header">
 				<button type="button" class="navbar-toggle" data-toggle="collapse"
 					data-target=".navbar-collapse">
@@ -58,9 +58,17 @@
 					<li ng-class="navClass('cra')"><a href='' ng-click="loadCRA()"><i class="fa fa-calendar"></i>CRA</a></li>
 					<li ng-class="navClass('absences')"><a href="" ng-click="loadAbsences()" >Absences</a></li>
 					<li ng-class="navClass('notifications')"><a href='' ng-click="loadHome()"><i class="fa fa-bell"></i>Notifications<span class="badge pull-right">42</span></a></li>
-					<li ng-class="navClass('notifications')"><a href='' ng-click="loadAdmin()"><i class="fa fa-bell"></i>Admin</a></li>
+					<li data-has-role="ROLE_SSII_ADMIN" ng-class="navClass('user-settings') + navClass('user-profile')" class="dropdown"><a href="" class="dropdown-toggle"
+						data-toggle="dropdown"><i class="fa fa-university"></i>Entreprise <span class="caret"></span></a>
+						<ul class="user-menu dropdown-menu" role="menu">
+							<li><a href="#user-settings"><i class="fa fa-users"></i>Salariés</a></li>
+							<li class="divider"></li>
+							<li><a href="#user-settings"><i class="fa fa-cog"></i>Settings</a></li>
+						</ul>
+					</li>
+					<li data-has-role="ROLE_ADMIN" ng-class="navClass('notifications')"><a href='' ng-click="loadAdmin()"><i class="fa fa-gear fa-spin"></i>Admin</a></li>
 					<li ng-class="navClass('user-settings') + navClass('user-profile')" class="dropdown"><a href="" class="dropdown-toggle"
-						data-toggle="dropdown"><i class="fa fa-user"></i>{{userInfo.fullName}} <span class="fa fa-chevron-circle-down"></span></a>
+						data-toggle="dropdown"><i class="fa fa-user"></i>{{userInfo.prenom}} <span class="caret"></span></a>
 						<ul class="user-menu dropdown-menu" role="menu">
 							<li><a href="#user-settings"><i class="fa fa-cog"></i>Settings</a></li>
 							<li><a href="#user-profile"><i class="fa fa-user"></i> Profile</a></li>
@@ -84,7 +92,12 @@
 		</div>
 		<div ng-view="" class="am-fade-and-scale"></div>
 	</div>
-
+	<!-- Footer -->
+	<div class="footer">
+      <div class="container">
+        <p class="text-muted">Place sticky footer content here.</p>
+      </div>
+    </div>
 	<!-- Bootstrap core JavaScript
     ================================================== -->
 	<!-- Placed at the end of the document so the pages load faster -->
@@ -107,6 +120,7 @@
 	<script src="assets/js/sockjs-0.3.4.js"></script>
 	<script src="assets/js/stomp.js"></script>
 	<script src="assets/js/app/application.js"></script>
+		<script src="assets/js/app/controllers/app-controller.js"></script>
 	<script src="assets/js/app/factories/users-factories.js"></script>
 	<script src="assets/js/app/controllers/home-controller.js"></script>
 	<script src="assets/js/app/factories/cra-factories.js"></script>

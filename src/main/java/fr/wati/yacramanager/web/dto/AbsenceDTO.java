@@ -28,6 +28,20 @@ public class AbsenceDTO {
 		return absence;
 	}
 	
+	public static AbsenceDTO fromAbsence(Absence absence){
+		AbsenceDTO absenceDTO=new AbsenceDTO();
+		absenceDTO.setDescription(absence.getDescription());
+		absenceDTO.setStartDate(absence.getStartDate());
+		absenceDTO.setEndDate(absence.getEndDate());
+		absenceDTO.setStartAfternoon(absence.isStartAfternoon());
+		absenceDTO.setEndMorning(absence.isEndMorning());
+		absenceDTO.setValidated(absence.isValidated());
+		absenceDTO.setType(absence.getTypeAbsence().name());
+		absenceDTO.setPostedDate(absence.getDate());
+		absenceDTO.setId(absence.getId());
+		return absenceDTO;
+	}
+	
 	public Long getId() {
 		return id;
 	}

@@ -20,8 +20,8 @@
 			</div>
 		</div>
 		<h3>
-			<span class="label label-primary">Compte rendu d'activité sur
-				la période du {{respStartDate | date : dateFormat}} au {{respEndDate | date : dateFormat}}</span>
+			<span class="label label-primary"><small style="color: white;">Compte rendu d'activité sur
+				la période du</small> {{respStartDate | date : dateFormat}} <small style="color: white;">au</small> {{respEndDate | date : dateFormat}}</span>
 		</h3>
 		<br>
 		<div id="cra-container">
@@ -34,7 +34,7 @@
 					<td>M</td>
 					<td ng-repeat="day in cra.days" ng-class="{'cra-we' : day.dayOff}">
 						<label>
-  							<input type="checkbox"	ng-model="day.morning.worked" value="{{day.morning.worked}}" ng-disabled="day.dayOff" />
+  							<input type="checkbox" class="cra-checkbox"	ng-model="day.morning.worked" value="{{day.morning.worked}}" ng-disabled="day.dayOff" />
 							<span></span>
 						</label>
 					</td>
@@ -43,7 +43,7 @@
 					<td>A</td>
 					<td ng-repeat="day in cra.days" ng-class="{'cra-we' : day.dayOff}">
 						<label>
-  							<input type="checkbox" ng-model="day.afternoon.worked" value="{{day.afternoon.worked}}" ng-disabled="day.dayOff"/>
+  							<input type="checkbox" class="cra-checkbox" ng-model="day.afternoon.worked" value="{{day.afternoon.worked}}" ng-disabled="day.dayOff"/>
 							<span></span>
 						</label>
 						

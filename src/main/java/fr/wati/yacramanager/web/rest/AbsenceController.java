@@ -39,14 +39,14 @@ public class AbsenceController implements RestCrudController<AbsenceDTO> {
 
 	@Override
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public @ResponseBody AbsenceDTO read(Long id) {
+	public @ResponseBody AbsenceDTO read(@PathVariable("id") Long id) {
 		return DtoMapper.map(absenceService.findOne(id));
 	}
 
 	@Override
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void update(@PathVariable("id") Long id, AbsenceDTO dto) {
+	public void update(@PathVariable("id") Long id, @RequestBody AbsenceDTO dto) {
 		Absence findOne = absenceService.findOne(id);
 		absenceService.save(dto.toAbsence(findOne));
 	}

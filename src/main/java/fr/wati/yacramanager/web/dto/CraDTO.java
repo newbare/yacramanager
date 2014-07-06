@@ -89,6 +89,17 @@ public class CraDTO {
 	}
 	public static class DayElement {
 		private boolean worked;
+		private AbsenceDTO absenceDTO;
+		
+		
+
+		public AbsenceDTO getAbsenceDTO() {
+			return absenceDTO;
+		}
+
+		public void setAbsenceDTO(AbsenceDTO absenceDTO) {
+			this.absenceDTO = absenceDTO;
+		}
 
 		public boolean isWorked() {
 			return worked;

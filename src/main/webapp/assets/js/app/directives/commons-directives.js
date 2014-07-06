@@ -10,3 +10,37 @@ App.directive('webSocket', [ '$timeout', 'WebSocketService', 'notifService',
 				}
 			};
 		} ]);
+App.directive('hasRole', ['notifService',
+                     		function(notifService) {
+                     			return {
+                     				restrict : 'AEC',
+                     				link : function($scope, elem, attrs, ctrl) {
+                     					var attr_roles = attrs.hasRole.split(",");
+                     					var elementRef=elem;
+                     					var hasTheRole=function(roles,role){
+                     						result=false;
+                     						roles.forEach(function(entry) {
+                     						    if(entry.role==role) {
+                     						    	result=true;
+                     						    }
+                     						});
+                     						return result;
+                     					};
+                     					var hasAnyOneOfRole=function(userRoles,definedRoles){
+                     						result=false;
+                     						definedRoles.forEach(function(entry) {
+                     						    if(hasTheRole(userRoles,entry)) {
+                     						    	result=true;
+                     						    }
+                     						});
+                     						return result;
+                     					};
+                     					$scope.$on('userInfo', function(event, args) {
+                     						if(!hasAnyOneOfRole(args.roles,attr_roles)){
+                     							elementRef.hide();
+                     						}
+                     					  });
+                     					
+                     				}
+                     			};
+                     		} ]);

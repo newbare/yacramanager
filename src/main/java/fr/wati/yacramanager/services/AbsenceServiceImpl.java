@@ -1,6 +1,7 @@
 package fr.wati.yacramanager.services;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -107,6 +108,13 @@ public class AbsenceServiceImpl implements AbsenceService {
 	@Override
 	public Page<Absence> findByPersonne(Personne personne, Pageable pageable) {
 		return absenceRepository.findByPersonne(personne, pageable);
+	}
+
+
+	@Override
+	public List<Absence> findByPersonneAndStartDateBetween(Personne personne,
+			Date dateDebut, Date dateFin) {
+		return absenceRepository.findByPersonneAndStartDateBetween(personne, dateDebut, dateFin);
 	}
 
 }
