@@ -45,11 +45,11 @@
 								placeholder="Description (facultatif)">
 						</div>
 						<div class="form-group">
-						    <label for="attachement">Attachement</label>
-						    <input type="file" id="attachement">
+						   <!--  <label for="attachement">Attachement</label> -->
+						    <input type="file" id="attachement" data-ng-file-select="onFileSelect($files)" data-filename-placement="inside" data-file-Input>
 					  	</div> 
 						<button type="button" class="btn btn-primary pull-right"
-							data-ng-click="postNote()" data-ng-show="!edition" >Submit</button>
+							data-ng-click="postAttachement()" data-ng-show="!edition" >Post</button>
 						<button type="button" class="btn btn-primary pull-right"
 							data-ng-click="putNote()" data-ng-show="edition" >Edit</button>
 					</form>
@@ -81,7 +81,7 @@
 						<th>Date</th>
 						<th>Description</th>
 						<th>Montant</th>
-						<th>Attachements</th>
+						<th style="width:20px;" align="center"><i class="fa fa-paperclip"></i></th>
 						<th style="width:20px;"></th>
 					</tr>
 				</thead>
@@ -92,10 +92,14 @@
 							  <input type="checkbox"  data-ng-model="checkboxes.items[note.id]">
 							</label>
 						</td>
-						<td>{{ note.date | date : 'medium'}}</td>
+						<td>{{ note.date | date : 'short'}}</td>
 						<td>{{ note.description}}</td>
-						<td>{{ note.amount}}</td>
-						<td>{{ note.attachements }}</td>
+						<td>{{ note.amount}} </td>
+						<td>
+							<a href="rest/attachements/{{id}}" data-ng-repeat="id in note.attachementsIds" data-ng-show="note.attachementsIds.length>0" >
+								<i class="fa fa-cloud-download"></i>
+							</a>
+						</td>
 						<td>
 							<div class="btn-group">
 							  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">

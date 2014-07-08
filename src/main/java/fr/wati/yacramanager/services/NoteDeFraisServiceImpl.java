@@ -1,5 +1,6 @@
 package fr.wati.yacramanager.services;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -7,10 +8,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
+import fr.wati.yacramanager.beans.Attachement;
 import fr.wati.yacramanager.beans.NoteDeFrais;
 import fr.wati.yacramanager.beans.Personne;
 import fr.wati.yacramanager.dao.NoteDeFraisRepository;
+import fr.wati.yacramanager.web.dto.NoteDeFraisDTO;
 
 @Service
 public class NoteDeFraisServiceImpl implements NoteDeFraisService {
@@ -141,6 +146,31 @@ public class NoteDeFraisServiceImpl implements NoteDeFraisService {
 		return noteDeFraisRepository.findByPersonne(personne, pageable);
 	}
 
+	@Transactional
+	public List<NoteDeFraisDTO> mapNoteDeFrais(Iterable<NoteDeFrais> noteDeFrais) {
+		List<NoteDeFraisDTO> dtos = new ArrayList<NoteDeFraisDTO>();
+		for (NoteDeFrais noteDeFrai : noteDeFrais) {
+			dtos.add(map(noteDeFrai));
+		}
+		return dtos;
+	}
+	
+	@Transactional
+	public NoteDeFraisDTO map(NoteDeFrais noteDeFrais) {
+		NoteDeFrais findOne = noteDeFraisRepository.findOne(noteDeFrais.getId());
+		NoteDeFraisDTO dto = new NoteDeFraisDTO();
+		dto.setDate(findOne.getDate());
+		dto.setDescription(findOne.getDescription());
+		dto.setAmount(findOne.getAmount());
+		dto.setId(findOne.getId());
+		List<Long> attachementIds=new ArrayList<>();
+		for(Attachement attachement: findOne.getAttachements()){
+			attachementIds.add(attachement.getId());
+		}
+		dto.setAttachementsIds(attachementIds);
+		return dto;
+	}
+	
 	
 
 }

@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 
 import fr.wati.yacramanager.beans.NoteDeFrais;
 import fr.wati.yacramanager.beans.Personne;
+import fr.wati.yacramanager.web.dto.NoteDeFraisDTO;
 
 public interface NoteDeFraisService extends CrudService<NoteDeFrais, Long>{
 	
@@ -18,5 +19,9 @@ public interface NoteDeFraisService extends CrudService<NoteDeFrais, Long>{
 	List<NoteDeFrais> findByPersonneAndDateBetween(Personne personne,Date dateDebut,Date dateFin);
 	
 	Page<NoteDeFrais> findByPersonne(Personne personne,Pageable pageable);
+	
+	List<NoteDeFraisDTO> mapNoteDeFrais(Iterable<NoteDeFrais> noteDeFrais);
+	
+	NoteDeFraisDTO map(NoteDeFrais noteDeFrais);
 	
 }

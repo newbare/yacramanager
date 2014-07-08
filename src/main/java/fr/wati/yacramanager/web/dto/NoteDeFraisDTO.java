@@ -20,7 +20,7 @@ public class NoteDeFraisDTO {
 	private Date date;
 	private BigDecimal amount;
 	private String description;
-	private List<AttachementDTO> attachements=new ArrayList<>();
+	private List<Long> attachementsIds=new ArrayList<>();
 	
 	
 	public NoteDeFrais toNoteDeFrais(NoteDeFrais noteDeFrais){
@@ -108,19 +108,22 @@ public class NoteDeFraisDTO {
 
 
 	/**
-	 * @return the attachements
+	 * @return the attachementsIds
 	 */
-	public List<AttachementDTO> getAttachements() {
-		return attachements;
+	public List<Long> getAttachementsIds() {
+		return attachementsIds;
 	}
 
 
 	/**
-	 * @param attachements the attachements to set
+	 * @param attachementsIds the attachementsIds to set
 	 */
-	public void setAttachements(List<AttachementDTO> attachements) {
-		this.attachements = attachements;
+	public void setAttachementsIds(List<Long> attachementsIds) {
+		this.attachementsIds = attachementsIds;
 	}
+
+
+
 	
 	
 }

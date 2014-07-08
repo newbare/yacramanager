@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -24,9 +26,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import fr.wati.yacramanager.beans.Attachement;
 import fr.wati.yacramanager.beans.NoteDeFrais;
+import fr.wati.yacramanager.services.AttachementService;
 import fr.wati.yacramanager.services.NoteDeFraisService;
-import fr.wati.yacramanager.utils.DtoMapper;
 import fr.wati.yacramanager.utils.SecurityUtils;
 import fr.wati.yacramanager.web.dto.AbsenceDTO.TypeAbsence;
 import fr.wati.yacramanager.web.dto.AbsenceDTO.TypeAbsenceDTO;
@@ -39,15 +42,20 @@ import fr.wati.yacramanager.web.dto.ResponseWrapper;
  */
 @RestController()
 @RequestMapping("/rest/frais")
-public class NoteDeFraisController implements RestCrudController<NoteDeFraisDTO> {
+public class NoteDeFraisController extends RestCrudControllerAdapter<NoteDeFraisDTO> {
 
+	private static final Log LOG=LogFactory.getLog(NoteDeFraisController.class);
+	
 	@Autowired
 	private NoteDeFraisService noteDeFraisService;
+	
+	@Autowired
+	private AttachementService attachementService;
 
 	@Override
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public @ResponseBody NoteDeFraisDTO read(@PathVariable("id") Long id) {
-		return DtoMapper.map(noteDeFraisService.findOne(id));
+		return noteDeFraisService.map(noteDeFraisService.findOne(id));
 	}
 
 	@Override
@@ -69,17 +77,33 @@ public class NoteDeFraisController implements RestCrudController<NoteDeFraisDTO>
 		}
 		PageRequest pageable=new PageRequest(page, size,new Sort(new Order(Direction.DESC,orderBy)));
 		Page<NoteDeFrais> findByPersonne = noteDeFraisService.findByPersonne(SecurityUtils.getConnectedUser(), pageable);
-		return new ResponseWrapper<List<NoteDeFraisDTO>>(DtoMapper.mapNoteDeFrais(findByPersonne),findByPersonne.getTotalElements());
+		return new ResponseWrapper<List<NoteDeFraisDTO>>(noteDeFraisService.mapNoteDeFrais(findByPersonne),findByPersonne.getTotalElements());
 	}
 
-	@Override
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<String> create(@RequestBody NoteDeFraisDTO dto) {
-		NoteDeFrais noteDeFrais = dto.toNoteDeFrais();
-		noteDeFrais.setDate(new Date());
-		noteDeFrais.setPersonne(SecurityUtils.getConnectedUser());
-		noteDeFraisService.save(noteDeFrais);
-		return new ResponseEntity<>(HttpStatus.CREATED);
+		try {
+			NoteDeFrais noteDeFrais = dto.toNoteDeFrais();
+			noteDeFrais.setDate(new Date());
+			noteDeFrais.setPersonne(SecurityUtils.getConnectedUser());
+			if(!dto.getAttachementsIds().isEmpty()){
+				List<Attachement> findAttachementsByIds = attachementService.findAttachementsByIds(dto.getAttachementsIds().toArray(new Long[dto.getAttachementsIds().size()]));
+				for(Attachement attachement:findAttachementsByIds){
+					noteDeFrais.addAttachement(attachement);
+					attachement.setNoteDeFrais(noteDeFrais);
+					noteDeFraisService.save(noteDeFrais);
+					attachementService.update(attachement);
+				}
+			}else {
+				noteDeFraisService.save(noteDeFrais);
+			}
+			
+			return new ResponseEntity<>(HttpStatus.CREATED);
+		} catch (Exception exception) {
+			LOG.error(exception.getMessage(), exception);
+			return new ResponseEntity<String>(exception.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		
 	}
 
 	@Override

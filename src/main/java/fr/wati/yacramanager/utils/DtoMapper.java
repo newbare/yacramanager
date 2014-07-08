@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 
 import fr.wati.yacramanager.beans.Absence;
+import fr.wati.yacramanager.beans.Attachement;
 import fr.wati.yacramanager.beans.NoteDeFrais;
 import fr.wati.yacramanager.beans.Personne;
 import fr.wati.yacramanager.beans.Users;
@@ -49,6 +50,11 @@ public class DtoMapper {
 		dto.setDescription(noteDeFrais.getDescription());
 		dto.setAmount(noteDeFrais.getAmount());
 		dto.setId(noteDeFrais.getId());
+		List<Long> attachementIds=new ArrayList<>();
+		for(Attachement attachement: noteDeFrais.getAttachements()){
+			attachementIds.add(attachement.getId());
+		}
+		dto.setAttachementsIds(attachementIds);
 		return dto;
 	}
 	

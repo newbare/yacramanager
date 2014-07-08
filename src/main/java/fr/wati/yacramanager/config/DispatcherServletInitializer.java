@@ -16,21 +16,31 @@
 
 package fr.wati.yacramanager.config;
 
+import java.io.File;
+
+import javax.servlet.MultipartConfigElement;
 import javax.servlet.ServletRegistration.Dynamic;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
-public class DispatcherServletInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
+public class DispatcherServletInitializer extends
+		AbstractAnnotationConfigDispatcherServletInitializer {
 
+	@Autowired
+	private Environment environment;
+	
+	private int maxUploadSizeInMb = 5 * 1024 * 1024; // 5 MB
 
 	@Override
 	protected Class<?>[] getRootConfigClasses() {
-		return new Class<?>[] { WebSecurityConfig.class};
+		return new Class<?>[] { WebSecurityConfig.class };
 	}
 
 	@Override
 	protected Class<?>[] getServletConfigClasses() {
-		return new Class<?>[] { WebConfig.class,WebSocketConfig.class};
+		return new Class<?>[] { WebConfig.class, WebSocketConfig.class };
 	}
 
 	@Override
@@ -41,6 +51,11 @@ public class DispatcherServletInitializer extends AbstractAnnotationConfigDispat
 	@Override
 	protected void customizeRegistration(Dynamic registration) {
 		registration.setInitParameter("dispatchOptionsRequest", "true");
+		File uploadDirectory = new File(ServiceConfiguration.FILE_UPLOAD_PATH);
+		MultipartConfigElement multipartConfigElement = new MultipartConfigElement(
+				uploadDirectory.getAbsolutePath(), maxUploadSizeInMb,
+				maxUploadSizeInMb * 2, maxUploadSizeInMb / 2);
+		registration.setMultipartConfig(multipartConfigElement);
 	}
 
 }

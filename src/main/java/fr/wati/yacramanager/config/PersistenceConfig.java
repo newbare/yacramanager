@@ -13,7 +13,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.instrument.classloading.InstrumentationLoadTimeWeaver;
 import org.springframework.jdbc.datasource.init.DataSourceInitializer;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
-import org.springframework.orm.hibernate4.HibernateExceptionTranslator;
+import org.springframework.orm.hibernate3.HibernateExceptionTranslator;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
@@ -54,6 +54,29 @@ public class PersistenceConfig
 		factory.setLoadTimeWeaver(new InstrumentationLoadTimeWeaver());
 		return factory;
 	}
+	
+//	@Bean
+//	public HibernateTemplate hibernateTemplate(){
+//		HibernateTemplate hibernateTemplate=new HibernateTemplate(sessionFactory());
+//		hibernateTemplate.setSessionFactory(sessionFactory());
+//		return hibernateTemplate;
+//	}
+//	
+//	/**
+//	 * @return
+//	 */
+//	@Bean
+//	public SessionFactory sessionFactory() {
+//		AnnotationSessionFactoryBean annotationSessionFactoryBean=new AnnotationSessionFactoryBean();
+//		annotationSessionFactoryBean.setDataSource(dataSource());
+//		annotationSessionFactoryBean.setPackagesToScan(new String[]{"fr.wati.yacramanager"});
+//		Properties hibernateProperties=new Properties();
+//		hibernateProperties.put("hibernate.dialect", env.getProperty("hibernate.dialect"));
+//		hibernateProperties.put("hibernate.show_sql", env.getProperty("hibernate.show_sql"));
+//		hibernateProperties.put("hibernate.hbm2ddl.auto", env.getProperty("hibernate.hbm2ddl.auto"));
+//		annotationSessionFactoryBean.setHibernateProperties(hibernateProperties);
+//		return annotationSessionFactoryBean.getObject();
+//	}
 	@Bean
 	public HibernateExceptionTranslator hibernateExceptionTranslator()
 	{

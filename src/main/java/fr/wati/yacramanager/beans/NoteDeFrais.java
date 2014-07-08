@@ -109,6 +109,16 @@ public class NoteDeFrais implements Serializable{
 	public void setDescription(String description) {
 		this.description = description;
 	}
+	/**
+	 * @param attachement
+	 */
+	public void addAttachement(Attachement attachement) {
+		this.attachements.add(attachement);
+	}
+	
+	public void removeAttachement(Attachement attachement) {
+		this.attachements.remove(attachement);
+	}
 	
 	
 	

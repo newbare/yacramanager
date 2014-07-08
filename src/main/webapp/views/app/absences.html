@@ -108,7 +108,7 @@
 							  <input type="checkbox"  data-ng-model="checkboxes.items[absence.id]">
 							</label>
 						</td>
-						<td>{{ absence.postedDate | date : 'medium'}}</td>
+						<td>{{ absence.postedDate | date : 'short'}}</td>
 						<td>{{ absence.startDate | date : dateFormat }}</td>
 						<td>{{ absence.endDate | date : dateFormat }}</td>
 						<td>{{ absence.description }}</td>

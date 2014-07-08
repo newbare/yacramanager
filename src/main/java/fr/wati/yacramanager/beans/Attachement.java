@@ -4,10 +4,11 @@
 package fr.wati.yacramanager.beans;
 
 import java.io.Serializable;
-import java.sql.Blob;
 import java.util.Date;
 
+import javax.persistence.Basic;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -28,7 +29,8 @@ public class Attachement implements Serializable {
 	private Date date;
 	private String name;
 	@Lob
-	private Blob content;
+	@Basic(fetch=FetchType.LAZY)
+	private byte[] content;
 	@ManyToOne
 	private NoteDeFrais noteDeFrais;
 	/**
@@ -70,13 +72,13 @@ public class Attachement implements Serializable {
 	/**
 	 * @return the content
 	 */
-	public Blob getContent() {
+	public byte[] getContent() {
 		return content;
 	}
 	/**
 	 * @param content the content to set
 	 */
-	public void setContent(Blob content) {
+	public void setContent(byte[] content) {
 		this.content = content;
 	}
 	/**
