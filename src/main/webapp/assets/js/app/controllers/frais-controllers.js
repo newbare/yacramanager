@@ -56,7 +56,7 @@ function FraisController($scope, $rootScope, NoteCRUDREST, alertService,
 	}
 
 	$scope.onFileSelect=function(files){
-		$scope.selectedFile=files[0];
+		$scope.selectedFile.push(files[0]);
 	}
 	
 	$scope.postNote=function(note){

@@ -26,7 +26,7 @@
 	<!-- Header nav bar -->
 	<!-- Fixed navbar -->
 	<div class="navbar navbar-default navbar-fixed-top" role="navigation">
-		<div class="container">
+		<div class="container-fluid">
 			<div class="navbar-header">
 				<button type="button" class="navbar-toggle" data-toggle="collapse"
 					data-target=".navbar-collapse">
@@ -43,7 +43,7 @@
 					<li data-ng-class="navClass('cra')"><a data-ui-sref="cra"><i class="fa fa-calendar"></i>CRA</a></li>
 					<li data-ng-class="navClass('absences')"><a data-ui-sref="absences" ><i class="fa fa-clock-o"></i>Absences</a></li>
 					<li data-has-role="ROLE_SSII_ADMIN" data-ng-class="navClass('entreprise')"><a data-ui-sref="entreprise" ><i class="fa fa-university"></i>Entreprise</a></li>
-					<li data-has-role="ROLE_ADMIN" data-ng-class="navClass('admin')"><a data-ui-sref="admin"><i class="fa fa-gear fa-spin"></i>Admin</a></li>
+					<li data-has-role="ROLE_ADMIN" data-ng-class="navClass('admin')"><a data-ui-sref="admin"><i class="fa fa-gear"></i>Admin</a></li>
 					<li data-ng-class="navClass('notifications')"><a data-ui-sref="notifications"><i class="fa fa-bell"></i>Notifications<span class="badge pull-right">42</span></a></li>
 					<li data-ng-class="navClass('user-settings') + navClass('user-profile')" class="dropdown"><a href="" class="dropdown-toggle"
 						data-toggle="dropdown"><i class="fa fa-user"></i>{{userInfo.prenom}} <span class="caret"></span></a>

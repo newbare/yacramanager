@@ -1,5 +1,11 @@
 body > .container{
-padding-top: 60px;
+padding-top: 40px;
+/* padding-left: 20px;
+padding-right: 20px; */
+}
+
+body > .container-fluid{
+	padding-top: 40px;
 }
 
 .nav>li>a{
@@ -13,7 +19,7 @@ padding-top: 60px;
     bottom: 0;
     width: 100%;
 }
-.container {
+ .container {
 	padding-right: 5px !important;
 	padding-left: 5px !important;
 }
@@ -174,4 +180,8 @@ span.validated.icon {
 span.not-validated.icon {
 	color: red;
 	content: "\f057";
+}
+
+.ng-table {
+    /* border: 1px solid #000; */
 }
