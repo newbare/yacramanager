@@ -1,7 +1,7 @@
 /**
  * 
  */
-package fr.wati.yacramanager.web.rest;
+package fr.wati.yacramanager.web.api;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -41,7 +41,7 @@ import fr.wati.yacramanager.web.dto.ResponseWrapper;
  *
  */
 @RestController()
-@RequestMapping("/rest/frais")
+@RequestMapping("/app/api/frais")
 public class NoteDeFraisController extends RestCrudControllerAdapter<NoteDeFraisDTO> {
 
 	private static final Log LOG=LogFactory.getLog(NoteDeFraisController.class);

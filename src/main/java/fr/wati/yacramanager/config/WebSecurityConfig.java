@@ -60,35 +60,36 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.addHeaderWriter(
 						new XFrameOptionsHeaderWriter(
 								XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN))
-				.and()
-				.formLogin()
-				.defaultSuccessUrl("/")
-				.loginPage("/login/")
-				.failureUrl("/login?error=true")
-				.permitAll()
-				.and()
-				.logout()
-				.deleteCookies("JSESSIONID")
-				.permitAll()
+				
 				.and()
 				.authorizeRequests()
-				.antMatchers("/resources/**")
-				.permitAll()
-				.antMatchers("/assets/**")
-				.permitAll()
+					.antMatchers("/assets/**").permitAll()
+					.antMatchers("/**").permitAll()
+					.antMatchers("/views/**").permitAll()
+					.antMatchers("/views/auth/**").permitAll()
+					.antMatchers("/views/app/**")
+						.hasAnyRole(new String[] { "ADMIN", "SSII_ADMIN", "SALARIE","INDEP" })
+					.anyRequest()
+						.authenticated()
+				.and()
+					.formLogin()
+						.defaultSuccessUrl("/app/")
+						.loginPage("/auth/login/")
+						.failureUrl("/auth/login?error=true")
+						.permitAll()
+					.and()
+					.logout()
+						.deleteCookies("JSESSIONID")
+						.permitAll()
+					.and().
+					httpBasic()
 				.and()
 				.rememberMe()
 				.tokenRepository(persistentTokenRepository())
 				.tokenValiditySeconds(
 						env.getProperty("rememberme.token.validity",
 								Integer.class))
-				.and()
-				.authorizeRequests()
-				.antMatchers("/app/**")
-				.hasAnyRole(
-						new String[] { "ADMIN", "SSII_ADMIN", "SALARIE",
-								"INDEP" }).and().authorizeRequests()
-				.anyRequest().authenticated();
+				;
 	}
 
 	@Bean

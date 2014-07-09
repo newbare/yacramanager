@@ -1,7 +1,7 @@
 /**
  * 
  */
-package fr.wati.yacramanager.web.rest;
+package fr.wati.yacramanager.web.api;
 
 import java.util.List;
 

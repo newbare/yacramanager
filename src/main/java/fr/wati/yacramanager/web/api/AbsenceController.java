@@ -1,4 +1,4 @@
-package fr.wati.yacramanager.web.rest;
+package fr.wati.yacramanager.web.api;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -31,7 +31,7 @@ import fr.wati.yacramanager.web.dto.AbsenceDTO.TypeAbsenceDTO;
 import fr.wati.yacramanager.web.dto.ResponseWrapper;
 
 @RestController()
-@RequestMapping("/rest/absences")
+@RequestMapping("/app/api/absences")
 public class AbsenceController implements RestCrudController<AbsenceDTO> {
 
 	@Autowired

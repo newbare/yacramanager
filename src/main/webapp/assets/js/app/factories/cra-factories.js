@@ -1,3 +1,3 @@
 App.factory("CraREST", function($resource) {
-  return $resource("rest/cra");
+  return $resource("api/cra");
 });

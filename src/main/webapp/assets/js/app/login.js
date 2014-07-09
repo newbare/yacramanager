@@ -23,7 +23,7 @@ function LoginController($scope, $location) {
 
 App.config([ '$routeProvider', function($routeProvider) {
 	$routeProvider.when('/', {
-		templateUrl : '../assets/others/login.html',
+		templateUrl : '../../assets/others/login.html',
 		controller : LoginController
 	})
 	/*

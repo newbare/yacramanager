@@ -1,4 +1,4 @@
-package fr.wati.yacramanager.web.rest;
+package fr.wati.yacramanager.web.api;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -18,7 +18,7 @@ import fr.wati.yacramanager.utils.SecurityUtils;
 import fr.wati.yacramanager.web.dto.CraDTO;
 
 @Controller
-@RequestMapping("/rest/cra")
+@RequestMapping("/app/api/cra")
 public class CraController {
 
 	@Autowired

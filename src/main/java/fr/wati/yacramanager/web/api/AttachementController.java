@@ -1,7 +1,7 @@
 /**
  * 
  */
-package fr.wati.yacramanager.web.rest;
+package fr.wati.yacramanager.web.api;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -31,7 +31,7 @@ import fr.wati.yacramanager.services.AttachementService;
  * @author Rachid Ouattara
  * 
  */
-@RequestMapping("/rest/attachements")
+@RequestMapping("/app/api/attachements")
 @Controller
 public class AttachementController {
 

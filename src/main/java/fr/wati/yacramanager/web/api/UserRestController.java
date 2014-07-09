@@ -1,4 +1,4 @@
-package fr.wati.yacramanager.web.rest;
+package fr.wati.yacramanager.web.api;
 
 import java.util.List;
 
@@ -31,7 +31,7 @@ import fr.wati.yacramanager.web.dto.ResponseWrapper;
 import fr.wati.yacramanager.web.dto.UserInfoDTO;
 
 @Controller
-@RequestMapping(value = "/rest/users")
+@RequestMapping(value = "/app/api/users")
 public class UserRestController implements RestCrudController<PersonneDto>{
 
 	private static final Log LOG=LogFactory.getLog(UserRestController.class);

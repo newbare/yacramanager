@@ -1,23 +1,22 @@
-package fr.wati.yacramanager.web;
+package fr.wati.yacramanager.web.auth;
 
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class LoginController {
 
-	@RequestMapping(value = "/login/")
+	@RequestMapping(value = "/auth/login/")
 	public ModelAndView login(
 			@RequestParam(value = "error", defaultValue = "false", required = false) boolean error,
 			HttpSession httpSession) {
 
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName("login");
+		modelAndView.setViewName("auth/login");
 		if (error) {
 			modelAndView.addObject("error", true);
 			String exeptionMessage = null;
@@ -32,13 +31,5 @@ public class LoginController {
 			}
 		}
 		return modelAndView;
-	}
-
-	@RequestMapping(value = "/loginfailed", method = RequestMethod.GET)
-	public String loginerror(ModelAndView modelAndView) {
-		modelAndView.addObject("error", "true");
-		modelAndView.addObject("errorMessage", "true");
-		return "login";
-
 	}
 }

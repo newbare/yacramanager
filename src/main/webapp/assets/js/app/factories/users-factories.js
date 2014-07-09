@@ -1,3 +1,3 @@
 App.factory("UsersREST", function($resource) {
-	return $resource("rest/users/:service");
+	return $resource("api/users/:service");
 });

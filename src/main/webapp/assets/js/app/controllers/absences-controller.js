@@ -52,6 +52,10 @@ function AbsencesController($scope, $rootScope, AbsenceCRUDREST,
 		$scope.initialSelectionChanged = true;
 	};
 
+	$scope.refreshDatas=function(){
+		$scope.tableParams.reload();
+	}
+	
 	function clone(obj) {
 		if (null == obj || "object" != typeof obj)
 			return obj;

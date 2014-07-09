@@ -1,5 +1,5 @@
 function FraisController($scope, $rootScope, NoteCRUDREST, alertService,
-		ngTableParams, notifService, $upload) {
+		ngTableParams, notifService, $upload,$modal) {
 	$rootScope.page = {
 		"title" : "Frais",
 		"description" : "Gérer vos note frais"
@@ -59,22 +59,25 @@ function FraisController($scope, $rootScope, NoteCRUDREST, alertService,
 		$scope.selectedFile.push(files[0]);
 	}
 	
-	$scope.postNote=function(note){
+	$scope.postNote=function(note,hideFn){
 		 NoteCRUDREST.save(note).$promise.then(function(result) {
 			notifService
 					.notify('info', 'Created', 'Nouvelle note enregistrï¿½');
+			hideFn();
 			$scope.reset();
 			$scope.tableParams.reload();
 		}, function(error) {
 			console.log(error);
 			notifService.notify('error', '' + error.status, error.data);
+			hideFn();
+			$scope.reset();
 		});
 	};
 	
-	$scope.postAttachement = function() {
+	$scope.postAttachement = function(hideFn) {
 		if($scope.selectedFile.length>0){
 			$scope.upload = $upload.upload({
-				url : 'rest/attachements', // upload.php script, node.js route, or
+				url : 'api/attachements', // upload.php script, node.js route, or
 											// servlet url
 				file : $scope.selectedFile, // or list of files: $files for html5
 											// only
@@ -88,13 +91,14 @@ function FraisController($scope, $rootScope, NoteCRUDREST, alertService,
 				if(status==201){
 					$scope.currentNote.attachementsIds=[];
 					$scope.currentNote.attachementsIds.push(data);
-					$scope.postNote($scope.currentNote);
+					$scope.postNote($scope.currentNote,hideFn);
+				}else {
+					hideFn();
 				}
 			});
 		}else {
-			$scope.postNote($scope.currentNote);
+			$scope.postNote($scope.currentNote,hideFn);
 		}
-		$scope.reset();
 	};
 	$scope.putNote = function() {
 		NoteCRUDREST.update(clone(note)).$promise.then(function(result) {
@@ -104,6 +108,9 @@ function FraisController($scope, $rootScope, NoteCRUDREST, alertService,
 		});
 	};
 	
+	$scope.refreshDatas=function(){
+		$scope.tableParams.reload();
+	}
 	
 	$scope.editNote = function(id) {
 		$scope.edition = true;
