@@ -77,7 +77,7 @@ function FraisController($scope, $rootScope, NoteCRUDREST, alertService,
 	$scope.postAttachement = function(hideFn) {
 		if($scope.selectedFile.length>0){
 			$scope.upload = $upload.upload({
-				url : 'api/attachements', // upload.php script, node.js route, or
+				url : _contextPath+'/app/api/attachements', // upload.php script, node.js route, or
 											// servlet url
 				file : $scope.selectedFile, // or list of files: $files for html5
 											// only

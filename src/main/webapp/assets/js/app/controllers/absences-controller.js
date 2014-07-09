@@ -67,12 +67,13 @@ function AbsencesController($scope, $rootScope, AbsenceCRUDREST,
 		return copy;
 	}
 
-	$scope.postAbsence = function() {
+	$scope.postAbsence = function(hideFn) {
 		AbsenceCRUDREST.save(clone(absence)).$promise.then(function(result) {
-			//alertService.showInfo('Confirmation', 'Donn� sauvegard�');
+			alertService.showInfo('Confirmation', 'Donn� sauvegard�');
 			notifService.notify('info','Created','Nouvelle absence enregistr�');
 			$scope.reset();
 			$scope.tableParams.reload();
+			hideFn();
 		});
 	};
 	$scope.putAbsence = function() {
@@ -80,6 +81,7 @@ function AbsencesController($scope, $rootScope, AbsenceCRUDREST,
 			notifService.notify('info','Created','Nouvelle absence enregistr�');
 			$scope.reset();
 			$scope.tableParams.reload();
+			hideFn();
 		});
 	};
 	$scope.editAbsence=function(id){

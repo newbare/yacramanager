@@ -4,68 +4,21 @@
 			<div class="col-md-4">
 				<!-- Single button -->
 				<div class="">
-					<button type="button" class="btn btn-primary dropdown-toggle"
+					<button type="button" class="btn btn-default" data-template="../../views/app/templates/edit-absences.tpl.html" data-bs-modal="modal" >CP</button>
+					
+					<!-- <button type="button" class="btn btn-primary dropdown-toggle"
 						data-toggle="dropdown">
 						{{selectedActionLabel}} <span class="fa fa-plus-square"></span>
 					</button>
 					<ul class="dropdown-menu" role="menu">
-						<li ng-repeat="type in absencesType" ng-model="selectedAction"><a
-							href="" ng-click="changeActionSelection(type)">{{type.label}}</a></li>
-					</ul>
+						<li ng-repeat="type in absencesType" ng-model="selectedAction">
+						<button type="button" class="btn btn-default" data-template="../../views/app/templates/edit-absences.tpl.html" data-bs-modal="modal" ng-click="changeActionSelection(type)" >{{type.label}}</button>
+						<a
+							href="" data-template="../../views/app/templates/edit-absences.tpl.html" data-bs-modal="modal" ng-click="changeActionSelection(type)">{{type.label}}</a></li>
+					</ul> -->
 					<button type="button" class="btn btn-default"
 						data-ng-show="initialSelectionChanged || edition" ng-click="reset()">
 						Cancel</button>
-				</div>
-			</div>
-		</div>
-		<div class="row">
-
-			<div class="panel panel-primary " ng-show="initialSelectionChanged || edition">
-				<div class="panel-heading">
-					<h3 data-ng-show="!edition" class="panel-title">Ajouter {{selectedActionLabel}}</h3>
-					<h3 data-ng-show="edition" class="panel-title">Edition</h3>
-				</div>
-				<div class="panel-body">
-					<form role="form" class="col-md-6">
-						<div class="form-group">
-							<label for="absenceDescription">(Facultatif)</label> <input
-								type="text" class="form-control" id="absenceDescription"
-								ng-model="currentAbsence.description"
-								placeholder="Enter a description">
-						</div>
-						<div class="form-group">
-							<label for="datepicker">Select date range</label>
-							<div class="input-group" id="datepicker">
-								<input type="text" class=" form-control " name="start"
-									ng-model="currentAbsence.startDate" placeholder="From"
-									bs-datepicker /> <span class="input-group-addon">to</span> <input
-									type="text" class=" form-control " name="end"
-									ng-model="currentAbsence.endDate" placeholder="Until"
-									bs-datepicker />
-							</div>
-						</div>
-						<div class="form-group">
-							<label> <input type="checkbox" class="custom-checkbox"
-								ng-model="currentAbsence.startAfternoon" /> <span>Start
-									from afternoon</span>
-							</label>
-						</div>
-						<div class="form-group">
-							<label> <input type="checkbox" class="custom-checkbox"
-								ng-model="currentAbsence.endMorning" /> <span>End after
-									morning</span>
-							</label>
-						</div>
-						<!--  <div class="form-group">
-					    <label for="exampleInputFile">File input</label>
-					    <input type="file" id="exampleInputFile">
-					    <p class="help-block">Example block-level help text here.</p>
-					  </div> -->
-						<button type="button" class="btn btn-primary pull-right"
-							data-ng-click="postAbsence()" data-ng-show="!edition" >Submit</button>
-						<button type="button" class="btn btn-primary pull-right"
-							data-ng-click="putAbsence()" data-ng-show="edition" >Edit</button>
-					</form>
 				</div>
 			</div>
 		</div>

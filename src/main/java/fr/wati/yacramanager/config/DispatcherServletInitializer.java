@@ -57,5 +57,5 @@ public class DispatcherServletInitializer extends
 				maxUploadSizeInMb * 2, maxUploadSizeInMb / 2);
 		registration.setMultipartConfig(multipartConfigElement);
 	}
-
+	
 }
