@@ -52,10 +52,9 @@ public class DispatcherServletInitializer extends
 	protected void customizeRegistration(Dynamic registration) {
 		registration.setInitParameter("dispatchOptionsRequest", "true");
 		File uploadDirectory = new File(ServiceConfiguration.FILE_UPLOAD_PATH);
-		MultipartConfigElement multipartConfigElement = new MultipartConfigElement(
-				uploadDirectory.getAbsolutePath(), maxUploadSizeInMb,
+		MultipartConfigElement multipartConfigElement = new MultipartConfigElement(null, maxUploadSizeInMb,
 				maxUploadSizeInMb * 2, maxUploadSizeInMb / 2);
 		registration.setMultipartConfig(multipartConfigElement);
 	}
-
+	
 }

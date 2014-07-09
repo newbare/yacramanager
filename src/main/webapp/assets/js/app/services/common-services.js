@@ -12,7 +12,7 @@ App.service('alertService', function($alert,$templateCache, $timeout) {
 			keyboard : true,
 			show : false,
 			duration: 3,
-			template: 'assets/others/alert/alert.tpl.html',
+			template: _contextPath+'/assets/others/alert/alert.tpl.html',
 			container: 'body'
 		});
 		myAlert.$promise.then(myAlert.show);

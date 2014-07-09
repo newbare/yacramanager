@@ -12,6 +12,7 @@ function AbsencesController($scope, $rootScope, AbsenceCRUDREST,
 	$scope.selectedAbsences=[];
 	$scope.ids=[];
 	var allAbsence=[];
+	$scope.selectedAction={};
 	
 	AbsenceTypeREST.query(function(data) {
 		$scope.absencesType = data;
@@ -44,11 +45,8 @@ function AbsencesController($scope, $rootScope, AbsenceCRUDREST,
 		absence.endMorning = false;
 		$scope.edition=false;
 	};
-	$scope.changeActionSelection = function(data) {
-		$scope.reset();
-		$scope.selectedActionLabel = data.label;
-		$scope.selectedActionName = data.name;
-		absence.type = data.name;
+	$scope.changeActionSelection = function() {
+		absence.type = $scope.selectedAction;
 		$scope.initialSelectionChanged = true;
 	};
 
@@ -67,12 +65,14 @@ function AbsencesController($scope, $rootScope, AbsenceCRUDREST,
 		return copy;
 	}
 
-	$scope.postAbsence = function() {
+	$scope.postAbsence = function(hideFn) {
+		absence.type=absence.type.name;
 		AbsenceCRUDREST.save(clone(absence)).$promise.then(function(result) {
-			//alertService.showInfo('Confirmation', 'Donn� sauvegard�');
+			alertService.showInfo('Confirmation', 'Donn� sauvegard�');
 			notifService.notify('info','Created','Nouvelle absence enregistr�');
 			$scope.reset();
 			$scope.tableParams.reload();
+			hideFn();
 		});
 	};
 	$scope.putAbsence = function() {
@@ -80,6 +80,7 @@ function AbsencesController($scope, $rootScope, AbsenceCRUDREST,
 			notifService.notify('info','Created','Nouvelle absence enregistr�');
 			$scope.reset();
 			$scope.tableParams.reload();
+			hideFn();
 		});
 	};
 	$scope.editAbsence=function(id){

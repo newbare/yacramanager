@@ -15,12 +15,18 @@ import fr.wati.yacramanager.utils.SecurityUtils;
 public class ApplicationController {
 
 	@RequestMapping(value = "/app")
-	public ModelAndView index(Principal principal){
+	public String index(Principal principal){
+		return "redirect:/app/"+principal.getName()+"/";
+	}
+
+	@RequestMapping(value = "/app/{username}/")
+	public ModelAndView userindex(Principal principal){
 		ModelAndView modelAndView=new ModelAndView("app/index");
 		modelAndView.addObject("userName", SecurityUtils.getConnectedUser().getFullName());
 		return modelAndView;
 	}
-
+	
+	
 	@MessageMapping("/yacra")
 	@SendTo("/topic/yacra")
 	public Greeting greeting(HelloMessage message) throws Exception {

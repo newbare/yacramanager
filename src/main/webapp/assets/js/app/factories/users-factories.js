@@ -1,3 +1,3 @@
-App.factory("UsersREST", function($resource) {
-	return $resource("api/users/:service");
+App.factory("UsersREST", function($resource,$rootScope) {
+	return $resource(_contextPath+"/app/api/users/:service");
 });

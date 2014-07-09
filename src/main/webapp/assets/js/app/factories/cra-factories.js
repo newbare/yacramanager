@@ -1,3 +1,3 @@
 App.factory("CraREST", function($resource) {
-  return $resource("api/cra");
+  return $resource(_contextPath+"/app/api/cra");
 });
