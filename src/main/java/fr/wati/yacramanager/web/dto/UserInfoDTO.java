@@ -1,13 +1,20 @@
 package fr.wati.yacramanager.web.dto;
 
-import java.util.HashMap;
-
 import fr.wati.yacramanager.beans.Personne;
 
 @SuppressWarnings("serial")
 public class UserInfoDTO extends Personne {
 
-	private HashMap<String, String> settings=new HashMap<>();
+	
+	private Navigation navigation;
+
+	public Navigation getNavigation() {
+		return navigation;
+	}
+
+	public void setNavigation(Navigation navigation) {
+		this.navigation = navigation;
+	}
 	
 	
 }

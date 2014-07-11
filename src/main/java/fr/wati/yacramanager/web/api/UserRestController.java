@@ -2,6 +2,8 @@ package fr.wati.yacramanager.web.api;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +29,7 @@ import fr.wati.yacramanager.dao.PersonneDto;
 import fr.wati.yacramanager.services.PersonService;
 import fr.wati.yacramanager.utils.DtoMapper;
 import fr.wati.yacramanager.utils.SecurityUtils;
+import fr.wati.yacramanager.web.dto.Navigation;
 import fr.wati.yacramanager.web.dto.ResponseWrapper;
 import fr.wati.yacramanager.web.dto.UserInfoDTO;
 
@@ -98,9 +101,12 @@ public @ResponseBody ResponseWrapper<List<PersonneDto>> getAll(@RequestParam(req
 }
 
 @RequestMapping(value="/user-info", method=RequestMethod.GET)
-public @ResponseBody UserInfoDTO getConnectedUserInfo() throws Exception{
+public @ResponseBody UserInfoDTO getConnectedUserInfo(HttpServletRequest request) throws Exception{
 	try {
-		return personneService.toUserInfoDTO(SecurityUtils.getConnectedUser().getId());
+		String contextPath=request.getContextPath();
+		 UserInfoDTO userInfoDTO = personneService.toUserInfoDTO(SecurityUtils.getConnectedUser().getId());
+		 userInfoDTO.setNavigation(Navigation.buildNavigationDefault(userInfoDTO,contextPath));
+		 return userInfoDTO;
 	} catch (Exception e) {
 		LOG.error(e.getMessage(), e);
 		throw e;

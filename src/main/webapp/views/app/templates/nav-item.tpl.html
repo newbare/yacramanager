@@ -1,0 +1,24 @@
+
+<li class="navItem.clazz">
+	<!-- {{! print class name (active, open, etc) if it exists }} --> 
+	 <a data-ui-sref="{{navItem.link}}" data-ng-if="navItem.hasLink" data-ng-class="{'dropdown-toggle' : navItem.submenu}">
+	 <a data-ng-if="!navItem.hasLink" href="" data-ng-class="{'dropdown-toggle' : navItem.submenu}">
+		<i data-ng-if="navItem.icon" data-ng-class="menu-icon navItem.icon"></i>
+		<span data-ng-if="navItem.level1" class="menu-text"> <i
+			data-ng-if="navItem.level2" class="menu-icon fa fa-caret-right"></i>
+			{{navItem.title}} <!--  {{#badge}}
+							#section:basics/sidebar.layout.badge
+							<span class="badge {{badge-class}} {{tooltip-class}}"{{#tooltip}} title="{{{tooltip}}}"{{/tooltip}}>{{{badge}}}</span>
+							/section:basics/sidebar.layout.badge
+					  {{/badge}}
+					  {{#label}}
+							<span class="label {{label-class}}"{{#label-title}} title="{{label-title}}"{{/label-title}}>{{{label}}}</span>
+					  {{/label}} -->
+	</span> <b data-ng-if="navItem.submenu" class="arrow fa fa-angle-down"></b>
+</a></a> <b class="arrow"></b>
+	<ul data-ng-if="navItem.submenu" class="submenu">
+		<div data-ng-repeat="navItem in navItem.submenu">
+			<ngInclude src=""></ngInclude>
+		</div>
+	</ul>
+</li>

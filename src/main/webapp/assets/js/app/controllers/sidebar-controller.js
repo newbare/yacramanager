@@ -1,0 +1,5 @@
+function SideBarCtrl($scope) {
+	
+}
+
+

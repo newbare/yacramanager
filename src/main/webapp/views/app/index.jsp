@@ -32,59 +32,107 @@
 </head>
 <body data-ng-controller="AppCtrl" data-web-socket>
 	
-	<!-- Header nav bar -->
-	<!-- Fixed navbar -->
-	<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-		<div class="container-fluid">
-			<div class="navbar-header">
-				<button type="button" class="navbar-toggle" data-toggle="collapse"
-					data-target=".navbar-collapse">
-					<span class="sr-only">Toggle navigation</span> <span
-						class="icon-bar"></span> <span class="icon-bar"></span> <span
-						class="icon-bar"></span>
-				</button>
-				<a class="navbar-brand" href="#"><i class="fa fa-bolt fa-1x"></i><span> YACRA</span></a>
-			</div>
-			<div class="navbar-collapse collapse">
-				<ul class="nav navbar-nav navbar-right">
-					<li data-ng-class="navClass('home')"><a data-ui-sref="home">Home</a></li>
-					<li data-ng-class="navClass('frais')"><a data-ui-sref="frais">Frais</a></li>
-					<li data-ng-class="navClass('cra')"><a data-ui-sref="cra">CRA</a></li>
-					<li data-ng-class="navClass('absences')"><a data-ui-sref="absences" >Absences</a></li>
-					<li data-has-role="ROLE_SSII_ADMIN" data-ng-class="navClass('entreprise')"><a data-ui-sref="entreprise" >Entreprise</a></li>
-					<li data-has-role="ROLE_ADMIN" data-ng-class="navClass('admin')"><a data-ui-sref="admin">Admin</a></li>
-					<li data-ng-class="navClass('notifications')"><a data-ui-sref="notifications">Notifications</a></li>
-					<li data-ng-class="navClass('user-settings') + navClass('user-profile')" class="dropdown"><a href="" class="dropdown-toggle"
-						data-toggle="dropdown"><i class="fa fa-user"></i>{{userInfo.prenom}} <span class="caret"></span></a>
-						<ul class="user-menu dropdown-menu" role="menu">
-							<li><a data-ui-sref="user-settings"><i class="fa fa-cog"></i>Settings</a></li>
-							<li><a data-ui-sref="user-profile"><i class="fa fa-user"></i> Profile</a></li>
-							<li class="divider"></li>
-							<li><a href="${contextPath}/auth/logout"><i
-									class="fa fa-power-off"></i>Logout</a></li>
-						</ul>
-					</li>
-				</ul>
-			</div>
-			<!--/.nav-collapse -->
-		</div>
-	</div>
-	<!-- End of header navbar -->
+	    <div id="wrapper">
 
-	<div class="main container">
-		<div class="page-header">
-			<h3>
-				{{page.title}} <small><i class="fa fa-chevron-right" style="font-size: 40%"></i><i class="fa fa-chevron-right" style="font-size: 40%"></i> {{page.description}}</small>
-			</h3>
-		</div>
-		<div  data-ui-view="" class="am-fade-and-scale"></div>
-	</div>
-	<!-- Footer -->
-	<div class="footer">
-      <div class="container">
-        <p class="text-muted">@ wati 2014</p>
-      </div>
+        <!-- Sidebar -->
+        <div id="sidebar-wrapper">
+             <a href="#SubSubMenu3" class="" data-toggle="collapse" data-parent="#SubSubMenu3"><i class="glyphicon glyphicon-dashboard"></i> Subitem 5 e <i class="fa fa-caret-down"></i></a>
+        	<div class="collapse list-group-submenu list-group-submenu-1" id="SubSubMenu3">
+          		<a href="#" class="list-group-item" data-parent="#SubSubMenu3">Sub sub item 5.1</a>
+          		<a href="#" class="list-group-item" data-parent="#SubSubMenu3">Sub sub item 5.2</a>
+        	</div>
+        	<a href="#demo4" class="list-group-item list-group-item-success strong" data-toggle="collapse" data-parent="#MainMenu">Item 2 <i class="fa fa-caret-down"></i></a>
+		    <div class="collapse" id="demo4">
+		      <a href="#" class="list-group-item">Subitem 1</a>
+		      <a href="#SubSubMenu4" class="list-group-item strong" data-toggle="collapse" data-parent="#SubSubMenu4"><i class="glyphicon glyphicon-thumbs-up"></i> Subitem 2 <i class="fa fa-caret-down"></i></a>
+		      <div class="collapse list-group-submenu list-group-submenu-1" id="SubSubMenu4">
+		        <a href="#" class="list-group-item" data-parent="#SubSubMenu1"><i class="glyphicon glyphicon-flag"></i> Sub sub item 1</a>
+		        <a href="#" class="list-group-item" data-parent="#SubSubMenu1"><i class="glyphicon glyphicon-cog"></i> Sub sub item 2</a>
+		        </div>
+		      <a href="#" class="list-group-item">Subitem 3</a>
+		    </div>
+            <!-- <ul class="sidebar-nav " data-ng-controller="SideBarCtrl">
+                <li  data-ng-cloak data-ng-repeat="navItem in userInfo.navigation.sidenav_navList" class="navItem.clazz">{{! print class name (active, open, etc) if it exists }}
+				  <a data-ui-sref="{{navItem.link}}" data-ng-if="navItem.hasLink" data-ng-class="{'dropdown-toggle' : navItem.submenu}" data-toggle="collapse">
+				  <a data-ng-if="!navItem.hasLink" href="" data-ng-class="{'dropdown-toggle' : navItem.submenu}">
+					<i data-ng-if="navItem.icon" data-ng-class="navItem.icon" class="menu-icon"></i>
+					 <span data-ng-if="navItem.level1" class="menu-text">
+						<i  data-ng-if="navItem.level2" class="menu-icon fa fa-caret-right"></i>
+					  {{navItem.title}}
+					 </span>
+					<b data-ng-if="navItem.submenu" class="arrow fa fa-angle-down"></b>
+				  </a>
+				  </a>
+				  <b class="arrow"></b>
+					<ul data-ng-if="navItem.submenu" class="submenu ">
+						<div data-ng-repeat="navItem in navItem.submenu">
+							<ngInclude src="../../views/app/templates/nav-item.tpl.html" ></ngInclude>
+						</div>
+					</ul>
+				</li> 
+            </ul> -->
+            <div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse">
+					<i class="ace-icon fa fa-angle-double-left" data-icon1="ace-icon fa fa-angle-double-left" data-icon2="ace-icon fa fa-angle-double-right"></i>
+			</div>
+        </div>
+
+        <!-- Page content -->
+        <div id="page-content-wrapper">
+            
+            <!-- Keep all page content within the page-content inset div! -->
+            <div class="page-content inset">
+            	<!-- Fixed navbar -->
+				<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+					<div class="container-fluid">
+						<div class="navbar-header">
+							<button type="button" class="navbar-toggle" data-toggle="collapse"
+								data-target=".navbar-collapse">
+								<span class="sr-only">Toggle navigation</span> <span
+									class="icon-bar"></span> <span class="icon-bar"></span> <span
+									class="icon-bar"></span>
+							</button>
+							<a class="navbar-brand" href="#"><i class="fa fa-bolt fa-1x"></i><span> YACRA</span></a>
+						</div>
+						<div class="navbar-collapse collapse">
+							<ul class="nav navbar-nav navbar-right">
+								<li data-ng-class="navClass('home')"><a data-ui-sref="home">Home</a></li>
+								<li data-ng-class="navClass('frais')"><a data-ui-sref="frais">Frais</a></li>
+								<li data-ng-class="navClass('cra')"><a data-ui-sref="cra">CRA</a></li>
+								<li data-ng-class="navClass('absences')"><a data-ui-sref="absences" >Absences</a></li>
+								<li data-has-role="ROLE_SSII_ADMIN" data-ng-class="navClass('entreprise')"><a data-ui-sref="entreprise" >Entreprise</a></li>
+								<li data-has-role="ROLE_ADMIN" data-ng-class="navClass('admin')"><a data-ui-sref="admin">Admin</a></li>
+								<li data-ng-class="navClass('notifications')"><a data-ui-sref="notifications">Notifications</a></li>
+								<li data-ng-class="navClass('user-settings') + navClass('user-profile')" class="dropdown" data-ng-cloak><a href="" class="dropdown-toggle"
+									data-toggle="dropdown"><i class="fa fa-user"></i>{{userInfo.prenom}} <span class="caret"></span></a>
+									<ul class="user-menu dropdown-menu" role="menu">
+										<li><a data-ui-sref="user-settings"><i class="fa fa-cog"></i>Settings</a></li>
+										<li><a data-ui-sref="user-profile"><i class="fa fa-user"></i> Profile</a></li>
+										<li class="divider"></li>
+										<li><a href="${contextPath}/auth/logout"><i
+												class="fa fa-power-off"></i>Logout</a></li>
+									</ul>
+								</li>
+							</ul>
+						</div>
+						<!--/.nav-collapse -->
+					</div>
+				</div>
+				<!-- Header nav bar -->
+				<div class="page-header">
+					<h3>
+						{{page.title}} <small><i class="fa fa-chevron-right" style="font-size: 40%"></i><i class="fa fa-chevron-right" style="font-size: 40%"></i> {{page.description}}</small>
+					</h3>
+				</div>
+				<div  data-ui-view="" class="am-fade-and-scale"></div>
+				<div class="footer">
+			      <div class="container">
+			        <p class="text-muted">@ wati 2014</p>
+			      </div>
+			    </div>
+            </div>
+        </div>
     </div>
+	
 	<!-- Bootstrap core JavaScript
     ================================================== -->
 	<!-- Placed at the end of the document so the pages load faster -->
@@ -109,13 +157,10 @@
 	<script src="${contextPath}/assets/bower_components/jquery.gritter/js/jquery.gritter.min.js"></script>
 	<script src="${contextPath}/assets/js/sockjs-0.3.4.js"></script>
 	<script src="${contextPath}/assets/js/stomp.js"></script>
-	
-	
-	
-
 <!-- 	<script src="${contextPath}/assets/js/app/filters/commons-filters.js"></script> -->
 	<script src="${contextPath}/assets/js/app/factories/users-factories.js"></script>
 	<script src="${contextPath}/assets/js/app/controllers/home-controller.js"></script>
+	<script src="${contextPath}/assets/js/app/controllers/sidebar-controller.js"></script>
 	<script src="${contextPath}/assets/js/app/controllers/admin-controller.js"></script>
 	<script src="${contextPath}/assets/js/app/controllers/frais-controllers.js"></script>
 	<script src="${contextPath}/assets/js/app/controllers/entreprise-controller.js"></script>

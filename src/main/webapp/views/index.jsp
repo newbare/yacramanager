@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="en">
   <head>
@@ -8,15 +8,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
+    <c:set var="contextPath" value="${pageContext.request.contextPath}" />
     <link rel="icon" href="../../favicon.ico">
 
     <title>Yacra Manager</title>
 
     <!-- Bootstrap core CSS -->
   <link rel="stylesheet" href="assets/bower_components/bootstrap/dist/css/bootstrap.min.css">
+  <%-- <link rel="stylesheet" href="${contextPath}/assets/css/app.css"> --%>
 
     <!-- Custom styles for this template -->
-    <link href="jumbotron.css" rel="stylesheet">
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -48,6 +49,7 @@
             </div>
             <button type="submit" class="btn btn-success">Sign in</button>
           </form>
+          
         </div><!--/.navbar-collapse -->
       </div>
     </div>
@@ -93,6 +95,6 @@
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <script src="../../dist/js/bootstrap.min.js"></script>
+   <script src="${contextPath}/assets/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
   </body>
 </html>
