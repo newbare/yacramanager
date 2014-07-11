@@ -32,59 +32,145 @@
 </head>
 <body data-ng-controller="AppCtrl" data-web-socket>
 	
-	<!-- Header nav bar -->
-	<!-- Fixed navbar -->
-	<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-		<div class="container-fluid">
-			<div class="navbar-header">
-				<button type="button" class="navbar-toggle" data-toggle="collapse"
-					data-target=".navbar-collapse">
-					<span class="sr-only">Toggle navigation</span> <span
-						class="icon-bar"></span> <span class="icon-bar"></span> <span
-						class="icon-bar"></span>
-				</button>
-				<a class="navbar-brand" href="#"><i class="fa fa-bolt fa-1x"></i><span> YACRA</span></a>
-			</div>
-			<div class="navbar-collapse collapse">
-				<ul class="nav navbar-nav navbar-right">
-					<li data-ng-class="navClass('home')"><a data-ui-sref="home">Home</a></li>
-					<li data-ng-class="navClass('frais')"><a data-ui-sref="frais">Frais</a></li>
-					<li data-ng-class="navClass('cra')"><a data-ui-sref="cra">CRA</a></li>
-					<li data-ng-class="navClass('absences')"><a data-ui-sref="absences" >Absences</a></li>
-					<li data-has-role="ROLE_SSII_ADMIN" data-ng-class="navClass('entreprise')"><a data-ui-sref="entreprise" >Entreprise</a></li>
-					<li data-has-role="ROLE_ADMIN" data-ng-class="navClass('admin')"><a data-ui-sref="admin">Admin</a></li>
-					<li data-ng-class="navClass('notifications')"><a data-ui-sref="notifications">Notifications</a></li>
-					<li data-ng-class="navClass('user-settings') + navClass('user-profile')" class="dropdown"><a href="" class="dropdown-toggle"
-						data-toggle="dropdown"><i class="fa fa-user"></i>{{userInfo.prenom}} <span class="caret"></span></a>
-						<ul class="user-menu dropdown-menu" role="menu">
-							<li><a data-ui-sref="user-settings"><i class="fa fa-cog"></i>Settings</a></li>
-							<li><a data-ui-sref="user-profile"><i class="fa fa-user"></i> Profile</a></li>
-							<li class="divider"></li>
-							<li><a href="${contextPath}/auth/logout"><i
-									class="fa fa-power-off"></i>Logout</a></li>
-						</ul>
-					</li>
-				</ul>
-			</div>
-			<!--/.nav-collapse -->
-		</div>
-	</div>
-	<!-- End of header navbar -->
+	    <div id="wrapper">
+
+        <!-- Sidebar -->
+        <div id="sidebar-wrapper">
+            <ul class="sidebar-nav">
+                <li class="sidebar-brand"><a href="#">Start Bootstrap</a>
+                </li>
+                <li><a href="#">Dashboard</a>
+                </li>
+                <li><a href="#" class="active">Shortcuts</a>
+                </li>
+                <li><a href="#">Overview</a>
+                </li>
+                <li><a href="#">Events</a>
+                </li>
+                <li><a href="#">About</a>
+                </li>
+                <li><a href="#">Services</a>
+                </li>
+                <li><a href="#">Contact</a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Page content -->
+        <div id="page-content-wrapper">
+            
+            <!-- Keep all page content within the page-content inset div! -->
+            <div class="page-content inset">
+            	<!-- Fixed navbar -->
+				<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+					<div class="container-fluid">
+						<div class="navbar-header">
+							<button type="button" class="navbar-toggle" data-toggle="collapse"
+								data-target=".navbar-collapse">
+								<span class="sr-only">Toggle navigation</span> <span
+									class="icon-bar"></span> <span class="icon-bar"></span> <span
+									class="icon-bar"></span>
+							</button>
+							<a class="navbar-brand" href="#"><i class="fa fa-bolt fa-1x"></i><span> YACRA</span></a>
+						</div>
+						<div class="navbar-collapse collapse">
+							<ul class="nav navbar-nav navbar-right">
+								<li data-ng-class="navClass('home')"><a data-ui-sref="home">Home</a></li>
+								<li data-ng-class="navClass('frais')"><a data-ui-sref="frais">Frais</a></li>
+								<li data-ng-class="navClass('cra')"><a data-ui-sref="cra">CRA</a></li>
+								<li data-ng-class="navClass('absences')"><a data-ui-sref="absences" >Absences</a></li>
+								<li data-has-role="ROLE_SSII_ADMIN" data-ng-class="navClass('entreprise')"><a data-ui-sref="entreprise" >Entreprise</a></li>
+								<li data-has-role="ROLE_ADMIN" data-ng-class="navClass('admin')"><a data-ui-sref="admin">Admin</a></li>
+								<li data-ng-class="navClass('notifications')"><a data-ui-sref="notifications">Notifications</a></li>
+								<li data-ng-class="navClass('user-settings') + navClass('user-profile')" class="dropdown"><a href="" class="dropdown-toggle"
+									data-toggle="dropdown"><i class="fa fa-user"></i>{{userInfo.prenom}} <span class="caret"></span></a>
+									<ul class="user-menu dropdown-menu" role="menu">
+										<li><a data-ui-sref="user-settings"><i class="fa fa-cog"></i>Settings</a></li>
+										<li><a data-ui-sref="user-profile"><i class="fa fa-user"></i> Profile</a></li>
+										<li class="divider"></li>
+										<li><a href="${contextPath}/auth/logout"><i
+												class="fa fa-power-off"></i>Logout</a></li>
+									</ul>
+								</li>
+							</ul>
+						</div>
+						<!--/.nav-collapse -->
+					</div>
+				</div>
+				<!-- Header nav bar -->
+				<div class="page-header">
+					<h3>
+						{{page.title}} <small><i class="fa fa-chevron-right" style="font-size: 40%"></i><i class="fa fa-chevron-right" style="font-size: 40%"></i> {{page.description}}</small>
+					</h3>
+				</div>
+				<div  data-ui-view="" class="am-fade-and-scale"></div>
+            </div>
+        </div>
+
+    </div>
+	
+	
+	
+	
+	
+	
+	<!-- 
+	
 
 	<div class="main container">
-		<div class="page-header">
-			<h3>
-				{{page.title}} <small><i class="fa fa-chevron-right" style="font-size: 40%"></i><i class="fa fa-chevron-right" style="font-size: 40%"></i> {{page.description}}</small>
-			</h3>
+		<div id="wrapper">
+		    <div id="sidebar-wrapper">
+		        <ul class="sidebar-nav">
+		            <li class="sidebar-brand"><a href="#">Home</a></li>
+		            <li><a href="#">Another link</a></li>
+		            <li><a href="#">Next link</a></li>
+		            <li><a href="#">Last link</a></li>
+		        </ul>
+		    </div>
+		    <div id="page-content-wrapper">
+		        <div class="page-content">
+		            <div class="container">
+		                <div class="row">
+		                    <div class="col-md-12">
+		                        content of page
+		                        <div class="page-header">
+							<h3>
+								{{page.title}} <small><i class="fa fa-chevron-right" style="font-size: 40%"></i><i class="fa fa-chevron-right" style="font-size: 40%"></i> {{page.description}}</small>
+							</h3>
+						</div>
+						<div  data-ui-view="" class="am-fade-and-scale"></div>
+		                    </div>
+		                </div>
+		            </div>
+		        </div>
+		    </div>
 		</div>
-		<div  data-ui-view="" class="am-fade-and-scale"></div>
+		
+		
+		<div class="row">
+			<div class="col-md-2">
+				<ul class="nav nav-pills nav-stacked side-nav" >
+				  <li class="active"><a href="#">Home</a></li>
+				  <li><a href="#">Profile</a></li>
+				  <li><a href="#">Messages</a></li>
+				</ul>
+			</div>
+			<div class="col-md-10">
+				<div class="page-header">
+					<h3>
+						{{page.title}} <small><i class="fa fa-chevron-right" style="font-size: 40%"></i><i class="fa fa-chevron-right" style="font-size: 40%"></i> {{page.description}}</small>
+					</h3>
+				</div>
+				<div  data-ui-view="" class="am-fade-and-scale"></div>
+			</div>
+		</div>
 	</div>
-	<!-- Footer -->
+	Footer
 	<div class="footer">
       <div class="container">
         <p class="text-muted">@ wati 2014</p>
       </div>
-    </div>
+    </div> -->
 	<!-- Bootstrap core JavaScript
     ================================================== -->
 	<!-- Placed at the end of the document so the pages load faster -->
