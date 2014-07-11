@@ -33,7 +33,6 @@
 <body data-ng-controller="AppCtrl" data-web-socket>
 	
 	    <div id="wrapper">
-
         <!-- Sidebar -->
         <div id="sidebar-wrapper">
              <a href="#SubSubMenu3" class="" data-toggle="collapse" data-parent="#SubSubMenu3"><i class="glyphicon glyphicon-dashboard"></i> Subitem 5 e <i class="fa fa-caret-down"></i></a>
@@ -132,7 +131,6 @@
             </div>
         </div>
     </div>
-	
 	<!-- Bootstrap core JavaScript
     ================================================== -->
 	<!-- Placed at the end of the document so the pages load faster -->
