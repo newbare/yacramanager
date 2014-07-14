@@ -1,0 +1,58 @@
+<div class="modal" id="editionFormModal" tabindex="-1"
+	role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" ng-click="$hide()">
+					<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+				</button>
+				<h3 data-ng-show="!edition" class="panel-title">Add entry</h3>
+				<h3 data-ng-show="edition" class="panel-title">Edit entry</h3>
+			</div>
+			<div class="modal-body">
+				<form role="form">
+					<div class="form-group">
+						<label for="datepicker">Date</label>
+						<div class="input-group" id="datepicker">
+							<input type="text" class=" form-control " name="start"
+								data-ng-model="currentNote.date" placeholder="Date"
+								data-bs-datepicker /> <span class="input-group-addon"><i
+								class="fa fa-calendar"></i></span>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="noteMontant">Montant</label>
+						<div class="input-group">
+							<input type="text" class="form-control" id="noteMontant"
+								data-ng-model="currentNote.amount" placeholder="Montant">
+							<span class="input-group-addon"><i class="fa fa-eur"></i></span>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="noteDescription">Description</label> <input
+							type="text" class="form-control" id="noteDescription"
+							data-ng-model="currentNote.description"
+							placeholder="Description (facultatif)">
+					</div>
+					<div class="form-group">
+						<!--  <label for="attachement">Attachement</label> -->
+						<input type="file" id="attachement"
+							data-ng-file-select="onFileSelect($files)"
+							data-filename-placement="inside" data-file-Input>
+					</div>
+
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" ng-click="$hide()" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-success"
+					data-ng-click="postAttachement($hide)" data-ng-show="!edition">Post</button>
+				<button type="button" class="btn btn-success"
+					data-ng-click="putNote()" data-ng-show="edition">Edit</button>
+			</div>
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->

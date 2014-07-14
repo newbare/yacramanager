@@ -31,6 +31,13 @@ App.controller('AppCtrl', [ '$scope', '$location', 'UsersREST','$rootScope',
 					$scope.$broadcast('userInfo', data);
 				});
 			};
+			$scope.containerClass=function(){
+				return "container";
+			}
+
+			$scope.containerNavClass=function(){
+				return "container";
+			}
 			loadUserInfo();
 			
 
@@ -42,7 +49,7 @@ App.config([ '$stateProvider', '$urlRouterProvider',
 			// Use $urlRouterProvider to configure any redirects (when) and
 			// invalid urls (otherwise).
 			$urlRouterProvider
-			.when('/entreprise', '/entreprise/home')
+			.when('/company', '/company/home')
 			.when('/admin', '/admin/home')
 
 			// The `when` method says if the url is ever the 1st param, then
@@ -69,7 +76,12 @@ App.config([ '$stateProvider', '$urlRouterProvider',
 				url : "/absences",
 				templateUrl : _contextPath+'/views/app/absences.html',
 				controller : AbsencesController
-			}).state('notifications', {
+			}).state('timesheet', {
+				url : "/timesheet",
+				templateUrl : _contextPath+'/views/app/timesheet.html',
+				controller : TimeSheetController
+			})
+			.state('notifications', {
 				url : "/notifications",
 				templateUrl : _contextPath+'/views/app/notifications.html',
 				controller : NotificationsController
@@ -81,25 +93,35 @@ App.config([ '$stateProvider', '$urlRouterProvider',
 				url : "/user-profile",
 				templateUrl : _contextPath+'/views/app/user-profile.html',
 				controller : UserProfileController
-			}).state('entreprise', {
-				url : "/entreprise",
-				templateUrl : _contextPath+'/views/app/entreprise.html',
-				controller : EntrepriseController,
-			}).state('entreprise.home', {
+			}).state('company', {
+				url : "/company",
+				templateUrl : _contextPath+'/views/app/company.html',
+				controller : CompanyController,
+			}).state('company.home', {
 				url : "/home",
-				templateUrl : _contextPath+'/views/app/entreprise/entreprise-home.html'
+				templateUrl : _contextPath+'/views/app/company/company-home.html'
 				//controller : EntrepriseController,
-			}).state('entreprise.salaries', {
-				url : "/salaries",
-				templateUrl : _contextPath+'/views/app/entreprise/entreprise-salaries.html'
+			}).state('company.employees', {
+				url : "/employees",
+				templateUrl : _contextPath+'/views/app/company/company-employees.html'
 				//controller : EntrepriseController,
-			}).state('entreprise.messages', {
+			}).state('company.clients', {
+				url : "/clients",
+				templateUrl : _contextPath+'/views/app/company/company-clients.html'
+				//controller : EntrepriseController,
+			}).state('company.projects', {
+				url : "/projects",
+				templateUrl : _contextPath+'/views/app/company/company-projects.html'
+				//controller : EntrepriseController,
+			})
+			.state('company.messages', {
 				url : "/messages",
-				templateUrl : _contextPath+'/views/app/entreprise/entreprise-messages.html'
+				templateUrl : _contextPath+'/views/app/company/company-messages.html'
 				//controller : EntrepriseController,
-			}).state('entreprise.settings', {
+			})
+			.state('company.settings', {
 				url : "/settings",
-				templateUrl : _contextPath+'/views/app/entreprise/entreprise-settings.html'
+				templateUrl : _contextPath+'/views/app/company/company-settings.html'
 				//controller : EntrepriseController,
 			}).state('admin', {
 				url : "/admin",

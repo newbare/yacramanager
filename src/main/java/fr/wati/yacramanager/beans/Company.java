@@ -12,14 +12,16 @@ import javax.persistence.OneToMany;
 
 @SuppressWarnings("serial")
 @Entity
-public class Enterprise implements Serializable{
+public class Company implements Serializable{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	private String name;
-	@OneToMany(mappedBy="enterprise")
-	private List<Personne> personnes=new ArrayList<>();
+	@OneToMany(mappedBy="company")
+	private List<Employe> employes=new ArrayList<>();
+	@OneToMany(mappedBy="company")
+	private List<Client> clients;
 	public Long getId() {
 		return id;
 	}
@@ -31,12 +33,6 @@ public class Enterprise implements Serializable{
 	}
 	public void setName(String name) {
 		this.name = name;
-	}
-	public List<Personne> getPersonnes() {
-		return personnes;
-	}
-	public void setPersonnes(List<Personne> personnes) {
-		this.personnes = personnes;
 	}
 	
 	

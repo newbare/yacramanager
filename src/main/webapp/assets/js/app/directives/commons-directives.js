@@ -55,3 +55,33 @@ App.directive('hasRole', ['notifService',
                      				}
                      			};
                      		} ]);
+App.directive('collapsibleFieldset',	function() {
+		return {
+			restrict : 'A',
+			replace: 'true',
+			link : function(scope, elem, attrs, ctrl) {
+				var collapsed=false;
+				var title=attrs.collapsibleFieldset;
+				var bodyElement=elem.find('div');
+				bodyElement.addClass("am-fade");
+				elem.addClass("collapsible");
+				var legendImgElement="<img class=\"tool-img tool-toggle\"  src=\"data:image/gif;base64,R0lGODlhAQABAID/AMDAwAAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==\">";
+				var legendElement="<legend>"+legendImgElement+" <span> "+title+"</span></legend>";
+				elem.append(legendElement);
+				if(collapsed){
+					elem.addClass("collapsed");
+					elem.find('.tool-img').addClass("collapsed");
+				}
+				elem.children('legend').bind('click', function(event) {
+					collapsed=!collapsed;
+					if(collapsed){
+						elem.addClass("collapsed");
+						elem.find('.tool-img').addClass("collapsed");
+					}else {
+						elem.removeClass("collapsed");
+						elem.find('.tool-img').removeClass("collapsed");
+					}
+				});
+			}
+		};
+});

@@ -11,7 +11,6 @@ import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.Past;
 
@@ -38,8 +37,7 @@ public class Personne extends Users {
 	private Contact contact;
 	@OneToMany(mappedBy="personne")
 	private List<Absence> absences=new ArrayList<>();
-	@ManyToOne
-	private Enterprise enterprise;
+	
 	@OneToMany(mappedBy="personne")
 	private List<NoteDeFrais> noteDeFrais=new ArrayList<>();
 	
