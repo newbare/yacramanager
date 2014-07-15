@@ -1,4 +1,4 @@
-package fr.wati.yacramanager.services;
+package fr.wati.yacramanager.services.impl;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -15,6 +15,7 @@ import fr.wati.yacramanager.beans.Attachement;
 import fr.wati.yacramanager.beans.NoteDeFrais;
 import fr.wati.yacramanager.beans.Personne;
 import fr.wati.yacramanager.dao.NoteDeFraisRepository;
+import fr.wati.yacramanager.services.NoteDeFraisService;
 import fr.wati.yacramanager.web.dto.NoteDeFraisDTO;
 
 @Service

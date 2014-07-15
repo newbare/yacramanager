@@ -4,6 +4,7 @@
 package fr.wati.yacramanager.beans;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Embedded;
@@ -29,7 +30,7 @@ public class Client implements Serializable{
 	@Embedded
 	private Contact contact;
 	@OneToMany(mappedBy="client")
-	private List<Project> projects;
+	private List<Project> projects=new ArrayList<>();
 	@ManyToOne
 	private Company company;
 	/**

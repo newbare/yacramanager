@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import fr.wati.yacramanager.beans.Personne;
 import fr.wati.yacramanager.dao.PersonRepository;
 import fr.wati.yacramanager.dao.PersonneDto;
-import fr.wati.yacramanager.services.PersonService;
+import fr.wati.yacramanager.services.impl.PersonServiceImpl;
 import fr.wati.yacramanager.utils.DtoMapper;
 import fr.wati.yacramanager.utils.SecurityUtils;
 import fr.wati.yacramanager.web.dto.Navigation;
@@ -39,7 +39,7 @@ public class UserRestController implements RestCrudController<PersonneDto>{
 
 	private static final Log LOG=LogFactory.getLog(UserRestController.class);
 	@Autowired
-	private PersonService personneService;
+	private PersonServiceImpl personneService;
 	@Autowired
 	private PersonRepository personRepository;
 

@@ -1,8 +1,9 @@
 package fr.wati.yacramanager.web.dto;
 
-import fr.wati.yacramanager.beans.Client;
+import fr.wati.yacramanager.beans.Company;
 
-public class ClientDTO {
+public class CompanyDTO {
+
 	private Long id;
 	private String name;
 	public Long getId() {
@@ -17,14 +18,10 @@ public class ClientDTO {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
-	public Client toClient(Client client){
-		client.setName(getName());
-		return client;
+	public Company toCompany(Company company) {
+		company.setName(getName());
+		return company;
 	}
 	
-	public Client toClient(){
-		return toClient(new Client());
-	}
 	
 }

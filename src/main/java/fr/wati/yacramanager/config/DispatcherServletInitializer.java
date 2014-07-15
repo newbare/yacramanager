@@ -16,8 +16,6 @@
 
 package fr.wati.yacramanager.config;
 
-import java.io.File;
-
 import javax.servlet.MultipartConfigElement;
 import javax.servlet.ServletRegistration.Dynamic;
 
@@ -35,12 +33,12 @@ public class DispatcherServletInitializer extends
 
 	@Override
 	protected Class<?>[] getRootConfigClasses() {
-		return new Class<?>[] { WebSecurityConfig.class };
+		return new Class<?>[] { RootConfig.class };
 	}
 
 	@Override
 	protected Class<?>[] getServletConfigClasses() {
-		return new Class<?>[] { WebConfig.class, WebSocketConfig.class };
+		return new Class<?>[] { WebConfig.class,WebSecurityConfig.class,WebSocketConfig.class};
 	}
 
 	@Override
@@ -51,7 +49,7 @@ public class DispatcherServletInitializer extends
 	@Override
 	protected void customizeRegistration(Dynamic registration) {
 		registration.setInitParameter("dispatchOptionsRequest", "true");
-		File uploadDirectory = new File(ServiceConfiguration.FILE_UPLOAD_PATH);
+//		File uploadDirectory = new File(ServiceConfiguration.FILE_UPLOAD_PATH);
 		MultipartConfigElement multipartConfigElement = new MultipartConfigElement(null, maxUploadSizeInMb,
 				maxUploadSizeInMb * 2, maxUploadSizeInMb / 2);
 		registration.setMultipartConfig(multipartConfigElement);

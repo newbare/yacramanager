@@ -1,7 +1,7 @@
 /**
  * 
  */
-package fr.wati.yacramanager.services;
+package fr.wati.yacramanager.services.impl;
 
 import java.util.List;
 
@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import fr.wati.yacramanager.beans.Attachement;
 import fr.wati.yacramanager.dao.AttachementRepository;
+import fr.wati.yacramanager.services.AttachementService;
 
 /**
  * @author Rachid Ouattara

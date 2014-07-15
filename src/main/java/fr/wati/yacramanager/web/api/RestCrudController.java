@@ -16,6 +16,6 @@ public interface RestCrudController<DTO> {
 
 	ResponseEntity<String> create(DTO dto);
 
-	void delete(Long ID);
+	void delete(Long id);
 
 }

@@ -9,7 +9,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 
 import fr.wati.yacramanager.beans.Personne;
-import fr.wati.yacramanager.services.PersonService;
+import fr.wati.yacramanager.services.impl.PersonServiceImpl;
 
 /**
  * @author Rachid-home
@@ -46,7 +46,7 @@ public class SecurityUtils implements ApplicationContextAware{
 	}
 	
 	public static Personne getConnectedUser(){
-		return applicationContext.getBean(PersonService.class).findByUsername(getUser().getUsername());
+		return applicationContext.getBean(PersonServiceImpl.class).findByUsername(getUser().getUsername());
 	}
 
 	/* (non-Javadoc)

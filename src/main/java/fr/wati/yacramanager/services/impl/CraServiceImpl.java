@@ -1,4 +1,4 @@
-package fr.wati.yacramanager.services;
+package fr.wati.yacramanager.services.impl;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -14,6 +14,8 @@ import org.springframework.stereotype.Service;
 
 import fr.wati.yacramanager.beans.Absence;
 import fr.wati.yacramanager.beans.Personne;
+import fr.wati.yacramanager.services.AbsenceService;
+import fr.wati.yacramanager.services.CraService;
 import fr.wati.yacramanager.utils.CalendarUtil;
 import fr.wati.yacramanager.utils.DateIterator;
 import fr.wati.yacramanager.web.dto.AbsenceDTO;

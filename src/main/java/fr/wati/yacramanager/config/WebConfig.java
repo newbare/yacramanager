@@ -9,7 +9,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.MediaType;
@@ -29,9 +28,8 @@ import fr.wati.yacramanager.utils.CustomObjectMapper;
 
 
 @Configuration
-@ComponentScan(basePackages = {"fr.wati.yacramanager"})
-@PropertySource(value = { "classpath:database-yacra.properties" })
 @EnableAspectJAutoProxy(proxyTargetClass= true)
+@ComponentScan(basePackages = {"fr.wati.yacramanager.web"})
 @EnableWebMvc
 public class WebConfig extends WebMvcConfigurerAdapter{
 	@Autowired

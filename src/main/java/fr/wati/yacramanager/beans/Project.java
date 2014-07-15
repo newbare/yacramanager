@@ -4,6 +4,7 @@
 package fr.wati.yacramanager.beans;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -34,9 +35,9 @@ public class Project implements Serializable {
 	private Date createdDate;
 	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(name = "projects_employees", joinColumns = { @JoinColumn(name = "projectId") }, inverseJoinColumns = { @JoinColumn(name = "employeId") })
-	private List<Employe> assignedEmployees;
+	private List<Employe> assignedEmployees=new ArrayList<>();
 	@OneToMany(mappedBy = "project")
-	private List<Task> tasks;
+	private List<Task> tasks=new ArrayList<>();
 	@ManyToOne
 	private Client client;
 

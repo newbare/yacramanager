@@ -1,4 +1,4 @@
-package fr.wati.yacramanager.services;
+package fr.wati.yacramanager.services.impl;
 
 import java.util.Date;
 import java.util.List;
@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import fr.wati.yacramanager.beans.Absence;
 import fr.wati.yacramanager.beans.Personne;
 import fr.wati.yacramanager.dao.AbsenceRepository;
+import fr.wati.yacramanager.services.AbsenceService;
 
 @Service
 public class AbsenceServiceImpl implements AbsenceService {

@@ -7,12 +7,16 @@ import org.springframework.data.domain.Page;
 
 import fr.wati.yacramanager.beans.Absence;
 import fr.wati.yacramanager.beans.Attachement;
+import fr.wati.yacramanager.beans.Client;
+import fr.wati.yacramanager.beans.Company;
 import fr.wati.yacramanager.beans.NoteDeFrais;
 import fr.wati.yacramanager.beans.Personne;
 import fr.wati.yacramanager.beans.Users;
 import fr.wati.yacramanager.dao.PersonneDto;
 import fr.wati.yacramanager.dao.UserDto;
 import fr.wati.yacramanager.web.dto.AbsenceDTO;
+import fr.wati.yacramanager.web.dto.ClientDTO;
+import fr.wati.yacramanager.web.dto.CompanyDTO;
 import fr.wati.yacramanager.web.dto.NoteDeFraisDTO;
 
 public class DtoMapper {
@@ -31,6 +35,23 @@ public class DtoMapper {
 		}
 		return dtos;
 	}
+	
+	
+	public static ClientDTO map(Client client) {
+		ClientDTO dto = new ClientDTO();
+		dto.setId(client.getId());
+		dto.setName(client.getName());
+		return dto;
+	}
+
+	public static List<ClientDTO> mapClients(Page<Client> clients) {
+		List<ClientDTO> dtos = new ArrayList<ClientDTO>();
+		for (Client client : clients) {
+			dtos.add(map(client));
+		}
+		return dtos;
+	}
+	
 
 	public static AbsenceDTO map(Absence absence) {
 		AbsenceDTO dto = new AbsenceDTO();
@@ -41,6 +62,13 @@ public class DtoMapper {
 		dto.setPostedDate(absence.getDate());
 		dto.setId(absence.getId());
 		dto.setValidated(absence.isValidated());
+		return dto;
+	}
+	
+	public static CompanyDTO map(Company company) {
+		CompanyDTO dto = new CompanyDTO();
+		dto.setId(company.getId());
+		dto.setName(company.getName());
 		return dto;
 	}
 	
@@ -62,6 +90,14 @@ public class DtoMapper {
 		List<AbsenceDTO> dtos = new ArrayList<AbsenceDTO>();
 		for (Absence absence : absences) {
 			dtos.add(map(absence));
+		}
+		return dtos;
+	}
+	
+	public static List<CompanyDTO> mapCompanies(Iterable<Company> companies) {
+		List<CompanyDTO> dtos = new ArrayList<CompanyDTO>();
+		for (Company company : companies) {
+			dtos.add(map(company));
 		}
 		return dtos;
 	}
