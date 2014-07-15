@@ -95,6 +95,9 @@ public class CompanyServiceImpl implements CompanyService {
 		CompanyDTO companyDTO=new CompanyDTO();
 		companyDTO.setId(company.getId());
 		companyDTO.setName(company.getName());
+		companyDTO.setRegisteredDate(company.getRegisteredDate());
+		companyDTO.setContacts(company.getContacts());
+		companyDTO.setLicenseEndDate(company.getLicenseEndDate());
 		return companyDTO;
 	}
 

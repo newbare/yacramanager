@@ -125,7 +125,8 @@
 		src="${contextPath}/assets/bower_components/angular-ui-calendar/src/calendar.js"></script>
 	<script
 		src="${contextPath}/assets/bower_components/angular-route/angular-route.min.js"></script>
-	<script src="${contextPath}/assets/js/bootstrap.file-input.js"></script>
+	<script 
+		src="${contextPath}/assets/bower_components/bootstrap-fileinput/js/fileinput.min.js"></script>
 	<script
 		src="${contextPath}/assets/bower_components/angular-strap/dist/angular-strap.min.js"></script>
 	<script
@@ -163,6 +164,7 @@
 
 	<script src="${contextPath}/assets/js/app/factories/cra-factories.js"></script>
 	<script src="${contextPath}/assets/js/app/factories/notes-factories.js"></script>
+	<script src="${contextPath}/assets/js/app/factories/admin-factories.js"></script>
 	<script
 		src="${contextPath}/assets/js/app/factories/absences-factories.js"></script>
 	<script src="${contextPath}/assets/js/app/services/common-services.js"></script>

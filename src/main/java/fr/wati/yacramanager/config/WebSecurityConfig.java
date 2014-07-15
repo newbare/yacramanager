@@ -70,10 +70,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 					.formLogin()
 						.defaultSuccessUrl("/app/")
 						.loginPage("/auth/login/")
-						.failureUrl("/auth/login?error=true")
+						.failureUrl("/auth/login/?error=true")
 						.permitAll()
 					.and()
 					.logout()
+						.logoutUrl("/auth/logout")
+						.logoutSuccessUrl("/?logout")
 						.deleteCookies("JSESSIONID")
 						.permitAll()
 					.and().

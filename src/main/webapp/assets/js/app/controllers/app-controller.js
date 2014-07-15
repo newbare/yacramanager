@@ -130,15 +130,20 @@ App.config([ '$stateProvider', '$urlRouterProvider',
 			}).state('admin.home', {
 				url : "/home",
 				templateUrl : _contextPath+'/views/app/admin/admin-home.html',
-				//controller : AdminController
-			}).state('admin.messages', {
+				controller : AdminHomeController
+			}).state('admin.companies', {
+				url : "/companies",
+				templateUrl : _contextPath+'/views/app/admin/admin-companies.html',
+				controller : AdminCompaniesController
+			})
+			.state('admin.messages', {
 				url : "/messages",
 				templateUrl : _contextPath+'/views/app/admin/admin-messages.html',
 				//controller : AdminController
 			}).state('admin.settings', {
 				url : "/settings",
 				templateUrl : _contextPath+'/views/app/admin/admin-settings.html',
-				//controller : AdminController
+				controller : AdminSettingsController
 			})
 
 		} ]);

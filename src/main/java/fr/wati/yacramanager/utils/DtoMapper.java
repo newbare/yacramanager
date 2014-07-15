@@ -69,6 +69,10 @@ public class DtoMapper {
 		CompanyDTO dto = new CompanyDTO();
 		dto.setId(company.getId());
 		dto.setName(company.getName());
+		dto.setLicenseEndDate(company.getLicenseEndDate());
+		dto.setContacts(company.getContacts());
+		dto.setRegisteredDate(company.getRegisteredDate());
+		dto.setContacts(company.getContacts());
 		return dto;
 	}
 	
