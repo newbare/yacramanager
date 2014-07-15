@@ -10,9 +10,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
 
 /**
  * @author Rachid Ouattara
@@ -20,8 +19,7 @@ import javax.persistence.ManyToOne;
  */
 @SuppressWarnings("serial")
 @Entity
-@Inheritance(strategy = InheritanceType.JOINED)
-public abstract class WorkLog implements Serializable {
+public class WorkLog implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -31,6 +29,12 @@ public abstract class WorkLog implements Serializable {
 	private Task task;
 	@ManyToOne
 	private Employe employe;
+	private Date startDate;
+	private Date endDate;
+	@Transient
+	private Long duration;
+	private String description;
+	
 	/**
 	 * @return the id
 	 */
@@ -78,6 +82,30 @@ public abstract class WorkLog implements Serializable {
 	 */
 	public void setEmploye(Employe employe) {
 		this.employe = employe;
+	}
+	public Date getStartDate() {
+		return startDate;
+	}
+	public void setStartDate(Date startDate) {
+		this.startDate = startDate;
+	}
+	public Date getEndDate() {
+		return endDate;
+	}
+	public void setEndDate(Date endDate) {
+		this.endDate = endDate;
+	}
+	public Long getDuration() {
+		return duration;
+	}
+	public void setDuration(Long duration) {
+		this.duration = duration;
+	}
+	public String getDescription() {
+		return description;
+	}
+	public void setDescription(String description) {
+		this.description = description;
 	}
 	
 	
