@@ -3,15 +3,12 @@
  */
 package fr.wati.yacramanager.beans;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.OneToMany;
 import javax.validation.constraints.Past;
 
 import org.hibernate.validator.constraints.NotBlank;
@@ -35,11 +32,7 @@ public class Personne extends Users {
 	private Civilite civilite;
 	@Embedded
 	private Contact contact;
-	@OneToMany(mappedBy="personne")
-	private List<Absence> absences=new ArrayList<>();
 	
-	@OneToMany(mappedBy="personne")
-	private List<NoteDeFrais> noteDeFrais=new ArrayList<>();
 	
 	/**
 	 * @return the nom
@@ -108,12 +101,5 @@ public class Personne extends Users {
 	public String getFullName(){
 		return String.format("%s %s",prenom,nom);
 	}
-	public List<Absence> getAbsences() {
-		return absences;
-	}
-	public void setAbsences(List<Absence> absences) {
-		this.absences = absences;
-	}
-	
 	
 }

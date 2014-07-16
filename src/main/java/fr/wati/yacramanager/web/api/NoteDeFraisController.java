@@ -76,8 +76,8 @@ public class NoteDeFraisController extends RestCrudControllerAdapter<NoteDeFrais
 			size=100;
 		}
 		PageRequest pageable=new PageRequest(page, size,new Sort(new Order(Direction.DESC,orderBy)));
-		Page<NoteDeFrais> findByPersonne = noteDeFraisService.findByPersonne(SecurityUtils.getConnectedUser(), pageable);
-		return new ResponseWrapper<List<NoteDeFraisDTO>>(noteDeFraisService.mapNoteDeFrais(findByPersonne),findByPersonne.getTotalElements());
+		Page<NoteDeFrais> findByEmploye = noteDeFraisService.findByEmploye(SecurityUtils.getConnectedUser(), pageable);
+		return new ResponseWrapper<List<NoteDeFraisDTO>>(noteDeFraisService.mapNoteDeFrais(findByEmploye),findByEmploye.getTotalElements());
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
@@ -85,7 +85,7 @@ public class NoteDeFraisController extends RestCrudControllerAdapter<NoteDeFrais
 		try {
 			NoteDeFrais noteDeFrais = dto.toNoteDeFrais();
 			noteDeFrais.setDate(new Date());
-			noteDeFrais.setPersonne(SecurityUtils.getConnectedUser());
+			noteDeFrais.setEmploye(SecurityUtils.getConnectedUser());
 			if(!dto.getAttachementsIds().isEmpty()){
 				List<Attachement> findAttachementsByIds = attachementService.findAttachementsByIds(dto.getAttachementsIds().toArray(new Long[dto.getAttachementsIds().size()]));
 				for(Attachement attachement:findAttachementsByIds){

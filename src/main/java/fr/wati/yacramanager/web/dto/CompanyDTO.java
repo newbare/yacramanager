@@ -29,6 +29,8 @@ public class CompanyDTO {
 	public Company toCompany(Company company) {
 		company.setName(getName());
 		company.setLicenseEndDate(getLicenseEndDate());
+		company.setRegisteredDate(getRegisteredDate());
+		company.setContacts(getContacts());
 		return company;
 	}
 	/**

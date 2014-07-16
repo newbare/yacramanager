@@ -1,9 +1,9 @@
 package fr.wati.yacramanager.web.dto;
 
-import fr.wati.yacramanager.beans.Personne;
+import fr.wati.yacramanager.beans.Employe;
 
 @SuppressWarnings("serial")
-public class UserInfoDTO extends Personne {
+public class UserInfoDTO extends Employe {
 
 	
 	private Navigation navigation;

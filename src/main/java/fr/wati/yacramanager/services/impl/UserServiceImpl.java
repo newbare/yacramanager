@@ -6,7 +6,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import fr.wati.yacramanager.beans.Users;
 import fr.wati.yacramanager.dao.UsersRepository;
-import fr.wati.yacramanager.services.CrudService;
 import fr.wati.yacramanager.services.UserService;
 
 @Transactional
@@ -79,6 +78,9 @@ public class UserServiceImpl implements UserService{
 		usersRepository.deleteAll();
 	}
 
+	public Users findByUsername(String username){
+		return usersRepository.findByUsername(username);
+	}
 	
 	
 }

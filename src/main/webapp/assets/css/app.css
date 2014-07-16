@@ -455,6 +455,16 @@ a .badge {
 	overflow: auto;
 }
 
+.scrollable-x{
+	max-width: 100%;
+	overflow: auto;
+}
+
+.scrollable-y{
+	max-height: 100%;
+	overflow: auto;
+}
+
 .cra-we {
 	background-color: LightGray;
 }

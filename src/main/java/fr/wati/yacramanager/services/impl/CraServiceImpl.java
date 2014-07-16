@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import fr.wati.yacramanager.beans.Absence;
-import fr.wati.yacramanager.beans.Personne;
+import fr.wati.yacramanager.beans.Employe;
 import fr.wati.yacramanager.services.AbsenceService;
 import fr.wati.yacramanager.services.CraService;
 import fr.wati.yacramanager.utils.CalendarUtil;
@@ -30,12 +30,12 @@ public class CraServiceImpl implements CraService {
 	private AbsenceService absenceService;
 
 	@Override
-	public CraDTO generateCra(Personne personne, Date startDate, Date endDate) {
+	public CraDTO generateCra(Employe employe, Date startDate, Date endDate) {
 		CraDTO craDTO = new CraDTO(startDate, endDate);
 		Iterator<Date> dateIterator = new DateIterator(startDate, endDate);
 		Day day = null;
 		List<Absence> absences = absenceService
-				.findByPersonneAndStartDateBetween(personne, startDate, endDate);
+				.findByEmployeAndStartDateBetween(employe, startDate, endDate);
 		while (dateIterator.hasNext()) {
 			Date currentDate = dateIterator.next();
 			day = new Day();

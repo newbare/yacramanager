@@ -33,7 +33,7 @@ public class NoteDeFrais implements Serializable{
 	@OneToMany(mappedBy="noteDeFrais")
 	private List<Attachement> attachements=new ArrayList<>();
 	@ManyToOne
-	private Personne personne;
+	private Employe employe;
 	
 	
 	
@@ -88,14 +88,14 @@ public class NoteDeFrais implements Serializable{
 	/**
 	 * @return the personne
 	 */
-	public Personne getPersonne() {
-		return personne;
+	public Employe getEmploye() {
+		return employe;
 	}
 	/**
-	 * @param personne the personne to set
+	 * @param employe the personne to set
 	 */
-	public void setPersonne(Personne personne) {
-		this.personne = personne;
+	public void setEmploye(Employe employe) {
+		this.employe = employe;
 	}
 	/**
 	 * @return the description

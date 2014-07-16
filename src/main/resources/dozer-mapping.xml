@@ -3,19 +3,19 @@
 	xsi:schemaLocation="http://dozer.sourceforge.net
           http://dozer.sourceforge.net/schema/beanmapping.xsd">
 	<mapping>
-		<class-a>fr.wati.yacramanager.beans.Personne</class-a>
+		<class-a>fr.wati.yacramanager.beans.Employe</class-a>
 		<class-b>fr.wati.yacramanager.web.dto.UserInfoDTO</class-b>
 		<field-exclude>
 			<a>absences</a>
 			<b>absences</b>
 		</field-exclude>
-		<field-exclude type="one-way">
-			<a>roles.users</a>
-			<b>roles.users</b>
+		<field-exclude>
+			<a>projects</a>
+			<b>projects</b>
 		</field-exclude>
 		<field-exclude>
-			<a>entreprise.persones</a>
-			<b>entreprise.persones</b>
+			<a>workLogs</a>
+			<b>workLogs</b>
 		</field-exclude>
 	</mapping>
 	<mapping>
@@ -24,6 +24,18 @@
 		<field-exclude>
 			<a>users</a>
 			<b>users</b>
+		</field-exclude>
+	</mapping>
+	<mapping>
+		<class-a>fr.wati.yacramanager.beans.Company</class-a>
+		<class-b>fr.wati.yacramanager.beans.Company</class-b>
+		<field-exclude>
+			<a>employes</a>
+			<b>employes</b>
+		</field-exclude>
+		<field-exclude>
+			<a>clients</a>
+			<b>clients</b>
 		</field-exclude>
 	</mapping>
 </mappings> 

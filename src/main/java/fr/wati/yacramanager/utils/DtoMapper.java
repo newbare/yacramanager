@@ -9,10 +9,10 @@ import fr.wati.yacramanager.beans.Absence;
 import fr.wati.yacramanager.beans.Attachement;
 import fr.wati.yacramanager.beans.Client;
 import fr.wati.yacramanager.beans.Company;
+import fr.wati.yacramanager.beans.Employe;
 import fr.wati.yacramanager.beans.NoteDeFrais;
-import fr.wati.yacramanager.beans.Personne;
 import fr.wati.yacramanager.beans.Users;
-import fr.wati.yacramanager.dao.PersonneDto;
+import fr.wati.yacramanager.dao.EmployeDto;
 import fr.wati.yacramanager.dao.UserDto;
 import fr.wati.yacramanager.web.dto.AbsenceDTO;
 import fr.wati.yacramanager.web.dto.ClientDTO;
@@ -114,26 +114,26 @@ public class DtoMapper {
 		return dtos;
 	}
 	
-	public static PersonneDto map(Personne personne) {
-		PersonneDto dto = new PersonneDto();
-		dto.setId(Long.valueOf(personne.getId().toString()));
-		dto.setUsername(personne.getUsername());
-		dto.setPassword(personne.getPassword());
-		dto.setNom(personne.getNom());
-		dto.setPrenom(personne.getPrenom());
-		dto.setCivilite(personne.getCivilite());
-		dto.setCodePostal(personne.getContact().getAdresse().getCodePostal());
-		dto.setEmail(personne.getContact().getEmail());
-		dto.setRue(personne.getContact().getAdresse().getRue());
-		dto.setDateNaissance(personne.getDateNaissance());
-		dto.setNumeroTelephone(personne.getContact().getNumeroTelephone());
+	public static EmployeDto map(Employe employe) {
+		EmployeDto dto = new EmployeDto();
+		dto.setId(Long.valueOf(employe.getId().toString()));
+		dto.setUsername(employe.getUsername());
+		dto.setPassword(employe.getPassword());
+		dto.setNom(employe.getNom());
+		dto.setPrenom(employe.getPrenom());
+		dto.setCivilite(employe.getCivilite());
+		dto.setCodePostal(employe.getContact().getAdresse().getCodePostal());
+		dto.setEmail(employe.getContact().getEmail());
+		dto.setRue(employe.getContact().getAdresse().getRue());
+		dto.setDateNaissance(employe.getDateNaissance());
+		dto.setNumeroTelephone(employe.getContact().getNumeroTelephone());
 		return dto;
 	}
 
-	public static List<PersonneDto> mapPersonne(Page<Personne> personnes) {
-		List<PersonneDto> dtos = new ArrayList<PersonneDto>();
-		for (Personne personne : personnes) {
-			dtos.add(map(personne));
+	public static List<EmployeDto> mapEmployees(Page<Employe> employees) {
+		List<EmployeDto> dtos = new ArrayList<EmployeDto>();
+		for (Employe employe : employees) {
+			dtos.add(map(employe));
 		}
 		return dtos;
 	}

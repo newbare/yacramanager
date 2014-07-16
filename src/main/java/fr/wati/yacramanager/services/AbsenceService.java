@@ -7,17 +7,17 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import fr.wati.yacramanager.beans.Absence;
-import fr.wati.yacramanager.beans.Personne;
+import fr.wati.yacramanager.beans.Employe;
 
 public interface AbsenceService extends CrudService<Absence, Long>{
 	
 	Page<Absence> findByStartDateBetween(Date dateDebut,Date dateFin,Pageable pageable);
 	
-	Page<Absence> findByPersonneAndStartDateBetween(Personne personne,Date dateDebut,Date dateFin,Pageable pageable);
+	Page<Absence> findByEmployeAndStartDateBetween(Employe employe,Date dateDebut,Date dateFin,Pageable pageable);
 	
-	List<Absence> findByPersonneAndStartDateBetween(Personne personne,Date dateDebut,Date dateFin);
+	List<Absence> findByEmployeAndStartDateBetween(Employe employe,Date dateDebut,Date dateFin);
 	
-	Page<Absence> findByPersonne(Personne personne,Pageable pageable);
+	Page<Absence> findByEmploye(Employe employe,Pageable pageable);
 	
 	void validateAbsence(Absence absence);
 }

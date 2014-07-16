@@ -61,7 +61,7 @@ public class AbsenceController implements RestCrudController<AbsenceDTO> {
 			size=100;
 		}
 		PageRequest pageable=new PageRequest(page, size,new Sort(new Order(Direction.DESC,orderBy)));
-		Page<Absence> findByPersonne = absenceService.findByPersonne(SecurityUtils.getConnectedUser(), pageable);
+		Page<Absence> findByPersonne = absenceService.findByEmploye(SecurityUtils.getConnectedUser(), pageable);
 		return new ResponseWrapper<List<AbsenceDTO>>(DtoMapper.mapAbsences(findByPersonne),findByPersonne.getTotalElements());
 	}
 
@@ -70,7 +70,7 @@ public class AbsenceController implements RestCrudController<AbsenceDTO> {
 	public ResponseEntity<String> create(@RequestBody AbsenceDTO dto) {
 		Absence absence = dto.toAbsence();
 		absence.setDate(new Date());
-		absence.setPersonne(SecurityUtils.getConnectedUser());
+		absence.setEmploye(SecurityUtils.getConnectedUser());
 		absenceService.save(absence);
 		return new ResponseEntity<>(HttpStatus.CREATED);
 	}

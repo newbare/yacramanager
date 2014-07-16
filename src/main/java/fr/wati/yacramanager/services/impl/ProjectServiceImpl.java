@@ -29,6 +29,7 @@ public class ProjectServiceImpl implements ProjectService{
 	public Project createProject(Long clientId,Project project){
 		Client client=clientRepository.findOne(clientId);
 		project.setClient(client);
+		project.setCreatedDate(new Date());
 		Project saveProject = projectRepository.save(project);
 		client.getProjects().add(project);
 		/*

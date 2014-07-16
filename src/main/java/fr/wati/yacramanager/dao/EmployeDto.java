@@ -5,7 +5,7 @@ import java.util.Date;
 import fr.wati.yacramanager.beans.Civilite;
 
 @SuppressWarnings("serial")
-public class PersonneDto extends UserDto {
+public class EmployeDto extends UserDto {
 
 	private String nom;
 	private String prenom;
@@ -16,7 +16,7 @@ public class PersonneDto extends UserDto {
 	private String rue;
 	private String codePostal;
 	
-	public PersonneDto() {
+	public EmployeDto() {
 	}
 	public String getNom() {
 		return nom;

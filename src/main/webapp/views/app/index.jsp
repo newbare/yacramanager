@@ -55,9 +55,9 @@
 						data-ui-sref="absences">Absences</a></li>
 					<li data-ng-class="navClass('timesheet')"><a
 						data-ui-sref="timesheet">Timesheet</a></li>
-					<li data-has-role="ROLE_SSII_ADMIN"
-						data-ng-class="navClass('company/home') +navClass('company/employees') + navClass('company/clients')+ navClass('company/projects')+navClass('company/messages')+navClass('company/settings')"><a data-ui-sref="company">Company</a></li>
-					<li data-has-role="ROLE_ADMIN" data-ng-class="navClass('admin')"><a
+					<li data-has-role="ROLE_SSII_ADMIN" data-ng-cloak
+						data-ng-class="navClass('company/home') +navClass('company/employees') + navClass('company/clients')+ navClass('company/projects')+navClass('company/messages')+navClass('company/settings')"><a data-ui-sref="company">{{userInfo.company.name}}</a></li>
+					<li data-has-role="ROLE_ADMIN" data-ng-class="navClass('admin/home')+navClass('admin')"><a
 						data-ui-sref="admin">Admin</a></li>
 					<li data-ng-class="navClass('notifications')"><a
 						data-ui-sref="notifications">Notifications</a></li>

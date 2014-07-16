@@ -23,10 +23,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import fr.wati.yacramanager.beans.Personne;
-import fr.wati.yacramanager.dao.PersonRepository;
-import fr.wati.yacramanager.dao.PersonneDto;
-import fr.wati.yacramanager.services.impl.PersonServiceImpl;
+import fr.wati.yacramanager.beans.Employe;
+import fr.wati.yacramanager.dao.EmployeDto;
+import fr.wati.yacramanager.dao.EmployeRepository;
+import fr.wati.yacramanager.services.impl.EmployeServiceImpl;
 import fr.wati.yacramanager.utils.DtoMapper;
 import fr.wati.yacramanager.utils.SecurityUtils;
 import fr.wati.yacramanager.web.dto.Navigation;
@@ -35,18 +35,18 @@ import fr.wati.yacramanager.web.dto.UserInfoDTO;
 
 @Controller
 @RequestMapping(value = "/app/api/users")
-public class UserRestController implements RestCrudController<PersonneDto>{
+public class UserRestController implements RestCrudController<EmployeDto>{
 
 	private static final Log LOG=LogFactory.getLog(UserRestController.class);
 	@Autowired
-	private PersonServiceImpl personneService;
+	private EmployeServiceImpl employeService;
 	@Autowired
-	private PersonRepository personRepository;
+	private EmployeRepository employeRepository;
 
   @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-  public @ResponseBody PersonneDto read(@PathVariable("id") Long id) {
+  public @ResponseBody EmployeDto read(@PathVariable("id") Long id) {
 	  
-	Personne findOne = personRepository.findOne(id);
+	Employe findOne = employeRepository.findOne(id);
 	if(findOne!=null){
 		return DtoMapper.map(findOne);
 	}
@@ -55,40 +55,40 @@ public class UserRestController implements RestCrudController<PersonneDto>{
 
   @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
   @ResponseStatus(HttpStatus.NO_CONTENT)
-  public void update(@PathVariable("id") Long id, @RequestBody PersonneDto personneDto) {
-	  Personne personne = personRepository.findOne(id.longValue());
-	  personne.setPrenom(personneDto.getPrenom());
-	  personne.setNom(personneDto.getNom());
-	  personne.setUsername(personneDto.getUsername());
-	  personne.setCivilite(personneDto.getCivilite());
-	  personne.setDateNaissance(personneDto.getDateNaissance());
-	  personne.getContact().setEmail(personneDto.getEmail());
-	  personneService.save(personne);
+  public void update(@PathVariable("id") Long id, @RequestBody EmployeDto employeDto) {
+	  Employe employe = employeRepository.findOne(id.longValue());
+	  employe.setPrenom(employeDto.getPrenom());
+	  employe.setNom(employeDto.getNom());
+	  employe.setUsername(employeDto.getUsername());
+	  employe.setCivilite(employeDto.getCivilite());
+	  employe.setDateNaissance(employeDto.getDateNaissance());
+	  employe.getContact().setEmail(employeDto.getEmail());
+	  employeService.save(employe);
   }
 
   @RequestMapping(method = RequestMethod.POST)
-  public ResponseEntity<String> create(@RequestBody PersonneDto personneDto) {
-	  Personne personne=new Personne();
-	  personne.setPrenom(personneDto.getPrenom());
-	  personne.setNom(personneDto.getNom());
-	  personne.setUsername(personneDto.getUsername());
-	  personne.setPassword(personneDto.getPassword());
-	  personne.setCivilite(personneDto.getCivilite());
-	  personne.setDateNaissance(personneDto.getDateNaissance());
-	  personne.getContact().setEmail(personneDto.getEmail());
-	  personneService.save(personne);
-	  return new ResponseEntity<String>(personneDto.getNom()+" created", HttpStatus.CREATED);
+  public ResponseEntity<String> create(@RequestBody EmployeDto employeDto) {
+	  Employe employe=new Employe();
+	  employe.setPrenom(employeDto.getPrenom());
+	  employe.setNom(employeDto.getNom());
+	  employe.setUsername(employeDto.getUsername());
+	  employe.setPassword(employeDto.getPassword());
+	  employe.setCivilite(employeDto.getCivilite());
+	  employe.setDateNaissance(employeDto.getDateNaissance());
+	  employe.getContact().setEmail(employeDto.getEmail());
+	  employeService.save(employe);
+	  return new ResponseEntity<String>(employeDto.getNom()+" created", HttpStatus.CREATED);
   }
 
   @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
   @ResponseStatus(HttpStatus.NO_CONTENT)
   public void delete(@PathVariable("id") Long id) {
-	  personneService.delete(id.longValue());
+	  employeService.delete(id.longValue());
   }
 
 @Override
 @RequestMapping(method=RequestMethod.GET)
-public @ResponseBody ResponseWrapper<List<PersonneDto>> getAll(@RequestParam(required=false) Integer page,@RequestParam(required=false) Integer size,@RequestParam(required=false,defaultValue="id") String orderBy) {
+public @ResponseBody ResponseWrapper<List<EmployeDto>> getAll(@RequestParam(required=false) Integer page,@RequestParam(required=false) Integer size,@RequestParam(required=false,defaultValue="id") String orderBy) {
 	if(page==null){
 		page=0;
 	}
@@ -96,15 +96,15 @@ public @ResponseBody ResponseWrapper<List<PersonneDto>> getAll(@RequestParam(req
 		size=100;
 	}
 	Pageable pageRequest = new PageRequest(page, size,new Sort(new Order(orderBy)));
-	Page<Personne> all = personRepository.findAll(pageRequest);
-	return new ResponseWrapper<List<PersonneDto>>(DtoMapper.mapPersonne(all),all.getTotalElements());
+	Page<Employe> all = employeRepository.findAll(pageRequest);
+	return new ResponseWrapper<List<EmployeDto>>(DtoMapper.mapEmployees(all),all.getTotalElements());
 }
 
 @RequestMapping(value="/user-info", method=RequestMethod.GET)
 public @ResponseBody UserInfoDTO getConnectedUserInfo(HttpServletRequest request) throws Exception{
 	try {
 		String contextPath=request.getContextPath();
-		 UserInfoDTO userInfoDTO = personneService.toUserInfoDTO(SecurityUtils.getConnectedUser().getId());
+		 UserInfoDTO userInfoDTO = employeService.toUserInfoDTO(SecurityUtils.getConnectedUser().getId());
 		 userInfoDTO.setNavigation(Navigation.buildNavigationDefault(userInfoDTO,contextPath));
 		 return userInfoDTO;
 	} catch (Exception e) {

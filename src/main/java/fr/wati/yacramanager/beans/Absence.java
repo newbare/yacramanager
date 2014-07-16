@@ -30,7 +30,7 @@ public class Absence implements Serializable {
 	private String description;
 	private boolean validated;
 	@ManyToOne
-	private Personne personne;
+	private Employe employe;
 	@Enumerated(EnumType.STRING)
 	private TypeAbsence typeAbsence;
 	
@@ -110,12 +110,20 @@ public class Absence implements Serializable {
 		this.endDate = endDate;
 	}
 
-	public Personne getPersonne() {
-		return personne;
+	
+
+	/**
+	 * @return the employe
+	 */
+	public Employe getEmploye() {
+		return employe;
 	}
 
-	public void setPersonne(Personne personne) {
-		this.personne = personne;
+	/**
+	 * @param employe the employe to set
+	 */
+	public void setEmploye(Employe employe) {
+		this.employe = employe;
 	}
 
 	public TypeAbsence getTypeAbsence() {

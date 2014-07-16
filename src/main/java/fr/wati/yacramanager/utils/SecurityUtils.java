@@ -8,8 +8,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 
-import fr.wati.yacramanager.beans.Personne;
-import fr.wati.yacramanager.services.impl.PersonServiceImpl;
+import fr.wati.yacramanager.beans.Employe;
+import fr.wati.yacramanager.services.impl.EmployeServiceImpl;
 
 /**
  * @author Rachid-home
@@ -45,8 +45,8 @@ public class SecurityUtils implements ApplicationContextAware{
 		return user;
 	}
 	
-	public static Personne getConnectedUser(){
-		return applicationContext.getBean(PersonServiceImpl.class).findByUsername(getUser().getUsername());
+	public static Employe getConnectedUser(){
+		return applicationContext.getBean(EmployeServiceImpl.class).findByUsername(getUser().getUsername());
 	}
 
 	/* (non-Javadoc)

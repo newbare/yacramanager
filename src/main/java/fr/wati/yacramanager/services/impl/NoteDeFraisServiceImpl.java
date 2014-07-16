@@ -8,12 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import fr.wati.yacramanager.beans.Attachement;
+import fr.wati.yacramanager.beans.Employe;
 import fr.wati.yacramanager.beans.NoteDeFrais;
-import fr.wati.yacramanager.beans.Personne;
 import fr.wati.yacramanager.dao.NoteDeFraisRepository;
 import fr.wati.yacramanager.services.NoteDeFraisService;
 import fr.wati.yacramanager.web.dto.NoteDeFraisDTO;
@@ -125,26 +124,26 @@ public class NoteDeFraisServiceImpl implements NoteDeFraisService {
 	 * @see fr.wati.yacramanager.services.NoteDeFraisService#findByPersonneAndDateBetween(fr.wati.yacramanager.beans.Personne, java.util.Date, java.util.Date, org.springframework.data.domain.Pageable)
 	 */
 	@Override
-	public Page<NoteDeFrais> findByPersonneAndDateBetween(
-			Personne personne, Date dateDebut, Date dateFin, Pageable pageable) {
-		return noteDeFraisRepository.findByPersonneAndDateBetween(personne, dateDebut, dateFin, pageable);
+	public Page<NoteDeFrais> findByEmployeAndDateBetween(
+			Employe employe, Date dateDebut, Date dateFin, Pageable pageable) {
+		return noteDeFraisRepository.findByEmployeAndDateBetween(employe, dateDebut, dateFin, pageable);
 	}
 
 	/* (non-Javadoc)
 	 * @see fr.wati.yacramanager.services.NoteDeFraisService#findByPersonneAndDateBetween(fr.wati.yacramanager.beans.Personne, java.util.Date, java.util.Date)
 	 */
 	@Override
-	public List<NoteDeFrais> findByPersonneAndDateBetween(
-			Personne personne, Date dateDebut, Date dateFin) {
-		return noteDeFraisRepository.findByPersonneAndDateBetween(personne, dateDebut, dateFin);
+	public List<NoteDeFrais> findByEmployeAndDateBetween(
+			Employe employe, Date dateDebut, Date dateFin) {
+		return noteDeFraisRepository.findByEmployeAndDateBetween(employe, dateDebut, dateFin);
 	}
 
 	/* (non-Javadoc)
 	 * @see fr.wati.yacramanager.services.NoteDeFraisService#findByPersonne(fr.wati.yacramanager.beans.Personne, org.springframework.data.domain.Pageable)
 	 */
 	@Override
-	public Page<NoteDeFrais> findByPersonne(Personne personne, Pageable pageable) {
-		return noteDeFraisRepository.findByPersonne(personne, pageable);
+	public Page<NoteDeFrais> findByEmploye(Employe employe, Pageable pageable) {
+		return noteDeFraisRepository.findByEmploye(employe, pageable);
 	}
 
 	@Transactional

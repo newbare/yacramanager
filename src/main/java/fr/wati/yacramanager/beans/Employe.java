@@ -3,13 +3,10 @@
  */
 package fr.wati.yacramanager.beans;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
@@ -21,56 +18,44 @@ import javax.persistence.OneToMany;
 @Entity
 public class Employe extends Personne {
 
-	@ManyToMany(cascade = CascadeType.ALL)
-	@JoinTable(name = "projects_employees", joinColumns = { @JoinColumn(name = "employeId") }, inverseJoinColumns = { @JoinColumn(name = "projectId") })
-	private List<Project> projects;
-	@OneToMany(mappedBy="employe")
-	private List<Task> tasks;
-	@OneToMany(mappedBy="employe")
-	private List<WorkLog> workLogs;
 	@ManyToOne
 	private Company company;
+	@OneToMany(mappedBy="employe")
+	private List<Absence> absences=new ArrayList<>();
+	
+	@OneToMany(mappedBy="employe")
+	private List<NoteDeFrais> noteDeFrais=new ArrayList<>();
 
-	/**
-	 * @return the projects
-	 */
-	public List<Project> getProjects() {
-		return projects;
+	
+	public List<Absence> getAbsences() {
+		return absences;
 	}
-
-	/**
-	 * @param projects the projects to set
-	 */
-	public void setProjects(List<Project> projects) {
-		this.projects = projects;
+	public void setAbsences(List<Absence> absences) {
+		this.absences = absences;
 	}
-
 	/**
-	 * @return the tasks
+	 * @return the company
 	 */
-	public List<Task> getTasks() {
-		return tasks;
+	public Company getCompany() {
+		return company;
 	}
-
 	/**
-	 * @param tasks the tasks to set
+	 * @param company the company to set
 	 */
-	public void setTasks(List<Task> tasks) {
-		this.tasks = tasks;
+	public void setCompany(Company company) {
+		this.company = company;
 	}
-
 	/**
-	 * @return the workLogs
+	 * @return the noteDeFrais
 	 */
-	public List<WorkLog> getWorkLogs() {
-		return workLogs;
+	public List<NoteDeFrais> getNoteDeFrais() {
+		return noteDeFrais;
 	}
-
 	/**
-	 * @param workLogs the workLogs to set
+	 * @param noteDeFrais the noteDeFrais to set
 	 */
-	public void setWorkLogs(List<WorkLog> workLogs) {
-		this.workLogs = workLogs;
+	public void setNoteDeFrais(List<NoteDeFrais> noteDeFrais) {
+		this.noteDeFrais = noteDeFrais;
 	}
 	
 	

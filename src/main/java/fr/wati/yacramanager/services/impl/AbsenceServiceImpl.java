@@ -9,7 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import fr.wati.yacramanager.beans.Absence;
-import fr.wati.yacramanager.beans.Personne;
+import fr.wati.yacramanager.beans.Employe;
 import fr.wati.yacramanager.dao.AbsenceRepository;
 import fr.wati.yacramanager.services.AbsenceService;
 
@@ -100,22 +100,22 @@ public class AbsenceServiceImpl implements AbsenceService {
 
 
 	@Override
-	public Page<Absence> findByPersonneAndStartDateBetween(Personne personne,
+	public Page<Absence> findByEmployeAndStartDateBetween(Employe employe,
 			Date dateDebut, Date dateFin, Pageable pageable) {
-		return absenceRepository.findByPersonneAndStartDateBetween(personne, dateDebut, dateFin, pageable);
+		return absenceRepository.findByEmployeAndStartDateBetween(employe, dateDebut, dateFin, pageable);
 	}
 
 
 	@Override
-	public Page<Absence> findByPersonne(Personne personne, Pageable pageable) {
-		return absenceRepository.findByPersonne(personne, pageable);
+	public Page<Absence> findByEmploye(Employe employe, Pageable pageable) {
+		return absenceRepository.findByEmploye(employe, pageable);
 	}
 
 
 	@Override
-	public List<Absence> findByPersonneAndStartDateBetween(Personne personne,
+	public List<Absence> findByEmployeAndStartDateBetween(Employe employe,
 			Date dateDebut, Date dateFin) {
-		return absenceRepository.findByPersonneAndStartDateBetween(personne, dateDebut, dateFin);
+		return absenceRepository.findByEmployeAndStartDateBetween(employe, dateDebut, dateFin);
 	}
 
 }
