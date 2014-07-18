@@ -4,6 +4,7 @@
 package fr.wati.yacramanager.web.api;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
 
@@ -34,8 +35,7 @@ public class RestCrudControllerAdapter<DTO> implements RestCrudController<DTO> {
 	 * @see fr.wati.yacramanager.web.rest.RestCrudController#getAll(java.lang.Integer, java.lang.Integer, java.lang.String)
 	 */
 	@Override
-	public ResponseWrapper<List<DTO>> getAll(Integer page, Integer Integer,
-			String orderBy) {
+	public ResponseWrapper<List<DTO>> getAll(Integer page,Integer size,Map<String, String> sort,Map<String, String> filter) {
 		return null;
 	}
 

@@ -1,6 +1,7 @@
 package fr.wati.yacramanager.web.api;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
 
@@ -12,7 +13,7 @@ public interface RestCrudController<DTO> {
 
 	void update(Long id, DTO dto);
 	
-	ResponseWrapper<List<DTO>> getAll(Integer page,Integer Integer,String orderBy);
+	ResponseWrapper<List<DTO>> getAll(Integer page,Integer Integer,Map<String, String> sort,Map<String, String> filter);
 
 	ResponseEntity<String> create(DTO dto);
 

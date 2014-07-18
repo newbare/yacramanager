@@ -117,7 +117,7 @@ function AbsencesController($scope, $rootScope, AbsenceCRUDREST,
 		page : 1, // show first page
 		count : 10, // count per page
 		sorting : {
-			name : 'asc' // initial sorting
+			date : 'desc' // initial sorting
 		}
 	}, {
 		total : 0, // length of data
@@ -126,7 +126,9 @@ function AbsencesController($scope, $rootScope, AbsenceCRUDREST,
 			AbsenceCRUDREST.get(
 					{
 						page:params.$params.page-1,
-						size:params.$params.count
+						size:params.$params.count,
+						sort:params.$params.sorting,
+						filter:params.$params.filter
 					},function(data) {
 				params.total(data.totalCount);
 				if(data.totalCount>=1){

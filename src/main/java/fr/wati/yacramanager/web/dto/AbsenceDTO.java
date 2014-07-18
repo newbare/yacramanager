@@ -7,11 +7,11 @@ import fr.wati.yacramanager.beans.Absence;
 public class AbsenceDTO {
 
 	private Long id;
-	private Date postedDate;
+	private Date date;
 	private String description;
 	private Date startDate;
 	private Date endDate;
-	private String type;
+	private String typeAbsence;
 	private boolean startAfternoon;
 	private boolean endMorning;
 	private boolean validated;
@@ -22,8 +22,8 @@ public class AbsenceDTO {
 		absence.setStartDate(getStartDate());
 		absence.setStartAfternoon(isStartAfternoon());
 		absence.setEndMorning(isEndMorning());
-		absence.setDate(getPostedDate());
-		absence.setTypeAbsence(TypeAbsence.valueOf(getType()));
+		absence.setDate(getDate());
+		absence.setTypeAbsence(TypeAbsence.valueOf(getTypeAbsence()));
 		absence.setValidated(isValidated());
 		return absence;
 	}
@@ -36,8 +36,8 @@ public class AbsenceDTO {
 		absenceDTO.setStartAfternoon(absence.isStartAfternoon());
 		absenceDTO.setEndMorning(absence.isEndMorning());
 		absenceDTO.setValidated(absence.isValidated());
-		absenceDTO.setType(absence.getTypeAbsence().name());
-		absenceDTO.setPostedDate(absence.getDate());
+		absenceDTO.setTypeAbsence(absence.getTypeAbsence().name());
+		absenceDTO.setDate(absence.getDate());
 		absenceDTO.setId(absence.getId());
 		return absenceDTO;
 	}
@@ -62,12 +62,12 @@ public class AbsenceDTO {
 		return toAbsence(new Absence());
 	}
 	
-	public Date getPostedDate() {
-		return postedDate;
+	public Date getDate() {
+		return date;
 	}
 
-	public void setPostedDate(Date postedDate) {
-		this.postedDate = postedDate;
+	public void setDate(Date date) {
+		this.date = date;
 	}
 
 	public String getDescription() {
@@ -88,11 +88,11 @@ public class AbsenceDTO {
 	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
 	}
-	public String getType() {
-		return type;
+	public String getTypeAbsence() {
+		return typeAbsence;
 	}
-	public void setType(String type) {
-		this.type = type;
+	public void setTypeAbsence(String typeAbsence) {
+		this.typeAbsence = typeAbsence;
 	}
 	public boolean isStartAfternoon() {
 		return startAfternoon;

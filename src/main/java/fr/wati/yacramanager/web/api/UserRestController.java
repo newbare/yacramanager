@@ -1,6 +1,9 @@
 package fr.wati.yacramanager.web.api;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -11,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.domain.Sort.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -88,15 +92,25 @@ public class UserRestController implements RestCrudController<EmployeDto>{
 
 @Override
 @RequestMapping(method=RequestMethod.GET)
-public @ResponseBody ResponseWrapper<List<EmployeDto>> getAll(@RequestParam(required=false) Integer page,@RequestParam(required=false) Integer size,@RequestParam(required=false,defaultValue="id") String orderBy) {
+public @ResponseBody ResponseWrapper<List<EmployeDto>> getAll(@RequestParam(required=false) Integer page,@RequestParam(required=false) Integer size,@RequestParam(value="sort", required=false) Map<String, String> sort,@RequestParam(value="filter", required=false) Map<String, String> filter) {
 	if(page==null){
 		page=0;
 	}
 	if(size==null){
 		size=100;
 	}
-	Pageable pageRequest = new PageRequest(page, size,new Sort(new Order(orderBy)));
-	Page<Employe> all = employeRepository.findAll(pageRequest);
+	PageRequest pageable=null;
+	if(sort!=null){
+		List<Order> orders=new ArrayList<>();
+		for(Entry<String, String> entry:sort.entrySet()){
+			Order order=new Order("asc".equals(entry.getValue())?Direction.ASC:Direction.DESC, entry.getKey());
+			orders.add(order);
+		}
+		pageable=new PageRequest(page, size, new Sort(orders));
+	}else {
+		pageable=new PageRequest(page, size);
+	}
+	Page<Employe> all = employeRepository.findAll(pageable);
 	return new ResponseWrapper<List<EmployeDto>>(DtoMapper.mapEmployees(all),all.getTotalElements());
 }
 

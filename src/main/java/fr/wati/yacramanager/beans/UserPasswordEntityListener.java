@@ -16,7 +16,7 @@ public class UserPasswordEntityListener {
 	}
 	@PrePersist
 	public void create(Users users){
-		encodePassword(users);
+//		encodePassword(users);
 	}
 	private void encodePassword(Users users) {
 		//Encode password before save

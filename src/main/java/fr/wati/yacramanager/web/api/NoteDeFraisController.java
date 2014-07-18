@@ -5,7 +5,10 @@ package fr.wati.yacramanager.web.api;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -17,6 +20,8 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.domain.Sort.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -51,7 +56,7 @@ public class NoteDeFraisController extends RestCrudControllerAdapter<NoteDeFrais
 	
 	@Autowired
 	private AttachementService attachementService;
-
+	
 	@Override
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public @ResponseBody NoteDeFraisDTO read(@PathVariable("id") Long id) {
@@ -68,14 +73,28 @@ public class NoteDeFraisController extends RestCrudControllerAdapter<NoteDeFrais
 
 	@Override
 	@RequestMapping(method = RequestMethod.GET)
-	public ResponseWrapper<List<NoteDeFraisDTO>> getAll(@RequestParam(required=false) Integer page,@RequestParam(required=false) Integer size,@RequestParam(required=false,defaultValue="date") String orderBy) {
+	public ResponseWrapper<List<NoteDeFraisDTO>> getAll(@RequestParam(required=false) Integer page,@RequestParam(required=false) Integer size,@RequestParam(value="sort", required=false) Map<String, String> sort,@RequestParam(value="filter", required=false) Map<String, String> filter) {
 		if(page==null){
 			page=0;
 		}
 		if(size==null){
 			size=100;
 		}
-		PageRequest pageable=new PageRequest(page, size,new Sort(new Order(Direction.DESC,orderBy)));
+		PageRequest pageable=null;
+		if(sort!=null){
+			List<Order> orders=new ArrayList<>();
+			for(Entry<String, String> entry:sort.entrySet()){
+				Order order=new Order("asc".equals(entry.getValue())?Direction.ASC:Direction.DESC, entry.getKey());
+				orders.add(order);
+			}
+			if(!orders.isEmpty()){
+				pageable=new PageRequest(page, size, new Sort(orders));
+			}else {
+				pageable=new PageRequest(page, size);
+			}
+		}else {
+			pageable=new PageRequest(page, size);
+		}
 		Page<NoteDeFrais> findByEmploye = noteDeFraisService.findByEmploye(SecurityUtils.getConnectedUser(), pageable);
 		return new ResponseWrapper<List<NoteDeFraisDTO>>(noteDeFraisService.mapNoteDeFrais(findByEmploye),findByEmploye.getTotalElements());
 	}

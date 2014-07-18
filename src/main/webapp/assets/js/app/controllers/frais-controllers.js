@@ -2,7 +2,7 @@ function FraisController($scope, $rootScope, NoteCRUDREST, alertService,
 		ngTableParams, notifService, $upload,$modal) {
 	$rootScope.page = {
 		"title" : "Frais",
-		"description" : "Gérer vos note frais"
+		"description" : "Gï¿½rer vos note frais"
 	};
 	$scope.initialActionLabel = "Ajouter une note";
 	$scope.dateFormat = "dd MMMM yyyy";
@@ -102,7 +102,7 @@ function FraisController($scope, $rootScope, NoteCRUDREST, alertService,
 	};
 	$scope.putNote = function() {
 		NoteCRUDREST.update(clone(note)).$promise.then(function(result) {
-			notifService.notify('info', 'Created', 'Modification effectué');
+			notifService.notify('info', 'Created', 'Modification effectuï¿½');
 			$scope.reset();
 			$scope.tableParams.reload();
 		});
@@ -145,15 +145,17 @@ function FraisController($scope, $rootScope, NoteCRUDREST, alertService,
 		page : 1, // show first page
 		count : 10, // count per page
 		sorting : {
-			name : 'asc' // initial sorting
+			date : 'desc' // initial sorting
 		}
 	}, {
 		total : 0, // length of data
 		getData : function($defer, params) {
 
 			NoteCRUDREST.get({
-				page : params.$params.page - 1,
-				size : params.$params.count
+				page:params.$params.page-1,
+				size:params.$params.count,
+				sort:params.$params.sorting,
+				filter:params.$params.filter
 			}, function(data) {
 				params.total(data.totalCount);
 				if (data.totalCount >= 1) {

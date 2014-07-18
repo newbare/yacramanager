@@ -7,11 +7,10 @@
 	<name>Yet Another CRA Manager</name>
 	<packaging>war</packaging>
 	<properties>
-		<org.springframework-version>4.1.0.BUILD-SNAPSHOT</org.springframework-version>
-		<!-- <org.springframework-version>4.0.5.RELEASE</org.springframework-version> -->
-		<!--<org.springframework-version>4.0.4.RELEASE</org.springframework-version> -->
-		<org.springframework.security-version>3.2.0.RELEASE</org.springframework.security-version>
+		<org.springframework-version>4.0.6.RELEASE</org.springframework-version>
+		<org.springframework.security-version>3.2.4.RELEASE</org.springframework.security-version>
 		<versions.aspectj>1.7.3</versions.aspectj>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
 	<dependencies>
@@ -235,6 +234,11 @@
 			<version>1.8.0.10</version>
 			<scope>test</scope>
 		</dependency>
+		<!-- <dependency>
+			<groupId>org.apache.tomcat.maven</groupId>
+				<artifactId>tomcat7-maven-plugin</artifactId>
+				<version>2.2</version>
+		</dependency> -->
 	</dependencies>
 
 	<repositories>
@@ -242,7 +246,7 @@
 			<id>spring-snapshots</id>
 			<url>http://repo.spring.io/snapshot</url>
 			<snapshots>
-				<enabled>true</enabled>
+				<enabled>false</enabled>
 			</snapshots>
 			<releases>
 				<enabled>false</enabled>
@@ -315,6 +319,11 @@
 				<groupId>org.apache.tomcat.maven</groupId>
 				<artifactId>tomcat7-maven-plugin</artifactId>
 				<version>2.2</version>
+			</plugin>
+			<plugin>
+				<groupId>org.mortbay.jetty</groupId>
+				<artifactId>jetty-maven-plugin</artifactId>
+				<version>7.6.3.v20120416</version>
 			</plugin>
 		</plugins>
 	</build>

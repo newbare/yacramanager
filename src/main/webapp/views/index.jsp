@@ -13,11 +13,10 @@
 
 <title>Yacra Manager</title>
 
-<!-- Bootstrap core CSS -->
 <link rel="stylesheet"
-	href="assets/bower_components/bootstrap/dist/css/bootstrap.min.css">
-<%-- <link rel="stylesheet" href="${contextPath}/assets/css/app.css"> --%>
-
+	href="${contextPath}/assets/bower_components/bootstrap/dist/css/bootstrap.min.css">
+<link rel="stylesheet"
+	href="${contextPath}/assets/bower_components/fontawesome/css/font-awesome.min.css">
 <!-- Custom styles for this template -->
 
 <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -30,7 +29,7 @@
 <body>
 
 	<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-		<div class="container">
+		<div class="container-fluid">
 			<div class="navbar-header">
 				<button type="button" class="navbar-toggle" data-toggle="collapse"
 					data-target=".navbar-collapse">
@@ -38,11 +37,17 @@
 						class="icon-bar"></span> <span class="icon-bar"></span> <span
 						class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="#">Project name</a>
+				<a class="navbar-brand" href="#"><i class="fa fa-bolt fa-1x"></i><span>
+						YACRA</span></a>
 			</div>
 			<div class="navbar-collapse collapse">
-
-				<form class="navbar-form navbar-right" role="form" action="auth/login/" method="post">
+				<ul class="nav navtop navbar-nav navbar-right">
+					
+					<li data-ng-class="navClass('notifications')"><a
+						href="app"><i
+							class="fa fa-user"></i>{{userInfo.prenom}} </a></li>
+				</ul>
+				<%-- <form class="navbar-form navbar-right" role="form" action="auth/login/" method="post">
 					<div class="form-group">
 						<label class="sr-only" for="username">Username</label> <input type="text" class="form-control"
 							id="username" placeholder="Username" name="username" required>
@@ -57,7 +62,7 @@
 						</label>
 					</div>
 					<button type="submit" class="btn btn-success">Sign in</button>
-				</form>
+				</form> --%>
 			</div>
 			<!--/.navbar-collapse -->
 		</div>
@@ -119,7 +124,7 @@
 		<hr>
 
 		<footer>
-		<p>&copy; Company 2014</p>
+		<p>&copy; Wati 2014</p>
 		</footer>
 	</div>
 	<!-- /container -->

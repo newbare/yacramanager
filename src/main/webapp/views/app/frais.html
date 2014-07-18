@@ -3,7 +3,7 @@
 		<div class="row">
 			<div class="col-md-4">
 				<!-- Single button -->
-					<button type="button" class="btn btn-primary" "   data-template="../../views/app/templates/edit-notes.tpl.html" data-bs-modal="modal">
+					<button type="button" class="btn btn-primary" data-template="../views/app/templates/edit-notes.tpl.html" data-bs-modal="modal">
 						<span class="fa fa-plus-square" ></span> Ajouter 
 					</button>
 					<button type="button" class="btn btn-default"
@@ -52,43 +52,25 @@
 			</div>
 			
 			<div class="table-responsive">
-				<table class="table table-striped table-bordered table-hover" data-ng-table="tableParams" show-filter="true" ng-show="hasDatas" template-pagination="custom/pager">
-					<thead>
-						<tr>
-							<th colspan="6" ><span>Total items found: {{params.settings().total}} </span></th>
-						</tr>
-						<tr >
-							<th style="width:40px;">
-								<label class="checkbox-inline">
-								  <input type="checkbox" data-ng-model="checkboxes.checked" id="select_all" name="filter-checkbox" value="" />All
-								</label>
-							</th>
-							<th >Date</th>
-							<th>Description</th>
-							<th>Montant</th>
-							<th style="width:20px;" align="center"><i class="fa fa-paperclip"></i></th>
-							<th style="width:20px;"></th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr align="left" data-ng-repeat="note in $data">
-							<td>
+					<table class="table table-striped table-bordered table-hover" data-ng-table="tableParams" data-ng-show="hasDatas">
+						<tr align="left" style="vertical-align: middle;" data-ng-repeat="note in $data">
+							<td data-header="'ng-table/headers/checkbox.html'">
 								<label class="checkbox-inline">
 								  <input type="checkbox"  data-ng-model="checkboxes.items[note.id]">
 								</label>
 							</td>
-							<td>{{ note.date | date : 'short'}}</td>
-							<td>{{ note.description}}</td>
-							<td>{{ note.amount | currency:"EUR " }} </td>
-							<td>
+							<td data-title="'Date'" data-sortable="'date'">{{ note.date | date : 'short'}}</td>
+							<td data-title="'Description'" data-sortable="'description'">{{ note.description}}</td>
+							<td data-title="'Amount'" data-sortable="'amount'">{{ note.amount | currency:"EUR " }} </td>
+							<td style="width:20px;" align="center" data-header="'ng-table/headers/attachement.html'">
 								<a href="../api/attachements/{{id}}" data-ng-repeat="id in note.attachementsIds" data-ng-show="note.attachementsIds.length>0" >
 									<i class="fa fa-cloud-download"></i>
 								</a>
 							</td>
-							<td>
+							<td style="width:20px;">
 								<div class="btn-group">
-								  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-								    <i class="fa fa-cog"></i>
+								  <button type="button" class="btn btn-link dropdown-toggle" style="color: grey;" data-toggle="dropdown">
+								    <i class="fa fa-cog"></i><span class="caret"></span>
 								  </button>
 								  <ul class="dropdown-menu" role="menu">
 								    <li><a href="" data-ng-click="editNote(note.id)"><i class="fa fa-pencil-square-o"></i>Edit</a></li>
@@ -98,38 +80,15 @@
 								</div>
 							</td>
 						</tr>
-					</tbody>
 				</table>
-				<script type="text/ng-template" id="custom/pager">
-					<div class="ng-cloak ng-table-pager"> 
-						<div class="row">
-							<div ng-if="params.settings().counts.length" class="ng-table-counts btn-group pull-right"> 
-								<button ng-repeat="count in params.settings().counts" type="button" ng-class="{'active':params.count()==count}" ng-click="params.count(count)" class="btn btn-default"> 
-									<span ng-bind="count"></span> 
-								</button>
-			 				</div>
-							<ul class="pagination ng-table-pagination"> 
-								<li ng-class="{'disabled': !page.active}" ng-repeat="page in pages" ng-switch="page.type">
-									<a ng-switch-when="prev" ng-click="params.page(page.number)" href="">&laquo;</a> 
-									<a ng-switch-when="first" ng-click="params.page(page.number)" href="">
-										<span ng-bind="page.number"></span>
-									</a> 
-									<a ng-switch-when="page" ng-click="params.page(page.number)" href="">
-										<span ng-bind="page.number"></span>
-									</a> 
-									<a ng-switch-when="more" ng-click="params.page(page.number)" href="">&#8230;</a> 
-									<a ng-switch-when="last" ng-click="params.page(page.number)" href="">
-										<span ng-bind="page.number"></span>
-									</a> 
-									<a ng-switch-when="next" ng-click="params.page(page.number)" href="">&raquo;</a> 
-								</li> 
-							</ul>
-						</div> 
-					</div>
-				</script>
-				
-				 
-				
+				<script type="text/ng-template" id="ng-table/headers/checkbox.html">
+        			<label class="checkbox-inline">
+						  <input type="checkbox" data-ng-model="checkboxes.checked" id="select_all" name="filter-checkbox" value="" />All
+					</label>
+   				 </script>
+   				 <script type="text/ng-template" id="ng-table/headers/attachement.html">
+        			<i class="fa fa-paperclip"></i>
+   				 </script>
 			</div>
 		</div>
 	</div>

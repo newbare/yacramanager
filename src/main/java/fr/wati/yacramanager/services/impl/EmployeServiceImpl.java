@@ -1,14 +1,25 @@
 package fr.wati.yacramanager.services.impl;
 
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.dozer.Mapper;
 import org.dozer.spring.DozerBeanMapperFactoryBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import fr.wati.yacramanager.beans.Company;
+import fr.wati.yacramanager.beans.Contact;
 import fr.wati.yacramanager.beans.Employe;
+import fr.wati.yacramanager.beans.Role;
 import fr.wati.yacramanager.dao.EmployeRepository;
+import fr.wati.yacramanager.dao.RoleRepository;
+import fr.wati.yacramanager.services.CompanyService;
 import fr.wati.yacramanager.services.EmployeService;
+import fr.wati.yacramanager.web.dto.RegistrationDTO;
 import fr.wati.yacramanager.web.dto.UserInfoDTO;
 
 @Transactional
@@ -20,6 +31,15 @@ public class EmployeServiceImpl implements EmployeService {
 
 	@Autowired
 	private DozerBeanMapperFactoryBean dozerBeanMapper;
+	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+	
+	@Autowired
+	private CompanyService companyService;
+	
+	@Autowired
+	private RoleRepository roleRepository;
 
 	public EmployeServiceImpl() {
 	}
@@ -90,5 +110,32 @@ public class EmployeServiceImpl implements EmployeService {
 		UserInfoDTO userInfoDTO = new UserInfoDTO();
 		((Mapper) dozerBeanMapper.getObject()).map(loadEmploye, userInfoDTO);
 		return userInfoDTO;
+	}
+
+	/* (non-Javadoc)
+	 * @see fr.wati.yacramanager.services.EmployeService#registerEmploye(fr.wati.yacramanager.web.dto.RegistrationDTO)
+	 */
+	@Override
+	public Employe registerEmploye(RegistrationDTO registrationDTO) {
+		Employe employe=new Employe();
+		employe.setUsername(registrationDTO.getUsername());
+		employe.setPassword(passwordEncoder.encode(registrationDTO.getPassword()));
+		employe.setEnabled(true);
+		employe.setNom(registrationDTO.getLastName());
+		employe.setPrenom(registrationDTO.getFirstName());
+		Contact contact=new Contact();
+		contact.setEmail(registrationDTO.getEmail());
+		employe.setContact(contact);
+		Company company=new Company();
+		company.setName(registrationDTO.getCompanyName());
+		company.setRegisteredDate(new Date());
+		Company createCompany = companyService.createCompany(company);
+		employe.setCompany(createCompany);
+		Set<Role> roles=new HashSet<>();
+		roles.add(roleRepository.findByRole(Role.ROLE_SSII_ADMIN));
+		roles.add(roleRepository.findByRole(Role.ROLE_INDEP));
+		employe.setRoles(roles);
+		Employe saveEmploye = employeRepository.save(employe);
+		return saveEmploye;
 	}
 }

@@ -36,7 +36,7 @@ App.controller('AppCtrl', [ '$scope', '$location', 'UsersREST','$rootScope',
 			}
 
 			$scope.containerNavClass=function(){
-				return "container";
+				return "container-fluid";
 			}
 			loadUserInfo();
 			

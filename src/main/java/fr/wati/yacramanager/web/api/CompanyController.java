@@ -1,6 +1,9 @@
 package fr.wati.yacramanager.web.api;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -49,14 +52,28 @@ public class CompanyController implements RestCrudController<CompanyDTO> {
 
 	@Override
 	@RequestMapping(method = RequestMethod.GET)
-	public ResponseWrapper<List<CompanyDTO>> getAll(@RequestParam(required=false) Integer page,@RequestParam(required=false) Integer size,@RequestParam(required=false,defaultValue="id") String orderBy) {
+	public ResponseWrapper<List<CompanyDTO>> getAll(@RequestParam(required=false) Integer page,@RequestParam(required=false) Integer size,@RequestParam(value="sort", required=false) Map<String, String> sort,@RequestParam(value="filter", required=false) Map<String, String> filter) {
 		if(page==null){
 			page=0;
 		}
 		if(size==null){
 			size=100;
 		}
-		PageRequest pageable=new PageRequest(page, size,new Sort(new Order(Direction.DESC,orderBy)));
+		PageRequest pageable=null;
+		if(sort!=null){
+			List<Order> orders=new ArrayList<>();
+			for(Entry<String, String> entry:sort.entrySet()){
+				Order order=new Order("asc".equals(entry.getValue())?Direction.ASC:Direction.DESC, entry.getKey());
+				orders.add(order);
+			}
+			if(!orders.isEmpty()){
+				pageable=new PageRequest(page, size, new Sort(orders));
+			}else {
+				pageable=new PageRequest(page, size);
+			}
+		}else {
+			pageable=new PageRequest(page, size);
+		}
 		Page<Company> findPage = companyService.findAll(pageable);
 		return new ResponseWrapper<List<CompanyDTO>>(DtoMapper.mapCompanies(findPage),findPage.getTotalElements());
 	}

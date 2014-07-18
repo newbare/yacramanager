@@ -35,6 +35,11 @@ fieldset.collapsible>div {
 	padding-left: 20px;
 }
 
+.ng-table>tbody>tr>td{
+	padding: 5px !important;
+	vertical-align: middle !important;
+}
+
 .tool-toggle.collapsed {
 	background-position: 0 -30px;
 }
@@ -50,6 +55,10 @@ fieldset.collapsible>div {
 	margin: 0;
 	border:0px;
 	background-image: url(../images/tools/tool-sprites.png);
+}
+
+.form-group.required .control-label:after {
+  content:"*";color:red;
 }
 
 body {

@@ -92,7 +92,7 @@ public class ClientServiceImpl implements ClientService {
 		 * Each client should have a default project
 		 */
 		Project project=new Project();
-		project.setName("Default Project");
+		project.setName("Default Project ("+saveClient.getName()+")");
 		projectService.createProject(saveClient.getId(), project);
 		return saveClient;
 	}

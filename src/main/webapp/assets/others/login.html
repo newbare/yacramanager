@@ -1,11 +1,12 @@
 <div class="container">
-	<div class="alert alert-danger alert-dismissable" data-ng-show="error">
-		<a class="close" data-dismiss="alert" href="#" aria-hidden="true">&times;</a>
-		{{errorMessage}}
-	</div>
-	<div class="row">
+	
 	<form class="form-signin" role="form" method="post" action=".">
-		<h2 class="form-signin-heading">Please sign in</h2>
+		<h3 class="form-signin-heading" style="text-align: center;"> <i class="ace-icon fa fa-key"></i> Acces your account</h3>
+		<hr>
+		<div class="alert alert-danger alert-dismissable" role="alert" data-ng-show="error">
+			 <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+			{{errorMessage}}
+		</div>
 		<div class="margin-bottom">
 			<div class="input-group margin-bottom-sm">
 				<span class="input-group-addon"><i class="fa fa-user fa-fw"></i></span>
@@ -27,8 +28,13 @@
 			</label>
 		</div>
 		<button class="btn btn-lg btn-primary btn-block" type="submit">
-			<i class="ace-icon fa fa-key"></i><span class="bigger-110">Login</span>
+			<span class="bigger-110"> Login</span>
 		</button>
+		<hr>
+		<div class="row">
+			<a href="" data-ng-click="loadForgotPassword()"><span class="text-muted pull-left">Forgot password</span></a>
+			<a href="" data-ng-click="loadRegister()"><span class="text-muted pull-right">Regiter a new account</span></a>
+		</div>
+		
 	</form>
-	</div>
 </div>

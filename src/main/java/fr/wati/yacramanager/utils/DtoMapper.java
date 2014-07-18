@@ -58,8 +58,8 @@ public class DtoMapper {
 		dto.setDescription(absence.getDescription());
 		dto.setStartDate(absence.getStartDate());
 		dto.setEndDate(absence.getEndDate());
-		dto.setType(String.valueOf(absence.getTypeAbsence()));
-		dto.setPostedDate(absence.getDate());
+		dto.setTypeAbsence(String.valueOf(absence.getTypeAbsence()));
+		dto.setDate(absence.getDate());
 		dto.setId(absence.getId());
 		dto.setValidated(absence.isValidated());
 		return dto;

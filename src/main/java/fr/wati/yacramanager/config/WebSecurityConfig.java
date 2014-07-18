@@ -63,6 +63,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.authorizeRequests()
 					.antMatchers("/assets/**").permitAll() 
 					.antMatchers("/").permitAll()
+					.antMatchers("/auth/api/**").permitAll()
 					.antMatchers("/app/**")
 						.hasAnyRole(new String[] { "ADMIN", "SSII_ADMIN", "SALARIE","INDEP" })
 					.anyRequest().authenticated()
