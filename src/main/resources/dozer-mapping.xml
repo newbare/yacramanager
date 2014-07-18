@@ -38,4 +38,24 @@
 			<b>clients</b>
 		</field-exclude>
 	</mapping>
+	<mapping>
+		<class-a>fr.wati.yacramanager.beans.NoteDeFrais</class-a>
+		<class-b>fr.wati.yacramanager.beans.NoteDeFrais</class-b>
+		<field-exclude>
+			<a>employe</a>
+			<b>employe</b>
+		</field-exclude>
+		<field-exclude>
+			<a>attachements</a>
+			<b>attachements</b>
+		</field-exclude>
+	</mapping>
+	<mapping>
+		<class-a>fr.wati.yacramanager.beans.Absence</class-a>
+		<class-b>fr.wati.yacramanager.beans.Absence</class-b>
+		<field-exclude>
+			<a>employe</a>
+			<b>employe</b>
+		</field-exclude>
+	</mapping>
 </mappings> 
