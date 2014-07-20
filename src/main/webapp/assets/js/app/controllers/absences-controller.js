@@ -113,6 +113,8 @@ function AbsencesController($scope, $rootScope, AbsenceCRUDREST,
 
 	};
 	$scope.reset();
+	$scope.startIndex=0;
+	$scope.endIndex=0;
 	$scope.tableParams = new ngTableParams({
 		page : 1, // show first page
 		count : 10, // count per page
@@ -131,6 +133,8 @@ function AbsencesController($scope, $rootScope, AbsenceCRUDREST,
 						filter:params.$params.filter
 					},function(data) {
 				params.total(data.totalCount);
+				$scope.startIndex=data.startIndex;
+				$scope.endIndex=data.endIndex;
 				if(data.totalCount>=1){
 					$scope.hasDatas=true;
 				}else {

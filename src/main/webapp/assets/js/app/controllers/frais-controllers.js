@@ -2,7 +2,7 @@ function FraisController($scope, $rootScope, NoteCRUDREST, alertService,
 		ngTableParams, notifService, $upload,$modal) {
 	$rootScope.page = {
 		"title" : "Frais",
-		"description" : "G�rer vos note frais"
+		"description" : "G���rer vos note frais"
 	};
 	$scope.initialActionLabel = "Ajouter une note";
 	$scope.dateFormat = "dd MMMM yyyy";
@@ -62,7 +62,7 @@ function FraisController($scope, $rootScope, NoteCRUDREST, alertService,
 	$scope.postNote=function(note,hideFn){
 		 NoteCRUDREST.save(note).$promise.then(function(result) {
 			notifService
-					.notify('info', 'Created', 'Nouvelle note enregistr�');
+					.notify('info', 'Created', 'Nouvelle note enregistr���');
 			hideFn();
 			$scope.reset();
 			$scope.tableParams.reload();
@@ -102,7 +102,7 @@ function FraisController($scope, $rootScope, NoteCRUDREST, alertService,
 	};
 	$scope.putNote = function() {
 		NoteCRUDREST.update(clone(note)).$promise.then(function(result) {
-			notifService.notify('info', 'Created', 'Modification effectu�');
+			notifService.notify('info', 'Created', 'Modification effectu���');
 			$scope.reset();
 			$scope.tableParams.reload();
 		});
@@ -133,7 +133,7 @@ function FraisController($scope, $rootScope, NoteCRUDREST, alertService,
 			id : id
 		}).$promise.then(function(result) {
 			$scope.tableParams.reload();
-			notifService.notify('info', 'Confirmation', 'Note supprimé');
+			notifService.notify('info', 'Confirmation', 'Note supprim��');
 		}, function(error) {
 			console.log(error);
 			notifService.notify('error', '' + error.status, error.data);
@@ -141,6 +141,8 @@ function FraisController($scope, $rootScope, NoteCRUDREST, alertService,
 
 	};
 	$scope.reset();
+	$scope.startIndex=0;
+	$scope.endIndex=0;
 	$scope.tableParams = new ngTableParams({
 		page : 1, // show first page
 		count : 10, // count per page
@@ -158,6 +160,8 @@ function FraisController($scope, $rootScope, NoteCRUDREST, alertService,
 				filter:params.$params.filter
 			}, function(data) {
 				params.total(data.totalCount);
+				$scope.startIndex=data.startIndex;
+				$scope.endIndex=data.endIndex;
 				if (data.totalCount >= 1) {
 					$scope.hasDatas = true;
 				} else {

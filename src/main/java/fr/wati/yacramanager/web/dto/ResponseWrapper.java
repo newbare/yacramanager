@@ -6,6 +6,8 @@ import java.io.Serializable;
 public class ResponseWrapper<DATA> implements Serializable{
 
 	private long totalCount;
+	private long startIndex;
+	private long endIndex;
 	private DATA result;
 	
 	
@@ -28,6 +30,18 @@ public class ResponseWrapper<DATA> implements Serializable{
 	}
 	public void setResult(DATA result) {
 		this.result = result;
+	}
+	public long getStartIndex() {
+		return startIndex;
+	}
+	public void setStartIndex(long startIndex) {
+		this.startIndex = startIndex;
+	}
+	public long getEndIndex() {
+		return endIndex;
+	}
+	public void setEndIndex(long endIndex) {
+		this.endIndex = endIndex;
 	}
 	
 	

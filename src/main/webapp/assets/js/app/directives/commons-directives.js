@@ -16,7 +16,7 @@ App.directive('fileInput',	function() {
                      			return {
                      				restrict : 'AEC',
                      				link : function(scope, elem, attrs, ctrl) {
-                     					elem.bootstrapFileInput ();
+                     					elem.fileinput();
                      				}
                      			};
                      		});

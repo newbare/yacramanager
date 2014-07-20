@@ -41,13 +41,12 @@
 			<div class="alert alert-info" role="alert" ng-show="!hasDatas">
 				<h4>No data for this range</h4>
 			</div>
-			<div class="row pull-right" data-ng-show="hasDatas"> 
-				<div class="btn-group">
-				  <button type="button" class="btn btn-default" data-ng-click="refreshDatas()">
-				    <i class="fa fa-refresh"></i> Refresh 
-				  </button>
+			<div class="row" data-ng-show="hasDatas"> 
+				<span style="vertical-align: middle;" data-ng-show="tableParams.settings().total>0"><b>{{startIndex}}</b> - <b>{{endIndex}}</b> of <b>{{tableParams.settings().total}}</b></span>
+				<div class="btn-group" >
+				    <a href="" data-ng-click="refreshDatas()"><i class="fa fa-refresh"></i></a> 
 				</div>
-				<div class="btn-group">
+				<div class="btn-group pull-right">
 				  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" data-ng-disabled="selectedAbsences.length<=1">
 				    <i class="fa fa-cog"></i> Bulk <span  data-ng-show ="selectedAbsences.length>1" class="badge">{{selectedAbsences.length}}</span> <span class="caret"></span>
 				  </button>

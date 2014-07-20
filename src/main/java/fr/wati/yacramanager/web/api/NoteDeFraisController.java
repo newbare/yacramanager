@@ -96,7 +96,12 @@ public class NoteDeFraisController extends RestCrudControllerAdapter<NoteDeFrais
 			pageable=new PageRequest(page, size);
 		}
 		Page<NoteDeFrais> findByEmploye = noteDeFraisService.findByEmploye(SecurityUtils.getConnectedUser(), pageable);
-		return new ResponseWrapper<List<NoteDeFraisDTO>>(noteDeFraisService.mapNoteDeFrais(findByEmploye),findByEmploye.getTotalElements());
+		 ResponseWrapper<List<NoteDeFraisDTO>> responseWrapper = new ResponseWrapper<List<NoteDeFraisDTO>>(noteDeFraisService.mapNoteDeFrais(findByEmploye),findByEmploye.getTotalElements());
+		long startIndex=findByEmploye.getNumber()*size+1;
+		long endIndex=startIndex+findByEmploye.getNumberOfElements()-1;
+		responseWrapper.setStartIndex(startIndex);
+		responseWrapper.setEndIndex(endIndex);
+		return responseWrapper;
 	}
 
 	@RequestMapping(method = RequestMethod.POST)

@@ -84,9 +84,14 @@ public class AbsenceController implements RestCrudController<AbsenceDTO> {
 		}
 		Page<Absence> findByPersonne = absenceService.findByEmploye(
 				SecurityUtils.getConnectedUser(), pageable);
-		return new ResponseWrapper<List<AbsenceDTO>>(
+		ResponseWrapper<List<AbsenceDTO>> responseWrapper = new ResponseWrapper<List<AbsenceDTO>>(
 				DtoMapper.mapAbsences(findByPersonne),
 				findByPersonne.getTotalElements());
+		long startIndex=findByPersonne.getNumber()*size+1;
+		long endIndex=startIndex+findByPersonne.getNumberOfElements()-1;
+		responseWrapper.setStartIndex(startIndex);
+		responseWrapper.setEndIndex(endIndex);
+		return responseWrapper;
 	}
 
 	@Override
