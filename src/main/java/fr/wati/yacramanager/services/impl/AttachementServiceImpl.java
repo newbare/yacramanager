@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import fr.wati.yacramanager.beans.Attachement;
-import fr.wati.yacramanager.dao.AttachementRepository;
+import fr.wati.yacramanager.dao.repository.AttachementRepository;
 import fr.wati.yacramanager.services.AttachementService;
 
 /**

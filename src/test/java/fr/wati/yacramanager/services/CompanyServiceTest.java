@@ -1,6 +1,9 @@
 package fr.wati.yacramanager.services;
 
 import static org.springframework.util.Assert.*;
+
+import java.util.List;
+
 import junit.framework.Assert;
 
 import org.junit.Test;
@@ -12,6 +15,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import fr.wati.yacramanager.beans.Company;
 import fr.wati.yacramanager.config.TestServicesConfig;
+import fr.wati.yacramanager.dao.repository.CompanyRepository;
+import fr.wati.yacramanager.dao.specifications.CompanySpecifications;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes={TestServicesConfig.class})
@@ -20,6 +25,9 @@ public class CompanyServiceTest extends
 
 	@Autowired
 	private CompanyService companyService;
+	
+	@Autowired
+	private CompanyRepository companyRepository;
 	
 	@Test
 	public void testCreateCompany(){
@@ -52,5 +60,13 @@ public class CompanyServiceTest extends
 		Assert.assertEquals("Updated", companyService.findOne(saveCompany.getId()).getName()); 
 	}
 	
+	@Test
+	public void testSearchByName(){
+		Company company=new Company();
+		company.setName("Mock company");
+		companyService.createCompany(company);
+		List<Company> findAll = companyRepository.findAll(CompanySpecifications.namelike("ck"));
+		Assert.assertTrue(findAll.size()>0);
+	}
 	
 }

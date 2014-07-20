@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import fr.wati.yacramanager.beans.Attachement;
 import fr.wati.yacramanager.beans.Employe;
 import fr.wati.yacramanager.beans.NoteDeFrais;
-import fr.wati.yacramanager.dao.NoteDeFraisRepository;
+import fr.wati.yacramanager.dao.repository.NoteDeFraisRepository;
 import fr.wati.yacramanager.services.NoteDeFraisService;
 import fr.wati.yacramanager.web.dto.NoteDeFraisDTO;
 

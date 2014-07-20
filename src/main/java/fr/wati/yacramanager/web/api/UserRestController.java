@@ -28,8 +28,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import fr.wati.yacramanager.beans.Employe;
-import fr.wati.yacramanager.dao.EmployeDto;
-import fr.wati.yacramanager.dao.EmployeRepository;
+import fr.wati.yacramanager.dao.repository.EmployeDto;
+import fr.wati.yacramanager.dao.repository.EmployeRepository;
 import fr.wati.yacramanager.services.impl.EmployeServiceImpl;
 import fr.wati.yacramanager.utils.DtoMapper;
 import fr.wati.yacramanager.utils.SecurityUtils;

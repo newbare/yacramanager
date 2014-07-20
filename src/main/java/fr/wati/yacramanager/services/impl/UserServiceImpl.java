@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import fr.wati.yacramanager.beans.Users;
-import fr.wati.yacramanager.dao.UsersRepository;
+import fr.wati.yacramanager.dao.repository.UsersRepository;
 import fr.wati.yacramanager.services.UserService;
 
 @Transactional

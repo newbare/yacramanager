@@ -6,8 +6,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import fr.wati.yacramanager.beans.Project;
 import fr.wati.yacramanager.beans.Task;
-import fr.wati.yacramanager.dao.ProjectRepository;
-import fr.wati.yacramanager.dao.TaskRepository;
+import fr.wati.yacramanager.dao.repository.ProjectRepository;
+import fr.wati.yacramanager.dao.repository.TaskRepository;
 import fr.wati.yacramanager.services.TaskService;
 
 @Transactional

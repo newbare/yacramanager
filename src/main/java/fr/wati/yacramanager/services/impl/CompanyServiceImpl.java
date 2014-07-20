@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import fr.wati.yacramanager.beans.Client;
 import fr.wati.yacramanager.beans.Company;
-import fr.wati.yacramanager.dao.CompanyRepository;
+import fr.wati.yacramanager.dao.repository.CompanyRepository;
 import fr.wati.yacramanager.services.ClientService;
 import fr.wati.yacramanager.services.CompanyService;
 import fr.wati.yacramanager.web.dto.CompanyDTO;

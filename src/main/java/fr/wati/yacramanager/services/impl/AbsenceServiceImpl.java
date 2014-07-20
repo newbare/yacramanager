@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 import fr.wati.yacramanager.beans.Absence;
 import fr.wati.yacramanager.beans.Employe;
-import fr.wati.yacramanager.dao.AbsenceRepository;
+import fr.wati.yacramanager.dao.repository.AbsenceRepository;
 import fr.wati.yacramanager.services.AbsenceService;
 
 @Service
