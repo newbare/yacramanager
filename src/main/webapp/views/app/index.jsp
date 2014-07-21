@@ -9,6 +9,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 <link rel="stylesheet" href="${contextPath}/assets/css/app.css">
+<link rel="stylesheet" href="${contextPath}/assets/css/angular-criterias.css">
 <link rel="stylesheet" href="${contextPath}/assets/css/yacra-fonts.css">
 <link rel="stylesheet"
 	href="${contextPath}/assets/bower_components/bootstrap-additions/dist/bootstrap-additions.min.css">
@@ -170,6 +171,8 @@
 	<script src="${contextPath}/assets/js/app/services/common-services.js"></script>
 	<script
 		src="${contextPath}/assets/js/app/directives/commons-directives.js"></script>
+		<script
+		src="${contextPath}/assets/js/app/directives/angular-criterias.js"></script>
 	<script
 		src="${contextPath}/assets/js/app/controllers/timesheet-controller.js"></script>
 	<script

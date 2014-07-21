@@ -22,9 +22,7 @@ import org.hibernate.validator.constraints.NotBlank;
 public class Personne extends Users {
 
 
-	@NotBlank
 	private String nom;
-	@NotBlank
 	private String prenom;
 	@Past
 	private Date dateNaissance;

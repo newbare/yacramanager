@@ -18,9 +18,9 @@ import fr.wati.yacramanager.beans.Employe;
 
 /**
  * @author Rachid Ouattara
- * 
+ *
  */
-public class CompanySpecifications {
+public class NoteDeFraisSpecifications {
 
 	public static Specification<Company> namelike(final String searchTerm) {
 		return new Specification<Company>() {

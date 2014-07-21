@@ -6,6 +6,20 @@ function AbsencesController($scope, $rootScope, AbsenceCRUDREST,
 		"title" : "Absences",
 		"description" : "D�clarer vos absences"
 	};
+	/*
+	 * criteria config
+	 */
+	
+	$scope.criteriaConfig={
+			defaultButtonLabel:"Type",
+			filterType:"text",
+			filterValue:"",
+			onFilter: function(value) {
+				alert('Need to filter '+value);
+			}
+	}
+	
+	
 	$scope.initialActionLabel = "Ajouter une absence";
 	$scope.dateFormat = "dd MMMM yyyy";
 	$scope.hasDatas=false;

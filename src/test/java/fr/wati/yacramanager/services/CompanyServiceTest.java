@@ -2,6 +2,7 @@ package fr.wati.yacramanager.services;
 
 import static org.springframework.util.Assert.*;
 
+import java.util.Calendar;
 import java.util.List;
 
 import junit.framework.Assert;
@@ -14,6 +15,7 @@ import org.springframework.test.context.junit4.AbstractTransactionalJUnit4Spring
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import fr.wati.yacramanager.beans.Company;
+import fr.wati.yacramanager.beans.Employe;
 import fr.wati.yacramanager.config.TestServicesConfig;
 import fr.wati.yacramanager.dao.repository.CompanyRepository;
 import fr.wati.yacramanager.dao.specifications.CompanySpecifications;
@@ -25,6 +27,9 @@ public class CompanyServiceTest extends
 
 	@Autowired
 	private CompanyService companyService;
+	
+	@Autowired
+	private EmployeService employeService;
 	
 	@Autowired
 	private CompanyRepository companyRepository;
@@ -67,6 +72,43 @@ public class CompanyServiceTest extends
 		companyService.createCompany(company);
 		List<Company> findAll = companyRepository.findAll(CompanySpecifications.namelike("ck"));
 		Assert.assertTrue(findAll.size()>0);
+	}
+	
+	@Test
+	public void testRegisteredBetween(){
+		Company company=new Company();
+		company.setName("Mock company");
+		Calendar calendar=Calendar.getInstance();
+		calendar.set(2014, 07, 14);
+		company.setRegisteredDate(calendar.getTime());
+		companyService.createCompany(company);
+		Calendar startCalendar=Calendar.getInstance();
+		startCalendar.set(2014, 07, 12);
+		Calendar endCalendar=Calendar.getInstance();
+		endCalendar.set(2014, 07, 16);
+		List<Company> findAll = companyRepository.findAll(CompanySpecifications.registeredDateBetween(startCalendar.getTime(), endCalendar.getTime()));
+		Assert.assertTrue(findAll.size()>0);
+	}
+	
+	@Test
+	public void testCompanyFromEmploye(){
+		Employe employe=new Employe();
+		employe.setUsername("toto");
+		employe.setPassword("fdsf");
+		Company company=new Company();
+		company.setName("Mock company");
+		Calendar calendar=Calendar.getInstance();
+		calendar.set(2014, 07, 14);
+		company.setRegisteredDate(calendar.getTime());
+		companyService.createCompany(company);
+		employe.setCompany(company);
+		employeService.save(employe);
+		Calendar startCalendar=Calendar.getInstance();
+		startCalendar.set(2014, 07, 12);
+		Calendar endCalendar=Calendar.getInstance();
+		endCalendar.set(2014, 07, 16);
+		Company findOne = companyRepository.findOne(CompanySpecifications.employeMemberOfCompany(employe));
+		Assert.assertNotNull(findOne);
 	}
 	
 }

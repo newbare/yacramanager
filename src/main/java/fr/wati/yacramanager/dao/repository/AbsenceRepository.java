@@ -6,11 +6,12 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 import fr.wati.yacramanager.beans.Absence;
 import fr.wati.yacramanager.beans.Employe;
 
-public interface AbsenceRepository extends JpaRepository<Absence, Long> {
+public interface AbsenceRepository extends JpaRepository<Absence, Long>, JpaSpecificationExecutor<Absence> {
 
 	Page<Absence> findByDateBetween(Date dateDebut,Date dateFin,Pageable pageable);
 	
