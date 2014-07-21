@@ -2,7 +2,7 @@ function FraisController($scope, $rootScope, NoteCRUDREST, alertService,
 		ngTableParams, notifService, $upload,$modal) {
 	$rootScope.page = {
 		"title" : "Frais",
-		"description" : "G���rer vos note frais"
+		"description" : "Gerez vos notes de frais"
 	};
 	$scope.initialActionLabel = "Ajouter une note";
 	$scope.dateFormat = "dd MMMM yyyy";

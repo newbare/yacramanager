@@ -13,7 +13,7 @@ public interface RestCrudController<DTO> {
 
 	void update(Long id, DTO dto);
 	
-	ResponseWrapper<List<DTO>> getAll(Integer page,Integer Integer,Map<String, String> sort,Map<String, String> filter);
+	ResponseWrapper<List<DTO>> getAll(Integer page,Integer Integer,Map<String, String> sort,String filter);
 
 	ResponseEntity<String> create(DTO dto);
 

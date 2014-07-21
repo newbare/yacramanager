@@ -4,21 +4,70 @@ function AbsencesController($scope, $rootScope, AbsenceCRUDREST,
 		AbsenceTypeREST, alertService,ngTableParams,notifService) {
 	$rootScope.page = {
 		"title" : "Absences",
-		"description" : "D�clarer vos absences"
+		"description" : "Declarez vos absences"
 	};
 	/*
 	 * criteria config
 	 */
 	
-	$scope.criteriaConfig={
+	$scope.tableFilter="[]";
+	$scope.typeCriteriaConfig={
+			name:"type",
 			defaultButtonLabel:"Type",
+			filterType:"checkbox",
+			closeable:false,
+			filterValue:
+				[{name:"RTT",label:"RTT",ticked:false},{name:"CP",label:"Conge paye",ticked:false}]
+				,
+			onFilter: function(value) {
+				console.log('Filter checkbox ['+value.field+'] selected items '+value.value.length);
+			},
+			currentFilter:{}
+	};
+	$scope.booleanCriteriaConfig={
+			name:"validated",
+			defaultButtonLabel:"Validated",
+			filterType:"boolean",
+			closeable:false,
+			onFilter: function(value) {
+				console.log('Filter boolean ['+value.field+']='+value.value);
+			},
+			currentFilter:{}
+	};
+	$scope.descriptionCriteriaConfig={
+			name:"description",
+			defaultButtonLabel:"Description",
 			filterType:"text",
+			closeable:false,
 			filterValue:"",
 			onFilter: function(value) {
-				alert('Need to filter '+value);
-			}
-	}
+				console.log('Filter text ['+value.field+'] searching: '+value.value);
+			},
+			currentFilter:{}
+	};
 	
+	$scope.dateCriteriaConfig={
+			name:"date",
+			defaultButtonLabel:"Date",
+			filterType:"date",
+			closeable:false,
+			filterValue:"",
+			onFilter: function(value) {
+				console.log('Filter text ['+value.field+'] searching: '+value.value);
+			},
+			currentFilter:{}
+	};
+	
+	$scope.criteriaBarConfig={
+		criterions:[$scope.typeCriteriaConfig,$scope.descriptionCriteriaConfig,$scope.dateCriteriaConfig,$scope.booleanCriteriaConfig],
+		filters:[]
+	};
+	
+	$scope.doFilter=function(data){
+		console.log("Server filer launch with: "+JSON.stringify(data));
+		$scope.tableFilter=JSON.stringify(data);
+		$scope.refreshDatas();
+	};
 	
 	$scope.initialActionLabel = "Ajouter une absence";
 	$scope.dateFormat = "dd MMMM yyyy";
@@ -144,7 +193,7 @@ function AbsencesController($scope, $rootScope, AbsenceCRUDREST,
 						page:params.$params.page-1,
 						size:params.$params.count,
 						sort:params.$params.sorting,
-						filter:params.$params.filter
+						filter:$scope.tableFilter
 					},function(data) {
 				params.total(data.totalCount);
 				$scope.startIndex=data.startIndex;

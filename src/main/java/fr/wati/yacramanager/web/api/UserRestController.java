@@ -12,7 +12,6 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.domain.Sort.Order;
@@ -92,7 +91,7 @@ public class UserRestController implements RestCrudController<EmployeDto>{
 
 @Override
 @RequestMapping(method=RequestMethod.GET)
-public @ResponseBody ResponseWrapper<List<EmployeDto>> getAll(@RequestParam(required=false) Integer page,@RequestParam(required=false) Integer size,@RequestParam(value="sort", required=false) Map<String, String> sort,@RequestParam(value="filter", required=false) Map<String, String> filter) {
+public @ResponseBody ResponseWrapper<List<EmployeDto>> getAll(@RequestParam(required=false) Integer page,@RequestParam(required=false) Integer size,@RequestParam(value="sort", required=false) Map<String, String> sort,@RequestParam(value="filter", required=false) String filter) {
 	if(page==null){
 		page=0;
 	}

@@ -52,7 +52,7 @@ public class CompanyController implements RestCrudController<CompanyDTO> {
 
 	@Override
 	@RequestMapping(method = RequestMethod.GET)
-	public ResponseWrapper<List<CompanyDTO>> getAll(@RequestParam(required=false) Integer page,@RequestParam(required=false) Integer size,@RequestParam(value="sort", required=false) Map<String, String> sort,@RequestParam(value="filter", required=false) Map<String, String> filter) {
+	public ResponseWrapper<List<CompanyDTO>> getAll(@RequestParam(required=false) Integer page,@RequestParam(required=false) Integer size,@RequestParam(value="sort", required=false) Map<String, String> sort,@RequestParam(value="filter", required=false) String filter) {
 		if(page==null){
 			page=0;
 		}

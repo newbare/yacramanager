@@ -81,6 +81,11 @@ App.config([ '$stateProvider', '$urlRouterProvider',
 				templateUrl : _contextPath+'/views/app/timesheet.html',
 				controller : TimeSheetController
 			})
+			.state('messages', {
+				url : "/messages",
+				templateUrl : _contextPath+'/views/app/messages.html',
+				controller : MessagesController
+			})
 			.state('notifications', {
 				url : "/notifications",
 				templateUrl : _contextPath+'/views/app/notifications.html',

@@ -60,7 +60,7 @@ public class AbsenceController implements RestCrudController<AbsenceDTO> {
 			@RequestParam(required = false) Integer page,
 			@RequestParam(required = false) Integer size,
 			@RequestParam(value = "sort", required = false) Map<String, String> sort,
-			@RequestParam(value = "filter", required = false) Map<String, String> filter) {
+			@RequestParam(value = "filter", required = false) String filter) {
 		if (page == null) {
 			page = 0;
 		}

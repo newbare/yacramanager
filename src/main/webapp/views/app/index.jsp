@@ -60,8 +60,10 @@
 						data-ng-class="navClass('company/home') +navClass('company/employees') + navClass('company/clients')+ navClass('company/projects')+navClass('company/messages')+navClass('company/settings')"><a data-ui-sref="company">{{userInfo.company.name}}</a></li>
 					<li data-has-role="ROLE_ADMIN" data-ng-class="navClass('admin/home')+navClass('admin')"><a
 						data-ui-sref="admin">Admin</a></li>
+					<li data-ng-class="navClass('messages')"><a
+						data-ui-sref="messages"><i class="fa fa-envelope"></i></a></li>
 					<li data-ng-class="navClass('notifications')"><a
-						data-ui-sref="notifications">Notifications</a></li>
+						data-ui-sref="notifications"><i class="fa fa-bell"></i></a></li>
 					<li
 						data-ng-class="navClass('user-settings') + navClass('user-profile')"
 						class="dropdown" data-ng-cloak><a href=""
@@ -82,21 +84,16 @@
 	</div>
 	<!-- End Fixed navbar -->
 	<div data-ng-class="containerClass()" data-ng-cloak>
-		<div class="row">
-			<div class="col">
 				<div class="page-header" >
 					<h4>
-						{{page.title}} <small><i class="fa fa-chevron-right"
-							style="font-size: 40%"></i><i class="fa fa-chevron-right"
-							style="font-size: 40%"></i> {{page.description}}</small>
+						{{page.title}} <i class="fa fa-angle-double-right"
+							style="font-size: 80%"></i><small> {{page.description}}</small>
 					</h4>
 				</div>
 				<div data-ui-view="" class="am-fade" data-ng-cloak></div>
 				<div class="footer">
 					<p class="text-muted">@ wati 2014</p>
 				</div>
-			</div>
-		</div>
 	</div>
 
 	<!-- Bootstrap core JavaScript
@@ -160,6 +157,8 @@
 		src="${contextPath}/assets/js/app/controllers/admin-controller.js"></script>
 	<script
 		src="${contextPath}/assets/js/app/controllers/frais-controllers.js"></script>
+	<script
+		src="${contextPath}/assets/js/app/controllers/messages-controller.js"></script>
 	<script
 		src="${contextPath}/assets/js/app/controllers/company-controller.js"></script>
 

@@ -1,0 +1,18 @@
+<form data-role="search">
+	<div class="form-group">
+		<div class="input-group">
+			<input type="search" data-ng-model="filterValue" class="form-control"
+				placeholder="Filter text" name="srch-term" id="srch-term">
+			<div class="input-group-btn">
+				<button class="btn btn-default" type="button"
+					data-ng-click="onFilterText()">
+					<i class="fa fa-search"></i>
+				</button>
+			</div>
+		</div>
+	</div>
+	<div class="pull-right">
+		<button class="btn btn-primary" data-ng-click="onFilterText()">Filter</button>
+		<button class="btn btn-link" data-ng-click="closeFilterContent()">Close</button>
+	</div>
+</form>

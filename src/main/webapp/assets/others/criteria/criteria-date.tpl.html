@@ -1,0 +1,16 @@
+<form data-role="search">
+	<div class="form-group">
+		<label for="datepicker">Select date range</label>
+		<div class="input-group" id="datepicker">
+			<input type="text" class=" form-control " name="start"
+				data-ng-model="startDate" placeholder="From" data-bs-datepicker /> <span
+				class="input-group-addon">to</span> <input type="text"
+				class=" form-control " name="end" data-ng-model="endDate"
+				placeholder="Until" data-bs-datepicker />
+		</div>
+	</div>
+	<div class="pull-right">
+		<button class="btn btn-primary" data-ng-click="onFilterDate()">Filter</button>
+		<button class="btn btn-link" data-ng-click="closeFilterContent()">Close</button>
+	</div>
+</form>
