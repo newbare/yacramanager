@@ -3,10 +3,9 @@
 		<input type="search" data-ng-model="filterValue" class="form-control" placeholder="Filter text"
 			name="srch-term" id="srch-term">
 		<div class="input-group-btn">
-			<button class="btn btn-default" type="submit">
+			<button class="btn btn-default" type="button" data-ng-click="onFilterText()">
 				<i class="fa fa-search"></i>
 			</button>
 		</div>
 	</div>
-	{{filterValue}}
 </form>

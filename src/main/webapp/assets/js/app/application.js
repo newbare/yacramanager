@@ -1,6 +1,6 @@
 var yaCRAApp = {};
 
-var App = angular.module('yaCRAApp', [ 'ngResource', 'mgcrea.ngStrap','ng-criterias',
+var App = angular.module('yaCRAApp', [ 'ngResource', 'mgcrea.ngStrap','ng-criterias','ngHtmlCompile',
 		'ngRoute', 'ngAnimate', 'ngTable', 'ui.router', 'angularFileUpload','ui.calendar' ]);
 
 App.run(function($rootScope) {

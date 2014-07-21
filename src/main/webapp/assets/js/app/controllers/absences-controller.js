@@ -4,20 +4,45 @@ function AbsencesController($scope, $rootScope, AbsenceCRUDREST,
 		AbsenceTypeREST, alertService,ngTableParams,notifService) {
 	$rootScope.page = {
 		"title" : "Absences",
-		"description" : "D�clarer vos absences"
+		"description" : "Declarez vos absences"
 	};
 	/*
 	 * criteria config
 	 */
 	
-	$scope.criteriaConfig={
+	$scope.tableFilter="sqs";
+	$scope.typeCriteriaConfig={
+			name:"type",
 			defaultButtonLabel:"Type",
+			filterType:"checkbox",
+			filterValue:
+				[{name:"RTT",label:"RTT",ticked:false},{name:"CP",label:"Conge paye",ticked:false}]
+				,
+			onFilter: function(value) {
+				console.log('Filter checkbox ['+value.field+'] selected items '+value.value.length);
+			}
+	};
+	$scope.type2CriteriaConfig={
+			name:"type2",
+			defaultButtonLabel:"Type2",
+			filterType:"checkbox",
+			closeable:false,
+			filterValue:
+				[{name:"RTT",label:"RTT",ticked:false},{name:"CP",label:"Conge paye",ticked:false}]
+				,
+			onFilter: function(value) {
+				console.log('Filter checkbox ['+value.field+'] selected items '+value.value.length);
+			}
+	};
+	$scope.descriptionCriteriaConfig={
+			name:"description",
+			defaultButtonLabel:"Description",
 			filterType:"text",
 			filterValue:"",
 			onFilter: function(value) {
-				alert('Need to filter '+value);
+				console.log('Filter text ['+value.field+'] searching: '+value.value);
 			}
-	}
+	};
 	
 	
 	$scope.initialActionLabel = "Ajouter une absence";
@@ -144,7 +169,7 @@ function AbsencesController($scope, $rootScope, AbsenceCRUDREST,
 						page:params.$params.page-1,
 						size:params.$params.count,
 						sort:params.$params.sorting,
-						filter:params.$params.filter
+						filter:$scope.tableFilter
 					},function(data) {
 				params.total(data.totalCount);
 				$scope.startIndex=data.startIndex;
