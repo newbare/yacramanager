@@ -6,6 +6,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -26,6 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 import fr.wati.yacramanager.beans.Absence;
 import fr.wati.yacramanager.services.AbsenceService;
 import fr.wati.yacramanager.utils.DtoMapper;
+import fr.wati.yacramanager.utils.Filter.FilterBuilder;
 import fr.wati.yacramanager.utils.SecurityUtils;
 import fr.wati.yacramanager.web.dto.AbsenceDTO;
 import fr.wati.yacramanager.web.dto.AbsenceDTO.TypeAbsence;
@@ -36,6 +40,7 @@ import fr.wati.yacramanager.web.dto.ResponseWrapper;
 @RequestMapping("/app/api/absences")
 public class AbsenceController implements RestCrudController<AbsenceDTO> {
 
+	private static final Log LOG=LogFactory.getLog(AbsenceController.class); 
 	@Autowired
 	private AbsenceService absenceService;
 
@@ -54,6 +59,7 @@ public class AbsenceController implements RestCrudController<AbsenceDTO> {
 		absenceService.save(dto.toAbsence(findOne));
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseWrapper<List<AbsenceDTO>> getAll(
@@ -66,6 +72,17 @@ public class AbsenceController implements RestCrudController<AbsenceDTO> {
 		}
 		if (size == null) {
 			size = 100;
+		}
+		List filters=new ArrayList<>();
+		if(StringUtils.isNotEmpty(filter)){
+			try {
+				filters=FilterBuilder.parse(filter);
+			} catch (Exception e) {
+				LOG.error(e.getMessage(), e);
+			}
+		}
+		if(!filters.isEmpty()){
+			LOG.debug("Building Absence specification");
 		}
 		PageRequest pageable=null;
 		if(sort!=null){

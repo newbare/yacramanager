@@ -93,7 +93,7 @@ angular
 
 									$scope.onFilterText = function() {
 										var filter = {
-											type  : "text",
+											type  : "TEXT",
 											field : $scope.criteriaConfig.name,
 											value : $scope.filterValue
 										};
@@ -111,7 +111,7 @@ angular
 
 									$scope.onFilterDate = function() {
 										var filter = {
-											type  : "date",
+											type  : "DATE",
 											field : $scope.criteriaConfig.name,
 											value : {
 												start : $scope.startDate,
@@ -138,7 +138,7 @@ angular
 									};
 									$scope.onFilterBoolean = function() {
 										var filter = {
-											type  : "boolean",
+											type  : "BOOLEAN",
 											field : $scope.criteriaConfig.name,
 											value : $scope.booleanValue
 										};
@@ -180,7 +180,7 @@ angular
 											$scope.resetButtonLabel();
 										}
 										var filter = {
-											type  : "array",
+											type  : "ARRAY",
 											field : $scope.criteriaConfig.name,
 											value : selected
 										};
@@ -247,13 +247,13 @@ angular
 
 										// compute content depending on the
 										// filter type
-										if ($scope.filterType === "text") {
+										if ($scope.filterType === "TEXT") {
 											fetchTemplate(textFilterTemplate)
 													.then(
 															function(content) {
 																$scope.filterContentHTML = content;
 															})
-										} else if ($scope.filterType === "checkbox") {
+										} else if ($scope.filterType === "ARRAY") {
 											fetchTemplate(
 													checkBoxFilterTemplate)
 													.then(
@@ -261,13 +261,13 @@ angular
 																$scope.checkboxElements = $scope.filterValue;
 																$scope.filterContentHTML = content;
 															});
-										} else if ($scope.filterType === "date") {
+										} else if ($scope.filterType === "DATE") {
 											fetchTemplate(dateFilterTemplate)
 													.then(
 															function(content) {
 																$scope.filterContentHTML = content;
 															});
-										} else if ($scope.filterType === "boolean") {
+										} else if ($scope.filterType === "BOOLEAN") {
 											fetchTemplate(booleanFilterTemplate)
 													.then(
 															function(content) {

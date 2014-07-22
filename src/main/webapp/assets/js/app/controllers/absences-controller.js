@@ -10,11 +10,11 @@ function AbsencesController($scope, $rootScope, AbsenceCRUDREST,
 	 * criteria config
 	 */
 	
-	$scope.tableFilter="[]";
+	$scope.tableFilter={};
 	$scope.typeCriteriaConfig={
 			name:"type",
 			defaultButtonLabel:"Type",
-			filterType:"checkbox",
+			filterType:"ARRAY",
 			closeable:false,
 			filterValue:
 				[{name:"RTT",label:"RTT",ticked:false},{name:"CP",label:"Conge paye",ticked:false}]
@@ -27,7 +27,7 @@ function AbsencesController($scope, $rootScope, AbsenceCRUDREST,
 	$scope.booleanCriteriaConfig={
 			name:"validated",
 			defaultButtonLabel:"Validated",
-			filterType:"boolean",
+			filterType:"BOOLEAN",
 			closeable:false,
 			onFilter: function(value) {
 				console.log('Filter boolean ['+value.field+']='+value.value);
@@ -37,7 +37,7 @@ function AbsencesController($scope, $rootScope, AbsenceCRUDREST,
 	$scope.descriptionCriteriaConfig={
 			name:"description",
 			defaultButtonLabel:"Description",
-			filterType:"text",
+			filterType:"TEXT",
 			closeable:false,
 			filterValue:"",
 			onFilter: function(value) {
@@ -49,7 +49,7 @@ function AbsencesController($scope, $rootScope, AbsenceCRUDREST,
 	$scope.dateCriteriaConfig={
 			name:"date",
 			defaultButtonLabel:"Date",
-			filterType:"date",
+			filterType:"DATE",
 			closeable:false,
 			filterValue:"",
 			onFilter: function(value) {
@@ -65,7 +65,8 @@ function AbsencesController($scope, $rootScope, AbsenceCRUDREST,
 	
 	$scope.doFilter=function(data){
 		console.log("Server filer launch with: "+JSON.stringify(data));
-		$scope.tableFilter=JSON.stringify(data);
+		var serverFilter={filter:data};
+		$scope.tableFilter=JSON.stringify(serverFilter);
 		$scope.refreshDatas();
 	};
 	
