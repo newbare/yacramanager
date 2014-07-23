@@ -1,6 +1,9 @@
 package fr.wati.yacramanager.services.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -80,6 +83,11 @@ public class UserServiceImpl implements UserService{
 
 	public Users findByUsername(String username){
 		return usersRepository.findByUsername(username);
+	}
+
+	@Override
+	public Page<Users> findAll(Specification<Users> spec, Pageable pageable) {
+		return usersRepository.findAll(spec, pageable);
 	}
 	
 	

@@ -7,6 +7,9 @@ import java.util.Set;
 import org.dozer.Mapper;
 import org.dozer.spring.DozerBeanMapperFactoryBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -137,5 +140,10 @@ public class EmployeServiceImpl implements EmployeService {
 		employe.setRoles(roles);
 		Employe saveEmploye = employeRepository.save(employe);
 		return saveEmploye;
+	}
+
+	@Override
+	public Page<Employe> findAll(Specification<Employe> spec, Pageable pageable) {
+		return employeRepository.findAll(spec, pageable);
 	}
 }

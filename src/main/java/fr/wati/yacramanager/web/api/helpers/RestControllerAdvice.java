@@ -9,7 +9,9 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import fr.wati.yacramanager.utils.SecurityUtils;
 import fr.wati.yacramanager.web.api.AbsenceController;
 import fr.wati.yacramanager.web.api.ClientController;
 import fr.wati.yacramanager.web.api.CompanyController;
@@ -33,6 +36,9 @@ import fr.wati.yacramanager.web.api.UserRestController;
 		ClientController.class,UserRestController.class })
 public class RestControllerAdvice {
 
+	@Autowired
+	private SimpMessagingTemplate messagingTemplate;
+	
 	@InitBinder
 	public void initBinder(WebDataBinder binder) {
 		/*
@@ -47,6 +53,7 @@ public class RestControllerAdvice {
 	@ResponseBody
 	public String handleRestException(Exception ex, HttpServletResponse response) throws IOException
 	{
+		messagingTemplate.convertAndSendToUser(SecurityUtils.getConnectedUser().getUsername(), "/queue/errors", ex.getMessage());
 		return ex.getMessage();
 
 	}

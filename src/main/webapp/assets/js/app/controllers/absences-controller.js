@@ -11,55 +11,71 @@ function AbsencesController($scope, $rootScope, AbsenceCRUDREST,
 	 */
 	
 	$scope.tableFilter={};
+	$scope.employeCriteriaConfig={
+			name:"employe",
+			defaultButtonLabel:"Emp",
+			filterType:"ARRAY",
+			closeable:false,
+			filterValue:
+				[{name:"RTT",label:"RTT",ticked:false},{name:"CP",label:"Conge paye",ticked:false}]
+				,
+			currentFilter:{},
+			displayed: true
+	};
 	$scope.typeCriteriaConfig={
 			name:"type",
 			defaultButtonLabel:"Type",
 			filterType:"ARRAY",
-			closeable:false,
+			closeable:true,
 			filterValue:
 				[{name:"RTT",label:"RTT",ticked:false},{name:"CP",label:"Conge paye",ticked:false}]
 				,
 			onFilter: function(value) {
 				console.log('Filter checkbox ['+value.field+'] selected items '+value.value.length);
 			},
-			currentFilter:{}
+			currentFilter:{},
+			displayed: true
 	};
 	$scope.booleanCriteriaConfig={
 			name:"validated",
 			defaultButtonLabel:"Validated",
 			filterType:"BOOLEAN",
-			closeable:false,
+			closeable:true,
 			onFilter: function(value) {
 				console.log('Filter boolean ['+value.field+']='+value.value);
 			},
-			currentFilter:{}
+			currentFilter:{},
+			displayed: true
 	};
 	$scope.descriptionCriteriaConfig={
 			name:"description",
 			defaultButtonLabel:"Description",
 			filterType:"TEXT",
-			closeable:false,
+			closeable:true,
 			filterValue:"",
 			onFilter: function(value) {
 				console.log('Filter text ['+value.field+'] searching: '+value.value);
 			},
-			currentFilter:{}
+			currentFilter:{},
+			displayed: true
 	};
 	
 	$scope.dateCriteriaConfig={
 			name:"date",
 			defaultButtonLabel:"Date",
 			filterType:"DATE",
-			closeable:false,
+			closeable:true,
 			filterValue:"",
 			onFilter: function(value) {
 				console.log('Filter text ['+value.field+'] searching: '+value.value);
 			},
-			currentFilter:{}
+			currentFilter:{},
+			displayed: true
 	};
 	
 	$scope.criteriaBarConfig={
-		criterions:[$scope.typeCriteriaConfig,$scope.descriptionCriteriaConfig,$scope.dateCriteriaConfig,$scope.booleanCriteriaConfig],
+		criterions:[$scope.employeCriteriaConfig,$scope.typeCriteriaConfig,$scope.descriptionCriteriaConfig,$scope.dateCriteriaConfig,$scope.booleanCriteriaConfig],
+		autoFilter:true,
 		filters:[]
 	};
 	
@@ -101,7 +117,7 @@ function AbsencesController($scope, $rootScope, AbsenceCRUDREST,
 		$scope.initialSelectionChanged = false;
 		$scope.selectedActionLabel = $scope.initialActionLabel;
 		absence.id=undefined;
-		absence.type = $scope.selectedActionName;
+		absence.typeAbsence = $scope.selectedActionName;
 		absence.startDate = today;
 		absence.endDate = today;
 		absence.description = '';
@@ -110,7 +126,7 @@ function AbsencesController($scope, $rootScope, AbsenceCRUDREST,
 		$scope.edition=false;
 	};
 	$scope.changeActionSelection = function() {
-		absence.type = $scope.selectedAction;
+		absence.typeAbsence = $scope.selectedAction;
 		$scope.initialSelectionChanged = true;
 	};
 
@@ -130,7 +146,7 @@ function AbsencesController($scope, $rootScope, AbsenceCRUDREST,
 	}
 
 	$scope.postAbsence = function(hideFn) {
-		absence.type=absence.type.name;
+		absence.typeAbsence=absence.typeAbsence.name;
 		AbsenceCRUDREST.save(clone(absence)).$promise.then(function(result) {
 			alertService.showInfo('Confirmation', 'Donn� sauvegard�');
 			notifService.notify('info','Created','Nouvelle absence enregistr�');
@@ -152,7 +168,7 @@ function AbsencesController($scope, $rootScope, AbsenceCRUDREST,
 		AbsenceCRUDREST.get(
 				{id:id},function(data) {
 					absence.id=data.id;
-					absence.type = data.type;
+					absence.typeAbsence = data.typeAbsence;
 					absence.startDate = data.startDate;
 					absence.endDate = data.endDate;
 					absence.description = data.description;

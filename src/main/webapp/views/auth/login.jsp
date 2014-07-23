@@ -30,7 +30,9 @@
 	</div>
 </c:if>
 <body>
-	<div data-ng-view="" class="am-fade"></div>
+	<div class="container-fluid">
+		<div data-ng-view="" class="am-fade"></div>
+	</div>
 	<script
 		src="${contextPath}/assets/bower_components/jquery/dist/jquery.min.js"></script>
 	<script

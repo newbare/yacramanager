@@ -64,10 +64,10 @@ function AdminCompaniesController($scope,$rootScope,CompanyCRUDREST,ngTableParam
 			id : id
 		}).$promise.then(function(result) {
 			$scope.tableParams.reload();
-			alertService.showInfo('info','Confirmation', 'Company supprimé');
+			alertService.showInfo('Confirmation', 'Company supprimé');
 		}, function(error) {
 			console.log(error);
-			alertService.showError('error','' + error.status, error.data);
+			alertService.showError('' + error.status, error.data);
 		});
 	};
 	$scope.putCompany = function() {

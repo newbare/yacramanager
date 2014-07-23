@@ -9,8 +9,9 @@
 				placeholder="Until" data-bs-datepicker />
 		</div>
 	</div>
-	<div class="pull-right">
-		<button class="btn btn-primary" data-ng-click="onFilterDate()">Filter</button>
-		<button class="btn btn-link" data-ng-click="closeFilterContent()">Close</button>
+	<div class="">
+		<button class="btn btn-link" data-ng-click="startDate=undefined;endDate=undefined">Reset</button>
+		<button class="btn btn-link pull-right" data-ng-click="closeFilterContent()">Close</button>
+		<button class="btn btn-primary pull-right" data-ng-click="onFilterDate()">Filter</button>
 	</div>
 </form>

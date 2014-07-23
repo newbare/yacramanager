@@ -1,17 +1,23 @@
 <form data-role="search">
-	<div class="radio">
-		<label> <input type="radio" name="optionsRadios"
-			id="optionsRadios1" data-ng-model="booleanValue"
-			value="true">
-			True
-		</label>
-	</div>
-	<div class="radio">
-		<label> <input type="radio" name="optionsRadios"
-			id="optionsRadios2" data-ng-model="booleanValue"
-			value="false"> False
-		</label>
-	</div>
+	<ul class="list-inline">
+		<li>
+			<div class="radio">
+				<label> <input type="radio" name="optionsRadios"
+					id="optionsRadios1" data-ng-model="booleanValue"
+					value="true">
+					True
+				</label>
+			</div>	
+		</li>
+		<li>
+			<div class="radio">
+				<label> <input type="radio" name="optionsRadios"
+					id="optionsRadios2" data-ng-model="booleanValue"
+					value="false"> False
+				</label>
+			</div>	
+		</li>
+	</ul>
 	<div class="pull-right">
 		<button class="btn btn-primary" data-ng-click="onFilterBoolean()">Filter</button>
 		<button class="btn btn-link" data-ng-click="closeFilterContent()">Close</button>

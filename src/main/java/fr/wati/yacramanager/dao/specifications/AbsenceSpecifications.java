@@ -4,6 +4,7 @@
 package fr.wati.yacramanager.dao.specifications;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -11,6 +12,7 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.jpa.domain.Specifications;
 
 import fr.wati.yacramanager.beans.Absence;
 import fr.wati.yacramanager.beans.Absence_;
@@ -74,6 +76,38 @@ public class AbsenceSpecifications {
 			}
 		};
 	}
+	
+	public static Specification<Absence> isValidated() {
+		return new Specification<Absence>() {
+			public Predicate toPredicate(Root<Absence> root,
+					CriteriaQuery<?> query, CriteriaBuilder builder) {
+				return builder.isTrue(root.get(Absence_.validated));
+			}
+		};
+	}
+	
+	public static Specification<Absence> isNotValidated() {
+		return new Specification<Absence>() {
+			public Predicate toPredicate(Root<Absence> root,
+					CriteriaQuery<?> query, CriteriaBuilder builder) {
+				return builder.isFalse(root.get(Absence_.validated));
+			}
+		};
+	}
+	
+	public static Specification<Absence> withTypeAbsences(final List<TypeAbsence> typeAbsences) {
+		Specifications<Absence> specifications=null;
+		for(TypeAbsence typeAbsence:typeAbsences){
+			if(specifications==null){
+				specifications=Specifications.where(withTypeAbsence(typeAbsence));
+			}else {
+				specifications=specifications.or(withTypeAbsence(typeAbsence));
+			}
+			
+		}
+		return specifications;
+	}
+	
 	public static Specification<Absence> forEmploye(final Employe employe) {
 		return new Specification<Absence>() {
 			public Predicate toPredicate(Root<Absence> root,

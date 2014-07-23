@@ -3,6 +3,7 @@ package fr.wati.yacramanager.services.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -119,5 +120,10 @@ public class ClientServiceImpl implements ClientService {
 	@Override
 	public Page<Client> findByCompany(Company company, Pageable pageable) {
 		return clientRepository.findByCompany(company, pageable);
+	}
+
+	@Override
+	public Page<Client> findAll(Specification<Client> spec, Pageable pageable) {
+		return clientRepository.findAll(spec, pageable);
 	}
 }

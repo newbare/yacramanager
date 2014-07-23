@@ -39,7 +39,7 @@ angular
 									onFilterTriggered : '&',
 									onRemoveCriteria : '&'
 								},
-								template : '<span class="ng-criteria inlineBlock">'
+								template : '<span class="ng-criteria inlineBlock" data-ng-show="criteriaConfig.displayed">'
 										+ '<div class="btn-group">'
 										+ '<button type="button" class="btn btn-default criteria-btn" ng-click="toggleFilterContent( $event )" ng-bind-html="buttonLabel"></button>'
 										+ '<button type="button" class="btn btn-default" data-ng-click="dismissCriteria(criteriaConfig.name)" data-ng-show="closeable">'
@@ -65,10 +65,9 @@ angular
 										$scope.closeable = true;
 									}
 									$scope.dismissCriteria = function(fieldName) {
+										$scope.criteriaConfig.displayed=false;
 										$scope.onRemoveCriteria(fieldName);
 										console.log("Remove criteria: "+fieldName);
-										$scope.$destroy();
-										element.remove();
 									};
 									/*
 									 * Common config for all type
@@ -89,7 +88,7 @@ angular
 									$scope.resetButtonLabel();
 
 									$scope.filterType = $scope.criteriaConfig.filterType;
-									$scope.filterContentHTML;
+									$scope.filterContentHTML=undefined;
 
 									$scope.onFilterText = function() {
 										var filter = {
@@ -104,7 +103,9 @@ angular
 											$scope.resetButtonLabel();
 										}
 										$scope.closeFilterContent();
-										$scope.criteriaConfig.onFilter(filter);
+										if($scope.criteriaConfig.onFilter!==undefined){
+											$scope.criteriaConfig.onFilter(filter);
+										}
 										$scope.criteriaConfig.currentFilter=filter;
 										$scope.onFilterTriggered(filter);
 									};
@@ -127,14 +128,20 @@ angular
 													+ '-'
 													+ $filter('date')(
 															$scope.endDate,
-															'shortDate') + ')')
+															'shortDate') + ')');
+											
 										} else {
+											filter.value=undefined;
 											$scope.resetButtonLabel();
+											
 										}
 										$scope.closeFilterContent();
-										$scope.criteriaConfig.onFilter(filter);
+										if($scope.criteriaConfig.onFilter!==undefined){
+											$scope.criteriaConfig.onFilter(filter);
+										}
 										$scope.criteriaConfig.currentFilter=filter;
 										$scope.onFilterTriggered(filter);
+										
 									};
 									$scope.onFilterBoolean = function() {
 										var filter = {
@@ -151,7 +158,9 @@ angular
 											$scope.resetButtonLabel();
 										}
 										$scope.closeFilterContent();
-										$scope.criteriaConfig.onFilter(filter);
+										if($scope.criteriaConfig.onFilter!==undefined){
+											$scope.criteriaConfig.onFilter(filter);
+										}
 										$scope.criteriaConfig.currentFilter=filter;
 										$scope.onFilterTriggered(filter);
 									};
@@ -184,25 +193,17 @@ angular
 											field : $scope.criteriaConfig.name,
 											value : selected
 										};
-										$scope.criteriaConfig.onFilter(filter);
+										if($scope.criteriaConfig.onFilter!==undefined){
+											$scope.criteriaConfig.onFilter(filter);
+										}
 										$scope.criteriaConfig.currentFilter=filter;
 										$scope.onFilterTriggered(filter);
 									};
 									function fetchTemplate(template) {
-										return $q
-												.when(
-														$templateCache
-																.get(template)
-																|| $http
-																		.get(template))
-												.then(
-														function(res) {
-															if (angular
-																	.isObject(res)) {
-																$templateCache
-																		.put(
-																				template,
-																				res.data);
+										return $q.when(	$templateCache.get(template)|| $http.get(template))
+												.then(function(res) {
+															if (angular.isObject(res)) {
+																$templateCache.put(template,res.data);
 																return res.data;
 															}
 															return res;
@@ -248,31 +249,41 @@ angular
 										// compute content depending on the
 										// filter type
 										if ($scope.filterType === "TEXT") {
-											fetchTemplate(textFilterTemplate)
-													.then(
-															function(content) {
-																$scope.filterContentHTML = content;
-															})
+											if($scope.filterContentHTML===undefined){
+												fetchTemplate(textFilterTemplate)
+												.then(
+														function(content) {
+															$scope.filterContentHTML = content;
+														});
+											}
+															
 										} else if ($scope.filterType === "ARRAY") {
-											fetchTemplate(
+											if($scope.filterContentHTML===undefined){
+												fetchTemplate(
 													checkBoxFilterTemplate)
 													.then(
 															function(content) {
 																$scope.checkboxElements = $scope.filterValue;
 																$scope.filterContentHTML = content;
 															});
+											}
+											
 										} else if ($scope.filterType === "DATE") {
-											fetchTemplate(dateFilterTemplate)
+											if($scope.filterContentHTML===undefined){
+												fetchTemplate(dateFilterTemplate)
 													.then(
 															function(content) {
 																$scope.filterContentHTML = content;
 															});
+											}
 										} else if ($scope.filterType === "BOOLEAN") {
-											fetchTemplate(booleanFilterTemplate)
+											if($scope.filterContentHTML===undefined){
+												fetchTemplate(booleanFilterTemplate)
 													.then(
 															function(content) {
 																$scope.filterContentHTML = content;
 															});
+											}
 										}
 										// We grab the button
 										clickedEl = element.children()[0];
@@ -387,35 +398,102 @@ angular
 									doFilter : '&'
 								},
 								template : 
-										'<div class="ng-criteria-bar row" >'
-										+ '<ul class="list-inline">'
+									'<div class="ng-criteria-bar row" >'
+									+ '<ul class="list-inline">'
 										+ '<li ng-repeat="criterion in criterions">'
-										+ '<div data-ng-criteria data-criteria-config="criterion" data-on-filter-triggered="filterTriggered(criterion.currentFilter)" data-on-remove-criteria="removeFilter(criterion.name)"></div>'
+											+ '<div data-ng-criteria data-criteria-config="criterion" data-on-filter-triggered="filterTriggered(criterion.currentFilter)" data-on-remove-criteria="removeFilter(criterion.name)"></div>'
+										+ '</li>'
+										+ '<li class="divider-vertical"></li>'
+										+ '<li>'
+											+ '<span id="manage-filter-btn">'
+												+ '<button type="button" class="btn btn-default" ng-click="toggleMoreContent( $event )">Manage filters <span class="caret"></span></button>'
+												+ '<div class="more-content hide col-md-2 col-xs-3">'
+												+ '<div class="input-group">'
+												+ '<input type="search" data-ng-model="managedFilterSearch" class="form-control" placeholder="Filter text" name="srch-term" id="srch-term">'
+												+ '<span class="input-group-addon"><i class="fa fa-search"></i></span>'
+												+ '</div>'
+												+ '<br>'
+												+ '<ul class="list-group">'
+														+ '<li class="list-group-item" ng-repeat="criterion in managedCriterions | filter : managedFilterSearch">'
+															+ '<div class="checkbox">'
+																+ '<label>'
+																+ '<input type="checkbox" data-ng-model="criterion.displayed" data-ng-change="showHideCriterion(criterion)"> {{criterion.name}}'
+																+ '</label>'
+															+ '</div>'
+														+ '</li>'
+													+ '</ul>'
+												+ '</div>'
+											+ '</span>'
 										+ '</li>'
 										+ '<li>'
-										+ '<div class="checkbox">'
-									    + '<label>'
-									    + '<input type="checkbox" data-ng-model="autoSearchEnable"> auto filter'
-									    + '</label>'
-									    + '</div>'
-									    + '</li>'
-									    + '<li>'
-										+ '<button type="button" class="btn btn-primary" data-ng-click="doFilter(filters)"><i class="fa fa-search"></i></button>'
+											+ '<div class="checkbox">'
+												+ '<label>'
+													+ '<input type="checkbox" data-ng-model="autoSearchEnable"> auto filter'
+												+ '</label>'
+											   + '</div>'
 										+ '</li>'
-										+ '</ul>'
-										+ '</div>',
+										+ '<li>'
+											+ '<button type="button" class="btn btn-primary" data-ng-click="doFilter(filters)"><i class="fa fa-search"></i></button>'
+										+ '</li>'
+									+ '</ul>'
+								+ '</div>',
 								link : function($scope, element, attrs) {
 									$scope.criterions=$scope.criteriaBarConfig.criterions;
+									$scope.managedCriterions=[];
+									angular.forEach($scope.criteriaBarConfig.criterions,
+											function(criterion) {
+												if (criterion.closeable) {
+													$scope.managedCriterions.push(criterion);
+												}
+											});
+										;
+									$scope.moreContentElement=element.find(".more-content");
+									$scope.closeManageFilter=function(){
+										$scope.moreContentElement.removeClass('show');
+										$scope.moreContentElement.addClass('hide');
+										angular.element(document).unbind('click',
+												$scope.externalManageFilterClickListener);
+									}
+									
+									$scope.openManageFilter=function(){
+										$scope.moreContentElement.removeClass('hide');
+										$scope.moreContentElement.addClass('show');
+										angular.element(document).bind('click',
+												$scope.externalManageFilterClickListener);
+									}
+									
+									$scope.toggleMoreContent=function( $event ){
+										//close
+										if ($scope.moreContentElement
+												.hasClass('show')) {
+											$scope.closeManageFilter();
+										}
+										// open
+										else {
+											$scope.openManageFilter();
+										}
+									};
+									
+									$scope.showHideCriterion=function(criterion){
+										if(criterion.displayed===false){
+											$scope.removeFilter(criterion.name);
+										}
+									};
+									
 									$scope.filters=$scope.criteriaBarConfig.filters;
-									$scope.autoSearchEnable=false;
+									$scope.autoSearchEnable=($scope.criteriaBarConfig.autoFilter !== undefined) ? $scope.criteriaBarConfig.autoFilter:false;
 									$scope.filterTriggered=function(filterResult){
 										var foundExistingFilter=undefined;
 										console.log("Criteria bar watcher triggered:"+filterResult.type+' '+filterResult.field+' '+filterResult.value);
 										foundExistingFilter=findFilterByFieldName(filterResult.field);
 										if(foundExistingFilter!== undefined){
-											//update existing filter
-											console.log("update existing filter"+foundExistingFilter.field);
-											foundExistingFilter.value=filterResult.value;
+											if(filterResult.value===undefined){
+												$scope.removeFilter(filterResult.field);
+											}else{
+												//update existing filter
+												console.log("update existing filter"+foundExistingFilter.field);
+												foundExistingFilter.value=filterResult.value;
+											}
 										}
 										else {
 											//add new filter
@@ -438,9 +516,22 @@ angular
 										for (var i in $scope.filters) {
 											  if($scope.filters[i].field===filterFieldName){
 												  $scope.filters.splice(i, 1);
+												  $scope.doFilter($scope.filters);
 												  console.log("Remove criterion from bar "+filterFieldName);
 												}
 											}
+									};
+									//handle external click for moreelement
+									//manage filter content
+									$scope.externalManageFilterClickListener = function(e) {
+										targetsArr = element.find("#manage-filter-btn")
+												.find(e.target.tagName);
+										for (var i = 0; i < targetsArr.length; i++) {
+											if (e.target == targetsArr[i]) {
+												return;
+											}
+										}
+										$scope.closeManageFilter();
 									};
 									
 									}

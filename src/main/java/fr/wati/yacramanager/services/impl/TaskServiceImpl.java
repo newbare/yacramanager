@@ -1,6 +1,9 @@
 package fr.wati.yacramanager.services.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -88,6 +91,11 @@ public class TaskServiceImpl implements TaskService {
 		Project project=projectRepository.findOne(projectId);
 		Task task = taskRepository.findByProjectAndId(project, taskId);
 		taskRepository.delete(task);
+	}
+
+	@Override
+	public Page<Task> findAll(Specification<Task> spec, Pageable pageable) {
+		return taskRepository.findAll(spec, pageable);
 	}
 
 }

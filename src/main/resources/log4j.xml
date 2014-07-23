@@ -15,7 +15,7 @@
 	</logger>
 
 	<logger name="org.springframework.messaging">
-		<level value="debug" />
+		<level value="info" />
 	</logger>
 
 	<logger name="org.springframework.web">
@@ -23,11 +23,14 @@
 	</logger>
 
 	<logger name="org.springframework.web.socket">
-		<level value="debug" />
+		<level value="info" />
+	</logger>
+	<logger name="org.dozer">
+		<level value="info"></level>
 	</logger>
 
 	<logger name="org.springframework.security">
-		<level value="debug" />
+		<level value="info" />
 	</logger>
 
 	<logger name="fr.wati">

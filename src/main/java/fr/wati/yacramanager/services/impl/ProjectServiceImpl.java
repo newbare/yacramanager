@@ -3,6 +3,9 @@ package fr.wati.yacramanager.services.impl;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -101,6 +104,11 @@ public class ProjectServiceImpl implements ProjectService{
 	@Override
 	public void deleteAll() {
 		projectRepository.deleteAll();
+	}
+
+	@Override
+	public Page<Project> findAll(Specification<Project> spec, Pageable pageable) {
+		return projectRepository.findAll(spec, pageable);
 	}
 
 }
