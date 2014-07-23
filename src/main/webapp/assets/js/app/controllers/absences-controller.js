@@ -110,7 +110,8 @@ function AbsencesController($scope, $rootScope, AbsenceCRUDREST,
 		var index = $scope.selectedAbsences.indexOf(absence);
 		if(index!=-1){
 			$scope.selectedAbsences.splice(index, 1);
-		}
+		};
+		
 	};
 	
 	$scope.reset = function() {
