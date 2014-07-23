@@ -1,46 +1,53 @@
-.ng-criteria-bar{
+.ng-criteria-bar {
 	padding-top: 5px;
 	padding-left: 5px;
 	background-color: #f5f5f5;
 }
 /* the criteria button */
 .ng-criteria .criteria-btn {
-        
+	
 }
 /* ! */
-
 .ng-criteria .inlineBlock {
-    display: inline-block;
+	display: inline-block;
 }
 
+.ng-criteria-bar .divider-vertical {
+	/* height: 90%; */
+	margin: 0 ;
+	border-right: 1px solid black;
+	border-left: 1px solid #f2f2f2;
+}
 
-.ng-criteria .filter-content{
+.ng-criteria .filter-content,.ng-criteria-bar .more-content {
 	position: absolute;
-    z-index: 999;
-    border: 1px solid rgba(0, 0, 0, 0.15);
-    border-radius: 4px;
-    -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);    
-    min-width:278px;
-    margin-right: 30px;
-    padding: 8px;
-    background-color: white;
+	z-index: 999;
+	border: 1px solid rgba(0, 0, 0, 0.15);
+	border-radius: 4px;
+	-webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+	box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+	min-width: 278px;
+	margin-right: 30px;
+	padding: 8px;
+	background-color: white;
 }
 
-.ng-criteria ul>li{
+.ng-criteria ul>li,.ng-criteria-bar ul>li {
 	padding-top: 0px !important;
 	padding-bottom: 0px !important;
 	cursor: pointer;
 	/* border: 0px !important; */
 }
 
-.ng-criteria ul>li:HOVER{
-color: #555;
-text-decoration: none;
-background-color: #f5f5f5;
+.ng-criteria ul>li:HOVER
+.ng-criteria-bar ul>li:HOVER {
+	color: #555;
+	text-decoration: none;
+	background-color: #f5f5f5;
 }
 
-.ng-criteria .btn{
-/* 	padding-top: 5px !important; */
-/* 	padding-bottom: 5px !important; */
+.ng-criteria .btn {
+	/* 	padding-top: 5px !important; */
+	/* 	padding-bottom: 5px !important; */
+	
 }

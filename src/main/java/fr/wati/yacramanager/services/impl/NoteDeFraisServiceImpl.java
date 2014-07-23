@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -169,6 +170,12 @@ public class NoteDeFraisServiceImpl implements NoteDeFraisService {
 		}
 		dto.setAttachementsIds(attachementIds);
 		return dto;
+	}
+
+	@Override
+	public Page<NoteDeFrais> findAll(Specification<NoteDeFrais> spec,
+			Pageable pageable) {
+		return noteDeFraisRepository.findAll(spec, pageable);
 	}
 	
 	

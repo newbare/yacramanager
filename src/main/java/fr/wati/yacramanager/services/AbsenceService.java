@@ -9,7 +9,7 @@ import org.springframework.data.domain.Pageable;
 import fr.wati.yacramanager.beans.Absence;
 import fr.wati.yacramanager.beans.Employe;
 
-public interface AbsenceService extends CrudService<Absence, Long>{
+public interface AbsenceService extends CrudService<Absence, Long>,SpecificationFactory<Absence>{
 	
 	Page<Absence> findByStartDateBetween(Date dateDebut,Date dateFin,Pageable pageable);
 	

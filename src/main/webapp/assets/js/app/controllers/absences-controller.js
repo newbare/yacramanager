@@ -15,51 +15,56 @@ function AbsencesController($scope, $rootScope, AbsenceCRUDREST,
 			name:"type",
 			defaultButtonLabel:"Type",
 			filterType:"ARRAY",
-			closeable:false,
+			closeable:true,
 			filterValue:
 				[{name:"RTT",label:"RTT",ticked:false},{name:"CP",label:"Conge paye",ticked:false}]
 				,
 			onFilter: function(value) {
 				console.log('Filter checkbox ['+value.field+'] selected items '+value.value.length);
 			},
-			currentFilter:{}
+			currentFilter:{},
+			displayed: true
 	};
 	$scope.booleanCriteriaConfig={
 			name:"validated",
 			defaultButtonLabel:"Validated",
 			filterType:"BOOLEAN",
-			closeable:false,
+			closeable:true,
 			onFilter: function(value) {
 				console.log('Filter boolean ['+value.field+']='+value.value);
 			},
-			currentFilter:{}
+			currentFilter:{},
+			displayed: true
 	};
 	$scope.descriptionCriteriaConfig={
 			name:"description",
 			defaultButtonLabel:"Description",
 			filterType:"TEXT",
-			closeable:false,
+			closeable:true,
 			filterValue:"",
 			onFilter: function(value) {
 				console.log('Filter text ['+value.field+'] searching: '+value.value);
 			},
-			currentFilter:{}
+			currentFilter:{},
+			displayed: true
 	};
 	
 	$scope.dateCriteriaConfig={
 			name:"date",
 			defaultButtonLabel:"Date",
 			filterType:"DATE",
-			closeable:false,
+			closeable:true,
 			filterValue:"",
 			onFilter: function(value) {
 				console.log('Filter text ['+value.field+'] searching: '+value.value);
 			},
-			currentFilter:{}
+			currentFilter:{},
+			displayed: true
 	};
 	
 	$scope.criteriaBarConfig={
 		criterions:[$scope.typeCriteriaConfig,$scope.descriptionCriteriaConfig,$scope.dateCriteriaConfig,$scope.booleanCriteriaConfig],
+		autoFilter:true,
 		filters:[]
 	};
 	

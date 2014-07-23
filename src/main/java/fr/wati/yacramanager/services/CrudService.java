@@ -2,6 +2,10 @@ package fr.wati.yacramanager.services;
 
 import java.io.Serializable;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
+
 public interface CrudService<T,ID extends Serializable> {
 
 	
@@ -36,4 +40,6 @@ public interface CrudService<T,ID extends Serializable> {
 
 	
 	void deleteAll();
+	
+	Page<T> findAll(Specification<T> spec, Pageable pageable);
 }

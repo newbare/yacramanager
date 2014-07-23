@@ -6,12 +6,20 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import fr.wati.yacramanager.beans.Absence;
 import fr.wati.yacramanager.beans.Employe;
 import fr.wati.yacramanager.dao.repository.AbsenceRepository;
+import fr.wati.yacramanager.dao.specifications.AbsenceSpecifications;
 import fr.wati.yacramanager.services.AbsenceService;
+import fr.wati.yacramanager.utils.Filter;
+import fr.wati.yacramanager.utils.Filter.FilterArray;
+import fr.wati.yacramanager.utils.Filter.FilterBoolean;
+import fr.wati.yacramanager.utils.Filter.FilterDate;
+import fr.wati.yacramanager.utils.Filter.FilterText;
+import fr.wati.yacramanager.utils.Filter.FilterType;
 
 @Service
 public class AbsenceServiceImpl implements AbsenceService {
@@ -116,6 +124,44 @@ public class AbsenceServiceImpl implements AbsenceService {
 	public List<Absence> findByEmployeAndStartDateBetween(Employe employe,
 			Date dateDebut, Date dateFin) {
 		return absenceRepository.findByEmployeAndStartDateBetween(employe, dateDebut, dateFin);
+	}
+
+
+	@Override
+	public Page<Absence> findAll(Specification<Absence> spec, Pageable pageable) {
+		return absenceRepository.findAll(spec, pageable);
+	}
+
+
+	@Override
+	public Specification<Absence> buildSpecification(Filter filter) {
+		if(filter!=null){
+			FilterType filterType = filter.getType();
+			switch (filterType) {
+			case ARRAY:
+				FilterArray filterArray=(FilterArray) filter;
+				break;
+			case TEXT:
+				FilterText filterText=(FilterText) filter;
+				if("description".equals(filterText.getField())){
+					return AbsenceSpecifications.descriptionLike(filterText.getValue());
+				}
+				break;
+			case BOOLEAN:
+				FilterBoolean filterBoolean=(FilterBoolean) filter;
+				
+				break;
+			case DATE:
+				FilterDate filterDate=(FilterDate) filter;
+				if("date".equals(filter.getField())){
+					return AbsenceSpecifications.createdDateBetween(filterDate.getValue().getStart(), filterDate.getValue().getStart());
+				}
+				break;
+			default:
+				break;
+			}
+		}
+		return null;
 	}
 
 }
