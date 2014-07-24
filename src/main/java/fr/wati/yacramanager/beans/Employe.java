@@ -26,6 +26,10 @@ public class Employe extends Personne {
 	@OneToMany(mappedBy="employe")
 	private List<NoteDeFrais> noteDeFrais=new ArrayList<>();
 
+	@ManyToOne
+	private Employe manager;
+	@OneToMany(mappedBy="manager")
+	private List<Employe> managedEmployes=new ArrayList<>();
 	
 	public List<Absence> getAbsences() {
 		return absences;
@@ -56,6 +60,18 @@ public class Employe extends Personne {
 	 */
 	public void setNoteDeFrais(List<NoteDeFrais> noteDeFrais) {
 		this.noteDeFrais = noteDeFrais;
+	}
+	public Employe getManager() {
+		return manager;
+	}
+	public void setManager(Employe manager) {
+		this.manager = manager;
+	}
+	public List<Employe> getManagedEmployes() {
+		return managedEmployes;
+	}
+	public void setManagedEmployes(List<Employe> managedEmployes) {
+		this.managedEmployes = managedEmployes;
 	}
 	
 	

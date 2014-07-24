@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.messaging.simp.annotation.SendToUser;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -50,10 +51,11 @@ public class RestControllerAdvice {
 	
 	@ExceptionHandler(Exception.class)
 	@ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
+	@SendToUser(value="/queue/errors")
 	@ResponseBody
 	public String handleRestException(Exception ex, HttpServletResponse response) throws IOException
 	{
-		messagingTemplate.convertAndSendToUser(SecurityUtils.getConnectedUser().getUsername(), "/queue/errors", ex.getMessage());
+		//messagingTemplate.convertAndSendToUser(SecurityUtils.getConnectedUser().getUsername(), "/queue/errors", ex.getMessage());
 		return ex.getMessage();
 
 	}

@@ -116,4 +116,16 @@ public class AbsenceSpecifications {
 			}
 		};
 	}
+	
+	public static Specification<Absence> forEmployes(final List<Employe> employes) {
+		Specifications<Absence> specifications=null;
+		for(Employe employe:employes){
+			if(specifications==null){
+				specifications=Specifications.where(forEmploye(employe));
+			}else {
+				specifications=specifications.or(forEmploye(employe));
+			}
+		}
+		return specifications;
+	}
 }

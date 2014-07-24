@@ -87,10 +87,10 @@ public class AbsenceController implements RestCrudController<AbsenceDTO> {
 				LOG.error(e.getMessage(), e);
 			}
 		}
-		Specifications<Absence> specifications=Specifications.where(AbsenceSpecifications.forEmploye(SecurityUtils.getConnectedUser()));
+		Specifications<Absence> specifications=null;
 		if(!filters.isEmpty()){
 			LOG.debug("Building Absence specification");
-			specifications=specifications.and(SpecificationBuilder.buildSpecification(filters, absenceService));
+			specifications=Specifications.where(SpecificationBuilder.buildSpecification(filters, absenceService));
 		}
 		PageRequest pageable=null;
 		if(sort!=null){

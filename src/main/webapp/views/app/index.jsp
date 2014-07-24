@@ -31,6 +31,7 @@
 
 <script type="text/javascript">
 	var _contextPath = "${contextPath}";
+	var _userId = "${userId}";
 </script>
 </head>
 <body data-ng-controller="AppCtrl" data-web-socket >
@@ -66,9 +67,9 @@
 						data-ui-sref="notifications"><i class="fa fa-bell"></i></a></li>
 					<li
 						data-ng-class="navClass('user-settings') + navClass('user-profile')"
-						class="dropdown" data-ng-cloak><a href=""
+						class="dropdown"><a href=""
 						class="dropdown-toggle" data-toggle="dropdown"><i
-							class="fa fa-user"></i>{{userInfo.prenom}} <span class="caret"></span></a>
+							class="fa fa-user"></i>${userFirstName}<span class="caret"></span></a>
 						<ul class="user-menu dropdown-menu" role="menu">
 							<li><a data-ui-sref="user-settings"><i class="fa fa-cog"></i>Settings</a></li>
 							<li><a data-ui-sref="user-profile"><i class="fa fa-user"></i>

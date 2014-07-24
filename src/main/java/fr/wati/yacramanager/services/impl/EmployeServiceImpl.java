@@ -2,6 +2,7 @@ package fr.wati.yacramanager.services.impl;
 
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.dozer.Mapper;
@@ -20,6 +21,7 @@ import fr.wati.yacramanager.beans.Employe;
 import fr.wati.yacramanager.beans.Role;
 import fr.wati.yacramanager.dao.repository.EmployeRepository;
 import fr.wati.yacramanager.dao.repository.RoleRepository;
+import fr.wati.yacramanager.dao.specifications.EmployeSpecifications;
 import fr.wati.yacramanager.services.CompanyService;
 import fr.wati.yacramanager.services.EmployeService;
 import fr.wati.yacramanager.web.dto.RegistrationDTO;
@@ -145,5 +147,19 @@ public class EmployeServiceImpl implements EmployeService {
 	@Override
 	public Page<Employe> findAll(Specification<Employe> spec, Pageable pageable) {
 		return employeRepository.findAll(spec, pageable);
+	}
+
+	@Override
+	public List<Employe> getManagedEmployees(Long requesterId) {
+		Employe requester=employeRepository.findOne(requesterId);
+		return employeRepository.findAll(EmployeSpecifications.hasManager(requester));
+	}
+
+	@Override
+	public void addManagedEmploye(Long managerId, Long employeId) {
+		Employe manager=employeRepository.findOne(managerId);
+		Employe managed=employeRepository.findOne(employeId);
+		managed.setManager(manager);
+		manager.getManagedEmployes().add(managed);
 	}
 }

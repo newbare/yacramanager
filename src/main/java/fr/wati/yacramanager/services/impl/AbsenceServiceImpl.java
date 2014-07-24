@@ -15,6 +15,7 @@ import fr.wati.yacramanager.beans.Employe;
 import fr.wati.yacramanager.dao.repository.AbsenceRepository;
 import fr.wati.yacramanager.dao.specifications.AbsenceSpecifications;
 import fr.wati.yacramanager.services.AbsenceService;
+import fr.wati.yacramanager.services.EmployeService;
 import fr.wati.yacramanager.utils.Filter;
 import fr.wati.yacramanager.utils.Filter.FilterArray;
 import fr.wati.yacramanager.utils.Filter.FilterArrayValue;
@@ -29,6 +30,9 @@ public class AbsenceServiceImpl implements AbsenceService {
 
 	@Autowired
 	private AbsenceRepository absenceRepository;
+	
+	@Autowired
+	private EmployeService employeService;
 
 	@Override
 	public Page<Absence> findByStartDateBetween(Date dateDebut, Date dateFin,
@@ -145,11 +149,17 @@ public class AbsenceServiceImpl implements AbsenceService {
 				FilterArray filterArray=(FilterArray) filter;
 				if("type".equals(filter.getField())){
 					List<TypeAbsence> absences=new ArrayList<>();
-					filterArray.getValue();
 					for(FilterArrayValue filterArrayValue: filterArray.getValue()){
 						absences.add(TypeAbsence.valueOf(filterArrayValue.getName()));
 					}
 					return AbsenceSpecifications.withTypeAbsences(absences);
+				}
+				if("employe".equals(filter.getField())){
+					List<Employe> employes=new ArrayList<>();
+					for(FilterArrayValue filterArrayValue: filterArray.getValue()){
+						employes.add(employeService.findOne(Long.valueOf(filterArrayValue.getName())));
+					}
+					return AbsenceSpecifications.forEmployes(employes);
 				}
 				break;
 			case TEXT:

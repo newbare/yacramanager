@@ -17,6 +17,15 @@
 			<a>workLogs</a>
 			<b>workLogs</b>
 		</field-exclude>
+		<field-exclude>
+			<a>managedEmployes</a>
+			<b>managedEmployes</b>
+		</field-exclude>
+		<field-exclude>
+			<a>manager</a>
+			<b>manager</b>
+		</field-exclude>
+		
 	</mapping>
 	<mapping>
 		<class-a>fr.wati.yacramanager.beans.Role</class-a>
