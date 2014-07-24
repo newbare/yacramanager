@@ -59,7 +59,7 @@ angular
 									var booleanFilterTemplate = _contextPath
 											+ '/assets/others/criteria/criteria-boolean.tpl.html';
 
-									//initialise templates
+									// templates initialisations
 									
 									$scope.initialiseTemplates=function(){
 										// compute content depending on the
