@@ -18,6 +18,7 @@ import fr.wati.yacramanager.web.dto.AbsenceDTO;
 import fr.wati.yacramanager.web.dto.ClientDTO;
 import fr.wati.yacramanager.web.dto.CompanyDTO;
 import fr.wati.yacramanager.web.dto.NoteDeFraisDTO;
+import fr.wati.yacramanager.web.dto.UserInfoDTO.ManagedEmployeInfoDTO;
 
 public class DtoMapper {
 
@@ -76,6 +77,14 @@ public class DtoMapper {
 		return dto;
 	}
 	
+	public static ManagedEmployeInfoDTO mapManagedEmployeInfoDTO(Employe employe) {
+		ManagedEmployeInfoDTO dto = new ManagedEmployeInfoDTO();
+		dto.setName(String.valueOf(employe.getId()));
+		dto.setLabel(employe.getFullName());
+		return dto;
+	}
+	
+	
 	public static NoteDeFraisDTO map(NoteDeFrais noteDeFrais) {
 		NoteDeFraisDTO dto = new NoteDeFraisDTO();
 		dto.setDate(noteDeFrais.getDate());
@@ -102,6 +111,14 @@ public class DtoMapper {
 		List<CompanyDTO> dtos = new ArrayList<CompanyDTO>();
 		for (Company company : companies) {
 			dtos.add(map(company));
+		}
+		return dtos;
+	}
+	
+	public static List<ManagedEmployeInfoDTO> mapManagedEmployeInfoDTOs(Iterable<Employe> employees) {
+		List<ManagedEmployeInfoDTO> dtos = new ArrayList<>();
+		for (Employe employe : employees) {
+			dtos.add(mapManagedEmployeInfoDTO(employe));
 		}
 		return dtos;
 	}

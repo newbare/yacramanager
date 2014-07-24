@@ -59,6 +59,74 @@ angular
 									var booleanFilterTemplate = _contextPath
 											+ '/assets/others/criteria/criteria-boolean.tpl.html';
 
+									//initialise templates
+									
+									$scope.initialiseTemplates=function(){
+										// compute content depending on the
+										// filter type
+										if ($scope.filterType === "TEXT") {
+											if($scope.filterContentHTML===undefined){
+												fetchTemplate(textFilterTemplate)
+												.then(
+														function(content) {
+															$scope.filterContentHTML = content;
+														});
+											}
+															
+										} else if ($scope.filterType === "ARRAY") {
+											if($scope.filterContentHTML===undefined){
+												fetchTemplate(
+													checkBoxFilterTemplate)
+													.then(
+															function(content) {
+																$scope.checkboxElements = $scope.filterValue;
+																if($scope.criteriaConfig.defaultSelectedItem !== undefined &&  angular.isFunction($scope.criteriaConfig.defaultSelectedItem)){
+																	defaultSelectedItems=$scope.criteriaConfig.defaultSelectedItem($scope.checkboxElements);
+																	angular.forEach(defaultSelectedItems,function(item){
+																		item.ticked=true;
+																	});
+																	$scope.onFilterCheckBox();
+																}
+																$scope.filterContentHTML = content;
+															});
+											}
+											
+										} else if ($scope.filterType === "DATE") {
+											if($scope.filterContentHTML===undefined){
+												fetchTemplate(dateFilterTemplate)
+													.then(
+															function(content) {
+																$scope.filterContentHTML = content;
+															});
+											}
+										} else if ($scope.filterType === "BOOLEAN") {
+											if($scope.filterContentHTML===undefined){
+												fetchTemplate(booleanFilterTemplate)
+													.then(
+															function(content) {
+																$scope.filterContentHTML = content;
+															});
+											}
+										}
+									};
+									
+									//get filter value datas
+									if($scope.criteriaConfig.getData !== undefined &&  angular.isFunction($scope.criteriaConfig.getData)){
+										var defer = $q.defer();
+										defer.promise.then(function (data) {
+											$scope.filterValue=data;
+											$scope.initialiseTemplates();
+										});
+										$scope.criteriaConfig.getData(defer);
+										
+									}else {
+										/*
+										 * Common config for all type
+										 */
+										$scope.filterValue = $scope.criteriaConfig.filterValue;
+										$scope.initialiseTemplates();
+									}
+									
 									if ($scope.criteriaConfig.closeable !== undefined) {
 										$scope.closeable = $scope.criteriaConfig.closeable;
 									} else {
@@ -69,16 +137,10 @@ angular
 										$scope.onRemoveCriteria(fieldName);
 										console.log("Remove criteria: "+fieldName);
 									};
-									/*
-									 * Common config for all type
-									 */
-									$scope.filterValue = $scope.criteriaConfig.filterValue;
+									
+									
 									$scope.computeButtonLabel = function(value) {
-										$scope.buttonLabel = $sce
-												.trustAsHtml($scope.criteriaConfig.defaultButtonLabel
-														+ ': '
-														+ value
-														+ ' <span class="caret"></span>');
+										$scope.buttonLabel = $sce.trustAsHtml($scope.criteriaConfig.defaultButtonLabel + ': '+ value + ' <span class="caret"></span>');
 									}
 									$scope.resetButtonLabel = function() {
 										$scope.buttonLabel = $sce
@@ -178,8 +240,12 @@ angular
 															btnLabel = btnLabel
 																	+ ' , ';
 														}
-														btnLabel = btnLabel
-																+ entry.name;
+														if($scope.criteriaConfig.buttonSelectedItemsFormater !== undefined &&  angular.isFunction($scope.criteriaConfig.buttonSelectedItemsFormater)){
+															btnLabel = btnLabel	+ $scope.criteriaConfig.buttonSelectedItemsFormater(entry);
+														}else {
+															btnLabel = btnLabel	+ entry.name;
+														}
+														
 														i++;
 													}
 												});
@@ -238,6 +304,8 @@ angular
 												'click',
 												$scope.externalClickListener);
 									};
+									
+									
 									// UI operations to show/hide checkboxes
 									// based on click event..
 									$scope.toggleFilterContent = function(e) {
@@ -246,45 +314,7 @@ angular
 										$scope.filterContentDiv = element
 												.children()[1];
 
-										// compute content depending on the
-										// filter type
-										if ($scope.filterType === "TEXT") {
-											if($scope.filterContentHTML===undefined){
-												fetchTemplate(textFilterTemplate)
-												.then(
-														function(content) {
-															$scope.filterContentHTML = content;
-														});
-											}
-															
-										} else if ($scope.filterType === "ARRAY") {
-											if($scope.filterContentHTML===undefined){
-												fetchTemplate(
-													checkBoxFilterTemplate)
-													.then(
-															function(content) {
-																$scope.checkboxElements = $scope.filterValue;
-																$scope.filterContentHTML = content;
-															});
-											}
-											
-										} else if ($scope.filterType === "DATE") {
-											if($scope.filterContentHTML===undefined){
-												fetchTemplate(dateFilterTemplate)
-													.then(
-															function(content) {
-																$scope.filterContentHTML = content;
-															});
-											}
-										} else if ($scope.filterType === "BOOLEAN") {
-											if($scope.filterContentHTML===undefined){
-												fetchTemplate(booleanFilterTemplate)
-													.then(
-															function(content) {
-																$scope.filterContentHTML = content;
-															});
-											}
-										}
+										
 										// We grab the button
 										clickedEl = element.children()[0];
 

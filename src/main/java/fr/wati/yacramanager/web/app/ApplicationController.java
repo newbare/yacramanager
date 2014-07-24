@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import fr.wati.yacramanager.beans.Employe;
 import fr.wati.yacramanager.utils.SecurityUtils;
 
 @Controller
@@ -17,7 +18,9 @@ public class ApplicationController {
 	@RequestMapping(value = "/app/")
 	public ModelAndView index(Principal principal){
 		ModelAndView modelAndView=new ModelAndView("app/index");
-		modelAndView.addObject("userName", SecurityUtils.getConnectedUser().getFullName());
+		Employe connectedUser = SecurityUtils.getConnectedUser();
+		modelAndView.addObject("userFirstName", connectedUser.getPrenom());
+		modelAndView.addObject("userId", connectedUser.getId());
 		return modelAndView;
 	}
 

@@ -4,6 +4,7 @@
 package fr.wati.yacramanager.services;
 
 import java.util.Date;
+import java.util.List;
 
 import junit.framework.Assert;
 
@@ -21,10 +22,10 @@ import fr.wati.yacramanager.web.dto.UserInfoDTO;
 
 /**
  * @author Rachid Ouattara
- *
+ * 
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes={TestServicesConfig.class})
+@ContextConfiguration(classes = { TestServicesConfig.class })
 public class EmployeServiceTest extends
 		AbstractTransactionalJUnit4SpringContextTests {
 
@@ -32,13 +33,13 @@ public class EmployeServiceTest extends
 	private EmployeService employeService;
 	@Autowired
 	private CompanyService companyService;
-	
+
 	@Test
-	public void testDozerMappingConfig() throws Exception{
-		Company company=new Company();
+	public void testDozerMappingConfig() throws Exception {
+		Company company = new Company();
 		company.setName("company-test");
 		Company createCompany = companyService.createCompany(company);
-		Employe employe=new Employe();
+		Employe employe = new Employe();
 		employe.setNom("name");
 		employe.setPrenom("prenom");
 		employe.setUsername("username");
@@ -46,7 +47,34 @@ public class EmployeServiceTest extends
 		employe.setDateNaissance(new Date());
 		employe.setCompany(createCompany);
 		Employe saveEmploye = employeService.save(employe);
-		UserInfoDTO userInfoDTO = employeService.toUserInfoDTO(saveEmploye.getId());
+		Employe manager = new Employe();
+		manager.setNom("Manager");
+		manager.setPrenom("Manager");
+		employeService.save(manager);
+		employeService.addManagedEmploye(manager.getId(), saveEmploye.getId());
+		UserInfoDTO userInfoDTO = employeService.toUserInfoDTO(saveEmploye
+				.getId());
 		Assert.assertNotNull(userInfoDTO.getCompany());
+	}
+
+	@Test
+	public void testRetrieveManagedEmployees() {
+		Employe manager = new Employe();
+		manager.setNom("Manager");
+		manager.setPrenom("Manager");
+		employeService.save(manager);
+		Employe managedEmploye1 = new Employe();
+		managedEmploye1.setNom("managedEmploye1");
+		managedEmploye1.setPrenom("managedEmploye1");
+		employeService.save(managedEmploye1);
+		employeService.addManagedEmploye(manager.getId(), managedEmploye1.getId());
+		Employe managedEmploye2 = new Employe();
+		managedEmploye2.setNom("managedEmploye2");
+		managedEmploye2.setPrenom("managedEmploye2");
+		employeService.save(managedEmploye2);
+		employeService.addManagedEmploye(manager.getId(), managedEmploye2.getId());
+		List<Employe> managedEmployes=employeService.getManagedEmployees(manager.getId());
+		Assert.assertTrue(managedEmployes.size()==2);
+		
 	}
 }

@@ -23,14 +23,7 @@ App.controller('AppCtrl', [ '$scope', '$location', 'UsersREST','$rootScope',
 				var currentRoute = $location.path().substring(1) || 'home';
 				return page === currentRoute ? 'active' : '';
 			};
-			var loadUserInfo = function() {
-				UsersREST.get({
-					service : 'user-info'
-				}, function(data) {
-					$scope.userInfo = data;
-					$scope.$broadcast('userInfo', data);
-				});
-			};
+			
 			$scope.containerClass=function(){
 				return "container";
 			}
@@ -38,9 +31,6 @@ App.controller('AppCtrl', [ '$scope', '$location', 'UsersREST','$rootScope',
 			$scope.containerNavClass=function(){
 				return "container-fluid";
 			}
-			loadUserInfo();
-			
-
 		} ]);
 
 App.config([ '$stateProvider', '$urlRouterProvider',

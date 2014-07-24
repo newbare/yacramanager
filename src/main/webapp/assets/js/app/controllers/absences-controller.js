@@ -1,7 +1,7 @@
 'use strict';
 
 function AbsencesController($scope, $rootScope, AbsenceCRUDREST,
-		AbsenceTypeREST, alertService,ngTableParams,notifService) {
+		AbsenceTypeREST, alertService,ngTableParams,notifService,$http) {
 	$rootScope.page = {
 		"title" : "Absences",
 		"description" : "Declarez vos absences"
@@ -13,12 +13,32 @@ function AbsencesController($scope, $rootScope, AbsenceCRUDREST,
 	$scope.tableFilter={};
 	$scope.employeCriteriaConfig={
 			name:"employe",
-			defaultButtonLabel:"Emp",
+			defaultButtonLabel:"Who",
 			filterType:"ARRAY",
 			closeable:false,
-			filterValue:
-				[{name:"RTT",label:"RTT",ticked:false},{name:"CP",label:"Conge paye",ticked:false}]
-				,
+			filterValue:[],
+			buttonSelectedItemsFormater:function(data){
+				if(data.name==""+_userId+""){
+					return "Me";
+				}else {
+					return getUserInitials(data.label);
+				}
+			},
+			defaultSelectedItem:function(data){
+				var items=[];
+				angular.forEach(data,function(item){
+					if(item.name==""+_userId+""){
+						items.push(item);
+					}
+				});
+				return items;
+			},
+			getData:function($defer){
+				$http.get(_contextPath+"/app/api/users/managed/"+_userId,{params:{"me":true} })
+					.success(function(data, status) {
+						$defer.resolve(data);
+					})
+			},
 			currentFilter:{},
 			displayed: true
 	};

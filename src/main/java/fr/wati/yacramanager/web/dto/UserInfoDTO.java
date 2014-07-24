@@ -16,5 +16,22 @@ public class UserInfoDTO extends Employe {
 		this.navigation = navigation;
 	}
 	
-	
+	public static class ManagedEmployeInfoDTO{
+		private String name;
+		private String label;
+		public String getName() {
+			return name;
+		}
+		public void setName(String name) {
+			this.name = name;
+		}
+		public String getLabel() {
+			return label;
+		}
+		public void setLabel(String label) {
+			this.label = label;
+		}
+		
+		
+	}
 }
