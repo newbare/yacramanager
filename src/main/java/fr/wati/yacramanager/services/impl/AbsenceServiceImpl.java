@@ -11,9 +11,10 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import fr.wati.yacramanager.beans.Absence;
+import fr.wati.yacramanager.beans.Absence_;
 import fr.wati.yacramanager.beans.Employe;
 import fr.wati.yacramanager.dao.repository.AbsenceRepository;
-import fr.wati.yacramanager.dao.specifications.AbsenceSpecifications;
+import fr.wati.yacramanager.dao.specifications.CommonSpecifications;
 import fr.wati.yacramanager.services.AbsenceService;
 import fr.wati.yacramanager.services.EmployeService;
 import fr.wati.yacramanager.utils.Filter;
@@ -148,40 +149,40 @@ public class AbsenceServiceImpl implements AbsenceService {
 			case ARRAY:
 				FilterArray filterArray=(FilterArray) filter;
 				if("type".equals(filter.getField())){
-					List<TypeAbsence> absences=new ArrayList<>();
+					List<TypeAbsence> typeabsences=new ArrayList<>();
 					for(FilterArrayValue filterArrayValue: filterArray.getValue()){
-						absences.add(TypeAbsence.valueOf(filterArrayValue.getName()));
+						typeabsences.add(TypeAbsence.valueOf(filterArrayValue.getName()));
 					}
-					return AbsenceSpecifications.withTypeAbsences(absences);
+					return CommonSpecifications.equalsAny(typeabsences, Absence_.typeAbsence);
 				}
 				if("employe".equals(filter.getField())){
 					List<Employe> employes=new ArrayList<>();
 					for(FilterArrayValue filterArrayValue: filterArray.getValue()){
 						employes.add(employeService.findOne(Long.valueOf(filterArrayValue.getName())));
 					}
-					return AbsenceSpecifications.forEmployes(employes);
+					return CommonSpecifications.equalsAny(employes, Absence_.employe);
 				}
 				break;
 			case TEXT:
 				FilterText filterText=(FilterText) filter;
 				if("description".equals(filterText.getField())){
-					return AbsenceSpecifications.descriptionLike(filterText.getValue());
+					return CommonSpecifications.likeIgnoreCase(filterText.getValue(), Absence_.description);
 				}
 				break;
 			case BOOLEAN:
 				FilterBoolean filterBoolean=(FilterBoolean) filter;
 				if("validated".equals(filter.getField())){
 					if(filterBoolean.isValue()){
-						return AbsenceSpecifications.isValidated();
+						return CommonSpecifications.isTrue(Absence_.validated);
 					}else {
-						return AbsenceSpecifications.isNotValidated();
+						return CommonSpecifications.isFalse(Absence_.validated);
 					}
 				}
 				break;
 			case DATE:
 				FilterDate filterDate=(FilterDate) filter;
 				if("date".equals(filter.getField())){
-					return AbsenceSpecifications.createdDateBetween(filterDate.getValue().getStart(), filterDate.getValue().getEnd());
+					return CommonSpecifications.between(filterDate.getValue().getStart(), filterDate.getValue().getEnd(), Absence_.date);
 				}
 				break;
 			default:

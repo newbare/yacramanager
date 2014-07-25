@@ -3,6 +3,7 @@
  */
 package fr.wati.yacramanager.utils;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -53,6 +54,33 @@ public abstract class Filter {
 		this.field = field;
 	}
 
+	
+	public static class FilterComparatorValue{
+		
+		private BigDecimal value;
+		private BigDecimal startValue;
+		private BigDecimal endValue;
+		public BigDecimal getValue() {
+			return value;
+		}
+		public void setValue(BigDecimal value) {
+			this.value = value;
+		}
+		public BigDecimal getStartValue() {
+			return startValue;
+		}
+		public void setStartValue(BigDecimal startValue) {
+			this.startValue = startValue;
+		}
+		public BigDecimal getEndValue() {
+			return endValue;
+		}
+		public void setEndValue(BigDecimal endValue) {
+			this.endValue = endValue;
+		}
+		
+		
+	}
 
 	public static class FilterDateValue {
 
@@ -171,7 +199,7 @@ public abstract class Filter {
 	}
 	
 	public static enum FilterType {
-		ARRAY, TEXT, DATE, BOOLEAN;
+		ARRAY, TEXT, DATE, BOOLEAN,COMPARATOR_EQUALS,COMPARATOR_BETWEEN,COMPARATOR_LESSTHAN,COMPARATOR_GREATERTHAN;
 
 		private FilterType() {
 		}
@@ -195,6 +223,42 @@ public abstract class Filter {
 		public void setValue(FilterDateValue value) {
 			this.value = value;
 		}
+		
+	}
+	
+	public static enum Comparator{
+		EQUALS,GREATERTHAN,LESSTHAN,BETWEEN;
+	}
+	
+	public static class FilterComparator extends Filter{
+		
+		private Comparator comparator;
+		
+		private FilterComparatorValue value;
+
+		/**
+		 * @return the value
+		 */
+		public FilterComparatorValue getValue() {
+			return value;
+		}
+
+		/**
+		 * @param value the value to set
+		 */
+		public void setValue(FilterComparatorValue value) {
+			this.value = value;
+		}
+
+		public Comparator getComparator() {
+			return comparator;
+		}
+
+		public void setComparator(Comparator comparator) {
+			this.comparator = comparator;
+		}
+		
+		
 		
 	}
 	
@@ -331,6 +395,27 @@ public abstract class Filter {
 					filterText.setType(filterType);
 					filterText.setField(((TextNode)jsonNode.get("field")).asText());
 					filters.add(filterText);
+					break;
+				case COMPARATOR_EQUALS:
+				case COMPARATOR_BETWEEN:
+				case COMPARATOR_GREATERTHAN:
+				case COMPARATOR_LESSTHAN:
+					FilterComparator filterComparator=new FilterComparator();
+					filterComparator.setType(filterType);
+					filterComparator.setField(((TextNode)jsonNode.get("field")).asText());
+					filterComparator.setComparator(Comparator.valueOf(filterType.toString().split("_")[1]));
+					FilterComparatorValue comparatorValue=new FilterComparatorValue();
+					switch (filterType) {
+						case COMPARATOR_BETWEEN:
+							comparatorValue.setStartValue(jsonNode.get("value").get("start").decimalValue());
+							comparatorValue.setEndValue(jsonNode.get("value").get("end").decimalValue());
+							break;
+						default:
+							comparatorValue.setValue(BigDecimal.valueOf(Double.valueOf(jsonNode.get("value").asText())));
+							break;
+					}
+					filterComparator.setValue(comparatorValue);
+					filters.add(filterComparator);
 					break;
 				}
 			}

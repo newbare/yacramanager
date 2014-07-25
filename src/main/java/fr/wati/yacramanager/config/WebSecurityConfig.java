@@ -87,6 +87,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.tokenValiditySeconds(
 						env.getProperty("rememberme.token.validity",
 								Integer.class))
+				.and()
+					.sessionManagement()
+						.invalidSessionUrl("/?invalid-session=true")
+						.maximumSessions(
+								env.getProperty("max.sessions",
+										Integer.class,5))
+						.expiredUrl("/?expired-session=true")
+				
 				;
 	}
 

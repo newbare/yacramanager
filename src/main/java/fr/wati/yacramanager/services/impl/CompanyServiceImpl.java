@@ -9,8 +9,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import fr.wati.yacramanager.beans.Client;
 import fr.wati.yacramanager.beans.Company;
+import fr.wati.yacramanager.beans.Company_;
 import fr.wati.yacramanager.dao.repository.CompanyRepository;
-import fr.wati.yacramanager.dao.specifications.CompanySpecifications;
+import fr.wati.yacramanager.dao.specifications.CommonSpecifications;
 import fr.wati.yacramanager.services.ClientService;
 import fr.wati.yacramanager.services.CompanyService;
 import fr.wati.yacramanager.utils.Filter;
@@ -128,16 +129,16 @@ public class CompanyServiceImpl implements CompanyService {
 			case TEXT:
 				FilterText filterText=(FilterText) filter;
 				if("name".equals(filterText.getField())){
-					return CompanySpecifications.namelike(filterText.getValue());
+					return CommonSpecifications.likeIgnoreCase(filterText.getValue(), Company_.name);
 				}
 				break;
 			case DATE:
 				FilterDate filterDate=(FilterDate) filter;
 				if("registeredDate".equals(filter.getField())){
-					return CompanySpecifications.registeredDateBetween(filterDate.getValue().getStart(), filterDate.getValue().getEnd());
+					return CommonSpecifications.between(filterDate.getValue().getStart(), filterDate.getValue().getEnd(), Company_.registeredDate);
 				}
 				if("licenseEndDate".equals(filter.getField())){
-					return CompanySpecifications.licenseEndDateBetween(filterDate.getValue().getStart(), filterDate.getValue().getEnd());
+					return CommonSpecifications.between(filterDate.getValue().getStart(), filterDate.getValue().getEnd(), Company_.licenseEndDate);
 				}
 				break;
 			default:

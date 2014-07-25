@@ -39,14 +39,14 @@ angular
 									onFilterTriggered : '&',
 									onRemoveCriteria : '&'
 								},
-								template : '<span class="ng-criteria inlineBlock" data-ng-show="criteriaConfig.displayed">'
+								template : '<span class="ng-criteria inlineBlock" data-ng-show="criteriaConfig.displayed" >'
 										+ '<div class="btn-group">'
-										+ '<button type="button" class="btn btn-default criteria-btn" ng-click="toggleFilterContent( $event )" ng-bind-html="buttonLabel"></button>'
-										+ '<button type="button" class="btn btn-default" data-ng-click="dismissCriteria(criteriaConfig.name)" data-ng-show="closeable">'
+										+ '<button type="button" class="btn btn-default criteria-btn" ng-click="toggleFilterContent( $event )" ng-bind-html="buttonLabel" data-ng-disabled="!isEditable"></button>'
+										+ '<button type="button" class="btn btn-default" data-ng-click="dismissCriteria(criteriaConfig.name)" data-ng-show="closeable" data-ng-disabled="!isEditable">'
 										+ '<span aria-hidden="true">&times;</span>'
 										+ '</button>'
 										+ '</div>'
-										+'<div class="filter-content hide col-md-2 col-xs-3" ng-html-compile="filterContentHTML">'
+										+'<div class="filter-content hide col-md-3 col-xs-4" ng-html-compile="filterContentHTML">'
 										+'</div>' + '</span>',
 								link : function($scope, element, attrs) {
 									// default config values
@@ -58,9 +58,12 @@ angular
 											+ '/assets/others/criteria/criteria-date.tpl.html';
 									var booleanFilterTemplate = _contextPath
 											+ '/assets/others/criteria/criteria-boolean.tpl.html';
+									var comparatorFilterTemplate = _contextPath
+									+ '/assets/others/criteria/criteria-comparator.tpl.html';
 									
 									$scope.filterType = $scope.criteriaConfig.filterType;
 									$scope.filterContentHTML=undefined;
+									$scope.isEditable=($scope.criteriaConfig.editable!==undefined)?$scope.criteriaConfig.editable:true;
 									
 									// templates initialisations
 									
@@ -110,9 +113,17 @@ angular
 																$scope.filterContentHTML = content;
 															});
 											}
+										} else if ($scope.filterType === "COMPARATOR") {
+											if($scope.filterContentHTML===undefined){
+												$scope.operator="equals"
+												fetchTemplate(comparatorFilterTemplate)
+													.then(
+															function(content) {
+																$scope.filterContentHTML = content;
+															});
+											}
 										}
 									};
-									
 									//get filter value datas
 									if($scope.criteriaConfig.getData !== undefined &&  angular.isFunction($scope.criteriaConfig.getData)){
 										var defer = $q.defer();
@@ -140,19 +151,17 @@ angular
 										$scope.onRemoveCriteria(fieldName);
 										console.log("Remove criteria: "+fieldName);
 									};
-									
+									var spanCaret= ($scope.isEditable=== true) ?' <span class="caret"></span>':'';
 									
 									$scope.computeButtonLabel = function(value) {
-										$scope.buttonLabel = $sce.trustAsHtml($scope.criteriaConfig.defaultButtonLabel + ': '+ value + ' <span class="caret"></span>');
+										$scope.buttonLabel = $sce.trustAsHtml($scope.criteriaConfig.defaultButtonLabel + ': '+ value + spanCaret);
 									}
 									$scope.resetButtonLabel = function() {
 										$scope.buttonLabel = $sce
 												.trustAsHtml($scope.criteriaConfig.defaultButtonLabel
-														+ ' <span class="caret"></span>');
+														+ spanCaret);
 									};
 									$scope.resetButtonLabel();
-
-
 									$scope.onFilterText = function() {
 										var filter = {
 											type  : "TEXT",
@@ -196,7 +205,6 @@ angular
 										} else {
 											filter.value=undefined;
 											$scope.resetButtonLabel();
-											
 										}
 										$scope.closeFilterContent();
 										if($scope.criteriaConfig.onFilter!==undefined){
@@ -204,7 +212,48 @@ angular
 										}
 										$scope.criteriaConfig.currentFilter=filter;
 										$scope.onFilterTriggered(filter);
+									};
+									
+									$scope.onFilterComparator = function() {
 										
+										var comparatorValue;
+										if ($scope.operator==="between") {
+											comparatorValue= {
+													start : $scope.comparatorStartValue,
+													end : $scope.comparatorEndValue
+												}
+										}else {
+											comparatorValue=$scope.comparatorValue; 
+										}
+										var filter = {
+											type  : "COMPARATOR_"+$scope.operator.toUpperCase(),
+											field : $scope.criteriaConfig.name,
+											value : comparatorValue
+										};
+										if ($scope.comparatorValue !== undefined
+												|| ($scope.comparatorStartValue !== undefined && $scope.comparatorEndValue !== undefined)) {
+											if ($scope.operator==="between") {
+												comparatorValue= {
+														start : $scope.comparatorStartValue,
+														end : $scope.comparatorEndValue
+													}
+											}else if($scope.operator==="equals") {
+												$scope.computeButtonLabel('(='+comparatorValue+')');
+											}else if ($scope.operator==="lessthan") {
+												$scope.computeButtonLabel('(<'+comparatorValue+')');
+											}else if ($scope.operator==="greaterthan") {
+												$scope.computeButtonLabel('(>'+comparatorValue+')');
+											}
+										} else {
+											filter.value=undefined;
+											$scope.resetButtonLabel();
+										}
+										$scope.closeFilterContent();
+										if($scope.criteriaConfig.onFilter!==undefined){
+											$scope.criteriaConfig.onFilter(filter);
+										}
+										$scope.criteriaConfig.currentFilter=filter;
+										$scope.onFilterTriggered(filter);
 									};
 									$scope.onFilterBoolean = function() {
 										var filter = {
@@ -524,6 +573,9 @@ angular
 												//update existing filter
 												console.log("update existing filter"+foundExistingFilter.field);
 												foundExistingFilter.value=filterResult.value;
+												if(filterResult.type.indexOf('COMPARATOR_') == 0){
+													foundExistingFilter.type=filterResult.type;
+												}
 											}
 										}
 										else {

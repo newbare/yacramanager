@@ -69,9 +69,20 @@ function FraisController($scope, $rootScope, NoteCRUDREST, alertService,
 			currentFilter:{},
 			displayed: true
 	};
-	
+	$scope.amountCriteriaConfig={
+			name:"amount",
+			defaultButtonLabel:"Amount",
+			filterType:"COMPARATOR",
+			closeable:true,
+			filterValue:"",
+			onFilter: function(value) {
+				console.log('Filter text ['+value.field+'] searching: '+value.value);
+			},
+			currentFilter:{},
+			displayed: true
+	};
 	$scope.criteriaBarConfig={
-		criterions:[$scope.employeCriteriaConfig,$scope.descriptionCriteriaConfig,$scope.dateCriteriaConfig],
+		criterions:[$scope.employeCriteriaConfig,$scope.descriptionCriteriaConfig,$scope.dateCriteriaConfig,$scope.amountCriteriaConfig],
 		autoFilter:true,
 		filters:[]
 	};

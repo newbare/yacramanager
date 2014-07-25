@@ -1,6 +1,8 @@
 package fr.wati.yacramanager.services.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -11,11 +13,20 @@ import org.springframework.transaction.annotation.Transactional;
 
 import fr.wati.yacramanager.beans.Client;
 import fr.wati.yacramanager.beans.Project;
+import fr.wati.yacramanager.beans.Project_;
 import fr.wati.yacramanager.beans.Task;
 import fr.wati.yacramanager.dao.repository.ClientRepository;
 import fr.wati.yacramanager.dao.repository.ProjectRepository;
+import fr.wati.yacramanager.dao.specifications.CommonSpecifications;
+import fr.wati.yacramanager.services.ClientService;
 import fr.wati.yacramanager.services.ProjectService;
 import fr.wati.yacramanager.services.TaskService;
+import fr.wati.yacramanager.utils.Filter;
+import fr.wati.yacramanager.utils.Filter.FilterArray;
+import fr.wati.yacramanager.utils.Filter.FilterArrayValue;
+import fr.wati.yacramanager.utils.Filter.FilterDate;
+import fr.wati.yacramanager.utils.Filter.FilterText;
+import fr.wati.yacramanager.utils.Filter.FilterType;
 
 @Service
 @Transactional
@@ -25,6 +36,8 @@ public class ProjectServiceImpl implements ProjectService{
 	private ProjectRepository projectRepository;
 	@Autowired
 	private ClientRepository clientRepository;
+	@Autowired
+	private ClientService  clientService;
 	
 	@Autowired
 	private TaskService taskService;
@@ -109,6 +122,43 @@ public class ProjectServiceImpl implements ProjectService{
 	@Override
 	public Page<Project> findAll(Specification<Project> spec, Pageable pageable) {
 		return projectRepository.findAll(spec, pageable);
+	}
+
+	@Override
+	public Specification<Project> buildSpecification(Filter filter) {
+		if(filter!=null){
+			FilterType filterType = filter.getType();
+			switch (filterType) {
+			case ARRAY:
+				FilterArray filterArray=(FilterArray) filter;
+				if("client".equals(filter.getField())){
+					List<Client> clients=new ArrayList<>();
+					for(FilterArrayValue filterArrayValue: filterArray.getValue()){
+						clients.add(clientService.findOne(Long.valueOf(filterArrayValue.getName())));
+					}
+					return CommonSpecifications.equalsAny(clients, Project_.client);
+				}
+				break;
+			case TEXT:
+				FilterText filterText=(FilterText) filter;
+				if("description".equals(filterText.getField())){
+					return CommonSpecifications.likeIgnoreCase(filterText.getValue(), Project_.description);
+				}
+				if("name".equals(filterText.getField())){
+					return CommonSpecifications.likeIgnoreCase(filterText.getValue(), Project_.name);
+				}
+				break;
+			case DATE:
+				FilterDate filterDate=(FilterDate) filter;
+				if("createdDate".equals(filter.getField())){
+					return CommonSpecifications.between(filterDate.getValue().getStart(), filterDate.getValue().getEnd(), Project_.createdDate);
+				}
+				break;
+			default:
+				break;
+			}
+		}
+		return null;
 	}
 
 }

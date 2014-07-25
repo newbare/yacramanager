@@ -7,7 +7,7 @@ import fr.wati.yacramanager.beans.Client;
 import fr.wati.yacramanager.beans.Company;
 import fr.wati.yacramanager.web.dto.ClientDTO;
 
-public interface ClientService extends CrudService<Client, Long> {
+public interface ClientService extends CrudService<Client, Long>,SpecificationFactory<Client> {
 
 	Client createClient(Long companyId,Client client);
 	void deleteClient(Long companyId,Long clientId);

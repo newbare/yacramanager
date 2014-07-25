@@ -14,13 +14,15 @@ import org.springframework.transaction.annotation.Transactional;
 import fr.wati.yacramanager.beans.Attachement;
 import fr.wati.yacramanager.beans.Employe;
 import fr.wati.yacramanager.beans.NoteDeFrais;
+import fr.wati.yacramanager.beans.NoteDeFrais_;
 import fr.wati.yacramanager.dao.repository.NoteDeFraisRepository;
-import fr.wati.yacramanager.dao.specifications.NoteDeFraisSpecifications;
+import fr.wati.yacramanager.dao.specifications.CommonSpecifications;
 import fr.wati.yacramanager.services.EmployeService;
 import fr.wati.yacramanager.services.NoteDeFraisService;
 import fr.wati.yacramanager.utils.Filter;
 import fr.wati.yacramanager.utils.Filter.FilterArray;
 import fr.wati.yacramanager.utils.Filter.FilterArrayValue;
+import fr.wati.yacramanager.utils.Filter.FilterComparator;
 import fr.wati.yacramanager.utils.Filter.FilterDate;
 import fr.wati.yacramanager.utils.Filter.FilterText;
 import fr.wati.yacramanager.utils.Filter.FilterType;
@@ -205,13 +207,13 @@ public class NoteDeFraisServiceImpl implements NoteDeFraisService {
 					for(FilterArrayValue filterArrayValue: filterArray.getValue()){
 						employes.add(employeService.findOne(Long.valueOf(filterArrayValue.getName())));
 					}
-					return NoteDeFraisSpecifications.forEmployes(employes);
+					return CommonSpecifications.equalsAny(employes, NoteDeFrais_.employe);
 				}
 				break;
 			case TEXT:
 				FilterText filterText=(FilterText) filter;
 				if("description".equals(filterText.getField())){
-					return NoteDeFraisSpecifications.descriptionLike(filterText.getValue());
+					return CommonSpecifications.likeIgnoreCase(filterText.getValue(), NoteDeFrais_.description);
 				}
 				break;
 			case BOOLEAN:
@@ -219,7 +221,27 @@ public class NoteDeFraisServiceImpl implements NoteDeFraisService {
 			case DATE:
 				FilterDate filterDate=(FilterDate) filter;
 				if("date".equals(filter.getField())){
-					return NoteDeFraisSpecifications.createdDateBetween(filterDate.getValue().getStart(), filterDate.getValue().getEnd());
+					return CommonSpecifications.between(filterDate.getValue().getStart(), filterDate.getValue().getEnd(), NoteDeFrais_.date);
+				}
+				break;
+			case COMPARATOR_BETWEEN:
+				
+				break;
+			case COMPARATOR_EQUALS:
+			case COMPARATOR_GREATERTHAN:
+			case COMPARATOR_LESSTHAN:
+				FilterComparator filterComparator= (FilterComparator) filter;
+				if("amount".equals(filter.getField())){
+					switch (filterComparator.getComparator()) {
+					case EQUALS:
+						return CommonSpecifications.equals(filterComparator.getValue().getValue(), NoteDeFrais_.amount);
+					case GREATERTHAN:
+						return CommonSpecifications.greaterThan(filterComparator.getValue().getValue(), NoteDeFrais_.amount);
+					case LESSTHAN:
+						return CommonSpecifications.lessThan(filterComparator.getValue().getValue(), NoteDeFrais_.amount);
+					default:
+						break;
+					}
 				}
 				break;
 			default:

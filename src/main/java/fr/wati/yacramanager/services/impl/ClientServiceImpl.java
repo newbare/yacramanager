@@ -1,5 +1,8 @@
 package fr.wati.yacramanager.services.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -8,12 +11,20 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import fr.wati.yacramanager.beans.Client;
+import fr.wati.yacramanager.beans.Client_;
 import fr.wati.yacramanager.beans.Company;
 import fr.wati.yacramanager.beans.Project;
 import fr.wati.yacramanager.dao.repository.ClientRepository;
 import fr.wati.yacramanager.dao.repository.CompanyRepository;
+import fr.wati.yacramanager.dao.specifications.CommonSpecifications;
 import fr.wati.yacramanager.services.ClientService;
+import fr.wati.yacramanager.services.CompanyService;
 import fr.wati.yacramanager.services.ProjectService;
+import fr.wati.yacramanager.utils.Filter;
+import fr.wati.yacramanager.utils.Filter.FilterArray;
+import fr.wati.yacramanager.utils.Filter.FilterArrayValue;
+import fr.wati.yacramanager.utils.Filter.FilterText;
+import fr.wati.yacramanager.utils.Filter.FilterType;
 import fr.wati.yacramanager.web.dto.ClientDTO;
 
 @Transactional
@@ -25,6 +36,9 @@ public class ClientServiceImpl implements ClientService {
 	
 	@Autowired
 	private CompanyRepository companyRepository;
+	
+	@Autowired
+	private CompanyService companyService;
 	
 	@Autowired
 	private ProjectService projectService;
@@ -125,5 +139,33 @@ public class ClientServiceImpl implements ClientService {
 	@Override
 	public Page<Client> findAll(Specification<Client> spec, Pageable pageable) {
 		return clientRepository.findAll(spec, pageable);
+	}
+
+	@Override
+	public Specification<Client> buildSpecification(Filter filter) {
+		if(filter!=null){
+			FilterType filterType = filter.getType();
+			switch (filterType) {
+			case ARRAY:
+				FilterArray filterArray=(FilterArray) filter;
+				if("company".equals(filter.getField())){
+					List<Company> companies=new ArrayList<>();
+					for(FilterArrayValue filterArrayValue: filterArray.getValue()){
+						companies.add(companyService.findOne(Long.valueOf(filterArrayValue.getName())));
+					}
+					return CommonSpecifications.equalsAny(companies, Client_.company);
+				}
+				break;
+			case TEXT:
+				FilterText filterText=(FilterText) filter;
+				if("name".equals(filterText.getField())){
+					return CommonSpecifications.likeIgnoreCase(filterText.getValue(), Client_.name);
+				}
+				break;
+			default:
+				break;
+			}
+		}
+		return null;
 	}
 }

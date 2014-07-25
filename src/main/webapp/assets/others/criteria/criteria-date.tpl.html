@@ -1,17 +1,49 @@
 <form data-role="search">
-	<div class="form-group">
-		<label for="datepicker">Select date range</label>
-		<div class="input-group" id="datepicker">
-			<input type="text" class=" form-control " name="start"
-				data-ng-model="startDate" placeholder="From" data-bs-datepicker /> <span
-				class="input-group-addon">to</span> <input type="text"
-				class=" form-control " name="end" data-ng-model="endDate"
-				placeholder="Until" data-bs-datepicker />
+	<label>Filter by date</label>
+	<div class="row">
+		<div class="col-md-6">
+			<div class="radio">
+				<label> <input type="radio" name="optionsRadios"
+					id="optionsRadios1" data-ng-model="byDate" value="true">
+					By date
+				</label>
+			</div>
+		</div>
+		<div class="col-md-6">
+			<div class="radio">
+				<label> <input type="radio" name="optionsRadios"
+					id="optionsRadios1" data-ng-model="byRangeDate" value="true">
+					By date range
+				</label>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="">
+			<div class="input-group" id="datepicker">
+				<input type="text" class=" form-control " name="start"
+					data-ng-model="startDate" placeholder="Enter date" data-bs-datepicker />
+					<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="">
+			<div class="input-group" id="datepicker">
+				<input type="text" class=" form-control " name="start"
+					data-ng-model="startDate" placeholder="From" data-bs-datepicker />
+				<span class="input-group-addon"><i class="fa fa-exchange"></i></span><input type="text"
+					class=" form-control " name="end" data-ng-model="endDate"
+					placeholder="Until" data-bs-datepicker />
+			</div>
 		</div>
 	</div>
 	<div class="">
-		<button class="btn btn-link" data-ng-click="startDate=undefined;endDate=undefined">Reset</button>
-		<button class="btn btn-link pull-right" data-ng-click="closeFilterContent()">Close</button>
-		<button class="btn btn-primary pull-right" data-ng-click="onFilterDate()">Filter</button>
+		<button class="btn btn-link"
+			data-ng-click="startDate=undefined;endDate=undefined">Reset</button>
+		<button class="btn btn-link pull-right"
+			data-ng-click="closeFilterContent()">Close</button>
+		<button class="btn btn-primary pull-right"
+			data-ng-click="onFilterDate()">Filter</button>
 	</div>
 </form>
