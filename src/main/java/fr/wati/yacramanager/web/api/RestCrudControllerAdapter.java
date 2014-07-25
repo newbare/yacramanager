@@ -8,6 +8,7 @@ import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
 
+import fr.wati.yacramanager.services.SpecificationFactory;
 import fr.wati.yacramanager.web.dto.ResponseWrapper;
 
 /**
@@ -38,7 +39,14 @@ public class RestCrudControllerAdapter<DTO> implements RestCrudController<DTO> {
 	public ResponseWrapper<List<DTO>> getAll(Integer page,Integer size,Map<String, String> sort,String filter) {
 		return null;
 	}
+	
+	public <SERVICE> ResponseWrapper<List<DTO>> getAll(Integer page,Integer size,Map<String, String> sort,String filter,SpecificationFactory<SERVICE> specificationService,Class<SERVICE> serviceClass) {
+		return null;
+	}
 
+	
+	
+	
 	/* (non-Javadoc)
 	 * @see fr.wati.yacramanager.web.rest.RestCrudController#create(java.lang.Object)
 	 */

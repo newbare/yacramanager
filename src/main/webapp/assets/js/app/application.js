@@ -15,9 +15,6 @@ App.run(function($rootScope,$templateCache,UsersREST) {
 		$rootScope.pageTitle=event;
 	});
 	
-	$rootScope.userInfo={
-			prenom:"loading..."
-	};
 	var loadUserInfo = function() {
 		UsersREST.get({
 			service : 'user-info'

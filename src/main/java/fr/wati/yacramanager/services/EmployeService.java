@@ -6,7 +6,7 @@ import fr.wati.yacramanager.beans.Employe;
 import fr.wati.yacramanager.web.dto.RegistrationDTO;
 import fr.wati.yacramanager.web.dto.UserInfoDTO;
 
-public interface EmployeService extends CrudService<Employe, Long> {
+public interface EmployeService extends CrudService<Employe, Long>,SpecificationFactory<Employe> {
 
 	UserInfoDTO toUserInfoDTO(Long idPersonne) throws Exception;
 	

@@ -29,8 +29,7 @@ public class AbsenceSpecifications {
 		return new Specification<Absence>() {
 			public Predicate toPredicate(Root<Absence> root,
 					CriteriaQuery<?> query, CriteriaBuilder builder) {
-				return builder.like(root.get(Absence_.description), "%" + searchTerm
-						+ "%");
+				return builder.like(builder.lower(root.get(Absence_.description)), "%" + searchTerm.toLowerCase() + "%");
 			}
 		};
 	}

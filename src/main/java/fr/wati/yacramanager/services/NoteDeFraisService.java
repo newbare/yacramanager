@@ -10,7 +10,7 @@ import fr.wati.yacramanager.beans.Employe;
 import fr.wati.yacramanager.beans.NoteDeFrais;
 import fr.wati.yacramanager.web.dto.NoteDeFraisDTO;
 
-public interface NoteDeFraisService extends CrudService<NoteDeFrais, Long>{
+public interface NoteDeFraisService extends CrudService<NoteDeFrais, Long>,SpecificationFactory<NoteDeFrais>{
 	
 	Page<NoteDeFrais> findByDateBetween(Date dateDebut,Date dateFin,Pageable pageable);
 	

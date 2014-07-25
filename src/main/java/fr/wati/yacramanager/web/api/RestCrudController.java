@@ -9,14 +9,14 @@ import fr.wati.yacramanager.web.dto.ResponseWrapper;
 
 public interface RestCrudController<DTO> {
 
-	DTO read(Long id);
+	DTO read(Long id) throws RestServiceException;
 
-	void update(Long id, DTO dto);
+	void update(Long id, DTO dto) throws RestServiceException;
 	
-	ResponseWrapper<List<DTO>> getAll(Integer page,Integer Integer,Map<String, String> sort,String filter);
+	ResponseWrapper<List<DTO>> getAll(Integer page,Integer Integer,Map<String, String> sort,String filter) throws RestServiceException;
 
-	ResponseEntity<String> create(DTO dto);
+	ResponseEntity<String> create(DTO dto) throws RestServiceException;
 
-	void delete(Long id);
+	void delete(Long id) throws RestServiceException;
 
 }

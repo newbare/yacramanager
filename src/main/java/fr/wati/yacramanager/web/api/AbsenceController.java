@@ -2,7 +2,6 @@ package fr.wati.yacramanager.web.api;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -16,7 +15,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.domain.Sort.Order;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,13 +28,11 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import fr.wati.yacramanager.beans.Absence;
-import fr.wati.yacramanager.dao.specifications.AbsenceSpecifications;
 import fr.wati.yacramanager.services.AbsenceService;
 import fr.wati.yacramanager.utils.DtoMapper;
-import fr.wati.yacramanager.utils.Filter;
-import fr.wati.yacramanager.utils.SpecificationBuilder;
 import fr.wati.yacramanager.utils.Filter.FilterBuilder;
 import fr.wati.yacramanager.utils.SecurityUtils;
+import fr.wati.yacramanager.utils.SpecificationBuilder;
 import fr.wati.yacramanager.web.dto.AbsenceDTO;
 import fr.wati.yacramanager.web.dto.AbsenceDTO.TypeAbsence;
 import fr.wati.yacramanager.web.dto.AbsenceDTO.TypeAbsenceDTO;
@@ -65,14 +61,14 @@ public class AbsenceController implements RestCrudController<AbsenceDTO> {
 		absenceService.save(dto.toAbsence(findOne));
 	}
 
-	@SuppressWarnings("rawtypes")
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseWrapper<List<AbsenceDTO>> getAll(
 			@RequestParam(required = false) Integer page,
 			@RequestParam(required = false) Integer size,
 			@RequestParam(value = "sort", required = false) Map<String, String> sort,
-			@RequestParam(value = "filter", required = false) String filter) {
+			@RequestParam(value = "filter", required = false) String filter) throws RestServiceException {
 		if (page == null) {
 			page = 0;
 		}
@@ -109,8 +105,6 @@ public class AbsenceController implements RestCrudController<AbsenceDTO> {
 		}
 		
 		Page<Absence> findByPersonne =absenceService.findAll(specifications, pageable);
-//				absenceService.findByEmploye(
-//				SecurityUtils.getConnectedUser(), pageable);
 		ResponseWrapper<List<AbsenceDTO>> responseWrapper = new ResponseWrapper<List<AbsenceDTO>>(
 				DtoMapper.mapAbsences(findByPersonne),
 				findByPersonne.getTotalElements());

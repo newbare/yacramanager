@@ -7,6 +7,7 @@ import java.util.Map.Entry;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.domain.Sort.Order;
+import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -31,7 +33,9 @@ import fr.wati.yacramanager.dao.repository.EmployeDto;
 import fr.wati.yacramanager.dao.repository.EmployeRepository;
 import fr.wati.yacramanager.services.EmployeService;
 import fr.wati.yacramanager.utils.DtoMapper;
+import fr.wati.yacramanager.utils.Filter.FilterBuilder;
 import fr.wati.yacramanager.utils.SecurityUtils;
+import fr.wati.yacramanager.utils.SpecificationBuilder;
 import fr.wati.yacramanager.web.dto.Navigation;
 import fr.wati.yacramanager.web.dto.ResponseWrapper;
 import fr.wati.yacramanager.web.dto.UserInfoDTO;
@@ -93,6 +97,7 @@ public class UserRestController implements RestCrudController<EmployeDto> {
 		employeService.delete(id.longValue());
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	@RequestMapping(method = RequestMethod.GET)
 	public @ResponseBody
@@ -100,29 +105,53 @@ public class UserRestController implements RestCrudController<EmployeDto> {
 			@RequestParam(required = false) Integer page,
 			@RequestParam(required = false) Integer size,
 			@RequestParam(value = "sort", required = false) Map<String, String> sort,
-			@RequestParam(value = "filter", required = false) String filter) {
+			@RequestParam(value = "filter", required = false) String filter) throws RestServiceException {
 		if (page == null) {
 			page = 0;
 		}
 		if (size == null) {
 			size = 100;
 		}
-		PageRequest pageable = null;
-		if (sort != null) {
-			List<Order> orders = new ArrayList<>();
-			for (Entry<String, String> entry : sort.entrySet()) {
-				Order order = new Order(
-						"asc".equals(entry.getValue()) ? Direction.ASC
-								: Direction.DESC, entry.getKey());
+		List filters=new ArrayList<>();
+		if(StringUtils.isNotEmpty(filter)){
+			try {
+				filters=FilterBuilder.parse(filter);
+			} catch (Exception e) {
+				LOG.error(e.getMessage(), e);
+			}
+		}else {
+			throw new RestServiceException("At least one filter should be submit");
+		}
+		Specifications<Employe> specifications=null;
+		if(!filters.isEmpty()){
+			LOG.debug("Building Absence specification");
+			specifications=Specifications.where(SpecificationBuilder.buildSpecification(filters, employeService));
+		}
+		PageRequest pageable=null;
+		if(sort!=null){
+			List<Order> orders=new ArrayList<>();
+			for(Entry<String, String> entry:sort.entrySet()){
+				Order order=new Order("asc".equals(entry.getValue())?Direction.ASC:Direction.DESC, entry.getKey());
 				orders.add(order);
 			}
-			pageable = new PageRequest(page, size, new Sort(orders));
-		} else {
-			pageable = new PageRequest(page, size);
+			if(!orders.isEmpty()){
+				pageable=new PageRequest(page, size, new Sort(orders));
+			}else {
+				pageable=new PageRequest(page, size);
+			}
+		}else {
+			pageable=new PageRequest(page, size);
 		}
-		Page<Employe> all = employeRepository.findAll(pageable);
-		return new ResponseWrapper<List<EmployeDto>>(
-				DtoMapper.mapEmployees(all), all.getTotalElements());
+		
+		Page<Employe> findBySpecificationAndOrder =employeService.findAll(specifications, pageable);
+		ResponseWrapper<List<EmployeDto>> responseWrapper = new ResponseWrapper<List<EmployeDto>>(
+				DtoMapper.mapEmployees(findBySpecificationAndOrder),
+				findBySpecificationAndOrder.getTotalElements());
+		long startIndex=findBySpecificationAndOrder.getNumber()*size+1;
+		long endIndex=startIndex+findBySpecificationAndOrder.getNumberOfElements()-1;
+		responseWrapper.setStartIndex(startIndex);
+		responseWrapper.setEndIndex(endIndex);
+		return responseWrapper;
 	}
 
 	@RequestMapping(value = "/user-info", method = RequestMethod.GET)
@@ -130,9 +159,10 @@ public class UserRestController implements RestCrudController<EmployeDto> {
 	UserInfoDTO getConnectedUserInfo(HttpServletRequest request)
 			throws Exception {
 		try {
+			Employe connectedUser = SecurityUtils.getConnectedUser();
 			String contextPath = request.getContextPath();
 			UserInfoDTO userInfoDTO = employeService
-					.toUserInfoDTO(SecurityUtils.getConnectedUser().getId());
+					.toUserInfoDTO(connectedUser.getId());
 			userInfoDTO.setNavigation(Navigation.buildNavigationDefault(
 					userInfoDTO, contextPath));
 			return userInfoDTO;

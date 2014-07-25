@@ -15,7 +15,15 @@ import fr.wati.yacramanager.beans.Attachement;
 import fr.wati.yacramanager.beans.Employe;
 import fr.wati.yacramanager.beans.NoteDeFrais;
 import fr.wati.yacramanager.dao.repository.NoteDeFraisRepository;
+import fr.wati.yacramanager.dao.specifications.NoteDeFraisSpecifications;
+import fr.wati.yacramanager.services.EmployeService;
 import fr.wati.yacramanager.services.NoteDeFraisService;
+import fr.wati.yacramanager.utils.Filter;
+import fr.wati.yacramanager.utils.Filter.FilterArray;
+import fr.wati.yacramanager.utils.Filter.FilterArrayValue;
+import fr.wati.yacramanager.utils.Filter.FilterDate;
+import fr.wati.yacramanager.utils.Filter.FilterText;
+import fr.wati.yacramanager.utils.Filter.FilterType;
 import fr.wati.yacramanager.web.dto.NoteDeFraisDTO;
 
 @Service
@@ -23,6 +31,8 @@ public class NoteDeFraisServiceImpl implements NoteDeFraisService {
 
 	@Autowired
 	private NoteDeFraisRepository noteDeFraisRepository;
+	@Autowired
+	private EmployeService employeService;
 	
 	/* (non-Javadoc)
 	 * @see fr.wati.yacramanager.services.CrudService#save(java.lang.Object)
@@ -163,6 +173,8 @@ public class NoteDeFraisServiceImpl implements NoteDeFraisService {
 		dto.setDate(findOne.getDate());
 		dto.setDescription(findOne.getDescription());
 		dto.setAmount(findOne.getAmount());
+		dto.setEmployeId(noteDeFrais.getEmploye().getId());
+		dto.setEmployeName(noteDeFrais.getEmploye().getFullName());
 		dto.setId(findOne.getId());
 		List<Long> attachementIds=new ArrayList<>();
 		for(Attachement attachement: findOne.getAttachements()){
@@ -176,6 +188,45 @@ public class NoteDeFraisServiceImpl implements NoteDeFraisService {
 	public Page<NoteDeFrais> findAll(Specification<NoteDeFrais> spec,
 			Pageable pageable) {
 		return noteDeFraisRepository.findAll(spec, pageable);
+	}
+
+	/* (non-Javadoc)
+	 * @see fr.wati.yacramanager.services.SpecificationFactory#buildSpecification(fr.wati.yacramanager.utils.Filter)
+	 */
+	@Override
+	public Specification<NoteDeFrais> buildSpecification(Filter filter) {
+		if(filter!=null){
+			FilterType filterType = filter.getType();
+			switch (filterType) {
+			case ARRAY:
+				FilterArray filterArray=(FilterArray) filter;
+				if("employe".equals(filter.getField())){
+					List<Employe> employes=new ArrayList<>();
+					for(FilterArrayValue filterArrayValue: filterArray.getValue()){
+						employes.add(employeService.findOne(Long.valueOf(filterArrayValue.getName())));
+					}
+					return NoteDeFraisSpecifications.forEmployes(employes);
+				}
+				break;
+			case TEXT:
+				FilterText filterText=(FilterText) filter;
+				if("description".equals(filterText.getField())){
+					return NoteDeFraisSpecifications.descriptionLike(filterText.getValue());
+				}
+				break;
+			case BOOLEAN:
+				
+			case DATE:
+				FilterDate filterDate=(FilterDate) filter;
+				if("date".equals(filter.getField())){
+					return NoteDeFraisSpecifications.createdDateBetween(filterDate.getValue().getStart(), filterDate.getValue().getEnd());
+				}
+				break;
+			default:
+				break;
+			}
+		}
+		return null;
 	}
 	
 	

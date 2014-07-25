@@ -20,12 +20,12 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import fr.wati.yacramanager.utils.SecurityUtils;
 import fr.wati.yacramanager.web.api.AbsenceController;
 import fr.wati.yacramanager.web.api.ClientController;
 import fr.wati.yacramanager.web.api.CompanyController;
 import fr.wati.yacramanager.web.api.CustomMapEditor;
 import fr.wati.yacramanager.web.api.NoteDeFraisController;
+import fr.wati.yacramanager.web.api.RestServiceException;
 import fr.wati.yacramanager.web.api.UserRestController;
 
 /**
@@ -49,7 +49,7 @@ public class RestControllerAdvice {
 				HashMap.class, true));
 	}
 	
-	@ExceptionHandler(Exception.class)
+	@ExceptionHandler({RestServiceException.class,Exception.class})
 	@ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
 	@SendToUser(value="/queue/errors")
 	@ResponseBody

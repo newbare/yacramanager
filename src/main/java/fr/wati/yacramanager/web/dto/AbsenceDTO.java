@@ -7,6 +7,8 @@ import fr.wati.yacramanager.beans.Absence;
 public class AbsenceDTO {
 
 	private Long id;
+	private Long employeId;
+	private String employeName;
 	private Date date;
 	private String description;
 	private Date startDate;
@@ -32,6 +34,8 @@ public class AbsenceDTO {
 		AbsenceDTO absenceDTO=new AbsenceDTO();
 		absenceDTO.setDescription(absence.getDescription());
 		absenceDTO.setStartDate(absence.getStartDate());
+		absenceDTO.setEmployeId(absence.getEmploye().getId());
+		absenceDTO.setEmployeName(absence.getEmploye().getFullName());
 		absenceDTO.setEndDate(absence.getEndDate());
 		absenceDTO.setStartAfternoon(absence.isStartAfternoon());
 		absenceDTO.setEndMorning(absence.isEndMorning());
@@ -100,6 +104,35 @@ public class AbsenceDTO {
 	public void setStartAfternoon(boolean startAfternoon) {
 		this.startAfternoon = startAfternoon;
 	}
+	
+	/**
+	 * @return the employeId
+	 */
+	public Long getEmployeId() {
+		return employeId;
+	}
+
+	/**
+	 * @param employeId the employeId to set
+	 */
+	public void setEmployeId(Long employeId) {
+		this.employeId = employeId;
+	}
+
+	/**
+	 * @return the employeName
+	 */
+	public String getEmployeName() {
+		return employeName;
+	}
+
+	/**
+	 * @param employeName the employeName to set
+	 */
+	public void setEmployeName(String employeName) {
+		this.employeName = employeName;
+	}
+
 	public boolean isEndMorning() {
 		return endMorning;
 	}

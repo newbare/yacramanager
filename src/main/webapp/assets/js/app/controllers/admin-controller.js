@@ -11,6 +11,8 @@ function AdminCompaniesController($scope,$rootScope,CompanyCRUDREST,ngTableParam
 	var allCompany=[];
 	$scope.hasDatas=false;
 	
+	$scope.startIndex=0;
+	$scope.endIndex=0;
 	$scope.company={};
 	$scope.company.contacts=[];
 	$scope.addContact=function(){
@@ -20,6 +22,60 @@ function AdminCompaniesController($scope,$rootScope,CompanyCRUDREST,ngTableParam
 		$scope.company={};
 		$scope.company.contacts=[];
 	};
+	
+	$scope.tableFilter="";
+	$scope.nameCriteriaConfig={
+			name:"name",
+			defaultButtonLabel:"Name",
+			filterType:"TEXT",
+			closeable:true,
+			filterValue:"",
+			onFilter: function(value) {
+				console.log('Filter text ['+value.field+'] searching: '+value.value);
+			},
+			currentFilter:{},
+			displayed: true
+	};
+	
+	$scope.licenseEndDateCriteriaConfig={
+			name:"licenseEndDate",
+			defaultButtonLabel:"License end date",
+			filterType:"DATE",
+			closeable:true,
+			filterValue:"",
+			onFilter: function(value) {
+				console.log('Filter text ['+value.field+'] searching: '+value.value);
+			},
+			currentFilter:{},
+			displayed: true
+	};
+	$scope.registeredDateCriteriaConfig={
+			name:"registeredDate",
+			defaultButtonLabel:"Registered date",
+			filterType:"DATE",
+			closeable:true,
+			filterValue:"",
+			onFilter: function(value) {
+				console.log('Filter text ['+value.field+'] searching: '+value.value);
+			},
+			currentFilter:{},
+			displayed: true
+	};
+	
+	$scope.criteriaBarConfig={
+		criterions:[$scope.nameCriteriaConfig,$scope.registeredDateCriteriaConfig,$scope.licenseEndDateCriteriaConfig],
+		autoFilter:true,
+		filters:[]
+	};
+	
+	$scope.doFilter=function(data){
+		console.log("Server filer launch with: "+JSON.stringify(data));
+		var serverFilter={filter:data};
+		$scope.tableFilter=JSON.stringify(serverFilter);
+		$scope.refreshDatas();
+	};
+	
+	
 	$scope.tableParams = new ngTableParams({
 		page : 1, // show first page
 		count : 10, // count per page
@@ -35,9 +91,11 @@ function AdminCompaniesController($scope,$rootScope,CompanyCRUDREST,ngTableParam
 						page:params.$params.page-1,
 						size:params.$params.count,
 						sort:params.$params.sorting,
-						filter:params.$params.filter
+						filter:$scope.tableFilter
 					},function(data) {
 				params.total(data.totalCount);
+				$scope.startIndex=data.startIndex;
+				$scope.endIndex=data.endIndex;
 				if(data.totalCount>=1){
 					$scope.hasDatas=true;
 				}else {

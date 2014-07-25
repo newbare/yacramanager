@@ -57,6 +57,11 @@ App.service('WebSocketService', function($timeout,notifService) {
 			notifService.notify('error','Error',msg.body)
 		});
 	};
+	var subscribeToInfoQueue=function(){
+		stompClient.subscribe("/user/queue/info", function(msg) {
+			notifService.notify('info','Info',msg.body)
+		});
+	};
 	
 	this.connect = function connect() {
 			var socket = new SockJS('/yacramanager/yacra');
@@ -67,6 +72,7 @@ App.service('WebSocketService', function($timeout,notifService) {
 				var user = frame.headers['user-name'];
 				subscribeToCommonTopic();
 				subscribeToErrorQueue();
+				subscribeToInfoQueue();
 				});
 	};
 	

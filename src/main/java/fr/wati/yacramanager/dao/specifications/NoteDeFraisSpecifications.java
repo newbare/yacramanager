@@ -4,6 +4,7 @@
 package fr.wati.yacramanager.dao.specifications;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -11,10 +12,11 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.jpa.domain.Specifications;
 
-import fr.wati.yacramanager.beans.Company;
-import fr.wati.yacramanager.beans.Company_;
 import fr.wati.yacramanager.beans.Employe;
+import fr.wati.yacramanager.beans.NoteDeFrais;
+import fr.wati.yacramanager.beans.NoteDeFrais_;
 
 /**
  * @author Rachid Ouattara
@@ -22,44 +24,44 @@ import fr.wati.yacramanager.beans.Employe;
  */
 public class NoteDeFraisSpecifications {
 
-	public static Specification<Company> namelike(final String searchTerm) {
-		return new Specification<Company>() {
-			public Predicate toPredicate(Root<Company> root,
+	public static Specification<NoteDeFrais> descriptionLike(final String searchTerm) {
+		return new Specification<NoteDeFrais>() {
+			public Predicate toPredicate(Root<NoteDeFrais> root,
 					CriteriaQuery<?> query, CriteriaBuilder builder) {
-				return builder.like(root.get(Company_.name), "%" + searchTerm
-						+ "%");
+				return builder.like(builder.lower(root.get(NoteDeFrais_.description)), "%" + searchTerm.toLowerCase() + "%");
 			}
 		};
 	}
-
-	public static Specification<Company> registeredDateBetween(
+	
+	public static Specification<NoteDeFrais> createdDateBetween(
 			final Date startRangeDate, final Date endRangeDate) {
-		return new Specification<Company>() {
-			public Predicate toPredicate(Root<Company> root,
+		return new Specification<NoteDeFrais>() {
+			public Predicate toPredicate(Root<NoteDeFrais> root,
 					CriteriaQuery<?> query, CriteriaBuilder builder) {
-				return builder.between(root.get(Company_.registeredDate),
+				return builder.between(root.get(NoteDeFrais_.date),
 						startRangeDate, endRangeDate);
 			}
 		};
 	}
-
-	public static Specification<Company> licenseEndDateBetween(
-			final Date startRangeDate, final Date endRangeDate) {
-		return new Specification<Company>() {
-			public Predicate toPredicate(Root<Company> root,
+	
+	public static Specification<NoteDeFrais> forEmploye(final Employe employe) {
+		return new Specification<NoteDeFrais>() {
+			public Predicate toPredicate(Root<NoteDeFrais> root,
 					CriteriaQuery<?> query, CriteriaBuilder builder) {
-				return builder.between(root.get(Company_.licenseEndDate),
-						startRangeDate, endRangeDate);
+				return builder.equal(root.get(NoteDeFrais_.employe),employe);
 			}
 		};
 	}
-
-	public static Specification<Company> employeMemberOfCompany(final Employe employe) {
-		return new Specification<Company>() {
-			public Predicate toPredicate(Root<Company> root,
-					CriteriaQuery<?> query, CriteriaBuilder builder) {
-				return builder.isMember(employe, root.get(Company_.employes));
+	
+	public static Specification<NoteDeFrais> forEmployes(final List<Employe> employes) {
+		Specifications<NoteDeFrais> specifications=null;
+		for(Employe employe:employes){
+			if(specifications==null){
+				specifications=Specifications.where(forEmploye(employe));
+			}else {
+				specifications=specifications.or(forEmploye(employe));
 			}
-		};
+		}
+		return specifications;
 	}
 }

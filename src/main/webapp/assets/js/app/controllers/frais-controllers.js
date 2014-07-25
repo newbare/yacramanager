@@ -1,5 +1,5 @@
 function FraisController($scope, $rootScope, NoteCRUDREST, alertService,
-		ngTableParams, notifService, $upload,$modal) {
+		ngTableParams, notifService, $upload,$modal,$http) {
 	$rootScope.page = {
 		"title" : "Frais",
 		"description" : "Gerez vos notes de frais"
@@ -10,6 +10,78 @@ function FraisController($scope, $rootScope, NoteCRUDREST, alertService,
 	$scope.selectedNotes = [];
 	$scope.ids = [];
 	var allNote = [];
+	
+	
+	$scope.tableFilter="";
+	$scope.employeCriteriaConfig={
+			name:"employe",
+			defaultButtonLabel:"Who",
+			filterType:"ARRAY",
+			closeable:false,
+			filterValue:[],
+			buttonSelectedItemsFormater:function(data){
+				if(data.name==""+_userId+""){
+					return '<i class="fa fa-user"></i> Me';
+				}else {
+					return '<i class="fa fa-user"></i> '+getUserInitials(data.label);
+				}
+			},
+			defaultSelectedItems:function(data){
+				var items=[];
+				angular.forEach(data,function(item){
+					if(item.name==""+_userId+""){
+						items.push(item);
+					}
+				});
+				return items;
+			},
+			getData:function($defer){
+				$http.get(_contextPath+"/app/api/users/managed/"+_userId,{params:{"me":true} })
+					.success(function(data, status) {
+						$defer.resolve(data);
+					})
+			},
+			currentFilter:{},
+			displayed: true
+	};
+	$scope.descriptionCriteriaConfig={
+			name:"description",
+			defaultButtonLabel:"Description",
+			filterType:"TEXT",
+			closeable:true,
+			filterValue:"",
+			onFilter: function(value) {
+				console.log('Filter text ['+value.field+'] searching: '+value.value);
+			},
+			currentFilter:{},
+			displayed: true
+	};
+	
+	$scope.dateCriteriaConfig={
+			name:"date",
+			defaultButtonLabel:"Date",
+			filterType:"DATE",
+			closeable:true,
+			filterValue:"",
+			onFilter: function(value) {
+				console.log('Filter text ['+value.field+'] searching: '+value.value);
+			},
+			currentFilter:{},
+			displayed: true
+	};
+	
+	$scope.criteriaBarConfig={
+		criterions:[$scope.employeCriteriaConfig,$scope.descriptionCriteriaConfig,$scope.dateCriteriaConfig],
+		autoFilter:true,
+		filters:[]
+	};
+	
+	$scope.doFilter=function(data){
+		console.log("Server filer launch with: "+JSON.stringify(data));
+		var serverFilter={filter:data};
+		$scope.tableFilter=JSON.stringify(serverFilter);
+		$scope.refreshDatas();
+	};
 
 	var note = $scope.currentNote = {};
 	var today = new Date();
@@ -157,7 +229,7 @@ function FraisController($scope, $rootScope, NoteCRUDREST, alertService,
 				page:params.$params.page-1,
 				size:params.$params.count,
 				sort:params.$params.sorting,
-				filter:params.$params.filter
+				filter:$scope.tableFilter
 			}, function(data) {
 				params.total(data.totalCount);
 				$scope.startIndex=data.startIndex;

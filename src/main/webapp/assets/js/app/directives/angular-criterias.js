@@ -58,7 +58,10 @@ angular
 											+ '/assets/others/criteria/criteria-date.tpl.html';
 									var booleanFilterTemplate = _contextPath
 											+ '/assets/others/criteria/criteria-boolean.tpl.html';
-
+									
+									$scope.filterType = $scope.criteriaConfig.filterType;
+									$scope.filterContentHTML=undefined;
+									
 									// templates initialisations
 									
 									$scope.initialiseTemplates=function(){
@@ -80,8 +83,8 @@ angular
 													.then(
 															function(content) {
 																$scope.checkboxElements = $scope.filterValue;
-																if($scope.criteriaConfig.defaultSelectedItem !== undefined &&  angular.isFunction($scope.criteriaConfig.defaultSelectedItem)){
-																	defaultSelectedItems=$scope.criteriaConfig.defaultSelectedItem($scope.checkboxElements);
+																if($scope.criteriaConfig.defaultSelectedItems !== undefined &&  angular.isFunction($scope.criteriaConfig.defaultSelectedItems)){
+																	defaultSelectedItems=$scope.criteriaConfig.defaultSelectedItems($scope.checkboxElements);
 																	angular.forEach(defaultSelectedItems,function(item){
 																		item.ticked=true;
 																	});
@@ -149,8 +152,6 @@ angular
 									};
 									$scope.resetButtonLabel();
 
-									$scope.filterType = $scope.criteriaConfig.filterType;
-									$scope.filterContentHTML=undefined;
 
 									$scope.onFilterText = function() {
 										var filter = {
@@ -211,7 +212,7 @@ angular
 											field : $scope.criteriaConfig.name,
 											value : $scope.booleanValue
 										};
-										if ($scope.booleanValue !== undefined) {
+										if ($scope.booleanValue !== undefined && $scope.booleanValue !== "undefined" ) {
 											$scope
 													.computeButtonLabel('('
 															+ $scope.booleanValue
@@ -220,7 +221,7 @@ angular
 											$scope.resetButtonLabel();
 										}
 										$scope.closeFilterContent();
-										if($scope.criteriaConfig.onFilter!==undefined){
+										if($scope.criteriaConfig.onFilter!==undefined && angular.isFunction($scope.criteriaConfig.onFilter)){
 											$scope.criteriaConfig.onFilter(filter);
 										}
 										$scope.criteriaConfig.currentFilter=filter;

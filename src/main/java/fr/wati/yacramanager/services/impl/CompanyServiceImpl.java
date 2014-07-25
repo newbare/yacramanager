@@ -10,8 +10,13 @@ import org.springframework.transaction.annotation.Transactional;
 import fr.wati.yacramanager.beans.Client;
 import fr.wati.yacramanager.beans.Company;
 import fr.wati.yacramanager.dao.repository.CompanyRepository;
+import fr.wati.yacramanager.dao.specifications.CompanySpecifications;
 import fr.wati.yacramanager.services.ClientService;
 import fr.wati.yacramanager.services.CompanyService;
+import fr.wati.yacramanager.utils.Filter;
+import fr.wati.yacramanager.utils.Filter.FilterDate;
+import fr.wati.yacramanager.utils.Filter.FilterText;
+import fr.wati.yacramanager.utils.Filter.FilterType;
 import fr.wati.yacramanager.web.dto.CompanyDTO;
 
 @Service
@@ -110,6 +115,36 @@ public class CompanyServiceImpl implements CompanyService {
 	@Override
 	public Page<Company> findAll(Specification<Company> spec, Pageable pageable) {
 		return companyRepository.findAll(spec, pageable);
+	}
+
+	/* (non-Javadoc)
+	 * @see fr.wati.yacramanager.services.SpecificationFactory#buildSpecification(fr.wati.yacramanager.utils.Filter)
+	 */
+	@Override
+	public Specification<Company> buildSpecification(Filter filter) {
+		if(filter!=null){
+			FilterType filterType = filter.getType();
+			switch (filterType) {
+			case TEXT:
+				FilterText filterText=(FilterText) filter;
+				if("name".equals(filterText.getField())){
+					return CompanySpecifications.namelike(filterText.getValue());
+				}
+				break;
+			case DATE:
+				FilterDate filterDate=(FilterDate) filter;
+				if("registeredDate".equals(filter.getField())){
+					return CompanySpecifications.registeredDateBetween(filterDate.getValue().getStart(), filterDate.getValue().getEnd());
+				}
+				if("licenseEndDate".equals(filter.getField())){
+					return CompanySpecifications.licenseEndDateBetween(filterDate.getValue().getStart(), filterDate.getValue().getEnd());
+				}
+				break;
+			default:
+				break;
+			}
+		}
+		return null;
 	}
 
 }

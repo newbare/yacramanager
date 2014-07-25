@@ -13,33 +13,10 @@
 			</div>
 		</div>
 		<div class="row">
-			<fieldset data-collapsible-fieldset="Filter">
-				<div class="row">
-					<div class="col-md-9">
-						<form role="form">
-							<div class="form-group">
-								<label for="period">Predifined period</label> <select
-									class="form-control" data-ng-model="selectedPeriod"
-									data-ng-change="periodChanged()"
-									data-placeholder="Select period"
-									data-ng-options="period for period in periodFilter"></select>
-							</div>
-							<div class="form-group">
-								<label for="datepicker">Select date range</label>
-								<div class="input-group" id="datepicker">
-									<input type="text" class=" form-control " name="start"
-										ng-model="startDate" placeholder="From" bs-datepicker /> <span
-										class="input-group-addon">to</span> <input type="text"
-										class=" form-control " name="end" ng-model="endDate"
-										placeholder="Until" bs-datepicker />
-								</div>
-							</div>
-							<button type="button" class="btn btn-primary pull-right"
-								ng-click="retrieveCra()">Filter</button>
-						</form>
-					</div>
-				</div>
-			</fieldset>
+			<div data-ng-criteria-bar data-criteria-bar-config="criteriaBarConfig" data-do-filter="doFilter(criteriaBarConfig.filters)"></div>		
+		</div>
+		<div class="row">
+			<span style="vertical-align: middle;" data-ng-show="tableParams.settings().total>0"><b>{{startIndex}}</b> - <b>{{endIndex}}</b> of <b>{{tableParams.settings().total}}</b></span>
 		</div>
 		<div class="row">
 			<div data-ui-calendar="uiConfig.calendar" data-ng-model="eventSources"></div>

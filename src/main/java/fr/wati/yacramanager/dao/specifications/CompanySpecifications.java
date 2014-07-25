@@ -26,8 +26,7 @@ public class CompanySpecifications {
 		return new Specification<Company>() {
 			public Predicate toPredicate(Root<Company> root,
 					CriteriaQuery<?> query, CriteriaBuilder builder) {
-				return builder.like(root.get(Company_.name), "%" + searchTerm
-						+ "%");
+				return builder.like(builder.lower(root.get(Company_.name)), "%" + searchTerm.toLowerCase() + "%");
 			}
 		};
 	}

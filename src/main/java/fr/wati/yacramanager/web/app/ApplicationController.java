@@ -21,6 +21,8 @@ public class ApplicationController {
 		Employe connectedUser = SecurityUtils.getConnectedUser();
 		modelAndView.addObject("userFirstName", connectedUser.getPrenom());
 		modelAndView.addObject("userId", connectedUser.getId());
+		modelAndView.addObject("userCompanyName", connectedUser.getCompany().getName());
+		modelAndView.addObject("userCompanyId", connectedUser.getCompany().getId());
 		return modelAndView;
 	}
 

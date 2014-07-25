@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.domain.Sort.Order;
+import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,7 +34,9 @@ import fr.wati.yacramanager.beans.Attachement;
 import fr.wati.yacramanager.beans.NoteDeFrais;
 import fr.wati.yacramanager.services.AttachementService;
 import fr.wati.yacramanager.services.NoteDeFraisService;
+import fr.wati.yacramanager.utils.Filter.FilterBuilder;
 import fr.wati.yacramanager.utils.SecurityUtils;
+import fr.wati.yacramanager.utils.SpecificationBuilder;
 import fr.wati.yacramanager.web.dto.AbsenceDTO.TypeAbsence;
 import fr.wati.yacramanager.web.dto.AbsenceDTO.TypeAbsenceDTO;
 import fr.wati.yacramanager.web.dto.NoteDeFraisDTO;
@@ -68,14 +72,28 @@ public class NoteDeFraisController extends RestCrudControllerAdapter<NoteDeFrais
 		noteDeFraisService.save(dto.toNoteDeFrais(findOne));
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseWrapper<List<NoteDeFraisDTO>> getAll(@RequestParam(required=false) Integer page,@RequestParam(required=false) Integer size,@RequestParam(value="sort", required=false) Map<String, String> sort,@RequestParam(value="filter", required=false) String filter) {
-		if(page==null){
-			page=0;
+		if (page == null) {
+			page = 0;
 		}
-		if(size==null){
-			size=100;
+		if (size == null) {
+			size = 100;
+		}
+		List filters=new ArrayList<>();
+		if(StringUtils.isNotEmpty(filter)){
+			try {
+				filters=FilterBuilder.parse(filter);
+			} catch (Exception e) {
+				LOG.error(e.getMessage(), e);
+			}
+		}
+		Specifications<NoteDeFrais> specifications=null;
+		if(!filters.isEmpty()){
+			LOG.debug("Building Absence specification");
+			specifications=Specifications.where(SpecificationBuilder.buildSpecification(filters, noteDeFraisService));
 		}
 		PageRequest pageable=null;
 		if(sort!=null){
@@ -92,10 +110,13 @@ public class NoteDeFraisController extends RestCrudControllerAdapter<NoteDeFrais
 		}else {
 			pageable=new PageRequest(page, size);
 		}
-		Page<NoteDeFrais> findByEmploye = noteDeFraisService.findByEmploye(SecurityUtils.getConnectedUser(), pageable);
-		 ResponseWrapper<List<NoteDeFraisDTO>> responseWrapper = new ResponseWrapper<List<NoteDeFraisDTO>>(noteDeFraisService.mapNoteDeFrais(findByEmploye),findByEmploye.getTotalElements());
-		long startIndex=findByEmploye.getNumber()*size+1;
-		long endIndex=startIndex+findByEmploye.getNumberOfElements()-1;
+		
+		Page<NoteDeFrais> findBySpecificationAndOrder =noteDeFraisService.findAll(specifications, pageable);
+		ResponseWrapper<List<NoteDeFraisDTO>> responseWrapper = new ResponseWrapper<List<NoteDeFraisDTO>>(
+				noteDeFraisService.mapNoteDeFrais(findBySpecificationAndOrder),
+				findBySpecificationAndOrder.getTotalElements());
+		long startIndex=findBySpecificationAndOrder.getNumber()*size+1;
+		long endIndex=startIndex+findBySpecificationAndOrder.getNumberOfElements()-1;
 		responseWrapper.setStartIndex(startIndex);
 		responseWrapper.setEndIndex(endIndex);
 		return responseWrapper;

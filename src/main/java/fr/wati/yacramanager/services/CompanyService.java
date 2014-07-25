@@ -6,7 +6,7 @@ import org.springframework.data.domain.Pageable;
 import fr.wati.yacramanager.beans.Company;
 import fr.wati.yacramanager.web.dto.CompanyDTO;
 
-public interface CompanyService extends CrudService<Company, Long> {
+public interface CompanyService extends CrudService<Company, Long>,SpecificationFactory<Company> {
 
 	Company createCompany(Company company);
 

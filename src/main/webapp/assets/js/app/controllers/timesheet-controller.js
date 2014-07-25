@@ -1,10 +1,50 @@
-function TimeSheetController($scope,$rootScope) {
+function TimeSheetController($scope,$rootScope,$http) {
 	$rootScope.page={"title":"Timesheet","description":"View and manage timesheet"}
 	var date = new Date();
     var d = date.getDate();
     var m = date.getMonth();
     var y = date.getFullYear();
 	
+    
+    $scope.employeCriteriaConfig={
+			name:"employe",
+			defaultButtonLabel:"Who",
+			filterType:"ARRAY",
+			closeable:false,
+			filterValue:[],
+			buttonSelectedItemsFormater:function(data){
+				if(data.name==""+_userId+""){
+					return '<i class="fa fa-user"></i> Me';
+				}else {
+					return '<i class="fa fa-user"></i> '+getUserInitials(data.label);
+				}
+			},
+			defaultSelectedItems:function(data){
+				var items=[];
+				angular.forEach(data,function(item){
+					if(item.name==""+_userId+""){
+						items.push(item);
+					}
+				});
+				return items;
+			},
+			getData:function($defer){
+				$http.get(_contextPath+"/app/api/users/managed/"+_userId,{params:{"me":true} })
+					.success(function(data, status) {
+						$defer.resolve(data);
+					})
+			},
+			currentFilter:{},
+			displayed: true
+	};
+    
+    //criteria bar config
+    $scope.criteriaBarConfig={
+    		criterions:[$scope.employeCriteriaConfig],
+    		autoFilter:true,
+    		filters:[]
+    	};
+    
 	
     $scope.onDayClick=function(date, jsEvent, view){
     	$scope.alertMessage = ("Day"+date + ' was clicked ');

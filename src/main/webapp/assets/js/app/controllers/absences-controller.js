@@ -10,7 +10,7 @@ function AbsencesController($scope, $rootScope, AbsenceCRUDREST,
 	 * criteria config
 	 */
 	
-	$scope.tableFilter={};
+	$scope.tableFilter="";
 	$scope.employeCriteriaConfig={
 			name:"employe",
 			defaultButtonLabel:"Who",
@@ -19,12 +19,12 @@ function AbsencesController($scope, $rootScope, AbsenceCRUDREST,
 			filterValue:[],
 			buttonSelectedItemsFormater:function(data){
 				if(data.name==""+_userId+""){
-					return "Me";
+					return '<i class="fa fa-user"></i> Me';
 				}else {
-					return getUserInitials(data.label);
+					return '<i class="fa fa-user"></i> '+getUserInitials(data.label);
 				}
 			},
-			defaultSelectedItem:function(data){
+			defaultSelectedItems:function(data){
 				var items=[];
 				angular.forEach(data,function(item){
 					if(item.name==""+_userId+""){

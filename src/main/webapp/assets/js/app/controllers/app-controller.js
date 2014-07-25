@@ -91,23 +91,23 @@ App.config([ '$stateProvider', '$urlRouterProvider',
 			}).state('company', {
 				url : "/company",
 				templateUrl : _contextPath+'/views/app/company.html',
-				controller : CompanyController,
+				controller : CompanyController
 			}).state('company.home', {
 				url : "/home",
 				templateUrl : _contextPath+'/views/app/company/company-home.html'
 				//controller : EntrepriseController,
 			}).state('company.employees', {
 				url : "/employees",
-				templateUrl : _contextPath+'/views/app/company/company-employees.html'
-				//controller : EntrepriseController,
+				templateUrl : _contextPath+'/views/app/company/company-employees.html',
+				controller : CompanyEmployeesController
 			}).state('company.clients', {
 				url : "/clients",
-				templateUrl : _contextPath+'/views/app/company/company-clients.html'
-				//controller : EntrepriseController,
+				templateUrl : _contextPath+'/views/app/company/company-clients.html',
+				controller : CompanyClientsController
 			}).state('company.projects', {
 				url : "/projects",
-				templateUrl : _contextPath+'/views/app/company/company-projects.html'
-				//controller : EntrepriseController,
+				templateUrl : _contextPath+'/views/app/company/company-projects.html',
+				controller : CompanyProjectsController,
 			})
 			.state('company.messages', {
 				url : "/messages",

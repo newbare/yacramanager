@@ -32,6 +32,8 @@
 <script type="text/javascript">
 	var _contextPath = "${contextPath}";
 	var _userId = "${userId}";
+	var _userCompanyName = "${userCompanyName}";
+	var _userCompanyId = "${userCompanyId}";
 </script>
 </head>
 <body data-ng-controller="AppCtrl" data-web-socket >
@@ -150,6 +152,7 @@
 	<script src="${contextPath}/assets/js/stomp.js"></script>
 	<!-- 	<script src="${contextPath}/assets/js/app/filters/commons-filters.js"></script> -->
 	<script src="${contextPath}/assets/js/app/factories/users-factories.js"></script>
+	<script src="${contextPath}/assets/js/app/factories/companies-factories.js"></script>
 	<script
 		src="${contextPath}/assets/js/app/controllers/home-controller.js"></script>
 	<script

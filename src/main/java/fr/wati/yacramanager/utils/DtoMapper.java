@@ -58,6 +58,8 @@ public class DtoMapper {
 		AbsenceDTO dto = new AbsenceDTO();
 		dto.setDescription(absence.getDescription());
 		dto.setStartDate(absence.getStartDate());
+		dto.setEmployeId(absence.getEmploye().getId());
+		dto.setEmployeName(absence.getEmploye().getFullName());
 		dto.setEndDate(absence.getEndDate());
 		dto.setTypeAbsence(String.valueOf(absence.getTypeAbsence()));
 		dto.setDate(absence.getDate());
@@ -90,6 +92,8 @@ public class DtoMapper {
 		dto.setDate(noteDeFrais.getDate());
 		dto.setDescription(noteDeFrais.getDescription());
 		dto.setAmount(noteDeFrais.getAmount());
+		dto.setEmployeId(noteDeFrais.getEmploye().getId());
+		dto.setEmployeName(noteDeFrais.getEmploye().getFullName());
 		dto.setId(noteDeFrais.getId());
 		List<Long> attachementIds=new ArrayList<>();
 		for(Attachement attachement: noteDeFrais.getAttachements()){
