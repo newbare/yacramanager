@@ -4,7 +4,7 @@
 		<div class="col-md-6">
 			<div class="radio">
 				<label> <input type="radio" name="optionsRadios"
-					id="optionsRadios1" data-ng-model="byDate" value="true">
+					id="optionsRadios1" data-ng-model="dateSelector" value="byDate">
 					By date
 				</label>
 			</div>
@@ -12,13 +12,13 @@
 		<div class="col-md-6">
 			<div class="radio">
 				<label> <input type="radio" name="optionsRadios"
-					id="optionsRadios1" data-ng-model="byRangeDate" value="true">
+					id="optionsRadios1" data-ng-model="dateSelector" value="byRangeDate">
 					By date range
 				</label>
 			</div>
 		</div>
 	</div>
-	<div class="row">
+	<div class="row" data-ng-show="dateSelector=='byDate'">
 		<div class="">
 			<div class="input-group" id="datepicker">
 				<input type="text" class=" form-control " name="start"
@@ -27,7 +27,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="row">
+	<div class="row" data-ng-show="dateSelector=='byRangeDate'">
 		<div class="">
 			<div class="input-group" id="datepicker">
 				<input type="text" class=" form-control " name="start"

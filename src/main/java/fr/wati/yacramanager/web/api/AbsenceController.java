@@ -81,6 +81,7 @@ public class AbsenceController implements RestCrudController<AbsenceDTO> {
 				filters=FilterBuilder.parse(filter);
 			} catch (Exception e) {
 				LOG.error(e.getMessage(), e);
+				throw new RestServiceException(e);
 			}
 		}
 		Specifications<Absence> specifications=null;

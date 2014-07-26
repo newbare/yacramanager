@@ -225,8 +225,6 @@ public class NoteDeFraisServiceImpl implements NoteDeFraisService {
 				}
 				break;
 			case COMPARATOR_BETWEEN:
-				
-				break;
 			case COMPARATOR_EQUALS:
 			case COMPARATOR_GREATERTHAN:
 			case COMPARATOR_LESSTHAN:
@@ -239,6 +237,8 @@ public class NoteDeFraisServiceImpl implements NoteDeFraisService {
 						return CommonSpecifications.greaterThan(filterComparator.getValue().getValue(), NoteDeFrais_.amount);
 					case LESSTHAN:
 						return CommonSpecifications.lessThan(filterComparator.getValue().getValue(), NoteDeFrais_.amount);
+					case BETWEEN:
+						return CommonSpecifications.between(filterComparator.getValue().getStartValue(), filterComparator.getValue().getEndValue(), NoteDeFrais_.amount);
 					default:
 						break;
 					}

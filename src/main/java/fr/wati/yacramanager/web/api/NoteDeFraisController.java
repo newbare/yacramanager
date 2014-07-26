@@ -44,30 +44,34 @@ import fr.wati.yacramanager.web.dto.ResponseWrapper;
 
 /**
  * @author Rachid Ouattara
- *
+ * 
  */
 @RestController()
 @RequestMapping("/app/api/frais")
-public class NoteDeFraisController extends RestCrudControllerAdapter<NoteDeFraisDTO> {
+public class NoteDeFraisController extends
+		RestCrudControllerAdapter<NoteDeFraisDTO> {
 
-	private static final Log LOG=LogFactory.getLog(NoteDeFraisController.class);
-	
+	private static final Log LOG = LogFactory
+			.getLog(NoteDeFraisController.class);
+
 	@Autowired
 	private NoteDeFraisService noteDeFraisService;
-	
+
 	@Autowired
 	private AttachementService attachementService;
-	
+
 	@Override
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public @ResponseBody NoteDeFraisDTO read(@PathVariable("id") Long id) {
+	public @ResponseBody
+	NoteDeFraisDTO read(@PathVariable("id") Long id) {
 		return noteDeFraisService.map(noteDeFraisService.findOne(id));
 	}
 
 	@Override
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void update(@PathVariable("id") Long id, @RequestBody NoteDeFraisDTO dto) {
+	public void update(@PathVariable("id") Long id,
+			@RequestBody NoteDeFraisDTO dto) {
 		NoteDeFrais findOne = noteDeFraisService.findOne(id);
 		noteDeFraisService.save(dto.toNoteDeFrais(findOne));
 	}
@@ -75,48 +79,58 @@ public class NoteDeFraisController extends RestCrudControllerAdapter<NoteDeFrais
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	@RequestMapping(method = RequestMethod.GET)
-	public ResponseWrapper<List<NoteDeFraisDTO>> getAll(@RequestParam(required=false) Integer page,@RequestParam(required=false) Integer size,@RequestParam(value="sort", required=false) Map<String, String> sort,@RequestParam(value="filter", required=false) String filter) {
+	public ResponseWrapper<List<NoteDeFraisDTO>> getAll(
+			@RequestParam(required = false) Integer page,
+			@RequestParam(required = false) Integer size,
+			@RequestParam(value = "sort", required = false) Map<String, String> sort,
+			@RequestParam(value = "filter", required = false) String filter) throws RestServiceException {
 		if (page == null) {
 			page = 0;
 		}
 		if (size == null) {
 			size = 100;
 		}
-		List filters=new ArrayList<>();
-		if(StringUtils.isNotEmpty(filter)){
+		List filters = new ArrayList<>();
+		if (StringUtils.isNotEmpty(filter)) {
 			try {
-				filters=FilterBuilder.parse(filter);
+				filters = FilterBuilder.parse(filter);
 			} catch (Exception e) {
 				LOG.error(e.getMessage(), e);
+				throw new RestServiceException(e);
 			}
 		}
-		Specifications<NoteDeFrais> specifications=null;
-		if(!filters.isEmpty()){
+		Specifications<NoteDeFrais> specifications = null;
+		if (!filters.isEmpty()) {
 			LOG.debug("Building Absence specification");
-			specifications=Specifications.where(SpecificationBuilder.buildSpecification(filters, noteDeFraisService));
+			specifications = Specifications.where(SpecificationBuilder
+					.buildSpecification(filters, noteDeFraisService));
 		}
-		PageRequest pageable=null;
-		if(sort!=null){
-			List<Order> orders=new ArrayList<>();
-			for(Entry<String, String> entry:sort.entrySet()){
-				Order order=new Order("asc".equals(entry.getValue())?Direction.ASC:Direction.DESC, entry.getKey());
+		PageRequest pageable = null;
+		if (sort != null) {
+			List<Order> orders = new ArrayList<>();
+			for (Entry<String, String> entry : sort.entrySet()) {
+				Order order = new Order(
+						"asc".equals(entry.getValue()) ? Direction.ASC
+								: Direction.DESC, entry.getKey());
 				orders.add(order);
 			}
-			if(!orders.isEmpty()){
-				pageable=new PageRequest(page, size, new Sort(orders));
-			}else {
-				pageable=new PageRequest(page, size);
+			if (!orders.isEmpty()) {
+				pageable = new PageRequest(page, size, new Sort(orders));
+			} else {
+				pageable = new PageRequest(page, size);
 			}
-		}else {
-			pageable=new PageRequest(page, size);
+		} else {
+			pageable = new PageRequest(page, size);
 		}
-		
-		Page<NoteDeFrais> findBySpecificationAndOrder =noteDeFraisService.findAll(specifications, pageable);
+
+		Page<NoteDeFrais> findBySpecificationAndOrder = noteDeFraisService
+				.findAll(specifications, pageable);
 		ResponseWrapper<List<NoteDeFraisDTO>> responseWrapper = new ResponseWrapper<List<NoteDeFraisDTO>>(
 				noteDeFraisService.mapNoteDeFrais(findBySpecificationAndOrder),
 				findBySpecificationAndOrder.getTotalElements());
-		long startIndex=findBySpecificationAndOrder.getNumber()*size+1;
-		long endIndex=startIndex+findBySpecificationAndOrder.getNumberOfElements()-1;
+		long startIndex = findBySpecificationAndOrder.getNumber() * size + 1;
+		long endIndex = startIndex
+				+ findBySpecificationAndOrder.getNumberOfElements() - 1;
 		responseWrapper.setStartIndex(startIndex);
 		responseWrapper.setEndIndex(endIndex);
 		return responseWrapper;
@@ -128,36 +142,42 @@ public class NoteDeFraisController extends RestCrudControllerAdapter<NoteDeFrais
 			NoteDeFrais noteDeFrais = dto.toNoteDeFrais();
 			noteDeFrais.setDate(new Date());
 			noteDeFrais.setEmploye(SecurityUtils.getConnectedUser());
-			if(!dto.getAttachementsIds().isEmpty()){
-				List<Attachement> findAttachementsByIds = attachementService.findAttachementsByIds(dto.getAttachementsIds().toArray(new Long[dto.getAttachementsIds().size()]));
-				for(Attachement attachement:findAttachementsByIds){
+			if (!dto.getAttachementsIds().isEmpty()) {
+				List<Attachement> findAttachementsByIds = attachementService
+						.findAttachementsByIds(dto.getAttachementsIds()
+								.toArray(
+										new Long[dto.getAttachementsIds()
+												.size()]));
+				for (Attachement attachement : findAttachementsByIds) {
 					noteDeFrais.addAttachement(attachement);
 					attachement.setNoteDeFrais(noteDeFrais);
 					noteDeFraisService.save(noteDeFrais);
 					attachementService.update(attachement);
 				}
-			}else {
+			} else {
 				noteDeFraisService.save(noteDeFrais);
 			}
-			
+
 			return new ResponseEntity<>(HttpStatus.CREATED);
 		} catch (Exception exception) {
 			LOG.error(exception.getMessage(), exception);
-			return new ResponseEntity<String>(exception.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<String>(exception.getMessage(),
+					HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		
+
 	}
 
 	@Override
-	@RequestMapping(value = "/{id}",method=RequestMethod.DELETE)
+	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public void delete(@PathVariable("id") Long id) {
 		noteDeFraisService.delete(id);
 	}
 
 	@RequestMapping(value = "/types", method = RequestMethod.GET)
-	public @ResponseBody List<TypeAbsenceDTO> getTypeAbsences() {
-		List<TypeAbsenceDTO> absenceDTOs=new ArrayList<>();
-		for(TypeAbsence absence:TypeAbsence.values()){
+	public @ResponseBody
+	List<TypeAbsenceDTO> getTypeAbsences() {
+		List<TypeAbsenceDTO> absenceDTOs = new ArrayList<>();
+		for (TypeAbsence absence : TypeAbsence.values()) {
 			absenceDTOs.add(TypeAbsenceDTO.fromEnum(absence));
 		}
 		return absenceDTOs;

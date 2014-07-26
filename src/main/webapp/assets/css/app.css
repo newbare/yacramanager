@@ -1,3 +1,16 @@
+.scrollable {
+	height: 100%;
+	overflow: auto;
+}
+
+.max-height {
+	height: 100%;
+}
+
+.no-overflow {
+	overflow: hidden;
+}
+
 fieldset.collapsible.collapsed {
 	border-top: 1px solid #e6e6e6;
 	padding: 5px;
@@ -35,7 +48,7 @@ fieldset.collapsible>div {
 	padding-left: 20px;
 }
 
-.ng-table>tbody>tr>td{
+.ng-table>tbody>tr>td {
 	padding: 5px !important;
 	vertical-align: middle !important;
 }
@@ -53,12 +66,13 @@ fieldset.collapsible>div {
 	width: 15px;
 	height: 15px;
 	margin: 0;
-	border:0px;
+	border: 0px;
 	background-image: url(../images/tools/tool-sprites.png);
 }
 
 .form-group.required .control-label:after {
-  content:"*";color:red;
+	content: "*";
+	color: red;
 }
 
 body {
@@ -338,8 +352,8 @@ body>.container,body>.container-fluid {
 
 /*$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$*/
 .navbar .container-fluid {
-	padding-left: 40px !important;
-	padding-right: 40px !important;
+	padding-left: 10px !important;
+	padding-right: 10px !important;
 }
 
 .navtop>li>a {
@@ -464,12 +478,12 @@ a .badge {
 	overflow: auto;
 }
 
-.scrollable-x{
+.scrollable-x {
 	max-width: 100%;
 	overflow: auto;
 }
 
-.scrollable-y{
+.scrollable-y {
 	max-height: 100%;
 	overflow: auto;
 }

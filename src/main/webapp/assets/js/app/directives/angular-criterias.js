@@ -39,15 +39,15 @@ angular
 									onFilterTriggered : '&',
 									onRemoveCriteria : '&'
 								},
-								template : '<span class="ng-criteria inlineBlock" data-ng-show="criteriaConfig.displayed" >'
-										+ '<div class="btn-group">'
-										+ '<button type="button" class="btn btn-default criteria-btn" ng-click="toggleFilterContent( $event )" ng-bind-html="buttonLabel" data-ng-disabled="!isEditable"></button>'
-										+ '<button type="button" class="btn btn-default" data-ng-click="dismissCriteria(criteriaConfig.name)" data-ng-show="closeable" data-ng-disabled="!isEditable">'
-										+ '<span aria-hidden="true">&times;</span>'
-										+ '</button>'
-										+ '</div>'
-										+'<div class="filter-content hide col-md-3 col-xs-4" ng-html-compile="filterContentHTML">'
-										+'</div>' + '</span>',
+								template : 
+										  '<span class="ng-criterion inlineBlock" data-ng-class="{active: active, noteditable: !isEditable, disabled: !isEditable}" data-ng-show="criteriaConfig.displayed" >'
+										+ '<button type="button" class="criterion-btn" ng-click="toggleFilterContent( $event )" ng-bind-html="buttonLabel" data-ng-disabled="!isEditable"></button>'
+										+ '<a href="" class="criterion-remove" data-ng-click="dismissCriteria(criteriaConfig.name)" data-ng-show="closeable" data-ng-disabled="!isEditable">'
+										+ '<i class="fa fa-times-circle"></i>'
+										+ '</a>'
+										+'<div class="filter-content hide col-md-2 col-xs-4" ng-html-compile="filterContentHTML">'
+										+'</div>' 
+										+ '</span>',
 								link : function($scope, element, attrs) {
 									// default config values
 									var textFilterTemplate = _contextPath
@@ -64,7 +64,7 @@ angular
 									$scope.filterType = $scope.criteriaConfig.filterType;
 									$scope.filterContentHTML=undefined;
 									$scope.isEditable=($scope.criteriaConfig.editable!==undefined)?$scope.criteriaConfig.editable:true;
-									
+									$scope.active=false;
 									// templates initialisations
 									
 									$scope.initialiseTemplates=function(){
@@ -233,10 +233,15 @@ angular
 										if ($scope.comparatorValue !== undefined
 												|| ($scope.comparatorStartValue !== undefined && $scope.comparatorEndValue !== undefined)) {
 											if ($scope.operator==="between") {
-												comparatorValue= {
-														start : $scope.comparatorStartValue,
-														end : $scope.comparatorEndValue
-													}
+												if($scope.comparatorStartValue === undefined || $scope.comparatorEndValue === undefined){
+													comparatorValue=undefined;
+												}else {
+													comparatorValue= {
+															start : $scope.comparatorStartValue,
+															end : $scope.comparatorEndValue
+														}
+												}
+												
 											}else if($scope.operator==="equals") {
 												$scope.computeButtonLabel('(='+comparatorValue+')');
 											}else if ($scope.operator==="lessthan") {
@@ -244,16 +249,17 @@ angular
 											}else if ($scope.operator==="greaterthan") {
 												$scope.computeButtonLabel('(>'+comparatorValue+')');
 											}
+											if($scope.criteriaConfig.onFilter!==undefined){
+												$scope.criteriaConfig.onFilter(filter);
+											}
+											$scope.criteriaConfig.currentFilter=filter;
+											$scope.onFilterTriggered(filter);
 										} else {
 											filter.value=undefined;
 											$scope.resetButtonLabel();
 										}
 										$scope.closeFilterContent();
-										if($scope.criteriaConfig.onFilter!==undefined){
-											$scope.criteriaConfig.onFilter(filter);
-										}
-										$scope.criteriaConfig.currentFilter=filter;
-										$scope.onFilterTriggered(filter);
+										
 									};
 									$scope.onFilterBoolean = function() {
 										var filter = {
@@ -326,6 +332,7 @@ angular
 														});
 									}
 									$scope.openFilterContent = function() {
+										$scope.active=true;
 										angular
 												.element(
 														$scope.filterContentDiv)
@@ -340,6 +347,7 @@ angular
 												$scope.externalClickListener);
 									};
 									$scope.closeFilterContent = function() {
+										$scope.active=false;
 										angular
 												.element(
 														$scope.filterContentDiv)
@@ -362,7 +370,7 @@ angular
 
 										// We grab the checkboxLayer
 										$scope.filterContentDiv = element
-												.children()[1];
+												.children()[2];
 
 										
 										// We grab the button
@@ -484,38 +492,37 @@ angular
 											+ '<div data-ng-criteria data-criteria-config="criterion" data-on-filter-triggered="filterTriggered(criterion.currentFilter)" data-on-remove-criteria="removeFilter(criterion.name)"></div>'
 										+ '</li>'
 										+ '<li class="divider-vertical"></li>'
-										+ '<li>'
-											+ '<span id="manage-filter-btn">'
-												+ '<button type="button" class="btn btn-default" ng-click="toggleMoreContent( $event )">Manage filters <span class="caret"></span></button>'
-												+ '<div class="more-content hide col-md-2 col-xs-3">'
-												+ '<div class="input-group">'
-												+ '<input type="search" data-ng-model="managedFilterSearch" class="form-control" placeholder="Filter text" name="srch-term" id="srch-term">'
-												+ '<span class="input-group-addon"><i class="fa fa-search"></i></span>'
-												+ '</div>'
-												+ '<br>'
-												+ '<ul class="list-group">'
-														+ '<li class="list-group-item" ng-repeat="criterion in managedCriterions | filter : managedFilterSearch">'
-															+ '<div class="checkbox">'
-																+ '<label>'
-																+ '<input type="checkbox" data-ng-model="criterion.displayed" data-ng-change="showHideCriterion(criterion)"> {{criterion.name}}'
-																+ '</label>'
-															+ '</div>'
-														+ '</li>'
-													+ '</ul>'
-												+ '</div>'
-											+ '</span>'
-										+ '</li>'
-										+ '<li>'
+										+ '<li class="pull-right">'
+										+ '<span id="manage-filter-btn">'
+											+ '<button type="button" class="btn btn-default" ng-click="toggleMoreContent( $event )"> <i class="fa fa-filter"></i> Filters <span class="caret"></span></button>'
+											+ '<div class="more-content hide col-md-2 col-xs-3">'
 											+ '<div class="checkbox">'
 												+ '<label>'
 													+ '<input type="checkbox" data-ng-model="autoSearchEnable"> auto filter'
 												+ '</label>'
 											   + '</div>'
+											+ '<div class="input-group">'
+													+ '<input type="search" data-ng-model="managedFilterSearch" class="form-control" placeholder="Filter text" name="srch-term" id="srch-term">'
+													+ '<span class="input-group-addon"><i class="fa fa-search"></i></span>'
+												+ '</div>'
+												+ '<br>'
+												+ '<ul class="list-group">'
+													+ '<li class="list-group-item" ng-repeat="criterion in managedCriterions | filter : managedFilterSearch">'
+														+ '<div class="checkbox">'
+															+ '<label>'
+																+ '<input type="checkbox" data-ng-model="criterion.displayed" data-ng-change="showHideCriterion(criterion)"> {{criterion.name}}'
+															+ '</label>'
+														+ '</div>'
+													+ '</li>'
+												+ '</ul>'
+											+ '</div>'
+										+ '</span>'
 										+ '</li>'
-										+ '<li>'
+										+ '<li class="pull-right">'
 											+ '<button type="button" class="btn btn-primary" data-ng-click="doFilter(filters)"><i class="fa fa-search"></i></button>'
 										+ '</li>'
 									+ '</ul>'
+									
 								+ '</div>',
 								link : function($scope, element, attrs) {
 									$scope.criterions=$scope.criteriaBarConfig.criterions;

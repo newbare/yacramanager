@@ -407,8 +407,8 @@ public abstract class Filter {
 					FilterComparatorValue comparatorValue=new FilterComparatorValue();
 					switch (filterType) {
 						case COMPARATOR_BETWEEN:
-							comparatorValue.setStartValue(jsonNode.get("value").get("start").decimalValue());
-							comparatorValue.setEndValue(jsonNode.get("value").get("end").decimalValue());
+							comparatorValue.setStartValue(BigDecimal.valueOf(Long.valueOf(jsonNode.get("value").get("start").asText())));
+							comparatorValue.setEndValue(BigDecimal.valueOf(Long.valueOf(jsonNode.get("value").get("end").asText())));
 							break;
 						default:
 							comparatorValue.setValue(BigDecimal.valueOf(Double.valueOf(jsonNode.get("value").asText())));

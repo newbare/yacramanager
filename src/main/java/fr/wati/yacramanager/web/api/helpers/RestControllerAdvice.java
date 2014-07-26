@@ -25,6 +25,7 @@ import fr.wati.yacramanager.web.api.ClientController;
 import fr.wati.yacramanager.web.api.CompanyController;
 import fr.wati.yacramanager.web.api.CustomMapEditor;
 import fr.wati.yacramanager.web.api.NoteDeFraisController;
+import fr.wati.yacramanager.web.api.ProjectController;
 import fr.wati.yacramanager.web.api.RestServiceException;
 import fr.wati.yacramanager.web.api.UserRestController;
 
@@ -34,7 +35,7 @@ import fr.wati.yacramanager.web.api.UserRestController;
  */
 @ControllerAdvice(assignableTypes = { NoteDeFraisController.class,
 		AbsenceController.class, CompanyController.class,
-		ClientController.class,UserRestController.class })
+		ClientController.class,UserRestController.class,ProjectController.class })
 public class RestControllerAdvice {
 
 	@Autowired

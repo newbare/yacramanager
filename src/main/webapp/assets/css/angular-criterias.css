@@ -4,22 +4,65 @@
 	background-color: #f5f5f5;
 }
 /* the criteria button */
-.ng-criteria .criteria-btn {
-	
+.ng-criterion {
+	background-color: none;
+	border: 1px solid;
+	border-color: transparent;
+	padding-top: 5px;
+	padding-bottom: 6px;
+	padding-left: 2px;
+	padding-right: 2px;
+	text-align: center;
+	cursor: pointer;
+	border-radius: 4px;
 }
+
+.ng-criterion.disabled,.ng-criterion.disabled .criterion-btn {
+	cursor: not-allowed;
+}
+
+.ng-criterion:hover,.ng-criterion.active,.ng-criterion.noteditable {
+	border: 1px solid #ccc;
+	background-color: white;
+}
+
+.ng-criterion.active {
+	background-color: #f9f9f9;
+	border-bottom: none;
+}
+
+.ng-criterion .criterion-btn {
+	border: none;
+	padding: 6px 12px;
+	background-image: none;
+	background-color: transparent;
+}
+
+.ng-criterion .criterion-btn:FOCUS {
+	outline: none;
+}
+
+.ng-criterion .criterion-remove {
+	color: #bbb;
+}
+
+.ng-criterion .criterion-remove:HOVER {
+	color: red;
+}
+
 /* ! */
-.ng-criteria .inlineBlock {
+.ng-criterion .inlineBlock {
 	display: inline-block;
 }
 
 .ng-criteria-bar .divider-vertical {
 	/* height: 90%; */
-	margin: 0 ;
+	margin: 0;
 	border-right: 1px solid black;
 	border-left: 1px solid #f2f2f2;
 }
 
-.ng-criteria .filter-content,.ng-criteria-bar .more-content {
+.ng-criterion .filter-content,.ng-criteria-bar .more-content {
 	position: absolute;
 	z-index: 999;
 	border: 1px solid rgba(0, 0, 0, 0.15);
@@ -30,24 +73,18 @@
 	margin-right: 30px;
 	padding: 8px;
 	background-color: white;
+	text-align: left;
 }
 
-.ng-criteria ul>li,.ng-criteria-bar ul>li {
+.ng-criterion ul>li,.ng-criteria-bar ul>li {
 	padding-top: 0px !important;
 	padding-bottom: 0px !important;
 	cursor: pointer;
-	/* border: 0px !important; */
 }
 
-.ng-criteria ul>li:HOVER
+.ng-criterion ul>li:HOVER
 .ng-criteria-bar ul>li:HOVER {
 	color: #555;
 	text-decoration: none;
 	background-color: #f5f5f5;
-}
-
-.ng-criteria .btn {
-	/* 	padding-top: 5px !important; */
-	/* 	padding-bottom: 5px !important; */
-	
 }

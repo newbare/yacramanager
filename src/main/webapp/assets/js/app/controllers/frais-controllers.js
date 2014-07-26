@@ -9,6 +9,7 @@ function FraisController($scope, $rootScope, NoteCRUDREST, alertService,
 	$scope.hasDatas = false;
 	$scope.selectedNotes = [];
 	$scope.ids = [];
+	$scope.selectedFile=undefined;
 	var allNote = [];
 	
 	
@@ -124,7 +125,7 @@ function FraisController($scope, $rootScope, NoteCRUDREST, alertService,
 		note.amount = 0;
 		note.attachements
 		$scope.edition = false;
-		$scope.selectedFile=[];
+		$scope.selectedFile=undefined;
 	};
 
 	function clone(obj) {
@@ -138,8 +139,8 @@ function FraisController($scope, $rootScope, NoteCRUDREST, alertService,
 		return copy;
 	}
 
-	$scope.onFileSelect=function(files){
-		$scope.selectedFile.push(files[0]);
+	$scope.onFileSelect=function(file){
+		$scope.selectedFile=file;
 	}
 	
 	$scope.postNote=function(note,hideFn){
@@ -158,7 +159,7 @@ function FraisController($scope, $rootScope, NoteCRUDREST, alertService,
 	};
 	
 	$scope.postAttachement = function(hideFn) {
-		if($scope.selectedFile.length>0){
+		if($scope.selectedFile){
 			$scope.upload = $upload.upload({
 				url : _contextPath+'/app/api/attachements', // upload.php script, node.js route, or
 											// servlet url

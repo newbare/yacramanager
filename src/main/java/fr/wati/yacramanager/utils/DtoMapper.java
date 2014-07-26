@@ -11,6 +11,7 @@ import fr.wati.yacramanager.beans.Client;
 import fr.wati.yacramanager.beans.Company;
 import fr.wati.yacramanager.beans.Employe;
 import fr.wati.yacramanager.beans.NoteDeFrais;
+import fr.wati.yacramanager.beans.Project;
 import fr.wati.yacramanager.beans.Users;
 import fr.wati.yacramanager.dao.repository.EmployeDto;
 import fr.wati.yacramanager.dao.repository.UserDto;
@@ -18,6 +19,7 @@ import fr.wati.yacramanager.web.dto.AbsenceDTO;
 import fr.wati.yacramanager.web.dto.ClientDTO;
 import fr.wati.yacramanager.web.dto.CompanyDTO;
 import fr.wati.yacramanager.web.dto.NoteDeFraisDTO;
+import fr.wati.yacramanager.web.dto.ProjectDTO;
 import fr.wati.yacramanager.web.dto.UserInfoDTO.ManagedEmployeInfoDTO;
 
 public class DtoMapper {
@@ -49,6 +51,23 @@ public class DtoMapper {
 		List<ClientDTO> dtos = new ArrayList<ClientDTO>();
 		for (Client client : clients) {
 			dtos.add(map(client));
+		}
+		return dtos;
+	}
+	
+	public static ProjectDTO map(Project project) {
+		ProjectDTO dto = new ProjectDTO();
+		dto.setId(project.getId());
+		dto.setName(project.getName());
+		dto.setCreatedDate(project.getCreatedDate());
+		dto.setDescription(project.getDescription());
+		return dto;
+	}
+
+	public static List<ProjectDTO> mapProjects(Page<Project> projects) {
+		List<ProjectDTO> dtos = new ArrayList<>();
+		for (Project project : projects) {
+			dtos.add(map(project));
 		}
 		return dtos;
 	}

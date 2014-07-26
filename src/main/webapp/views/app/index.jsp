@@ -86,7 +86,7 @@
 		</div>
 	</div>
 	<!-- End Fixed navbar -->
-	<div data-ng-class="containerClass()" data-ng-cloak>
+	<div data-ng-class="containerClass()" class="" data-ng-cloak>
 				<div class="page-header" >
 					<h4>
 						{{page.title}} <i class="fa fa-angle-double-right"
@@ -116,6 +116,8 @@
 	<%-- <script src="${contextPath}/assets/bower_components/angular/angular.js"></script> --%>
 	<script
 		src="${contextPath}/assets/bower_components/ng-file-upload/angular-file-upload.js"></script>
+	<script 
+		src="${contextPath}/assets/js/bootstrap.file-input.js"></script>
 	<script
 		src="${contextPath}/assets/bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
 	<script
@@ -126,8 +128,6 @@
 		src="${contextPath}/assets/bower_components/angular-ui-calendar/src/calendar.js"></script>
 	<script
 		src="${contextPath}/assets/bower_components/angular-route/angular-route.min.js"></script>
-	<script 
-		src="${contextPath}/assets/bower_components/bootstrap-fileinput/js/fileinput.min.js"></script>
 	<script
 		src="${contextPath}/assets/bower_components/angular-strap/dist/angular-strap.min.js"></script>
 	<script
