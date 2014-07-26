@@ -1,9 +1,12 @@
 package fr.wati.yacramanager.dao.specifications;
 
+import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.persistence.metamodel.ListAttribute;
@@ -11,9 +14,38 @@ import javax.persistence.metamodel.SingularAttribute;
 
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.domain.Specifications;
+import org.springframework.util.ReflectionUtils;
+import org.springframework.util.ReflectionUtils.FieldCallback;
 
 public class CommonSpecifications {
 
+	
+	public static <T> Specification<T> globalSearch(final String searchTerm,final Class<T> entityClass,final Class<?> entityMetaModelClass){
+		return new Specification<T>() {
+			public Predicate toPredicate(Root<T> root,
+					CriteriaQuery<?> query, CriteriaBuilder builder) {
+				final List<Field> singularAttributesFields=new ArrayList<>();
+				ReflectionUtils.doWithFields(entityMetaModelClass,new FieldCallback() {
+					@Override
+					public void doWith(Field field) throws IllegalArgumentException,
+							IllegalAccessException {
+						if(SingularAttribute.class.equals(field.getType()) && String.class.equals(((SingularAttribute)field.get(null)).getJavaType())){
+							singularAttributesFields.add(field);
+						}
+					}
+				});
+				List<Predicate> predicates=new ArrayList<>();
+				for (Field field : singularAttributesFields) {
+					try {
+						predicates.add(builder.like(builder.lower((Expression<String>) root.get((SingularAttribute<T, ?>)field.get(null))), "%" + searchTerm.toLowerCase() + "%"));
+					} catch (IllegalArgumentException | IllegalAccessException e) {
+						e.printStackTrace();
+					}
+				}
+				return builder.or(predicates.toArray(new Predicate[predicates.size()]));
+			}
+		};
+	}
 	
 	public static <T> Specification<T> likeIgnoreCase(final String searchTerm,final SingularAttribute<T, String> attribut) {
 		return new Specification<T>() {

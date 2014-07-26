@@ -142,6 +142,7 @@ public class UserServiceImpl implements UserService{
 				}
 				break;
 			case DATE:
+			case DATE_RANGE:
 				FilterDate filterDate=(FilterDate) filter;
 				if("dateNaissance".equals(filter.getField())){
 					return EmployeSpecifications.birthDayBetween(filterDate.getValue().getStart(), filterDate.getValue().getEnd());

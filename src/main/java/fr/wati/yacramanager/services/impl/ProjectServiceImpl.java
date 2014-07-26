@@ -18,7 +18,9 @@ import fr.wati.yacramanager.beans.Task;
 import fr.wati.yacramanager.dao.repository.ClientRepository;
 import fr.wati.yacramanager.dao.repository.ProjectRepository;
 import fr.wati.yacramanager.dao.specifications.CommonSpecifications;
+import fr.wati.yacramanager.dao.specifications.ProjectSpecification;
 import fr.wati.yacramanager.services.ClientService;
+import fr.wati.yacramanager.services.CompanyService;
 import fr.wati.yacramanager.services.ProjectService;
 import fr.wati.yacramanager.services.TaskService;
 import fr.wati.yacramanager.utils.Filter;
@@ -27,6 +29,7 @@ import fr.wati.yacramanager.utils.Filter.FilterArrayValue;
 import fr.wati.yacramanager.utils.Filter.FilterDate;
 import fr.wati.yacramanager.utils.Filter.FilterText;
 import fr.wati.yacramanager.utils.Filter.FilterType;
+import fr.wati.yacramanager.web.dto.ProjectDTO;
 
 @Service
 @Transactional
@@ -38,6 +41,9 @@ public class ProjectServiceImpl implements ProjectService{
 	private ClientRepository clientRepository;
 	@Autowired
 	private ClientService  clientService;
+	
+	@Autowired
+	private CompanyService companyService;
 	
 	@Autowired
 	private TaskService taskService;
@@ -131,6 +137,9 @@ public class ProjectServiceImpl implements ProjectService{
 			switch (filterType) {
 			case ARRAY:
 				FilterArray filterArray=(FilterArray) filter;
+				if("company".equals(filter.getField())){
+					return ProjectSpecification.findForCompany(Long.valueOf(filterArray.getValue().get(0).getName()));
+				}
 				if("client".equals(filter.getField())){
 					List<Client> clients=new ArrayList<>();
 					for(FilterArrayValue filterArrayValue: filterArray.getValue()){
@@ -149,9 +158,14 @@ public class ProjectServiceImpl implements ProjectService{
 				}
 				break;
 			case DATE:
+			case DATE_RANGE:
 				FilterDate filterDate=(FilterDate) filter;
 				if("createdDate".equals(filter.getField())){
-					return CommonSpecifications.between(filterDate.getValue().getStart(), filterDate.getValue().getEnd(), Project_.createdDate);
+					if(filterDate.isRangedDate()){
+						return CommonSpecifications.between(filterDate.getValue().getStart(), filterDate.getValue().getEnd(), Project_.createdDate);
+					}else {
+						return CommonSpecifications.equals(filterDate.getValue().getDate(), Project_.createdDate);
+					}
 				}
 				break;
 			default:
@@ -159,6 +173,27 @@ public class ProjectServiceImpl implements ProjectService{
 			}
 		}
 		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see fr.wati.yacramanager.services.ProjectService#toProjectDTO(fr.wati.yacramanager.beans.Project)
+	 */
+	@Override
+	public ProjectDTO toProjectDTO(Project project) {
+		ProjectDTO dto=new ProjectDTO();
+		dto.setId(project.getId());
+		dto.setCreatedDate(project.getCreatedDate());
+		dto.setName(project.getName());
+		dto.setDescription(project.getDescription());
+		return dto;
+	}
+
+	/* (non-Javadoc)
+	 * @see fr.wati.yacramanager.services.ProjectService#findByClientAndId(fr.wati.yacramanager.beans.Client, java.lang.Long)
+	 */
+	@Override
+	public Project findByClientAndId(Client client, Long id) {
+		return projectRepository.findByClientAndId(client, id);
 	}
 
 }

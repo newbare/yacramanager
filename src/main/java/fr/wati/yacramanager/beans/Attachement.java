@@ -28,6 +28,7 @@ public class Attachement implements Serializable {
 	private Long id;
 	private Date date;
 	private String name;
+	private String contentType;
 	@Lob
 	@Basic(fetch=FetchType.LAZY)
 	private byte[] content;
@@ -92,6 +93,18 @@ public class Attachement implements Serializable {
 	 */
 	public void setNoteDeFrais(NoteDeFrais noteDeFrais) {
 		this.noteDeFrais = noteDeFrais;
+	}
+	/**
+	 * @param contentType
+	 */
+	public void setContentType(String contentType) {
+		this.contentType=contentType;
+	}
+	/**
+	 * @return the contentType
+	 */
+	public String getContentType() {
+		return contentType;
 	}
 	
 	

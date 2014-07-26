@@ -36,7 +36,7 @@ public class RestCrudControllerAdapter<DTO> implements RestCrudController<DTO> {
 	 * @see fr.wati.yacramanager.web.rest.RestCrudController#getAll(java.lang.Integer, java.lang.Integer, java.lang.String)
 	 */
 	@Override
-	public ResponseWrapper<List<DTO>> getAll(Integer page,Integer size,Map<String, String> sort,String filter) {
+	public ResponseWrapper<List<DTO>> getAll(Integer page,Integer size,Map<String, String> sort,String filter) throws RestServiceException{
 		return null;
 	}
 	

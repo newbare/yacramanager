@@ -7,6 +7,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import fr.wati.yacramanager.beans.Absence_;
 import fr.wati.yacramanager.beans.Client;
 import fr.wati.yacramanager.beans.Company;
 import fr.wati.yacramanager.beans.Company_;
@@ -92,7 +93,7 @@ public class CompanyServiceImpl implements CompanyService {
 		 * client we create a default one
 		 */
 		Client defaultClient = new Client();
-		defaultClient.setName(company.getName());
+		defaultClient.setName("Internal");
 		clientService.createClient(saveCompany.getId(), defaultClient);
 		return saveCompany;
 	}
@@ -133,12 +134,21 @@ public class CompanyServiceImpl implements CompanyService {
 				}
 				break;
 			case DATE:
+			case DATE_RANGE:
 				FilterDate filterDate=(FilterDate) filter;
 				if("registeredDate".equals(filter.getField())){
-					return CommonSpecifications.between(filterDate.getValue().getStart(), filterDate.getValue().getEnd(), Company_.registeredDate);
+					if(filterDate.isRangedDate()){
+						return CommonSpecifications.between(filterDate.getValue().getStart(), filterDate.getValue().getEnd(), Company_.registeredDate);
+					}else {
+						return CommonSpecifications.equals(filterDate.getValue().getDate(), Company_.registeredDate);
+					}
 				}
 				if("licenseEndDate".equals(filter.getField())){
-					return CommonSpecifications.between(filterDate.getValue().getStart(), filterDate.getValue().getEnd(), Company_.licenseEndDate);
+					if(filterDate.isRangedDate()){
+						return CommonSpecifications.between(filterDate.getValue().getStart(), filterDate.getValue().getEnd(), Company_.licenseEndDate);
+					}else {
+						return CommonSpecifications.equals(filterDate.getValue().getDate(), Company_.licenseEndDate);
+					}
 				}
 				break;
 			default:

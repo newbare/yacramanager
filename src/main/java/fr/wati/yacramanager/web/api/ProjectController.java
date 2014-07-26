@@ -24,43 +24,46 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import fr.wati.yacramanager.beans.Client;
-import fr.wati.yacramanager.beans.Company;
+import fr.wati.yacramanager.beans.Project;
 import fr.wati.yacramanager.services.ClientService;
 import fr.wati.yacramanager.services.CompanyService;
+import fr.wati.yacramanager.services.ProjectService;
 import fr.wati.yacramanager.utils.DtoMapper;
 import fr.wati.yacramanager.utils.Filter.FilterBuilder;
 import fr.wati.yacramanager.utils.SpecificationBuilder;
-import fr.wati.yacramanager.web.dto.ClientDTO;
+import fr.wati.yacramanager.web.dto.ProjectDTO;
 import fr.wati.yacramanager.web.dto.ResponseWrapper;
 
 @RestController
-@RequestMapping("/app/api/{companyId}/client")
-public class ClientController {
+@RequestMapping("/app/api/{companyId}/project")
+public class ProjectController {
 
-	private static final Log LOG = LogFactory.getLog(ClientController.class);
+	private static final Log LOG = LogFactory.getLog(ProjectController.class);
 
 	@Autowired
-	private ClientService clientService;
+	private ProjectService projectService;
 	@Autowired
 	private CompanyService companyService;
+	
+	@Autowired
+	private ClientService clientService;
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public ClientDTO read(@PathVariable("companyId") Long companyId,
+	public ProjectDTO read(@PathVariable("companyId") Long companyId,@PathVariable("clientId") Long clientId,
 			@PathVariable("id") Long id) {
-		Company company = companyService.findOne(companyId);
-		return clientService.toClientDTO(clientService.findByCompanyAndId(
-				company, id));
+		Client client = clientService.findOne(clientId);
+		return projectService.toProjectDTO(projectService.findByClientAndId(client, id));
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<String> update(
-			@PathVariable("companyId") Long companyId,
-			@PathVariable("id") Long id, ClientDTO dto) {
-		Company company = companyService.findOne(companyId);
-		Client client = clientService.findByCompanyAndId(company, id);
-		if (client != null) {
-			dto.toClient(client);
-			clientService.save(client);
+			@PathVariable("companyId") Long companyId,@PathVariable("clientId") Long clientId,
+			@PathVariable("id") Long id, ProjectDTO dto) {
+		Client client = clientService.findOne(clientId);
+		Project project = projectService.findByClientAndId(client, id);
+		if (project != null) {
+			dto.toProject(project);
+			projectService.save(project);
 			return new ResponseEntity<String>(HttpStatus.OK);
 		}
 		return new ResponseEntity<String>("Client with id: " + id
@@ -70,7 +73,7 @@ public class ClientController {
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(method = RequestMethod.GET)
-	public ResponseWrapper<List<ClientDTO>> getAll(
+	public ResponseWrapper<List<ProjectDTO>> getAll(
 			@PathVariable("companyId") Long companyId,
 			@RequestParam(required = false) Integer page,
 			@RequestParam(required = false) Integer size,
@@ -92,11 +95,11 @@ public class ClientController {
 				throw new RestServiceException(e);
 			}
 		}
-		Specifications<Client> specifications = null;
+		Specifications<Project> specifications = null;
 		if (!filters.isEmpty()) {
 			LOG.debug("Building Absence specification");
 			specifications = Specifications.where(SpecificationBuilder
-					.buildSpecification(filters, clientService));
+					.buildSpecification(filters, projectService));
 		}
 		PageRequest pageable = null;
 		if (sort != null) {
@@ -116,10 +119,9 @@ public class ClientController {
 			pageable = new PageRequest(page, size);
 		}
 
-		Page<Client> findBySpecificationAndOrder = clientService.findAll(
-				specifications, pageable);
-		ResponseWrapper<List<ClientDTO>> responseWrapper = new ResponseWrapper<>(
-				DtoMapper.mapClients(findBySpecificationAndOrder),
+		Page<Project> findBySpecificationAndOrder = projectService.findAll(specifications, pageable);
+		ResponseWrapper<List<ProjectDTO>> responseWrapper = new ResponseWrapper<>(
+				DtoMapper.mapProjects(findBySpecificationAndOrder),
 				findBySpecificationAndOrder.getTotalElements());
 		long startIndex = findBySpecificationAndOrder.getNumber() * size + 1;
 		long endIndex = startIndex
@@ -131,19 +133,18 @@ public class ClientController {
 
 	@RequestMapping(value = "/", method = RequestMethod.POST)
 	public ResponseEntity<String> create(
-			@PathVariable("companyId") Long companyId, ClientDTO dto) {
-		Company company = companyService.findOne(companyId);
-		clientService.createClient(company.getId(), dto.toClient());
+			@PathVariable("companyId") Long companyId,@PathVariable("clientId") Long clientId, ProjectDTO dto) {
+		projectService.createProject(clientId, dto.toProject(new Project()));
 		return new ResponseEntity<String>(HttpStatus.CREATED);
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-	public void delete(@PathVariable("companyId") Long companyId,
+	public void delete(@PathVariable("companyId") Long companyId,@PathVariable("clientId") Long clientId,
 			@PathVariable("id") Long id) {
-		Company company = companyService.findOne(companyId);
-		Client client = clientService.findByCompanyAndId(company, id);
-		if (client != null) {
-			clientService.delete(client);
+		Client client = clientService.findOne(clientId);
+		Project project = projectService.findByClientAndId(client, id);
+		if (project != null) {
+			projectService.delete(project);
 		}
 	}
 

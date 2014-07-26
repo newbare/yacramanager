@@ -42,17 +42,6 @@ public class CompanySpecifications {
 		};
 	}
 
-	public static Specification<Company> licenseEndDateBetween(
-			final Date startRangeDate, final Date endRangeDate) {
-		return new Specification<Company>() {
-			public Predicate toPredicate(Root<Company> root,
-					CriteriaQuery<?> query, CriteriaBuilder builder) {
-				return builder.between(root.get(Company_.licenseEndDate),
-						startRangeDate, endRangeDate);
-			}
-		};
-	}
-
 	public static Specification<Company> employeMemberOfCompany(final Employe employe) {
 		return new Specification<Company>() {
 			public Predicate toPredicate(Root<Company> root,

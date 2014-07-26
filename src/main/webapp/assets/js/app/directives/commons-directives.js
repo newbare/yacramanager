@@ -12,14 +12,28 @@ App.directive('webSocket', [ '$timeout', 'WebSocketService', 'notifService',
 		} ]);
 
 
-App.directive('fileInput',	function() {
+App.directive('fileInput',['$compile',function($compile) {
                      			return {
-                     				restrict : 'AEC',
-                     				link : function(scope, elem, attrs, ctrl) {
-                     					elem.fileinput();
+                     				restrict : 'AE',
+                     				scope: true,
+                     				link : function($scope, elem, attrs) {
+                     					elem.bootstrapFileInput();
+                     					elem.bind("change", function (changeEvent) {
+                     						$scope.$apply(function () {
+                     							$scope.onFileSelect(changeEvent.target.files[0]);
+                     		                });
+                     		            });
                      				}
-                     			};
-                     		});
+                     			}
+                     		}]);
+App.directive('colResizable',function($compile) {
+		return {
+			restrict : 'A',
+			link : function($scope, elem, attrs) {
+				elem.colResizable();
+			}
+		}
+	});
 
 App.directive('hasRole', ['notifService',
                      		function(notifService) {

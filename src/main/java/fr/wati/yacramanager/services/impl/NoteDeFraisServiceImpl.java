@@ -219,14 +219,17 @@ public class NoteDeFraisServiceImpl implements NoteDeFraisService {
 			case BOOLEAN:
 				
 			case DATE:
+			case DATE_RANGE:
 				FilterDate filterDate=(FilterDate) filter;
 				if("date".equals(filter.getField())){
-					return CommonSpecifications.between(filterDate.getValue().getStart(), filterDate.getValue().getEnd(), NoteDeFrais_.date);
+					if(filterDate.isRangedDate()){
+						return CommonSpecifications.between(filterDate.getValue().getStart(), filterDate.getValue().getEnd(), NoteDeFrais_.date);
+					}else {
+						return CommonSpecifications.equals(filterDate.getValue().getDate(), NoteDeFrais_.date);
+					}
 				}
 				break;
 			case COMPARATOR_BETWEEN:
-				
-				break;
 			case COMPARATOR_EQUALS:
 			case COMPARATOR_GREATERTHAN:
 			case COMPARATOR_LESSTHAN:
@@ -239,6 +242,8 @@ public class NoteDeFraisServiceImpl implements NoteDeFraisService {
 						return CommonSpecifications.greaterThan(filterComparator.getValue().getValue(), NoteDeFrais_.amount);
 					case LESSTHAN:
 						return CommonSpecifications.lessThan(filterComparator.getValue().getValue(), NoteDeFrais_.amount);
+					case BETWEEN:
+						return CommonSpecifications.between(filterComparator.getValue().getStartValue(), filterComparator.getValue().getEndValue(), NoteDeFrais_.amount);
 					default:
 						break;
 					}
