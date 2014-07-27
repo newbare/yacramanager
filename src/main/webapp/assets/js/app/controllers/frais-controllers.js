@@ -121,7 +121,7 @@ function FraisController($scope, $rootScope, NoteCRUDREST, alertService,
 		$scope.selectedActionLabel = $scope.initialActionLabel;
 		note.id = undefined;
 		note.date = today;
-		note.description = '';
+		note.description = undefined;
 		note.amount = 0;
 		note.attachements
 		$scope.edition = false;

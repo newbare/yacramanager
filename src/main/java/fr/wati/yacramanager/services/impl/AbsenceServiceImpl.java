@@ -180,9 +180,14 @@ public class AbsenceServiceImpl implements AbsenceService {
 				}
 				break;
 			case DATE:
+			case DATE_RANGE:
 				FilterDate filterDate=(FilterDate) filter;
 				if("date".equals(filter.getField())){
-					return CommonSpecifications.between(filterDate.getValue().getStart(), filterDate.getValue().getEnd(), Absence_.date);
+					if(filterDate.isRangedDate()){
+						return CommonSpecifications.between(filterDate.getValue().getStart(), filterDate.getValue().getEnd(), Absence_.date);
+					}else {
+						return CommonSpecifications.equals(filterDate.getValue().getDate(), Absence_.date);
+					}
 				}
 				break;
 			default:

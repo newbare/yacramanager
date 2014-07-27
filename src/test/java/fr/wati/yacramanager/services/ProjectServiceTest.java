@@ -18,9 +18,11 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import fr.wati.yacramanager.beans.Client;
 import fr.wati.yacramanager.beans.Company;
+import fr.wati.yacramanager.beans.Company_;
 import fr.wati.yacramanager.beans.Project;
 import fr.wati.yacramanager.config.TestServicesConfig;
 import fr.wati.yacramanager.dao.repository.ProjectRepository;
+import fr.wati.yacramanager.dao.specifications.CommonSpecifications;
 import fr.wati.yacramanager.dao.specifications.ProjectSpecification;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -77,17 +79,23 @@ public class ProjectServiceTest extends
 		notNull(createClient.getCompany());
 		notEmpty(saveCompany.getClients());
 		Pageable pageable=new PageRequest(0,10);
-		
-		
 		Company company2=new Company();
 		company2.setName("Company2");
 		Company saveCompany2 = companyService.save(company2);
 		Client client2=new Client();
 		client2.setName("Client2");
 		clientService.createClient(saveCompany2.getId(), client2);
-		
 		Page<Project> page = projectRepository.findAll(Specifications.where(ProjectSpecification.findForCompany(saveCompany.getId())), pageable);
 		Assert.assertTrue(page.getTotalElements()==1);
-		
+	}
+	
+	@Test
+	public void globalSearch(){
+		//create company
+		Company company=new Company();
+		company.setName("Company1");
+		Company saveCompany = companyService.save(company);
+		Page<Company> page = companyService.findAll(CommonSpecifications.globalSearch("Com", Company.class,Company_.class), new PageRequest(0,10));
+		Assert.assertTrue(page.getTotalElements()==1);
 	}
 }

@@ -84,6 +84,7 @@ public abstract class Filter {
 
 	public static class FilterDateValue {
 
+		private Date date;;
 		private Date start;
 		private Date end;
 
@@ -97,6 +98,11 @@ public abstract class Filter {
 			super();
 			this.start = start;
 			this.end = end;
+		}
+		
+		public FilterDateValue(Date date) {
+			super();
+			this.date = date;
 		}
 
 		/**
@@ -127,6 +133,20 @@ public abstract class Filter {
 		 */
 		public void setEnd(Date end) {
 			this.end = end;
+		}
+
+		/**
+		 * @return the date
+		 */
+		public Date getDate() {
+			return date;
+		}
+
+		/**
+		 * @param date the date to set
+		 */
+		public void setDate(Date date) {
+			this.date = date;
 		}
 
 	}
@@ -199,7 +219,7 @@ public abstract class Filter {
 	}
 	
 	public static enum FilterType {
-		ARRAY, TEXT, DATE, BOOLEAN,COMPARATOR_EQUALS,COMPARATOR_BETWEEN,COMPARATOR_LESSTHAN,COMPARATOR_GREATERTHAN;
+		ARRAY, TEXT, DATE,DATE_RANGE, BOOLEAN,COMPARATOR_EQUALS,COMPARATOR_BETWEEN,COMPARATOR_LESSTHAN,COMPARATOR_GREATERTHAN;
 
 		private FilterType() {
 		}
@@ -208,7 +228,9 @@ public abstract class Filter {
 	}
 	
 	public static class FilterDate extends Filter{
+		
 		private FilterDateValue value;
+		private boolean rangedDate;
 
 		/**
 		 * @return the value
@@ -222,6 +244,20 @@ public abstract class Filter {
 		 */
 		public void setValue(FilterDateValue value) {
 			this.value = value;
+		}
+
+		/**
+		 * @return the rangedDate
+		 */
+		public boolean isRangedDate() {
+			return rangedDate;
+		}
+
+		/**
+		 * @param rangedDate the rangedDate to set
+		 */
+		public void setRangedDate(boolean rangedDate) {
+			this.rangedDate = rangedDate;
 		}
 		
 	}
@@ -350,6 +386,7 @@ public abstract class Filter {
 		@SuppressWarnings({ "unchecked", "rawtypes" })
 		public static List parse(String json) throws Exception{
 			List filters=new ArrayList<>();
+			ISO8601DateFormat iso8601DateFormat=new ISO8601DateFormat();
 			JsonNode filterNode = objectMapper.readTree(json);
 			ArrayNode filtersNode=(ArrayNode) filterNode.get("filter");
 			Iterator<JsonNode> iterator = filtersNode.iterator();
@@ -381,12 +418,20 @@ public abstract class Filter {
 					filterBoolean.setValue(jsonNode.get("value").asBoolean());
 					filters.add(filterBoolean);
 					break;
+				case DATE_RANGE:
+					FilterDate filterRangeDate=new FilterDate();
+					filterRangeDate.setField(((TextNode)jsonNode.get("field")).asText());
+					filterRangeDate.setType(filterType);
+					FilterDateValue filterRangeDateValue=new FilterDateValue(iso8601DateFormat.parse(jsonNode.get("value").get("start").asText()), iso8601DateFormat.parse(jsonNode.get("value").get("end").asText()));
+					filterRangeDate.setValue(filterRangeDateValue);
+					filterRangeDate.setRangedDate(true);
+					filters.add(filterRangeDate);
+					break;
 				case DATE:
 					FilterDate filterDate=new FilterDate();
 					filterDate.setField(((TextNode)jsonNode.get("field")).asText());
 					filterDate.setType(filterType);
-					ISO8601DateFormat iso8601DateFormat=new ISO8601DateFormat();
-					FilterDateValue filterDateValue=new FilterDateValue(iso8601DateFormat.parse(jsonNode.get("value").get("start").asText()), iso8601DateFormat.parse(jsonNode.get("value").get("end").asText()));
+					FilterDateValue filterDateValue=new FilterDateValue(iso8601DateFormat.parse(jsonNode.get("value").asText()));
 					filterDate.setValue(filterDateValue);
 					filters.add(filterDate);
 					break;

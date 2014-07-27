@@ -158,9 +158,14 @@ public class ProjectServiceImpl implements ProjectService{
 				}
 				break;
 			case DATE:
+			case DATE_RANGE:
 				FilterDate filterDate=(FilterDate) filter;
 				if("createdDate".equals(filter.getField())){
-					return CommonSpecifications.between(filterDate.getValue().getStart(), filterDate.getValue().getEnd(), Project_.createdDate);
+					if(filterDate.isRangedDate()){
+						return CommonSpecifications.between(filterDate.getValue().getStart(), filterDate.getValue().getEnd(), Project_.createdDate);
+					}else {
+						return CommonSpecifications.equals(filterDate.getValue().getDate(), Project_.createdDate);
+					}
 				}
 				break;
 			default:

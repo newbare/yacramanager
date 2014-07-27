@@ -219,9 +219,14 @@ public class NoteDeFraisServiceImpl implements NoteDeFraisService {
 			case BOOLEAN:
 				
 			case DATE:
+			case DATE_RANGE:
 				FilterDate filterDate=(FilterDate) filter;
 				if("date".equals(filter.getField())){
-					return CommonSpecifications.between(filterDate.getValue().getStart(), filterDate.getValue().getEnd(), NoteDeFrais_.date);
+					if(filterDate.isRangedDate()){
+						return CommonSpecifications.between(filterDate.getValue().getStart(), filterDate.getValue().getEnd(), NoteDeFrais_.date);
+					}else {
+						return CommonSpecifications.equals(filterDate.getValue().getDate(), NoteDeFrais_.date);
+					}
 				}
 				break;
 			case COMPARATOR_BETWEEN:

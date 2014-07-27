@@ -150,6 +150,7 @@
 		src="${contextPath}/assets/bower_components/jquery.gritter/js/jquery.gritter.min.js"></script>
 	<script src="${contextPath}/assets/js/sockjs-0.3.4.js"></script>
 	<script src="${contextPath}/assets/js/stomp.js"></script>
+	<script src="${contextPath}/assets/js/colResizable-1.3.min.js"></script>
 	<!-- 	<script src="${contextPath}/assets/js/app/filters/commons-filters.js"></script> -->
 	<script src="${contextPath}/assets/js/app/factories/users-factories.js"></script>
 	<script src="${contextPath}/assets/js/app/factories/companies-factories.js"></script>

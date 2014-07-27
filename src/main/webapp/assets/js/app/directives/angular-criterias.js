@@ -67,6 +67,21 @@ angular
 									$scope.active=false;
 									// templates initialisations
 									
+									$scope.reset=function(){
+										if ($scope.filterType === "TEXT") {
+											$scope.filterValue=undefined;
+										}else if ($scope.filterType === "ARRAY") {
+											
+										}else if ($scope.filterType === "DATE") {
+											$scope.startDate=undefined;
+											$scope.endDate=undefined
+										}else if ($scope.filterType === "BOOLEAN") {
+											
+										}else if ($scope.filterType === "COMPARATOR") {
+											$scope.filterValue=undefined;
+										}
+									}
+									
 									$scope.initialiseTemplates=function(){
 										// compute content depending on the
 										// filter type
@@ -168,7 +183,7 @@ angular
 											field : $scope.criteriaConfig.name,
 											value : $scope.filterValue
 										};
-										if ($scope.filterValue !== "") {
+										if ($scope.filterValue !== "" && $scope.filterValue !== undefined) {
 											$scope.computeButtonLabel('('
 													+ $scope.filterValue + ')')
 										} else {
@@ -183,16 +198,19 @@ angular
 									};
 
 									$scope.onFilterDate = function() {
+										var computedValue=undefined;
+										if($scope.dateSelector=="byDate"){
+											computedValue=$scope.uniqueDate
+										}else {
+											computedValue= {start : $scope.startDate,end : $scope.endDate}
+										}
 										var filter = {
-											type  : "DATE",
+											type  : ($scope.dateSelector=="byDate") ?"DATE":"DATE_RANGE",
 											field : $scope.criteriaConfig.name,
-											value : {
-												start : $scope.startDate,
-												end : $scope.endDate
-											}
+											value :computedValue
 										};
-										if ($scope.startDate !== undefined
-												&& $scope.endDate !== undefined) {
+										if (($scope.dateSelector=="byRangeDate") && ($scope.startDate !== undefined
+												&& $scope.endDate !== undefined)) {
 											$scope.computeButtonLabel('('
 													+ $filter('date')(
 															$scope.startDate,
@@ -202,7 +220,9 @@ angular
 															$scope.endDate,
 															'shortDate') + ')');
 											
-										} else {
+										}else if (($scope.dateSelector=="byDate") && ($scope.dateSelector=="byDate")) {
+											$scope.computeButtonLabel('('+ $filter('date')($scope.uniqueDate,'shortDate')+ ')');
+										}else {
 											filter.value=undefined;
 											$scope.resetButtonLabel();
 										}
@@ -241,7 +261,6 @@ angular
 															end : $scope.comparatorEndValue
 														}
 												}
-												
 											}else if($scope.operator==="equals") {
 												$scope.computeButtonLabel('(='+comparatorValue+')');
 											}else if ($scope.operator==="lessthan") {
@@ -268,10 +287,7 @@ angular
 											value : $scope.booleanValue
 										};
 										if ($scope.booleanValue !== undefined && $scope.booleanValue !== "undefined" ) {
-											$scope
-													.computeButtonLabel('('
-															+ $scope.booleanValue
-															+ ')')
+											$scope.computeButtonLabel('('+ $scope.booleanValue + ')')
 										} else {
 											$scope.resetButtonLabel();
 										}
@@ -301,7 +317,6 @@ angular
 														}else {
 															btnLabel = btnLabel	+ entry.name;
 														}
-														
 														i++;
 													}
 												});
@@ -333,110 +348,59 @@ angular
 									}
 									$scope.openFilterContent = function() {
 										$scope.active=true;
-										angular
-												.element(
-														$scope.filterContentDiv)
-												.addClass('show');
-										angular
-												.element(
-														$scope.filterContentDiv)
-												.removeClass('hide');
-										angular.element(clickedEl).addClass(
-												'buttonClicked');
-										angular.element(document).bind('click',
-												$scope.externalClickListener);
+										angular.element($scope.filterContentDiv).addClass('show');
+										angular.element($scope.filterContentDiv).removeClass('hide');
+										angular.element(clickedEl).addClass('buttonClicked');
+										angular.element(document).bind('click',	$scope.externalClickListener);
 									};
 									$scope.closeFilterContent = function() {
 										$scope.active=false;
-										angular
-												.element(
-														$scope.filterContentDiv)
-												.removeClass('show');
-										angular
-												.element(
-														$scope.filterContentDiv)
-												.addClass('hide');
-										angular.element(clickedEl).removeClass(
-												'buttonClicked');
-										angular.element(document).unbind(
-												'click',
-												$scope.externalClickListener);
+										angular.element($scope.filterContentDiv).removeClass('show');
+										angular.element($scope.filterContentDiv).addClass('hide');
+										angular.element(clickedEl).removeClass('buttonClicked');
+										angular.element(document).unbind('click',$scope.externalClickListener);
 									};
-									
-									
 									// UI operations to show/hide checkboxes
 									// based on click event..
 									$scope.toggleFilterContent = function(e) {
-
 										// We grab the checkboxLayer
 										$scope.filterContentDiv = element
 												.children()[2];
-
-										
 										// We grab the button
 										clickedEl = element.children()[0];
-
 										// Just to make sure.. had a bug where
 										// key events were recorded twice
-										angular.element(document).unbind(
-												'click',
-												$scope.externalClickListener);
-										angular.element(document).unbind(
-												'keydown',
-												$scope.keyboardListener);
-
+										angular.element(document).unbind('click',$scope.externalClickListener);
+										angular.element(document).unbind('keydown',	$scope.keyboardListener);
 										// close if ESC key is pressed.
 										if (e.keyCode === 27) {
-											angular.element(
-													$scope.filterContentDiv)
-													.removeClass('show');
-											angular.element(clickedEl)
-													.removeClass(
-															'buttonClicked');
-											angular
-													.element(document)
-													.unbind(
-															'click',
-															$scope.externalClickListener);
-
+											angular.element($scope.filterContentDiv).removeClass('show');
+											angular.element(clickedEl).removeClass('buttonClicked');
+											angular.element(document).unbind('click',$scope.externalClickListener);
 											// clear the focused element;
-											$scope
-													.removeFocusStyle($scope.tabIndex);
-
+											$scope.removeFocusStyle($scope.tabIndex);
 											// close callback
-											$scope.onClose({
-												data : element
-											});
+											$scope.onClose({data : element});
 											return true;
 										}
-
 										// The idea below was taken from another
 										// multi-select directive -
 										// https://github.com/amitava82/angular-multiselect
 										// His version is awesome if you need a
 										// more simple multi-select approach.
-
 										// close
-										if (angular.element(
-												$scope.filterContentDiv)
-												.hasClass('show')) {
+										if (angular.element($scope.filterContentDiv).hasClass('show')) {
 											$scope.closeFilterContent();
 											// close callback
-											$scope.onClose({
-												data : element
-											});
+											$scope.onClose({data : element});
 										}
 										// open
 										else {
 											helperItems = [];
 											helperItemsLength = 0;
-
 											$scope.openFilterContent();
-
 											// open callback
-											$scope.onOpen({
-												data : element
-											});
+											$scope.onOpen({data : element});
 										}
 									};
 
@@ -494,7 +458,7 @@ angular
 										+ '<li class="divider-vertical"></li>'
 										+ '<li class="pull-right">'
 										+ '<span id="manage-filter-btn">'
-											+ '<button type="button" class="btn btn-default" ng-click="toggleMoreContent( $event )"> <i class="fa fa-filter"></i> Filters <span class="caret"></span></button>'
+											+ '<button type="button" class="btn btn-default" ng-click="toggleMoreContent( $event )"> <i class="fa fa-filter"></i> <span class="caret"></span></button>'
 											+ '<div class="more-content hide col-md-2 col-xs-3">'
 											+ '<div class="checkbox">'
 												+ '<label>'
@@ -581,6 +545,9 @@ angular
 												console.log("update existing filter"+foundExistingFilter.field);
 												foundExistingFilter.value=filterResult.value;
 												if(filterResult.type.indexOf('COMPARATOR_') == 0){
+													foundExistingFilter.type=filterResult.type;
+												}
+												if(filterResult.type.indexOf('DATE') == 0){
 													foundExistingFilter.type=filterResult.type;
 												}
 											}
