@@ -4,7 +4,7 @@ App.directive('webSocket', [ '$timeout', 'WebSocketService', 'notifService',
 				restrict : 'AEC',
 				link : function(scope, elem, attrs, ctrl) {
 					timer(function() {
-						WebSocketService.connect();
+						//WebSocketService.connect();
 						//notifService.notify('info', 'WebSocket', 'Connected');
 					}, 0);
 				}
@@ -26,6 +26,14 @@ App.directive('fileInput',['$compile',function($compile) {
                      				}
                      			}
                      		}]);
+App.directive('colResizable',function($compile) {
+		return {
+			restrict : 'A',
+			link : function($scope, elem, attrs) {
+				elem.colResizable();
+			}
+		}
+	});
 
 App.directive('hasRole', ['notifService',
                      		function(notifService) {
