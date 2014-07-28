@@ -76,6 +76,9 @@
 	text-align: left;
 }
 
+.ng-criteria-bar .more-content{
+	right: 0;
+}
 .ng-criterion ul>li,.ng-criteria-bar ul>li {
 	padding-top: 0px !important;
 	padding-bottom: 0px !important;

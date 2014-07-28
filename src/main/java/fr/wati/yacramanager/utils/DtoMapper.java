@@ -158,7 +158,6 @@ public class DtoMapper {
 		EmployeDto dto = new EmployeDto();
 		dto.setId(Long.valueOf(employe.getId().toString()));
 		dto.setUsername(employe.getUsername());
-		dto.setPassword(employe.getPassword());
 		dto.setNom(employe.getNom());
 		dto.setPrenom(employe.getPrenom());
 		dto.setCivilite(employe.getCivilite());

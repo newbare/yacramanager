@@ -89,11 +89,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 								Integer.class))
 				.and()
 					.sessionManagement()
-						.invalidSessionUrl("/?invalid-session=true")
+						.invalidSessionUrl("/auth/login/?invalid-session=true")
 						.maximumSessions(
 								env.getProperty("max.sessions",
 										Integer.class,5))
-						.expiredUrl("/?expired-session=true")
+						.expiredUrl("/auth/login/?expired-session=true")
 				
 				;
 	}

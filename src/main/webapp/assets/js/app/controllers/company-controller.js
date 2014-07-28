@@ -12,7 +12,7 @@ function CompanyController($scope, $rootScope) {
 		};
 	});
 };
-function CompanyEmployeesController($scope, $rootScope,$http,EmployeesCRUDREST,ngTableParams){
+function CompanyEmployeesController($scope, $rootScope,$http,EmployeesCRUDREST,ngTableParams,$state){
 	
 	$scope.$on('userInfo', function(event, userInfo) {
 		//do afteruserInfo is retrieved 
@@ -21,6 +21,11 @@ function CompanyEmployeesController($scope, $rootScope,$http,EmployeesCRUDREST,n
 		//End userInfo listener
 	});
 	
+	
+	 $scope.changeSelection = function(user) {
+	        console.info(user);
+	        $state.go('company.employees.overview',{ id:user.id });
+	 }
 	
 	$scope.hasDatas=false;
 	
@@ -150,6 +155,11 @@ function CompanyEmployeesController($scope, $rootScope,$http,EmployeesCRUDREST,n
 		}});
 	
 };
+
+function CompanyEmployeesOverviewController($scope,EmployeesCRUDREST, $stateParams){
+	$scope.employeId=$stateParams.id;
+}
+
 function CompanyProjectsController($scope, $rootScope,$http,ngTableParams,ProjectsCRUDREST){
 	
 	$scope.$on('userInfo', function(event, userInfo) {

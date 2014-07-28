@@ -25,7 +25,7 @@ App.controller('AppCtrl', [ '$scope', '$location', 'UsersREST','$rootScope',
 			};
 			
 			$scope.containerClass=function(){
-				return "container";
+				return "container-fluid";
 			}
 
 			$scope.containerNavClass=function(){
@@ -40,7 +40,9 @@ App.config([ '$stateProvider', '$urlRouterProvider',
 			// invalid urls (otherwise).
 			$urlRouterProvider
 			.when('/company', '/company/home')
+//			.when('/company/employees', '/company/employees/list')
 			.when('/admin', '/admin/home')
+			
 
 			// The `when` method says if the url is ever the 1st param, then
 			// redirect to the 2nd param
@@ -100,7 +102,17 @@ App.config([ '$stateProvider', '$urlRouterProvider',
 				url : "/employees",
 				templateUrl : _contextPath+'/views/app/company/company-employees.html',
 				controller : CompanyEmployeesController
-			}).state('company.clients', {
+			})
+			.state('company.employees.list', {
+				url : "/list",
+				templateUrl : _contextPath+'/views/app/company/company-employees-list.html',
+				controller : CompanyEmployeesController
+			}).state('company.employees.overview', {
+				url : "/:id/overview",
+				templateUrl : _contextPath+'/views/app/company/company-employees-overview.html',
+				controller : CompanyEmployeesOverviewController
+			})
+			.state('company.clients', {
 				url : "/clients",
 				templateUrl : _contextPath+'/views/app/company/company-clients.html',
 				controller : CompanyClientsController

@@ -44,7 +44,7 @@
 				<ul class="nav navtop navbar-nav navbar-right">
 					
 					<li data-ng-class="navClass('notifications')"><a
-						href="app"><i
+						href="app/"><i
 							class="fa fa-user"></i>{{userInfo.prenom}} </a></li>
 				</ul>
 				<%-- <form class="navbar-form navbar-right" role="form" action="auth/login/" method="post">

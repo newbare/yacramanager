@@ -9,11 +9,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 <link rel="stylesheet" href="${contextPath}/assets/css/app.css">
-<link rel="stylesheet" href="${contextPath}/assets/css/angular-criterias.css">
+<link rel="stylesheet"
+	href="${contextPath}/assets/css/angular-criterias.css">
 <link rel="stylesheet" href="${contextPath}/assets/css/yacra-fonts.css">
 <link rel="stylesheet"
 	href="${contextPath}/assets/bower_components/bootstrap-additions/dist/bootstrap-additions.min.css">
-	<link rel="stylesheet"
+<link rel="stylesheet"
 	href="${contextPath}/assets/bower_components/angular-motion/dist/angular-motion.css">
 <link rel="stylesheet"
 	href="${contextPath}/assets/bower_components/ng-table/ng-table.min.css">
@@ -36,9 +37,10 @@
 	var _userCompanyId = "${userCompanyId}";
 </script>
 </head>
-<body data-ng-controller="AppCtrl" data-web-socket >
+<body data-ng-controller="AppCtrl" data-web-socket>
 	<!-- Fixed navbar -->
-	<div class="navbar navbar-inverse navbar-fixed-top" role="navigation" data-ng-cloak>
+	<div class="navbar navbar-inverse navbar-fixed-top" role="navigation"
+		data-ng-cloak>
 		<div data-ng-class="containerNavClass()">
 			<div class="navbar-header">
 				<button type="button" class="navbar-toggle" data-toggle="collapse"
@@ -60,8 +62,10 @@
 					<li data-ng-class="navClass('timesheet')"><a
 						data-ui-sref="timesheet">Timesheet</a></li>
 					<li data-has-role="ROLE_SSII_ADMIN" data-ng-cloak
-						data-ng-class="navClass('company/home') +navClass('company/employees') + navClass('company/clients')+ navClass('company/projects')+navClass('company/messages')+navClass('company/settings')"><a data-ui-sref="company">{{userInfo.company.name}}</a></li>
-					<li data-has-role="ROLE_ADMIN" data-ng-class="navClass('admin/home')+navClass('admin')"><a
+						data-ng-class="navClass('company/home') +navClass('company/employees') + navClass('company/clients')+ navClass('company/projects')+navClass('company/messages')+navClass('company/settings')"><a
+						data-ui-sref="company">{{userInfo.company.name}}</a></li>
+					<li data-has-role="ROLE_ADMIN"
+						data-ng-class="navClass('admin/home')+navClass('admin')"><a
 						data-ui-sref="admin">Admin</a></li>
 					<li data-ng-class="navClass('messages')"><a
 						data-ui-sref="messages"><i class="fa fa-envelope"></i></a></li>
@@ -69,9 +73,9 @@
 						data-ui-sref="notifications"><i class="fa fa-bell"></i></a></li>
 					<li
 						data-ng-class="navClass('user-settings') + navClass('user-profile')"
-						class="dropdown"><a href=""
-						class="dropdown-toggle" data-toggle="dropdown"><i
-							class="fa fa-user"></i>${userFirstName}<span class="caret"></span></a>
+						class="dropdown"><a href="" class="dropdown-toggle"
+						data-toggle="dropdown"><i class="fa fa-user"></i>${userFirstName}<span
+							class="caret"></span></a>
 						<ul class="user-menu dropdown-menu" role="menu">
 							<li><a data-ui-sref="user-settings"><i class="fa fa-cog"></i>Settings</a></li>
 							<li><a data-ui-sref="user-profile"><i class="fa fa-user"></i>
@@ -86,17 +90,20 @@
 		</div>
 	</div>
 	<!-- End Fixed navbar -->
-	<div data-ng-class="containerClass()" class="" data-ng-cloak>
-				<div class="page-header" >
-					<h4>
-						{{page.title}} <i class="fa fa-angle-double-right"
-							style="font-size: 80%"></i><small> {{page.description}}</small>
-					</h4>
-				</div>
-				<div data-ui-view="" class="am-fade" data-ng-cloak></div>
-				<div class="footer">
-					<p class="text-muted">@ wati 2014</p>
-				</div>
+	<div data-ng-class="containerClass()" class="global-container" data-ng-cloak>
+		<div class="sidebar sidebar-fixed">hey i'am a side bar</div>
+		<div class="main-content">
+			<div class="page-header">
+				<h4>
+					{{page.title}} <i class="fa fa-angle-double-right"
+						style="font-size: 80%"></i><small> {{page.description}}</small>
+				</h4>
+			</div>
+			<div data-ui-view="" class="am-fade" data-ng-cloak></div>
+			<div class="footer">
+				<p class="text-muted">@ wati 2014</p>
+			</div>
+		</div>
 	</div>
 
 	<!-- Bootstrap core JavaScript
@@ -116,8 +123,7 @@
 	<%-- <script src="${contextPath}/assets/bower_components/angular/angular.js"></script> --%>
 	<script
 		src="${contextPath}/assets/bower_components/ng-file-upload/angular-file-upload.js"></script>
-	<script 
-		src="${contextPath}/assets/js/bootstrap.file-input.js"></script>
+	<script src="${contextPath}/assets/js/bootstrap.file-input.js"></script>
 	<script
 		src="${contextPath}/assets/bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
 	<script
@@ -153,7 +159,8 @@
 	<script src="${contextPath}/assets/js/colResizable-1.3.min.js"></script>
 	<!-- 	<script src="${contextPath}/assets/js/app/filters/commons-filters.js"></script> -->
 	<script src="${contextPath}/assets/js/app/factories/users-factories.js"></script>
-	<script src="${contextPath}/assets/js/app/factories/companies-factories.js"></script>
+	<script
+		src="${contextPath}/assets/js/app/factories/companies-factories.js"></script>
 	<script
 		src="${contextPath}/assets/js/app/controllers/home-controller.js"></script>
 	<script
@@ -175,7 +182,7 @@
 	<script src="${contextPath}/assets/js/app/services/common-services.js"></script>
 	<script
 		src="${contextPath}/assets/js/app/directives/commons-directives.js"></script>
-		<script
+	<script
 		src="${contextPath}/assets/js/app/directives/angular-criterias.js"></script>
 	<script
 		src="${contextPath}/assets/js/app/controllers/timesheet-controller.js"></script>
