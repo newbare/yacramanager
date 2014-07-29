@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import fr.wati.yacramanager.beans.Client;
 import fr.wati.yacramanager.beans.Project;
 import fr.wati.yacramanager.services.ClientService;
 import fr.wati.yacramanager.services.CompanyService;
@@ -49,18 +48,14 @@ public class ProjectController {
 	private ClientService clientService;
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public ProjectDTO read(@PathVariable("companyId") Long companyId,@PathVariable("clientId") Long clientId,
-			@PathVariable("id") Long id) {
-		Client client = clientService.findOne(clientId);
-		return projectService.toProjectDTO(projectService.findByClientAndId(client, id));
+	public ProjectDTO read(@PathVariable("companyId") Long companyId,@PathVariable("id") Long id) {
+		return projectService.toProjectDTO(projectService.findOne(id));
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<String> update(
-			@PathVariable("companyId") Long companyId,@PathVariable("clientId") Long clientId,
-			@PathVariable("id") Long id, ProjectDTO dto) {
-		Client client = clientService.findOne(clientId);
-		Project project = projectService.findByClientAndId(client, id);
+			@PathVariable("companyId") Long companyId,@PathVariable("id") Long id, ProjectDTO dto) {
+		Project project = projectService.findOne(id);
 		if (project != null) {
 			dto.toProject(project);
 			projectService.save(project);
@@ -133,16 +128,14 @@ public class ProjectController {
 
 	@RequestMapping(value = "/", method = RequestMethod.POST)
 	public ResponseEntity<String> create(
-			@PathVariable("companyId") Long companyId,@PathVariable("clientId") Long clientId, ProjectDTO dto) {
+			@PathVariable("companyId") Long companyId,@RequestParam("clientId") Long clientId, ProjectDTO dto) {
 		projectService.createProject(clientId, dto.toProject(new Project()));
 		return new ResponseEntity<String>(HttpStatus.CREATED);
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-	public void delete(@PathVariable("companyId") Long companyId,@PathVariable("clientId") Long clientId,
-			@PathVariable("id") Long id) {
-		Client client = clientService.findOne(clientId);
-		Project project = projectService.findByClientAndId(client, id);
+	public void delete(@PathVariable("companyId") Long companyId,@PathVariable("id") Long id) {
+		Project project = projectService.findOne(id);
 		if (project != null) {
 			projectService.delete(project);
 		}

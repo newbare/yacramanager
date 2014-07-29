@@ -236,25 +236,26 @@ function FraisController($scope, $rootScope, NoteCRUDREST, alertService,
 	}, {
 		total : 0, // length of data
 		getData : function($defer, params) {
-
-			NoteCRUDREST.get({
-				page:params.$params.page-1,
-				size:params.$params.count,
-				sort:params.$params.sorting,
-				filter:$scope.tableFilter
-			}, function(data) {
-				params.total(data.totalCount);
-				$scope.startIndex=data.startIndex;
-				$scope.endIndex=data.endIndex;
-				if (data.totalCount >= 1) {
-					$scope.hasDatas = true;
-				} else {
-					$scope.hasDatas = false;
-				}
-				allNote = data.result;
-				// set new data
-				$defer.resolve(data.result);
-			});
+			if($scope.tableFilter!=="" && $scope.tableFilter!==undefined){
+				NoteCRUDREST.get({
+					page:params.$params.page-1,
+					size:params.$params.count,
+					sort:params.$params.sorting,
+					filter:$scope.tableFilter
+				}, function(data) {
+					params.total(data.totalCount);
+					$scope.startIndex=data.startIndex;
+					$scope.endIndex=data.endIndex;
+					if (data.totalCount >= 1) {
+						$scope.hasDatas = true;
+					} else {
+						$scope.hasDatas = false;
+					}
+					allNote = data.result;
+					// set new data
+					$defer.resolve(data.result);
+				});
+			}
 		}
 	});
 

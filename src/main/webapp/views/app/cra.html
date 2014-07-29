@@ -2,9 +2,19 @@
 	<div class="panel-body">
 		<div class="row">
 			<div class="col-md-6">
-				<label >Select date range</label>
+				<fieldset data-collapsible-fieldset="Acquired" data-collapsible-fieldset-collapsed>
+					<div>
+						<div class="row"><span>Conge paye: </span><span class="label label-default">12</span></div>
+						<div class="row"><span>RTT: </span><span class="label label-default">12</span></div>
+					</div>
+				</fieldset>
+			</div>
+			<div class="col-md-6">
+				<fieldset data-collapsible-fieldset="Total" data-collapsible-fieldset-collapsed>
+				</fieldset>
 			</div>
 		</div>
+		
 		<fieldset data-collapsible-fieldset="Filter">
 			<div class="row">
 				<div class="col-md-9">
@@ -35,16 +45,16 @@
 		</div>
 		<div id="cra-container">
 			<div class="table-responsive">
-				<table class="table cra-table table-condensed table-bordered" ng-show="cra.days.length>=1">
+				<table class="table cra-table table-condensed table-bordered" data-ng-show="cra.days.length>=1">
 					<tr>
 						<td></td>
-						<th ng-repeat="day in cra.days" ng-class="{'cra-we' : day.dayOff}"><small>{{day.date | date : craDateFormat}}</small></th>
+						<th data-ng-repeat="day in cra.days" data-ng-class="{'cra-we' : day.dayOff}"><small>{{day.date | date : craDateFormat}}</small></th>
 					</tr>
 					<tr>
 						<td>M</td>
-						<td ng-repeat="day in cra.days" ng-class="{'cra-we' : day.dayOff}">
+						<td data-ng-repeat="day in cra.days" data-ng-class="{'cra-we' : day.dayOff}">
 							<label data-placement="bottom-left" data-type="info" data-animation="am-fade-and-scale" bs-tooltip="{'title':day.morning.absenceDTO.type +' '+ day.morning.absenceDTO.description}">
-	  							<input type="checkbox" class="custom-checkbox"	ng-model="day.morning.worked" value="{{day.morning.worked}}" ng-disabled="day.dayOff || day.morning.absenceDTO!=null" />
+	  							<input type="checkbox" class="custom-checkbox"	data-ng-model="day.morning.worked" value="{{day.morning.worked}}" data-ng-disabled="day.dayOff || day.morning.absenceDTO!=null" />
 								<span></span>
 							</label>
 						</td>

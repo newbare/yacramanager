@@ -1,0 +1,17 @@
+
+<div class="row">
+	<div class="col-md-2">
+		<ul class="list-group">
+			<li class="list-group-item" data-ng-repeat="project in projects">
+				<a
+				data-ui-sref="company.projects.view.quick.overview({ id: project.id })">
+					{{project.name}}</a>
+			</li>
+		</ul>
+	</div>
+	<div class="col-md-10">
+		<div class="panel panel-default">
+			<div class="panel-body"><div data-ui-view class="am-fade"></div></div>
+		</div>
+	</div>
+</div>

@@ -49,6 +49,12 @@ angular
 										+'</div>' 
 										+ '</span>',
 								link : function($scope, element, attrs) {
+									debugEnabled=false;
+									debug=function(text){
+										if(debugEnabled){
+											console.log(text);
+										}
+									};
 									// default config values
 									var textFilterTemplate = _contextPath
 											+ '/assets/others/criteria/criteria-text.tpl.html';
@@ -164,7 +170,7 @@ angular
 									$scope.dismissCriteria = function(fieldName) {
 										$scope.criteriaConfig.displayed=false;
 										$scope.onRemoveCriteria(fieldName);
-										console.log("Remove criteria: "+fieldName);
+										debug("Remove criteria: "+fieldName);
 									};
 									var spanCaret= ($scope.isEditable=== true) ?' <span class="caret"></span>':'';
 									
@@ -489,6 +495,12 @@ angular
 									
 								+ '</div>',
 								link : function($scope, element, attrs) {
+									debugEnabled=false;
+									debug=function(text){
+										if(debugEnabled){
+											console.log(text);
+										}
+									};
 									$scope.criterions=$scope.criteriaBarConfig.criterions;
 									$scope.managedCriterions=[];
 									angular.forEach($scope.criteriaBarConfig.criterions,
@@ -535,14 +547,14 @@ angular
 									$scope.autoSearchEnable=($scope.criteriaBarConfig.autoFilter !== undefined) ? $scope.criteriaBarConfig.autoFilter:false;
 									$scope.filterTriggered=function(filterResult){
 										var foundExistingFilter=undefined;
-										console.log("Criteria bar watcher triggered:"+filterResult.type+' '+filterResult.field+' '+filterResult.value);
+										debug("Criteria bar watcher triggered:"+filterResult.type+' '+filterResult.field+' '+filterResult.value);
 										foundExistingFilter=findFilterByFieldName(filterResult.field);
 										if(foundExistingFilter!== undefined){
 											if(filterResult.value===undefined){
 												$scope.removeFilter(filterResult.field);
 											}else{
 												//update existing filter
-												console.log("update existing filter"+foundExistingFilter.field);
+												debug("update existing filter"+foundExistingFilter.field);
 												foundExistingFilter.value=filterResult.value;
 												if(filterResult.type.indexOf('COMPARATOR_') == 0){
 													foundExistingFilter.type=filterResult.type;
@@ -555,7 +567,7 @@ angular
 										else {
 											//add new filter
 											$scope.filters.push(filterResult);
-											console.log("Add new filter: "+ filterResult.field);
+											debug("Add new filter: "+ filterResult.field);
 										}
 										if($scope.autoSearchEnable){
 											$scope.doFilter($scope.filters);
@@ -574,7 +586,7 @@ angular
 											  if($scope.filters[i].field===filterFieldName){
 												  $scope.filters.splice(i, 1);
 												  $scope.doFilter($scope.filters);
-												  console.log("Remove criterion from bar "+filterFieldName);
+												  debug("Remove criterion from bar "+filterFieldName);
 												}
 											}
 									};

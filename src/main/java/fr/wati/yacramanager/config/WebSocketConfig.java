@@ -24,12 +24,12 @@ public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
 
 	@Override
 	public void configureMessageBroker(MessageBrokerRegistry registry) {
-		//registry.enableSimpleBroker("/topic");
-		StompBrokerRelayRegistration stompBrokerRelay = registry.enableStompBrokerRelay("/queue/", "/topic/");
+		registry.enableSimpleBroker("/topic");
+		/*StompBrokerRelayRegistration stompBrokerRelay = registry.enableStompBrokerRelay("/queue/", "/topic/");
 		stompBrokerRelay.setRelayHost(env.getProperty("stomp.broker.relay.host", "localhost"));
 		stompBrokerRelay.setRelayPort(env.getProperty("stomp.broker.relay.port", Integer.class,61613));
 		stompBrokerRelay.setClientLogin(env.getProperty("stomp.broker.client.login", "guest"));
-		stompBrokerRelay.setClientPasscode(env.getProperty("stomp.broker.client.passcode", "guest"));
+		stompBrokerRelay.setClientPasscode(env.getProperty("stomp.broker.client.passcode", "guest"));*/
 		registry.setApplicationDestinationPrefixes("/app");
 	}
 

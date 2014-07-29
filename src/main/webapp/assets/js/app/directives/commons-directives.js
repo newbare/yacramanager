@@ -74,7 +74,7 @@ App.directive('collapsibleFieldset',	function() {
 			restrict : 'A',
 			replace: 'true',
 			link : function(scope, elem, attrs, ctrl) {
-				var collapsed=true;
+				var collapsed=(attrs.collapsibleFieldsetCollapsed ===undefined)?true:false;
 				var title=attrs.collapsibleFieldset;
 				var bodyElement=elem.find('div');
 				bodyElement.addClass("am-fade");

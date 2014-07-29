@@ -57,15 +57,15 @@
 					<li data-ng-class="navClass('home')"><a data-ui-sref="home">Home</a></li>
 					<li data-ng-class="navClass('frais')"><a data-ui-sref="frais">Frais</a></li>
 					<li data-ng-class="navClass('cra')"><a data-ui-sref="cra">CRA</a></li>
-					<li data-ng-class="navClass('absences')"><a
+					<li data-ng-class="navClass('absences/')"><a
 						data-ui-sref="absences">Absences</a></li>
 					<li data-ng-class="navClass('timesheet')"><a
 						data-ui-sref="timesheet">Timesheet</a></li>
 					<li data-has-role="ROLE_SSII_ADMIN" data-ng-cloak
-						data-ng-class="navClass('company/home') +navClass('company/employees') + navClass('company/clients')+ navClass('company/projects')+navClass('company/messages')+navClass('company/settings')"><a
-						data-ui-sref="company">{{userInfo.company.name}}</a></li>
+						data-ng-class="navClass('company/')"><a
+						data-ui-sref="company"><i class="fa fa-university"></i>{{userInfo.company.name}}</a></li>
 					<li data-has-role="ROLE_ADMIN"
-						data-ng-class="navClass('admin/home')+navClass('admin')"><a
+						data-ng-class="navClass('admin/')"><a
 						data-ui-sref="admin">Admin</a></li>
 					<li data-ng-class="navClass('messages')"><a
 						data-ui-sref="messages"><i class="fa fa-envelope"></i></a></li>
@@ -90,9 +90,9 @@
 		</div>
 	</div>
 	<!-- End Fixed navbar -->
-	<div data-ng-class="containerClass()" class="global-container" data-ng-cloak>
-		<div class="sidebar sidebar-fixed">hey i'am a side bar</div>
-		<div class="main-content">
+	<div data-ng-class="containerClass()" data-ng-cloak><!-- class="global-container" --> 
+		<!-- <div class="sidebar sidebar-fixed">hey i'am a side bar</div> -->
+		<div class=""><!-- <div class="main-content"> -->
 			<div class="page-header">
 				<h4>
 					{{page.title}} <i class="fa fa-angle-double-right"

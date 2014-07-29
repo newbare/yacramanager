@@ -1,3 +1,25 @@
+.page-header {
+padding-bottom: 0 !important;
+}
+.sub-menu{
+	padding-bottom: 5px;
+}
+
+.sub-menu.nav>li>a {
+position: relative;
+display: block;
+padding: 5px 10px;
+
+}
+.sub-menu.nav>li>a:HOVER,
+.sub-menu.nav-pills>li.active>a,
+.sub-menu.nav-pills>li.active>a:HOVER {
+border-bottom: 3px solid #428bca;
+background: none;
+border-radius: 0;
+color: #2a6496;
+}	
+
 .ng-table-rowselected tr {
     cursor: pointer;
 }
@@ -24,7 +46,7 @@ fieldset.collapsible.collapsed {
 }
 
 fieldset.collapsible {
-	border: 1px solid #e6e6e6;
+	border-top: 1px solid #e6e6e6;
 	margin-bottom: 5px;
 	padding: 5px;
 }
@@ -36,7 +58,8 @@ fieldset.collapsible>legend {
 	width: auto;
 	border-bottom: 0 !important;
 	font-weight: bold;
-	font-size: 120%;
+	font-size: 90%;
+	color: #3276b1
 }
 
 fieldset.collapsible>legend:HOVER {

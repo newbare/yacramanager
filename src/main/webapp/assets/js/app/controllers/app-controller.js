@@ -15,13 +15,14 @@ App.config(function($tooltipProvider) {
     trigger: 'hover',
     template: _contextPath+'/assets/others/tooltip/tooltip.tpl.html'
   });
-})
+});
 
 App.controller('AppCtrl', [ '$scope', '$location', 'UsersREST','$rootScope',
 		function($scope, $location, UsersREST,$rootScope) {
 			$scope.navClass = function(page) {
 				var currentRoute = $location.path().substring(1) || 'home';
-				return page === currentRoute ? 'active' : '';
+				//return page === currentRoute ? 'active' : '';
+				return currentRoute.indexOf(page)==0 ? 'active' :'';
 			};
 			
 			$scope.containerClass=function(){
@@ -40,7 +41,9 @@ App.config([ '$stateProvider', '$urlRouterProvider',
 			// invalid urls (otherwise).
 			$urlRouterProvider
 			.when('/company', '/company/home')
-//			.when('/company/employees', '/company/employees/list')
+			.when('/company/employees', '/company/employees/view/quickview')
+			.when('/company/clients', '/company/clients/view/quickview')
+			.when('/company/projects', '/company/projects/view/quickview')
 			.when('/admin', '/admin/home')
 			
 
@@ -100,26 +103,87 @@ App.config([ '$stateProvider', '$urlRouterProvider',
 				//controller : EntrepriseController,
 			}).state('company.employees', {
 				url : "/employees",
-				templateUrl : _contextPath+'/views/app/company/company-employees.html',
-				controller : CompanyEmployeesController
+				templateUrl : _contextPath+'/views/app/company/employees/company-employees.html'
+				//controller : CompanyEmployeesController
+			}).state('company.employees.details', {
+				url : "/details/:id",
+				templateUrl : _contextPath+'/views/app/company/employees/company-employees-overview.html',
+				controller : CompanyEmployeesOverviewController
 			})
-			.state('company.employees.list', {
+			.state('company.employees.view', {
+				url : "/view",
+				templateUrl : _contextPath+'/views/app/company/employees/company-employees-view.html',
+				controller : CompanyEmployeesViewController
+			})
+			.state('company.employees.view.list', {
 				url : "/list",
-				templateUrl : _contextPath+'/views/app/company/company-employees-list.html',
-				controller : CompanyEmployeesController
-			}).state('company.employees.overview', {
-				url : "/:id/overview",
-				templateUrl : _contextPath+'/views/app/company/company-employees-overview.html',
+				templateUrl : _contextPath+'/views/app/company/employees/company-employees-list.html',
+				controller : CompanyEmployeesListController
+			}).state('company.employees.view.quick', {
+				url : "/quickview",
+				templateUrl : _contextPath+'/views/app/company/employees/company-employees-quickview.html',
+				controller : CompanyEmployeesQuickViewController
+			})
+			.state('company.employees.view.quick.overview', {
+				url : "/:id",
+				templateUrl : _contextPath+'/views/app/company/employees/company-employees-overview.html',
 				controller : CompanyEmployeesOverviewController
 			})
 			.state('company.clients', {
 				url : "/clients",
-				templateUrl : _contextPath+'/views/app/company/company-clients.html',
-				controller : CompanyClientsController
-			}).state('company.projects', {
+				templateUrl : _contextPath+'/views/app/company/clients/company-clients.html'
+				//controller : CompanyEmployeesController
+			}).state('company.clients.details', {
+				url : "/details/:id",
+				templateUrl : _contextPath+'/views/app/company/clients/company-clients-overview.html',
+				controller : CompanyClientsOverviewController
+			})
+			.state('company.clients.view', {
+				url : "/view",
+				templateUrl : _contextPath+'/views/app/company/clients/company-clients-view.html',
+				controller : CompanyClientsViewController
+			})
+			.state('company.clients.view.list', {
+				url : "/list",
+				templateUrl : _contextPath+'/views/app/company/clients/company-clients-list.html',
+				controller : CompanyClientsListController
+			}).state('company.clients.view.quick', {
+				url : "/quickview",
+				templateUrl : _contextPath+'/views/app/company/clients/company-clients-quickview.html',
+				controller : CompanyClientsQuickViewController
+			})
+			.state('company.clients.view.quick.overview', {
+				url : "/:id",
+				templateUrl : _contextPath+'/views/app/company/clients/company-clients-overview.html',
+				controller : CompanyClientsOverviewController
+			})
+			.state('company.projects', {
 				url : "/projects",
-				templateUrl : _contextPath+'/views/app/company/company-projects.html',
-				controller : CompanyProjectsController,
+				templateUrl : _contextPath+'/views/app/company/projects/company-projects.html'
+				//controller : CompanyEmployeesController
+			}).state('company.projects.details', {
+				url : "/details/:id",
+				templateUrl : _contextPath+'/views/app/company/projects/company-projects-overview.html',
+				controller : CompanyProjectsOverviewController
+			})
+			.state('company.projects.view', {
+				url : "/view",
+				templateUrl : _contextPath+'/views/app/company/projects/company-projects-view.html',
+				controller : CompanyProjectsViewController
+			})
+			.state('company.projects.view.list', {
+				url : "/list",
+				templateUrl : _contextPath+'/views/app/company/projects/company-projects-list.html',
+				controller : CompanyProjectsListController
+			}).state('company.projects.view.quick', {
+				url : "/quickview",
+				templateUrl : _contextPath+'/views/app/company/projects/company-projects-quickview.html',
+				controller : CompanyProjectsQuickViewController
+			})
+			.state('company.projects.view.quick.overview', {
+				url : "/:id",
+				templateUrl : _contextPath+'/views/app/company/projects/company-projects-overview.html',
+				controller : CompanyProjectsOverviewController
 			})
 			.state('company.messages', {
 				url : "/messages",
