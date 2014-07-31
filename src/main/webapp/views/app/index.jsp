@@ -37,7 +37,45 @@
 	var _userCompanyId = "${userCompanyId}";
 </script>
 </head>
-<body data-ng-controller="AppCtrl" data-web-socket>
+<body data-ng-controller="AppCtrl" data-web-socket data-auth-application-support class="waiting-for-angular">
+	<div id="initializing-panel"></div>
+	<div id="app-login-content" data-ng-controller="LoginCtrl">
+		<div class="row">
+			<div class=" auth-form col-md-4 col-md-offset-4 col-xs-10 col-xs-offset-1">
+		
+				<form data-ng-submit="submit()">
+					<h3 class="form-signin-heading" style="text-align: center;">
+						Session expired
+					</h3>
+					<hr>
+					<div class="alert alert-danger alert-dismissable" role="alert"
+						data-ng-show="error">
+						<button type="button" class="close" data-dismiss="alert">
+							<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+						</button>
+						{{errorMessage}}
+					</div>
+					<div class="margin-bottom">
+						<div class="input-group margin-bottom-sm">
+							<span class="input-group-addon"><i class="fa fa-user fa-fw"></i></span>
+							<input class="form-control" type="text" name="username" data-ng-model="username"
+								placeholder="Username" required autofocus>
+						</div>
+						<div class="input-group">
+							<span class="input-group-addon"><i class="fa fa-key fa-fw"></i></span>
+							<input class="form-control" type="password" name="password" data-ng-model="password"
+								placeholder="Password" required>
+						</div>
+					</div>
+					<br>
+					<button class="btn btn-lg btn-primary btn-block" type="submit">
+						<span class="bigger-110"> Login</span>
+					</button>
+				</form>
+			</div>
+		</div>
+	</div>
+	<div id="app-content">
 	<!-- Fixed navbar -->
 	<div class="navbar navbar-inverse navbar-fixed-top" role="navigation"
 		data-ng-cloak>
@@ -90,7 +128,7 @@
 		</div>
 	</div>
 	<!-- End Fixed navbar -->
-	<div data-ng-class="containerClass()" data-ng-cloak><!-- class="global-container" --> 
+	<div data-ng-class="containerClass()" data-ng-cloak data-http-request-error><!-- class="global-container" --> 
 		<!-- <div class="sidebar sidebar-fixed">hey i'am a side bar</div> -->
 		<div class=""><!-- <div class="main-content"> -->
 			<div class="page-header">
@@ -106,6 +144,7 @@
 		</div>
 	</div>
 
+	</div>
 	<!-- Bootstrap core JavaScript
     ================================================== -->
 	<!-- Placed at the end of the document so the pages load faster -->
@@ -156,6 +195,7 @@
 		src="${contextPath}/assets/bower_components/jquery.gritter/js/jquery.gritter.min.js"></script>
 	<script src="${contextPath}/assets/js/sockjs-0.3.4.js"></script>
 	<script src="${contextPath}/assets/js/stomp.js"></script>
+	<script src="${contextPath}/assets/js/http-auth-interceptor.js"></script>
 	<script src="${contextPath}/assets/js/colResizable-1.3.min.js"></script>
 	<!-- 	<script src="${contextPath}/assets/js/app/filters/commons-filters.js"></script> -->
 	<script src="${contextPath}/assets/js/app/factories/users-factories.js"></script>

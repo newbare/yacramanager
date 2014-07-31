@@ -1,7 +1,7 @@
 /**
  * 
  */
-App.service('alertService', function($alert,$templateCache, $timeout) {
+App.service('alertService', function($alert) {
 	this.showInfo = function(title, content) {
 		// Service usage
 		var myAlert = $alert({

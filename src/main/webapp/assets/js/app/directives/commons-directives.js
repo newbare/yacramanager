@@ -11,6 +11,17 @@ App.directive('webSocket', [ '$timeout', 'WebSocketService', 'notifService',
 			};
 		} ]);
 
+App.directive('httpRequestError', [ '$rootScope', 'alertService', 'notifService',
+                     		function($rootScope, alertService, notifService) {
+                     			return {
+                     				restrict : 'AEC',
+                     				link : function(scope, elem, attrs, ctrl) {
+                     					scope.$on('event:http-request-error', function(event, error) {
+                     						console.log(error);
+                     					});
+                     				}
+                     			};
+} ]);
 
 App.directive('fileInput',['$compile',function($compile) {
                      			return {
@@ -99,3 +110,27 @@ App.directive('collapsibleFieldset',	function() {
 			}
 		};
 });
+App.directive('authApplicationSupport', function() {
+    return {
+        restrict: 'A',
+        link: function(scope, elem, attrs) {
+          //once Angular is started, remove class:
+          elem.removeClass('waiting-for-angular');
+          
+          var login = elem.find('#app-login-content');
+          var main = elem.find('#app-content');
+          
+          login.hide();
+          
+          scope.$on('event:auth-loginRequired', function() {
+            login.slideDown('slow', function() {
+              main.hide();
+            });
+          });
+          scope.$on('event:auth-loginConfirmed', function() {
+            main.show();
+            login.slideUp();
+          });
+        }
+      }
+    });

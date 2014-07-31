@@ -27,9 +27,12 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.access.ExceptionTranslationFilter;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.security.web.header.writers.frameoptions.XFrameOptionsHeaderWriter;
+
+import fr.wati.yacramanager.web.filters.AjaxTimeoutRedirectFilter;
 
 /**
  * Customizes Spring Security configuration.
@@ -58,29 +61,35 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.addHeaderWriter(
 						new XFrameOptionsHeaderWriter(
 								XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN))
-				
+
 				.and()
 				.authorizeRequests()
-					.antMatchers("/assets/**").permitAll() 
-					.antMatchers("/").permitAll()
-					.antMatchers("/auth/api/**").permitAll()
-					.antMatchers("/app/**")
-						.hasAnyRole(new String[] { "ADMIN", "SSII_ADMIN", "SALARIE","INDEP" })
-					.anyRequest().authenticated()
+				.antMatchers("/assets/**")
+				.permitAll()
+				.antMatchers("/")
+				.permitAll()
+				.antMatchers("/auth/api/**")
+				.permitAll()
+				.antMatchers("/app/**")
+				.hasAnyRole(
+						new String[] { "ADMIN", "SSII_ADMIN", "SALARIE",
+								"INDEP" })
+				.anyRequest()
+				.authenticated()
 				.and()
-					.formLogin()
-						.defaultSuccessUrl("/app/")
-						.loginPage("/auth/login/")
-						.failureUrl("/auth/login/?error=true")
-						.permitAll()
-					.and()
-					.logout()
-						.logoutUrl("/auth/logout")
-						.logoutSuccessUrl("/?logout")
-						.deleteCookies("JSESSIONID")
-						.permitAll()
-					.and().
-					httpBasic()
+				.formLogin()
+				.defaultSuccessUrl("/app/")
+				.loginPage("/auth/login/")
+				.failureUrl("/auth/login/?error=true")
+				.permitAll()
+				.and()
+				.logout()
+				.logoutUrl("/auth/logout")
+				.logoutSuccessUrl("/?logout")
+				.deleteCookies("JSESSIONID")
+				.permitAll()
+				.and()
+				.httpBasic()
 				.and()
 				.rememberMe()
 				.tokenRepository(persistentTokenRepository())
@@ -88,14 +97,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 						env.getProperty("rememberme.token.validity",
 								Integer.class))
 				.and()
-					.sessionManagement()
-						.invalidSessionUrl("/auth/login/?invalid-session=true")
-						.maximumSessions(
-								env.getProperty("max.sessions",
-										Integer.class,5))
-						.expiredUrl("/auth/login/?expired-session=true")
-				
-				;
+				.sessionManagement()
+				.invalidSessionUrl("/auth/login/?invalid-session=true")
+				.maximumSessions(
+						env.getProperty("max.sessions", Integer.class, 5))
+				.expiredUrl("/auth/login/?expired-session=true").and().and()
+				.addFilterAfter(ajaxTimeoutRedirectFilter(), ExceptionTranslationFilter.class);
 	}
 
 	@Bean
@@ -109,6 +116,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	public PasswordEncoder getPasswordEncoder() {
 		return new BCryptPasswordEncoder(env.getProperty(
 				"bcrypt.encoder.strength", Integer.class));
+	}
+
+	@Bean
+	public AjaxTimeoutRedirectFilter ajaxTimeoutRedirectFilter() {
+		AjaxTimeoutRedirectFilter ajaxTimeoutRedirectFilter = new AjaxTimeoutRedirectFilter();
+		ajaxTimeoutRedirectFilter.setCustomSessionExpiredErrorCode(env
+				.getProperty("customSessionExpiredErrorCode", Integer.class));
+		return ajaxTimeoutRedirectFilter;
 	}
 
 	@Override

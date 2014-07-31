@@ -40,7 +40,18 @@
 	<logger name="org.springframework.security">
 		<level value="info" />
 	</logger>
-
+	<logger name="org.springframework.jdbc">
+		<level value="info" />
+	</logger>
+	<logger name="org.springframework.orm">
+		<level value="info" />
+	</logger>
+	<logger name="org.springframework.transaction">
+		<level value="info" />
+	</logger>
+	<logger name="org.apache.commons.beanutils">
+		<level value="info" />
+	</logger>
 	<logger name="fr.wati">
 		<level value="debug" />
 	</logger>
