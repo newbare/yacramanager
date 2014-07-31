@@ -95,7 +95,7 @@
 					<li data-ng-class="navClass('home')"><a data-ui-sref="home">Home</a></li>
 					<li data-ng-class="navClass('frais')"><a data-ui-sref="frais">Frais</a></li>
 					<li data-ng-class="navClass('cra')"><a data-ui-sref="cra">CRA</a></li>
-					<li data-ng-class="navClass('absences/')"><a
+					<li data-ng-class="navClass('absences')"><a
 						data-ui-sref="absences">Absences</a></li>
 					<li data-ng-class="navClass('timesheet')"><a
 						data-ui-sref="timesheet">Timesheet</a></li>

@@ -46,8 +46,8 @@ App.factory('httpRequestServerErrorInterceptor',function ($q,$rootScope) {
             			method: rejection.config.method
             	}
             	$rootScope.$broadcast('event:http-request-error', requestError);
-                return $q.reject(rejection);
             }
+            return $q.reject(rejection);
          }
      }
 });
