@@ -18,6 +18,8 @@ App.directive('httpRequestError', [ '$rootScope', 'alertService', 'notifService'
                      				link : function(scope, elem, attrs, ctrl) {
                      					scope.$on('event:http-request-error', function(event, error) {
                      						console.log(error);
+                     						notifService.notify('error',error.title+': <strong>'+error.status+'</strong>',error.data);
+                     						//alertService.showError(error.title+': '+error.status+')',error.data);
                      					});
                      				}
                      			};
@@ -110,13 +112,14 @@ App.directive('collapsibleFieldset',	function() {
 			}
 		};
 });
-App.directive('authApplicationSupport', function() {
+App.directive('authApplicationSupport', function($timeout) {
     return {
         restrict: 'A',
         link: function(scope, elem, attrs) {
           //once Angular is started, remove class:
-          elem.removeClass('waiting-for-angular');
-          
+        	$timeout(function() {
+        		elem.removeClass('waiting-for-angular');
+			},0);
           var login = elem.find('#app-login-content');
           var main = elem.find('#app-content');
           
