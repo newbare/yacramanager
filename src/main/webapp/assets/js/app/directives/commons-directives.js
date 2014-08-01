@@ -4,7 +4,7 @@ App.directive('webSocket', [ '$timeout', 'WebSocketService', 'notifService',
 				restrict : 'AEC',
 				link : function(scope, elem, attrs, ctrl) {
 					timer(function() {
-						//WebSocketService.connect();
+						WebSocketService.connect();
 						//notifService.notify('info', 'WebSocket', 'Connected');
 					}, 0);
 				}

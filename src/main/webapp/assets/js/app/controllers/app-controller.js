@@ -29,6 +29,12 @@ App.config(function($datepickerProvider) {
 	});
 });
 
+App.config(function($timepickerProvider) {
+	angular.extend($timepickerProvider.defaults, {
+		template : _contextPath+'/assets/others/timepicker/timepicker.tpl.html'
+	});
+});
+
 App.config(function($tooltipProvider) {
   angular.extend($tooltipProvider.defaults, {
     animation: 'am-flip-x',

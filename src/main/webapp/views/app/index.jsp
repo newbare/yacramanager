@@ -151,6 +151,8 @@
 
 	<script
 		src="${contextPath}/assets/bower_components/jquery/dist/jquery.min.js"></script>
+		<script
+		src="${contextPath}/assets/bower_components/jquery-ui/jquery-ui.min.js"></script>
 	<script src="${contextPath}/assets/bower_components/angular/angular.js"></script>
 	<script src="${contextPath}/assets/js/app/application.js"></script>
 	<script
@@ -168,7 +170,7 @@
 	<script
 		src="${contextPath}/assets/bower_components/angular-resource/angular-resource.min.js"></script>
 	<script
-		src="${contextPath}/assets/bower_components/fullcalendar/fullcalendar.min.js"></script>
+		src="${contextPath}/assets/bower_components/fullcalendar/fullcalendar.js"></script>
 	<script
 		src="${contextPath}/assets/bower_components/angular-ui-calendar/src/calendar.js"></script>
 	<script
@@ -188,7 +190,9 @@
 	<script
 		src="${contextPath}/assets/bower_components/angular-strap/dist/angular-strap.tpl.min.js"></script>
 	<script
-		src="${contextPath}/assets/bower_components/angular-strap/dist/modules/datepicker.js"></script>
+		src="${contextPath}/assets/bower_components/angular-strap/dist/modules/datepicker.min.js"></script>
+		<script
+		src="${contextPath}/assets/bower_components/angular-strap/dist/modules/timepicker.min.js"></script>
 	<script
 		src="${contextPath}/assets/bower_components/angular-strap/dist/modules//tooltip.js"></script>
 	<script
@@ -197,6 +201,7 @@
 	<script src="${contextPath}/assets/js/stomp.js"></script>
 	<script src="${contextPath}/assets/js/http-auth-interceptor.js"></script>
 	<script src="${contextPath}/assets/js/colResizable-1.3.min.js"></script>
+	<script src="${contextPath}/assets/js/select2.js"></script>
 	<!-- 	<script src="${contextPath}/assets/js/app/filters/commons-filters.js"></script> -->
 	<script src="${contextPath}/assets/js/app/factories/users-factories.js"></script>
 	<script
@@ -217,6 +222,7 @@
 	<script src="${contextPath}/assets/js/app/factories/cra-factories.js"></script>
 	<script src="${contextPath}/assets/js/app/factories/notes-factories.js"></script>
 	<script src="${contextPath}/assets/js/app/factories/admin-factories.js"></script>
+	<script src="${contextPath}/assets/js/app/factories/worklog-factories.js"></script>
 	<script
 		src="${contextPath}/assets/js/app/factories/absences-factories.js"></script>
 	<script src="${contextPath}/assets/js/app/services/common-services.js"></script>

@@ -7,7 +7,6 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import fr.wati.yacramanager.beans.Absence_;
 import fr.wati.yacramanager.beans.Client;
 import fr.wati.yacramanager.beans.Company;
 import fr.wati.yacramanager.beans.Company_;

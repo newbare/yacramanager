@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
@@ -30,6 +31,9 @@ public class Employe extends Personne {
 	private Employe manager;
 	@OneToMany(mappedBy="manager")
 	private List<Employe> managedEmployes=new ArrayList<>();
+	
+	@ManyToMany(mappedBy="assignedEmployees")
+	private List<Project> projects=new ArrayList<>();
 	
 	public List<Absence> getAbsences() {
 		return absences;
@@ -72,6 +76,12 @@ public class Employe extends Personne {
 	}
 	public void setManagedEmployes(List<Employe> managedEmployes) {
 		this.managedEmployes = managedEmployes;
+	}
+	public List<Project> getProjects() {
+		return projects;
+	}
+	public void setProjects(List<Project> projects) {
+		this.projects = projects;
 	}
 	
 	

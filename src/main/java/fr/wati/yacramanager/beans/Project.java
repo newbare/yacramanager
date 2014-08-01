@@ -34,10 +34,13 @@ public class Project implements Serializable {
 	private String description;
 	private Date createdDate;
 	@ManyToMany(cascade = CascadeType.ALL)
-	@JoinTable(name = "projects_employees", joinColumns = { @JoinColumn(name = "projectId") }, inverseJoinColumns = { @JoinColumn(name = "employeId") })
-	private List<Employe> assignedEmployees=new ArrayList<>();
+	@JoinTable(
+			name = "projects_employees",
+			joinColumns = { @JoinColumn(name = "projectId", referencedColumnName = "id") },
+			inverseJoinColumns = { @JoinColumn(name = "employeId", referencedColumnName = "id") })
+	private List<Employe> assignedEmployees = new ArrayList<>();
 	@OneToMany(mappedBy = "project")
-	private List<Task> tasks=new ArrayList<>();
+	private List<Task> tasks = new ArrayList<>();
 	@ManyToOne
 	private Client client;
 
@@ -101,8 +104,6 @@ public class Project implements Serializable {
 		this.createdDate = createdDate;
 	}
 
-	
-
 	/**
 	 * @return the tasks
 	 */
@@ -126,7 +127,8 @@ public class Project implements Serializable {
 	}
 
 	/**
-	 * @param client the client to set
+	 * @param client
+	 *            the client to set
 	 */
 	public void setClient(Client client) {
 		this.client = client;
@@ -140,7 +142,8 @@ public class Project implements Serializable {
 	}
 
 	/**
-	 * @param assignedEmployees the assignedEmployees to set
+	 * @param assignedEmployees
+	 *            the assignedEmployees to set
 	 */
 	public void setAssignedEmployees(List<Employe> assignedEmployees) {
 		this.assignedEmployees = assignedEmployees;

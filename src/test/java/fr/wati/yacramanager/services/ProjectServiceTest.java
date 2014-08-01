@@ -3,6 +3,9 @@ package fr.wati.yacramanager.services;
 import static org.springframework.util.Assert.isNull;
 import static org.springframework.util.Assert.notEmpty;
 import static org.springframework.util.Assert.notNull;
+
+import java.util.List;
+
 import junit.framework.Assert;
 
 import org.junit.Test;
@@ -19,6 +22,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import fr.wati.yacramanager.beans.Client;
 import fr.wati.yacramanager.beans.Company;
 import fr.wati.yacramanager.beans.Company_;
+import fr.wati.yacramanager.beans.Employe;
 import fr.wati.yacramanager.beans.Project;
 import fr.wati.yacramanager.config.TestServicesConfig;
 import fr.wati.yacramanager.dao.repository.ProjectRepository;
@@ -34,6 +38,9 @@ public class ProjectServiceTest extends
 	private ClientService clientService;
 	@Autowired
 	private CompanyService companyService;
+	
+	@Autowired
+	private EmployeService employeService;
 	
 	@Autowired
 	private ProjectRepository projectRepository;
@@ -97,5 +104,21 @@ public class ProjectServiceTest extends
 		Company saveCompany = companyService.save(company);
 		Page<Company> page = companyService.findAll(CommonSpecifications.globalSearch("Com", Company.class,Company_.class), new PageRequest(0,10));
 		Assert.assertTrue(page.getTotalElements()==1);
+	}
+	
+	@Test
+	public void findProjectByEmploye(){
+		//create company
+		Company company=new Company();
+		company.setName("Company1");
+		Company saveCompany = companyService.createCompany(company);
+		
+		Employe managedEmploye1 = new Employe();
+		managedEmploye1.setNom("managedEmploye1");
+		managedEmploye1.setPrenom("managedEmploye1");
+		employeService.save(managedEmploye1);
+		saveCompany.getClients().get(0).getProjects().get(0).getAssignedEmployees().add(managedEmploye1);
+		List<Project> findByAssignedEmployeesIn = projectRepository.findByAssignedEmployeesIn(managedEmploye1);
+		Assert.assertTrue(1==findByAssignedEmployeesIn.size());
 	}
 }

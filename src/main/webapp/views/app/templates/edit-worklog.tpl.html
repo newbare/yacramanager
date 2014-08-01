@@ -9,38 +9,65 @@
 				<h3 data-ng-show="!edition" class="panel-title">Add entry</h3>
 				<h3 data-ng-show="edition" class="panel-title">Edit entry</h3>
 			</div>
-			<div class="modal-body">
-				<form role="form">
+			<div class="modal-body" >
+				<form role="form" class="form-horizontal">
 					<div class="form-group">
-						<label for="datepicker">Date</label>
-						<div class="input-group" id="datepicker">
-							<input type="text" class=" form-control " name="start"
-								data-ng-model="currentNote.date" placeholder="Date"
-								data-bs-datepicker /> <span class="input-group-addon"><i
-								class="fa fa-calendar"></i></span>
+						<label for="project-select" class="col-md-2" >Project</label>
+						<div class="col-md-6">
+							<input id="project-select" data-ui-select2="projectSelectOptions" data-ng-model="project" data-placeholder="Select a project">
+							</input>
 						</div>
 					</div>
 					<div class="form-group">
-						<label for="noteMontant">Montant</label>
-						<div class="input-group">
-							<input type="text" class="form-control" id="noteMontant"
-								data-ng-model="currentNote.amount" placeholder="Montant">
-							<span class="input-group-addon"><i class="fa fa-eur"></i></span>
+						<label for="task-select" class="col-md-2">Task</label>
+						<div class="col-md-6">
+							<input id="task-select" data-ui-select2="projectSelectOptions" data-ng-model="task" data-placeholder="Select a Task">
+							</input>
 						</div>
 					</div>
 					<div class="form-group">
-						<label for="noteDescription">Description</label> <input
-							type="text" class="form-control" id="noteDescription"
-							data-ng-model="currentNote.description"
-							placeholder="Description (facultatif)">
+						<label class="radio-inline col-md-4 col-md-offset-2">
+						  <input type="radio" name="optionsRadios" data-ng-model="timeType" id="durationCheckBox" value="duration"> Duration
+						</label>
+						<label class="radio-inline  col-md-4 col-md-offset-2">
+						  <input type="radio" name="optionsRadios" data-ng-model="timeType" id="timeCheckBox" value="time"> Time
+						</label>
+					</div>
+					<div class="form-group" data-ng-show="timeType=='time'">
+						<label for="timeStartDate" class="control-label col-md-2" style="text-align: left;">When</label>
+						<div class="col-md-2">
+							<input type="text" class="form-control" ng-model="timeStartDate"
+								data-autoclose="1" placeholder="Date" bs-datepicker>
+						</div>
+						<div class="col-md-2">
+							<input type="text" class="form-control" ng-model="timeStartDate"
+								data-autoclose="1" placeholder="Time" bs-timepicker>
+						</div>
+						<label for="timeStartDate" class="control-label col-md-2">To</label>
+						<div class="col-md-2">
+							<input type="text" class="form-control col-md-2"
+								ng-model="timeEndDate" data-autoclose="1" placeholder="Date"
+								bs-datepicker>
+						</div>
+						<div class="col-md-2">
+							<input type="text" class="form-control" ng-model="timeEndDate"
+								data-autoclose="1" placeholder="Time" bs-timepicker>
+						</div>
+					</div>
+					<div class="form-group" data-ng-show="timeType=='duration'">
+						<label for="durationStartDate" class="control-label col-md-2" style="text-align: left;">Date</label>
+						<div class="col-md-3">
+							<input type="text" class="form-control" ng-model="durationStartDate"
+								data-autoclose="1" placeholder="Date" bs-datepicker>
+						</div>
 					</div>
 					<div class="form-group">
-						<!--  <label for="attachement">Attachement</label> -->
-						<input type="file" id="attachement"
-							data-ng-file-select="onFileSelect($files)"
-							data-filename-placement="inside" data-file-Input>
+						<label for="noteDescription" class="control-label col-md-2">Description</label> 
+						<div class="col-md-6">
+							<textarea  id="noteDescription" class="form-control"
+								data-ng-model="description"		placeholder="Description (facultatif)"></textarea>
+						</div>
 					</div>
-
 				</form>
 			</div>
 			<div class="modal-footer">

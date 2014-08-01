@@ -23,9 +23,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import fr.wati.yacramanager.beans.Company;
+import fr.wati.yacramanager.beans.Employe;
 import fr.wati.yacramanager.beans.Project;
 import fr.wati.yacramanager.services.ClientService;
 import fr.wati.yacramanager.services.CompanyService;
+import fr.wati.yacramanager.services.EmployeService;
 import fr.wati.yacramanager.services.ProjectService;
 import fr.wati.yacramanager.utils.DtoMapper;
 import fr.wati.yacramanager.utils.Filter.FilterBuilder;
@@ -43,6 +46,9 @@ public class ProjectController {
 	private ProjectService projectService;
 	@Autowired
 	private CompanyService companyService;
+	
+	@Autowired
+	private EmployeService  employeService;
 	
 	@Autowired
 	private ClientService clientService;
@@ -140,5 +146,32 @@ public class ProjectController {
 			projectService.delete(project);
 		}
 	}
+	
+	@RequestMapping(value = "/employe/{employeId}", method = RequestMethod.GET)
+	public ResponseWrapper<List<ProjectDTO>> getProjects(
+			@PathVariable("companyId") Long companyId,
+			@PathVariable("employeId") Long employeId) throws RestServiceException{
+		Company company=companyService.findOne(companyId);
+		if(company==null){
+			throw new RestServiceException("The given company doesn't exist");
+		}
+		
+		Employe employe = employeService.findOne(employeId);
+		if(employe==null){
+			throw new RestServiceException("The given employe doesn't exist");
+		}
+		if(company.getId()!=employe.getCompany().getId()){
+			throw new RestServiceException("The given employe is not member of the given company");
+		}
+		List<Project> projects = projectService
+				.findByAssignedEmployeesIn(employe);
+		if(projects!=null && !projects.isEmpty()){
+			ResponseWrapper<List<ProjectDTO>> responseWrapper = new ResponseWrapper<>(
+					DtoMapper.mapProjects(projects), projects.size());
+			return responseWrapper;
+		}
+		return new ResponseWrapper<List<ProjectDTO>>(null);
+	}
+	
 
 }

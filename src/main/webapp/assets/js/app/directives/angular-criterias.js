@@ -32,7 +32,6 @@ angular
 								scope : {
 									// models
 									criteriaConfig : '=',
-
 									// callbacks
 									onClose : '&',
 									onOpen : '&',
@@ -79,10 +78,12 @@ angular
 										}else if ($scope.filterType === "ARRAY") {
 											
 										}else if ($scope.filterType === "DATE") {
+											$scope.dateSelector="byDate";
+											$scope.uniqueDate=undefined;
 											$scope.startDate=undefined;
 											$scope.endDate=undefined
 										}else if ($scope.filterType === "BOOLEAN") {
-											
+											$scope.booleanValue=undefined;
 										}else if ($scope.filterType === "COMPARATOR") {
 											$scope.filterValue=undefined;
 										}
@@ -144,6 +145,7 @@ angular
 															});
 											}
 										}
+										$scope.reset();
 									};
 									//get filter value datas
 									if($scope.criteriaConfig.getData !== undefined &&  angular.isFunction($scope.criteriaConfig.getData)){
@@ -226,18 +228,20 @@ angular
 															$scope.endDate,
 															'shortDate') + ')');
 											
-										}else if (($scope.dateSelector=="byDate") && ($scope.dateSelector=="byDate")) {
+										}else if (($scope.dateSelector=="byDate") && ($scope.uniqueDate!==undefined)) {
 											$scope.computeButtonLabel('('+ $filter('date')($scope.uniqueDate,'shortDate')+ ')');
 										}else {
 											filter.value=undefined;
 											$scope.resetButtonLabel();
 										}
-										$scope.closeFilterContent();
-										if($scope.criteriaConfig.onFilter!==undefined){
-											$scope.criteriaConfig.onFilter(filter);
+										if(filter.value!==undefined){
+											if($scope.criteriaConfig.onFilter!==undefined){
+												$scope.criteriaConfig.onFilter(filter);
+											}
+											$scope.criteriaConfig.currentFilter=filter;
+											$scope.onFilterTriggered(filter);
 										}
-										$scope.criteriaConfig.currentFilter=filter;
-										$scope.onFilterTriggered(filter);
+										$scope.closeFilterContent();
 									};
 									
 									$scope.onFilterComparator = function() {

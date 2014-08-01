@@ -1,5 +1,39 @@
 function TimeSheetController($scope,$rootScope,$http) {
 	$rootScope.page={"title":"Timesheet","description":"View and manage timesheet"}
+	
+	$scope.timeType="duration";
+	$scope.project=undefined;
+
+
+	var fetchProjects = function(queryParams) {
+		return $http.get(
+				_contextPath + "/app/api/" + _companyid + "/project/employe/"
+						+ _userId, {
+					params : {
+						"me" : true
+					}
+				}).then(queryParams.success);
+	}; 
+
+	$scope.projectSelectOptions = {
+		minimumInputLength : 3,
+		ajax : {
+			data : function(term, page) {
+				return {
+					query : term
+				};
+			},
+			quietMillis : 500,
+			transport : fetchProjects,
+			results : function(data, page) { // parse the results into the
+												// format expected by Select2
+				return {
+					results : data
+				};
+			}
+		}
+	};
+	
 	var date = new Date();
     var d = date.getDate();
     var m = date.getMonth();
@@ -85,11 +119,12 @@ function TimeSheetController($scope,$rootScope,$http) {
         select:$scope.onSelection
       }
     };
-	$scope.eventSources = [
-	                 {title: 'All Day Event',start: new Date(y, m, 1)},
-	                 {title: 'Long Event',start: new Date(y, m, d - 5),end: new Date(y, m, d - 2)},
-	                 {id: 999,title: 'Repeating Event',start: new Date(y, m, d - 3, 16, 0),allDay: false},
-	                 {id: 999,title: 'Repeating Event',start: new Date(y, m, d + 4, 16, 0),allDay: false},
-	                 {title: 'Birthday Party',start: new Date(y, m, d + 1, 19, 0),end: new Date(y, m, d + 1, 22, 30),allDay: false},
-	               ];
+    
+    $scope.eventSource = {
+            url: _contextPath+"/app/api/worklog",
+            type : 'GET'
+    };
+    $scope.eventSources = [$scope.eventSource];
+    
+    
 }

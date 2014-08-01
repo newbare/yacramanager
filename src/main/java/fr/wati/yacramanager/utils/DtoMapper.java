@@ -13,6 +13,7 @@ import fr.wati.yacramanager.beans.Employe;
 import fr.wati.yacramanager.beans.NoteDeFrais;
 import fr.wati.yacramanager.beans.Project;
 import fr.wati.yacramanager.beans.Users;
+import fr.wati.yacramanager.beans.WorkLog;
 import fr.wati.yacramanager.dao.repository.EmployeDto;
 import fr.wati.yacramanager.dao.repository.UserDto;
 import fr.wati.yacramanager.web.dto.AbsenceDTO;
@@ -21,6 +22,7 @@ import fr.wati.yacramanager.web.dto.CompanyDTO;
 import fr.wati.yacramanager.web.dto.NoteDeFraisDTO;
 import fr.wati.yacramanager.web.dto.ProjectDTO;
 import fr.wati.yacramanager.web.dto.UserInfoDTO.ManagedEmployeInfoDTO;
+import fr.wati.yacramanager.web.dto.WorkLogDTO;
 
 public class DtoMapper {
 
@@ -64,7 +66,7 @@ public class DtoMapper {
 		return dto;
 	}
 
-	public static List<ProjectDTO> mapProjects(Page<Project> projects) {
+	public static List<ProjectDTO> mapProjects(Iterable<Project> projects) {
 		List<ProjectDTO> dtos = new ArrayList<>();
 		for (Project project : projects) {
 			dtos.add(map(project));
@@ -175,5 +177,28 @@ public class DtoMapper {
 			dtos.add(map(employe));
 		}
 		return dtos;
+	}
+
+	public static List<WorkLogDTO> mapWorkLogs(List<WorkLog> workLogs) {
+		List<WorkLogDTO> dtos=new ArrayList<>();
+		for (WorkLog workLog : workLogs) {
+			dtos.add(map(workLog));
+		}
+		return dtos;
+	}
+
+	public static WorkLogDTO mapForDetails(WorkLog workLog) {
+		return map(workLog);
+	}
+
+	public static WorkLogDTO map(WorkLog workLog) {
+		WorkLogDTO workLogDTO=new WorkLogDTO();
+		workLogDTO.setStart(workLog.getStartDate());
+		workLogDTO.setEnd(workLog.getEndDate());
+		workLogDTO.setId(workLog.getId());
+		workLogDTO.setEditable(true);
+		workLogDTO.setTitle(workLog.getTask().getName());
+		workLogDTO.setAllDay(false);
+		return workLogDTO;
 	}
 }

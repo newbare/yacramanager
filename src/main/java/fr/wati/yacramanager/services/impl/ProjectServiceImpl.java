@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import fr.wati.yacramanager.beans.Client;
+import fr.wati.yacramanager.beans.Employe;
 import fr.wati.yacramanager.beans.Project;
 import fr.wati.yacramanager.beans.Project_;
 import fr.wati.yacramanager.beans.Task;
@@ -194,6 +195,11 @@ public class ProjectServiceImpl implements ProjectService{
 	@Override
 	public Project findByClientAndId(Client client, Long id) {
 		return projectRepository.findByClientAndId(client, id);
+	}
+
+	@Override
+	public List<Project> findByAssignedEmployeesIn(Employe employe) {
+		return projectRepository.findByAssignedEmployeesIn(employe);
 	}
 
 }
