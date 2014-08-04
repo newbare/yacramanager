@@ -1,38 +1,35 @@
 function TimeSheetController($scope,$rootScope,$http) {
 	$rootScope.page={"title":"Timesheet","description":"View and manage timesheet"}
-	
 	$scope.timeType="duration";
-	$scope.project=undefined;
-
-
 	var fetchProjects = function(queryParams) {
 		return $http.get(
-				_contextPath + "/app/api/" + _companyid + "/project/employe/"
+				_contextPath + "/app/api/" + _userCompanyId + "/project/employe/"
 						+ _userId, {
-					params : {
-						"me" : true
-					}
-				}).then(queryParams.success);
+					params : {}
+				}).then(function(response) {
+					$scope.projects=response.data.result;
+				});
 	}; 
 
-	$scope.projectSelectOptions = {
-		minimumInputLength : 3,
-		ajax : {
-			data : function(term, page) {
-				return {
-					query : term
-				};
-			},
-			quietMillis : 500,
-			transport : fetchProjects,
-			results : function(data, page) { // parse the results into the
-												// format expected by Select2
-				return {
-					results : data
-				};
-			}
-		}
-	};
+	fetchProjects();
+	
+	$scope.selectProject=function(project){
+		$scope.project=project;
+		fetchTasks();
+	}
+	$scope.selectTask=function(task){
+		$scope.task=task;
+	}
+	
+	var fetchTasks = function(queryParams) {
+		return $http.get(
+				_contextPath + "/app/api/" + _userCompanyId + "/task/"+$scope.project.id+"/"+ _userId, {
+					params : {}
+				}).then(function(response) {
+					$scope.tasks=response.data.result;
+				});
+	}; 
+
 	
 	var date = new Date();
     var d = date.getDate();

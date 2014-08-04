@@ -66,7 +66,9 @@ App.service('WebSocketService', function($timeout,notifService) {
 	this.connect = function connect() {
 			var socket = new SockJS('/yacramanager/yacra');
 			stompClient = Stomp.over(socket);
-			
+			stompClient.debug=function(){
+				//do nothing
+			};
 			stompClient.connect('guest','guest', function(frame) {
 				console.log('Connected: ' + frame);
 				var user = frame.headers['user-name'];

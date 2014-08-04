@@ -1,5 +1,10 @@
+.chosen-container{
+	display: block !important;
+	width: auto !important;
+}
+
 .panel{
-	border:none !important;
+	border: 1px solid #e5e5e5 !important;
 	background-color: #fff !important;
 }
 
@@ -43,6 +48,12 @@ color: #2a6496;
 
 .ng-table-rowselected tr {
     cursor: pointer;
+}
+
+.dropdown-menu.table-action{
+	right: 0;
+	left: auto;
+	top: 80%;
 }
 
 .scrollable {

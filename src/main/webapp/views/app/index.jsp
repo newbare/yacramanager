@@ -17,9 +17,12 @@
 <link rel="stylesheet"
 	href="${contextPath}/assets/bower_components/angular-motion/dist/angular-motion.css">
 <link rel="stylesheet"
+	href="${contextPath}/assets/bower_components/bootstrap-daterangepicker/daterangepicker-bs3.css">
+<link rel="stylesheet"
 	href="${contextPath}/assets/bower_components/ng-table/ng-table.min.css">
 <link rel="stylesheet"
 	href="${contextPath}/assets/bower_components/fullcalendar/fullcalendar.css">
+	<link rel="stylesheet" href="${contextPath}/assets/bower_components/chosen/chosen.min.css">
 <link rel="stylesheet"
 	href="${contextPath}/assets/bower_components/jquery.gritter/css/jquery.gritter.css">
 <link rel="stylesheet" href="${contextPath}/assets/css/gritter.css">
@@ -137,7 +140,7 @@
 						style="font-size: 80%"></i><small> {{page.description}}</small>
 				</h4>
 			</div>
-			<div data-ui-view="" class="am-fade" data-ng-cloak></div>
+			<div data-ui-view="" class="" data-ng-cloak></div>
 			<div class="footer">
 				<p class="text-muted">@ wati 2014</p>
 			</div>
@@ -184,7 +187,13 @@
 	<script
 		src="${contextPath}/assets/bower_components/angular-strap/dist/modules/alert.min.js"></script>
 	<script
+		src="${contextPath}/assets/bower_components/angular-daterangepicker/js/angular-daterangepicker.js"></script>
+	<script
+		src="${contextPath}/assets/bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
+	<script
 		src="${contextPath}/assets/bower_components/angular-strap/dist/modules/select.js"></script>
+	<script
+		src="${contextPath}/assets/bower_components/moment/moment.js"></script>
 	<script
 		src="${contextPath}/assets/bower_components/angular-strap/dist/modules/modal.js"></script>
 	<script
@@ -201,7 +210,8 @@
 	<script src="${contextPath}/assets/js/stomp.js"></script>
 	<script src="${contextPath}/assets/js/http-auth-interceptor.js"></script>
 	<script src="${contextPath}/assets/js/colResizable-1.3.min.js"></script>
-	<script src="${contextPath}/assets/js/select2.js"></script>
+	<script src="${contextPath}/assets/bower_components/angular-chosen-localytics/chosen.js"></script>
+	<script src="${contextPath}/assets/bower_components/chosen/chosen.jquery.js"></script>
 	<!-- 	<script src="${contextPath}/assets/js/app/filters/commons-filters.js"></script> -->
 	<script src="${contextPath}/assets/js/app/factories/users-factories.js"></script>
 	<script

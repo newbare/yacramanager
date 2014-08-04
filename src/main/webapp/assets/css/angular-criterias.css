@@ -1,7 +1,9 @@
 .ng-criteria-bar {
 	padding-top: 5px;
 	padding-left: 5px;
-	background-color: #f5f5f5;
+	/* background-color: #f5f5f5; */
+	border-top: 1px solid #f5f5f5;
+	border-bottom: 1px solid #f5f5f5;
 }
 /* the criteria button */
 .ng-criterion {

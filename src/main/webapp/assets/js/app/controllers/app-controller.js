@@ -91,6 +91,7 @@ App.config([ '$stateProvider', '$urlRouterProvider',
 			// Use $urlRouterProvider to configure any redirects (when) and
 			// invalid urls (otherwise).
 			$urlRouterProvider
+			.when('','/home')
 			.when('/company', '/company/home')
 			.when('/company/employees', '/company/employees/view/quickview')
 			.when('/company/clients', '/company/clients/view/quickview')
@@ -105,9 +106,15 @@ App.config([ '$stateProvider', '$urlRouterProvider',
 
 			// If the url is ever invalid, e.g. '/asdf', then redirect to '/'
 			// aka the home state
-			.otherwise('/');
-			$stateProvider.state('home', {
-				url : "/",
+			.otherwise('/error404');
+			$stateProvider
+			.state('error404', {
+				url : "/error404",
+				templateUrl : _contextPath+'/views/app/templates/error-404.tpl.html',
+				controller : HomeController
+			})
+			.state('home', {
+				url : "/home",
 				templateUrl : _contextPath+'/views/app/home.html',
 				controller : HomeController
 			}).state('frais', {

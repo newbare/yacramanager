@@ -160,7 +160,7 @@ public class ProjectController {
 		if(employe==null){
 			throw new RestServiceException("The given employe doesn't exist");
 		}
-		if(company.getId()!=employe.getCompany().getId()){
+		if(!company.getId().equals(employe.getCompany().getId())){
 			throw new RestServiceException("The given employe is not member of the given company");
 		}
 		List<Project> projects = projectService

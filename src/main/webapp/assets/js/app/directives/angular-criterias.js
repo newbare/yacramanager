@@ -70,6 +70,17 @@ angular
 									$scope.filterContentHTML=undefined;
 									$scope.isEditable=($scope.criteriaConfig.editable!==undefined)?$scope.criteriaConfig.editable:true;
 									$scope.active=false;
+									$scope.dateRange={startDate: null, endDate: null};
+									$scope.dateRangeOpts={
+											timePicker: ($scope.criteriaConfig.timePicker !== undefined) ? $scope.criteriaConfig.timePicker : false,
+											ranges:
+											{
+												'Last 7 Days': [moment().subtract('days', 6), moment()],
+										         'Last 30 Days': [moment().subtract('days', 29), moment()],
+										         'This Month': [moment().startOf('month'), moment().endOf('month')],
+										         'Last Month': [moment().subtract('month', 1).startOf('month'), moment().subtract('month', 1).endOf('month')]
+											}
+									};
 									// templates initialisations
 									
 									$scope.reset=function(){
@@ -80,8 +91,9 @@ angular
 										}else if ($scope.filterType === "DATE") {
 											$scope.dateSelector="byDate";
 											$scope.uniqueDate=undefined;
-											$scope.startDate=undefined;
-											$scope.endDate=undefined
+											$scope.dateRange={startDate: null, endDate: null};
+											$scope.dateRange.startDate=undefined;
+											$scope.dateRange.endDate=undefined
 										}else if ($scope.filterType === "BOOLEAN") {
 											$scope.booleanValue=undefined;
 										}else if ($scope.filterType === "COMPARATOR") {
@@ -210,22 +222,22 @@ angular
 										if($scope.dateSelector=="byDate"){
 											computedValue=$scope.uniqueDate
 										}else {
-											computedValue= {start : $scope.startDate,end : $scope.endDate}
+											computedValue= {start : $scope.dateRange.startDate,end : $scope.dateRange.endDate}
 										}
 										var filter = {
 											type  : ($scope.dateSelector=="byDate") ?"DATE":"DATE_RANGE",
 											field : $scope.criteriaConfig.name,
 											value :computedValue
 										};
-										if (($scope.dateSelector=="byRangeDate") && ($scope.startDate !== undefined
-												&& $scope.endDate !== undefined)) {
+										if (($scope.dateSelector=="byRangeDate") && ($scope.dateRange.startDate !== undefined
+												&& $scope.dateRange.endDate !== undefined)) {
 											$scope.computeButtonLabel('('
 													+ $filter('date')(
-															$scope.startDate,
+															$scope.dateRange.startDate,
 															'shortDate')
 													+ '-'
 													+ $filter('date')(
-															$scope.endDate,
+															$scope.dateRange.endDate,
 															'shortDate') + ')');
 											
 										}else if (($scope.dateSelector=="byDate") && ($scope.uniqueDate!==undefined)) {
@@ -424,9 +436,12 @@ angular
 												return;
 											}
 										}
-
+										if($scope.filterType=="DATE" && $scope.dateSelector=="byRangeDate"
+											//&& angular.element(document.querySelector('.daterangepicker')).attr("style").indexOf("display: block")!== -1
+										){
+											return;
+										}
 										$scope.closeFilterContent();
-
 										// close callback
 										$timeout(function() {
 											$scope.onClose({

@@ -43,7 +43,7 @@ public class WorkLogRestController implements RestCrudController<WorkLogDTO>{
 			List<WorkLogDTO> dtos = DtoMapper.mapWorkLogs(workLogs);
 			return new ResponseEntity<List<WorkLogDTO>>(dtos, HttpStatus.OK);
 		}
-		return new ResponseEntity<List<WorkLogDTO>>(HttpStatus.NOT_FOUND);
+		return new ResponseEntity<List<WorkLogDTO>>(HttpStatus.OK);
 	}
 
 

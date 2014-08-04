@@ -17,6 +17,10 @@ function CraController($scope,$rootScope,CraREST,$filter,$http) {
 	var currentWeeklastday = new Date(date.setDate(date.getDate() - date.getDay()+6));
 	
 	$scope.tableFilter="";
+	$scope.dateRange={
+			startDate:formatDate(currentMonthfirstDay),
+			endDate:formatDate(currentMonthlastDay)
+	}
 	$scope.employeCriteriaConfig={
 			name:"employe",
 			defaultButtonLabel:"Who",
@@ -48,8 +52,25 @@ function CraController($scope,$rootScope,CraREST,$filter,$http) {
 			currentFilter:{},
 			displayed: true
 	};
+	
+	$scope.dateCriteriaConfig={
+			name:"date",
+			defaultButtonLabel:"Date",
+			filterType:"DATE",
+			closeable:true,
+			filterValue:"",
+			timePicker:true,
+			onFilter: function(filter) {
+				$scope.dateRange.startDate=formatDate(filter.value.start);
+				$scope.dateRange.endDate=formatDate(filter.value.end);
+				console.log('Filter text ['+filter.field+'] searching: '+filter.value);
+			},
+			currentFilter:{},
+			displayed: true
+	};
+	
 	$scope.criteriaBarConfig={
-			criterions:[$scope.employeCriteriaConfig],
+			criterions:[$scope.employeCriteriaConfig,$scope.dateCriteriaConfig],
 			autoFilter:true,
 			filters:[]
 		};
@@ -58,29 +79,14 @@ function CraController($scope,$rootScope,CraREST,$filter,$http) {
 			console.log("Server filer launch with: "+JSON.stringify(data));
 			var serverFilter={filter:data};
 			$scope.tableFilter=JSON.stringify(serverFilter);
-			//$scope.refreshDatas();
+			$scope.retrieveCra();
 		};
 	
-	$scope.startDate=formatDate(currentMonthfirstDay);
-	$scope.endDate=formatDate(currentMonthlastDay);
 	$scope.retrieveCra=function(){
-		CraREST.get({start:formatDate($scope.startDate),end:formatDate($scope.endDate)},function(data) {
+		CraREST.get({start:formatDate($scope.dateRange.startDate),end:formatDate($scope.dateRange.endDate)},function(data) {
 		    $scope.cra = data;
 		    $scope.respStartDate=data.startDate;
 		    $scope.respEndDate=data.endDate;
 		});
 	};	
-	$scope.periodChanged=function(){
-		if($scope.selectedPeriod){
-			if($scope.selectedPeriod==="Current week"){
-				$scope.startDate=formatDate(currentWeekfirstday);
-				$scope.endDate=formatDate(currentWeeklastday);
-			}else if ($scope.selectedPeriod==="Current month") {
-				$scope.startDate=formatDate(currentMonthfirstDay);
-				$scope.endDate=formatDate(currentMonthlastDay);
-			}
-			$scope.retrieveCra();
-		}
-	};
-	$scope.periodChanged();
 }

@@ -12,6 +12,7 @@ import fr.wati.yacramanager.beans.Company;
 import fr.wati.yacramanager.beans.Employe;
 import fr.wati.yacramanager.beans.NoteDeFrais;
 import fr.wati.yacramanager.beans.Project;
+import fr.wati.yacramanager.beans.Task;
 import fr.wati.yacramanager.beans.Users;
 import fr.wati.yacramanager.beans.WorkLog;
 import fr.wati.yacramanager.dao.repository.EmployeDto;
@@ -21,6 +22,7 @@ import fr.wati.yacramanager.web.dto.ClientDTO;
 import fr.wati.yacramanager.web.dto.CompanyDTO;
 import fr.wati.yacramanager.web.dto.NoteDeFraisDTO;
 import fr.wati.yacramanager.web.dto.ProjectDTO;
+import fr.wati.yacramanager.web.dto.TaskDTO;
 import fr.wati.yacramanager.web.dto.UserInfoDTO.ManagedEmployeInfoDTO;
 import fr.wati.yacramanager.web.dto.WorkLogDTO;
 
@@ -200,5 +202,33 @@ public class DtoMapper {
 		workLogDTO.setTitle(workLog.getTask().getName());
 		workLogDTO.setAllDay(false);
 		return workLogDTO;
+	}
+
+	/**
+	 * @param tasks
+	 * @return
+	 */
+	public static List<TaskDTO> mapTasks(Iterable<Task> tasks) {
+		List<TaskDTO> dtos = new ArrayList<>();
+		for (Task task : tasks) {
+			dtos.add(map(task));
+		}
+		return dtos;
+	}
+
+	/**
+	 * @param task
+	 * @return
+	 */
+	private static TaskDTO map(Task task) {
+		TaskDTO dto=new TaskDTO();
+		dto.setCreatedDate(task.getCreatedDate());
+		dto.setDescription(task.getDescription());
+		dto.setEmployeId(task.getEmploye().getId());
+		dto.setId(task.getId());
+		dto.setName(task.getName());
+		dto.setTaskStatus(task.getTaskStatus());
+		dto.setProjectId(task.getProject().getId());
+		return dto;
 	}
 }

@@ -1,6 +1,6 @@
 <div class="modal" id="editionFormModal" tabindex="-1"
 	role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-	<div class="modal-dialog">
+	<div class="modal-dialog" style="width: 60%">
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" ng-click="$hide()">
@@ -14,15 +14,25 @@
 					<div class="form-group">
 						<label for="project-select" class="col-md-2" >Project</label>
 						<div class="col-md-6">
-							<input id="project-select" data-ui-select2="projectSelectOptions" data-ng-model="project" data-placeholder="Select a project">
-							</input>
+							<select data-chosen data-ng-change="selectProject(project)"
+						          data-placeholder="Select a project"
+						          data-ng-model="project"
+						          data-ng-options="p.name for p in projects">
+						           <option value=""></option>
+						  </select>
+							<!-- <input id="project-select" data-ui-select2="projectSelectOptions" data-ng-change="selectProject(project)" data-ng-model="model.project" data-placeholder="Select a project"> -->
 						</div>
 					</div>
 					<div class="form-group">
 						<label for="task-select" class="col-md-2">Task</label>
 						<div class="col-md-6">
-							<input id="task-select" data-ui-select2="projectSelectOptions" data-ng-model="task" data-placeholder="Select a Task">
-							</input>
+							<select data-chosen 
+						          data-placeholder="Select a task"
+						          data-ng-model="task"
+						          data-ng-options="t.name for t in tasks">
+						           <option value=""></option>
+						  </select>
+							<!-- <input id="task-select" data-ui-select2="taskSelectOptions" data-ng-change="selectTask(task)" data-ng-model="task" data-placeholder="Select a Task"> -->
 						</div>
 					</div>
 					<div class="form-group">
@@ -43,9 +53,9 @@
 							<input type="text" class="form-control" ng-model="timeStartDate"
 								data-autoclose="1" placeholder="Time" bs-timepicker>
 						</div>
-						<label for="timeStartDate" class="control-label col-md-2">To</label>
+						<label for="timeStartDate" class="control-label col-md-1" style="text-align: center;">To</label>
 						<div class="col-md-2">
-							<input type="text" class="form-control col-md-2"
+							<input type="text" class="form-control"
 								ng-model="timeEndDate" data-autoclose="1" placeholder="Date"
 								bs-datepicker>
 						</div>
@@ -62,8 +72,8 @@
 						</div>
 					</div>
 					<div class="form-group">
-						<label for="noteDescription" class="control-label col-md-2">Description</label> 
-						<div class="col-md-6">
+						<label for="noteDescription" class="control-label col-md-2" style="text-align: left;">Description</label> 
+						<div class="col-md-9">
 							<textarea  id="noteDescription" class="form-control"
 								data-ng-model="description"		placeholder="Description (facultatif)"></textarea>
 						</div>

@@ -5,7 +5,7 @@ var getUserInitials=function(name){
 var yaCRAApp = {};
 
 var App = angular.module('yaCRAApp', [ 'ngResource', 'mgcrea.ngStrap','ng-criterias','ngHtmlCompile',
-		'ngRoute', 'ngAnimate', 'ngTable', 'ui.router', 'angularFileUpload','ui.calendar','http-auth-interceptor','ui.select2' ]);
+		'ngRoute', 'ngAnimate', 'ngTable', 'ui.router', 'angularFileUpload','ui.calendar','http-auth-interceptor','localytics.directives','daterangepicker' ]);
 
 
 App.config(['$httpProvider', function($httpProvider) {

@@ -27,6 +27,7 @@ import fr.wati.yacramanager.web.api.CustomMapEditor;
 import fr.wati.yacramanager.web.api.NoteDeFraisController;
 import fr.wati.yacramanager.web.api.ProjectController;
 import fr.wati.yacramanager.web.api.RestServiceException;
+import fr.wati.yacramanager.web.api.TaskRestController;
 import fr.wati.yacramanager.web.api.UserRestController;
 import fr.wati.yacramanager.web.api.WorkLogRestController;
 
@@ -36,12 +37,14 @@ import fr.wati.yacramanager.web.api.WorkLogRestController;
  */
 @ControllerAdvice(assignableTypes = { NoteDeFraisController.class,
 		AbsenceController.class, CompanyController.class,
-		ClientController.class,UserRestController.class,ProjectController.class ,WorkLogRestController.class})
+		ClientController.class, UserRestController.class,
+		ProjectController.class, WorkLogRestController.class,
+		TaskRestController.class})
 public class RestControllerAdvice {
 
 	@Autowired
 	private SimpMessagingTemplate messagingTemplate;
-	
+
 	@InitBinder
 	public void initBinder(WebDataBinder binder) {
 		/*
@@ -50,14 +53,15 @@ public class RestControllerAdvice {
 		binder.registerCustomEditor(Map.class, new CustomMapEditor(
 				HashMap.class, true));
 	}
-	
-	@ExceptionHandler({RestServiceException.class,Exception.class})
+
+	@ExceptionHandler({ RestServiceException.class, Exception.class })
 	@ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
-	@SendToUser(value="/queue/errors")
+	@SendToUser(value = "/queue/errors")
 	@ResponseBody
-	public String handleRestException(Exception ex, HttpServletResponse response) throws IOException
-	{
-		//messagingTemplate.convertAndSendToUser(SecurityUtils.getConnectedUser().getUsername(), "/queue/errors", ex.getMessage());
+	public String handleRestException(Exception ex, HttpServletResponse response)
+			throws IOException {
+		// messagingTemplate.convertAndSendToUser(SecurityUtils.getConnectedUser().getUsername(),
+		// "/queue/errors", ex.getMessage());
 		return ex.getMessage();
 
 	}
