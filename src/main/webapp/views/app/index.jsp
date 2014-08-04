@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html lang="fr" ng-app="yaCRAApp">
 <head>
-<title>YACRA Manager</title>
+<title data-update-title></title>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -94,20 +94,61 @@
 						YACRA</span></a>
 			</div>
 			<div class="navbar-collapse collapse">
-				<ul class="nav navtop navbar-nav navbar-right">
-					<li data-ng-class="navClass('home')"><a data-ui-sref="home">Home</a></li>
-					<li data-ng-class="navClass('frais')"><a data-ui-sref="frais">Frais</a></li>
-					<li data-ng-class="navClass('cra')"><a data-ui-sref="cra">CRA</a></li>
-					<li data-ng-class="navClass('absences')"><a
-						data-ui-sref="absences">Absences</a></li>
-					<li data-ng-class="navClass('timesheet')"><a
-						data-ui-sref="timesheet">Timesheet</a></li>
-					<li data-has-role="ROLE_SSII_ADMIN" data-ng-cloak
-						data-ng-class="navClass('company/')"><a
-						data-ui-sref="company"><i class="fa fa-university"></i>{{userInfo.company.name}}</a></li>
+				<ul class="nav navtop navbar-nav navbar-left">
 					<li data-has-role="ROLE_ADMIN"
 						data-ng-class="navClass('admin/')"><a
 						data-ui-sref="admin">Admin</a></li>
+					<li data-has-role="ROLE_SSII_ADMIN" data-ng-cloak
+						data-ng-class="navClass('company/')"><a
+						data-ui-sref="company"><i class="fa fa-university"></i>{{userInfo.company.name}}</a></li>
+					<li class="dropdown" data-ng-class="navClass('frais') + navClass('cra') + navClass('absences') + navClass('timesheet')">
+						<a href="" class="dropdown-toggle" data-toggle="dropdown">Workspace<span class="caret"></span></a>
+						<ul class="workspace-menu dropdown-menu" role="menu">
+							<li data-ng-class="navClass('frais')"><a data-ui-sref="frais">Frais</a></li>
+							<li data-ng-class="navClass('cra')"><a data-ui-sref="cra">CRA</a></li>
+							<li data-ng-class="navClass('absences')"><a
+								data-ui-sref="absences">Absences</a></li>
+							<li data-ng-class="navClass('timesheet')"><a
+								data-ui-sref="timesheet">Timesheet</a></li>
+						</ul>
+					</li>
+				</ul>
+				<ul class="nav navtop navbar-nav navbar-right">
+					<li>
+						<div class="timer-widget" data-ng-controller="WorkLogCtrl" data-ng-class="{running: timerRunning}">
+							<a href="" data-ng-click="open=!open"><i class="fa fa-clock-o"></i><span class="caret"></span></a>
+							<timer autostart="false" interval="1000" data-ng-show="timerRunning">{{hhours}}:{{mminutes}}:{{sseconds}}</timer>
+							<button type="button" class="btn btn-danger btn-xs"  data-ng-click="stopTimer()" data-ng-show="timerRunning">Stop</button>
+							<div class="timer-widget-content" data-ng-show="open">
+									<form role="form">
+										<div class="form-group">
+    										<label for="project">Project</label>
+											<select id="project" class="form-control"  data-chosen data-ng-change="selectProject(project)"
+									          data-placeholder="Select a project"
+									          data-ng-model="project"
+									          data-ng-options="p.name for p in projects">
+							           		<option value=""></option>
+								  			</select>
+								  		</div>
+								  		<div class="form-group">
+    										<label for="task">Task</label>
+								  			<select id="task" class="form-control"  data-chosen data-ng-change="selectTask(task)"
+										          data-placeholder="Select a task"
+										          data-ng-model="task"
+										          data-ng-options="t.name for t in tasks">
+								           		<option value=""></option>
+								  			</select>
+								  		</div>
+							  			 <div class="form-group">
+										    <label for="description">Note</label>
+										    <textarea id="description" data-ng-model="description" class="form-control" data-placeholder="Enter a note"></textarea>
+										  </div>
+										<button type="button" class="btn btn-success btn-xs btn-block" data-ng-click="startTimer()" data-ng-disabled="!startable">Start</button>
+									</form>
+							</div>
+						</div>
+					</li>
+					<li data-ng-class="navClass('home')"><a data-ui-sref="home"><i class="fa fa-home"></i></a></li>
 					<li data-ng-class="navClass('messages')"><a
 						data-ui-sref="messages"><i class="fa fa-envelope"></i></a></li>
 					<li data-ng-class="navClass('notifications')"><a
@@ -204,6 +245,8 @@
 		src="${contextPath}/assets/bower_components/angular-strap/dist/modules/timepicker.min.js"></script>
 	<script
 		src="${contextPath}/assets/bower_components/angular-strap/dist/modules//tooltip.js"></script>
+	<script
+		src="${contextPath}/assets/bower_components/angular-timer/dist/angular-timer.js"></script>
 	<script
 		src="${contextPath}/assets/bower_components/jquery.gritter/js/jquery.gritter.min.js"></script>
 	<script src="${contextPath}/assets/js/sockjs-0.3.4.js"></script>

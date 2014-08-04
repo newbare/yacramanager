@@ -10,10 +10,10 @@ public class WorkLogDTO {
 	private String title;
 	private Date start;
 	private Date end;
-	private long employeId;
-	private long taskId;
+	private Long employeId;
+	private Long taskId;
 	private String taskName;
-	private long duration;
+	private Long duration;
 	private String description;
 	private boolean editable=true;
 	private boolean allDay;
@@ -85,19 +85,19 @@ public class WorkLogDTO {
 		this.allDay = allDay;
 	}
 
-	public long getEmployeId() {
+	public Long getEmployeId() {
 		return employeId;
 	}
 
-	public void setEmployeId(long employeId) {
+	public void setEmployeId(Long employeId) {
 		this.employeId = employeId;
 	}
 
-	public long getTaskId() {
+	public Long getTaskId() {
 		return taskId;
 	}
 
-	public void setTaskId(long taskId) {
+	public void setTaskId(Long taskId) {
 		this.taskId = taskId;
 	}
 
@@ -109,11 +109,11 @@ public class WorkLogDTO {
 		this.taskName = taskName;
 	}
 
-	public long getDuration() {
+	public Long getDuration() {
 		return duration;
 	}
 
-	public void setDuration(long duration) {
+	public void setDuration(Long duration) {
 		this.duration = duration;
 	}
 

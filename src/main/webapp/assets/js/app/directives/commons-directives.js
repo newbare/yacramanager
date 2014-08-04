@@ -11,6 +11,20 @@ App.directive('webSocket', [ '$timeout', 'WebSocketService', 'notifService',
 			};
 		} ]);
 
+App.directive('updateTitle', function($rootScope) {
+	  return {
+	    link: function(scope, element) {
+
+	      var listener = function(event, toState, toParams, fromState, fromParams) {
+	        var title = 'YACRA Manager';
+	        if (toState.data && toState.data.pageTitle) title = title+ ' | '+toState.data.pageTitle;
+	        element.text(title)
+	      };
+
+	      $rootScope.$on('$stateChangeStart', listener);
+	    }
+	  }
+	});
 App.directive('httpRequestError', [ '$rootScope', 'alertService', 'notifService',
                      		function($rootScope, alertService, notifService) {
                      			return {

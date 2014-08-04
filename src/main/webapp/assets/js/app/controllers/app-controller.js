@@ -59,6 +59,85 @@ App.controller('AppCtrl', [ '$scope', '$location', 'UsersREST','$rootScope',
 				return "container-fluid";
 			}
 		} ]);
+
+App.controller('WorkLogCtrl',['$scope','$http','WorkLogCRUDREST','alertService',function($scope,$http,WorkLogCRUDREST,alertService){
+	 $scope.timerRunning = false;
+	 $scope.open=false
+	 $scope.project=undefined;
+	 $scope.task=undefined
+	 var start=undefined;
+	 
+     $scope.startTimer = function (){
+         $scope.$broadcast('timer-start');
+         $scope.timerRunning = true;
+         $scope.open=false;
+         start=moment();
+         $scope.updateStartable();
+     };
+
+     $scope.stopTimer = function (){
+    	 $scope.timerRunning = false;
+    	 $scope.$broadcast('timer-stop');
+    	 $scope.updateStartable();
+     };
+
+     $scope.$on('timer-stopped', function (event, data){
+    	 $scope.updateStartable();
+    	 console.log('Timer Stopped - data = ', data);
+    	 $scope.worklog.title="";
+    	 $scope.worklog.start=start;
+    	 $scope.worklog.end=moment().add('minutes', data.minutes);
+    	 $scope.worklog.duration=data.minutes;
+    	 $scope.worklog.taskId= $scope.task.id;
+    	 $scope.worklog.taskName=$scope.task.name;
+    	 $scope.worklog.description=$scope.description;
+    	 $scope.worklog.employeId=_userId;
+    	 WorkLogCRUDREST.save($scope.worklog).$promise.then(function(result) {
+			alertService.showInfo('Confirmation', 'Donn� sauvegard�');
+		});
+     });
+     
+     var fetchProjects = function(queryParams) {
+ 		return $http.get(
+ 				_contextPath + "/app/api/" + _userCompanyId + "/project/employe/"
+ 						+ _userId, {
+ 					params : {}
+ 				}).then(function(response) {
+ 					$scope.projects=response.data.result;
+ 				});
+ 	}; 
+
+ 	fetchProjects();
+ 	
+ 	$scope.selectProject=function(project){
+ 		$scope.project=project;
+ 		fetchTasks();
+ 		$scope.updateStartable();
+ 	}
+ 	$scope.selectTask=function(task){
+ 		$scope.task=task;
+ 		$scope.updateStartable();
+ 	}
+ 	
+ 	var fetchTasks = function(queryParams) {
+ 		return $http.get(
+ 				_contextPath + "/app/api/" + _userCompanyId + "/task/"+$scope.project.id+"/"+ _userId, {
+ 					params : {}
+ 				}).then(function(response) {
+ 					$scope.tasks=response.data.result;
+ 				});
+ 	};
+ 	
+ 	$scope.updateStartable=function(){
+ 		$scope.startable= $scope.project!==undefined && $scope.task!==undefined && !$scope.timerRunning;
+ 	};
+ 	
+ 	$scope.resetWorkLog=function(){
+ 		$scope.worklog={};
+ 	};
+ 	$scope.resetWorkLog();
+}]);
+
 App.controller('LoginCtrl', [ '$scope','$http','authService',function($scope,$http, authService) {
 	$scope.submit = function() {
 	      $http({
@@ -111,38 +190,62 @@ App.config([ '$stateProvider', '$urlRouterProvider',
 			.state('error404', {
 				url : "/error404",
 				templateUrl : _contextPath+'/views/app/templates/error-404.tpl.html',
-				controller : HomeController
+				controller : HomeController,
+				data: {
+			        pageTitle: 'Error 404'
+			      }
 			})
 			.state('home', {
 				url : "/home",
 				templateUrl : _contextPath+'/views/app/home.html',
-				controller : HomeController
+				controller : HomeController,
+				data: {
+			        pageTitle: 'Home'
+			      }
 			}).state('frais', {
 				url : "/frais",
 				templateUrl : _contextPath+'/views/app/frais.html',
-				controller : FraisController
+				controller : FraisController,
+				data: {
+			        pageTitle: 'Frais'
+			      }
 			}).state('cra', {
 				url : "/cra",
 				templateUrl : _contextPath+'/views/app/cra.html',
-				controller : CraController
+				controller : CraController,
+				data: {
+			        pageTitle: 'CRA'
+			      }
 			}).state('absences', {
 				url : "/absences",
 				templateUrl : _contextPath+'/views/app/absences.html',
-				controller : AbsencesController
+				controller : AbsencesController,
+				data: {
+			        pageTitle: 'Absences'
+			      }
 			}).state('timesheet', {
 				url : "/timesheet",
 				templateUrl : _contextPath+'/views/app/timesheet.html',
-				controller : TimeSheetController
+				controller : TimeSheetController,
+				data: {
+			        pageTitle: 'Timesheet'
+			      }
 			})
 			.state('messages', {
 				url : "/messages",
 				templateUrl : _contextPath+'/views/app/messages.html',
-				controller : MessagesController
+				controller : MessagesController,
+				data: {
+			        pageTitle: 'Messages'
+			      }
 			})
 			.state('notifications', {
 				url : "/notifications",
 				templateUrl : _contextPath+'/views/app/notifications.html',
-				controller : NotificationsController
+				controller : NotificationsController,
+				data: {
+			        pageTitle: 'Notifications'
+			      }
 			}).state('user-settings', {
 				url : "/user-settings",
 				templateUrl : _contextPath+'/views/app/user-settings.html',
@@ -154,7 +257,10 @@ App.config([ '$stateProvider', '$urlRouterProvider',
 			}).state('company', {
 				url : "/company",
 				templateUrl : _contextPath+'/views/app/company.html',
-				controller : CompanyController
+				controller : CompanyController,
+				data: {
+			        pageTitle: 'Company management'
+			      }
 			}).state('company.home', {
 				url : "/home",
 				templateUrl : _contextPath+'/views/app/company/company-home.html'

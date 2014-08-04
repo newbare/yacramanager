@@ -16,7 +16,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import fr.wati.yacramanager.beans.Employe;
+import fr.wati.yacramanager.beans.Task;
 import fr.wati.yacramanager.beans.WorkLog;
+import fr.wati.yacramanager.services.EmployeService;
+import fr.wati.yacramanager.services.TaskService;
 import fr.wati.yacramanager.services.WorkLogService;
 import fr.wati.yacramanager.utils.DtoMapper;
 import fr.wati.yacramanager.utils.SecurityUtils;
@@ -29,6 +33,10 @@ public class WorkLogRestController implements RestCrudController<WorkLogDTO>{
 
 	@Autowired
 	private WorkLogService workLogService;
+	@Autowired
+	private EmployeService employeService;
+	@Autowired
+	private TaskService taskService;
 
 	@RequestMapping(method = RequestMethod.GET)
 	public @ResponseBody
@@ -86,9 +94,19 @@ public class WorkLogRestController implements RestCrudController<WorkLogDTO>{
 
 	@Override
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<String> create(@RequestBody WorkLogDTO dto) {
+	public ResponseEntity<String> create(@RequestBody WorkLogDTO dto) throws RestServiceException{
+		if(dto.getTaskId()==null){
+			throw new RestServiceException("No given task ID error");
+		}
 		WorkLog workLog = dto.toWorkLog();
-		workLog.setEmploye(SecurityUtils.getConnectedUser());
+		if(dto.getEmployeId()==null){
+			workLog.setEmploye(SecurityUtils.getConnectedUser());
+		}else {
+			Employe employe=employeService.findOne(dto.getEmployeId());
+			workLog.setEmploye(employe);
+		}
+		Task task=taskService.findOne(dto.getTaskId());
+		workLog.setTask(task);
 		workLogService.save(workLog);
 		return new ResponseEntity<>(HttpStatus.CREATED);
 	}

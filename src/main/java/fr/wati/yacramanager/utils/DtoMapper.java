@@ -199,8 +199,11 @@ public class DtoMapper {
 		workLogDTO.setEnd(workLog.getEndDate());
 		workLogDTO.setId(workLog.getId());
 		workLogDTO.setEditable(true);
-		workLogDTO.setTitle(workLog.getTask().getName());
+		if(workLog.getTask()!=null){
+			workLogDTO.setTitle(workLog.getTask().getName());
+		}
 		workLogDTO.setAllDay(false);
+		workLogDTO.setDescription(workLog.getDescription());
 		return workLogDTO;
 	}
 
