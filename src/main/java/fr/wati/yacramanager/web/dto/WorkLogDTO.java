@@ -1,6 +1,6 @@
 package fr.wati.yacramanager.web.dto;
 
-import java.util.Date;
+import org.joda.time.DateTime;
 
 import fr.wati.yacramanager.beans.WorkLog;
 
@@ -8,8 +8,8 @@ public class WorkLogDTO {
 
 	private long id;
 	private String title;
-	private Date start;
-	private Date end;
+	private DateTime start;
+	private DateTime end;
 	private Long employeId;
 	private Long taskId;
 	private String taskName;
@@ -53,19 +53,19 @@ public class WorkLogDTO {
 		this.description = description;
 	}
 
-	public Date getStart() {
+	public DateTime getStart() {
 		return start;
 	}
 
-	public void setStart(Date start) {
-		this.start = start;
+	public void setStart(DateTime dateTime) {
+		this.start = dateTime;
 	}
 
-	public Date getEnd() {
+	public DateTime getEnd() {
 		return end;
 	}
 
-	public void setEnd(Date end) {
+	public void setEnd(DateTime end) {
 		this.end = end;
 	}
 

@@ -5,8 +5,9 @@ package fr.wati.yacramanager.web.dto;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
+
+import org.joda.time.DateTime;
 
 import fr.wati.yacramanager.beans.NoteDeFrais;
 
@@ -19,7 +20,7 @@ public class NoteDeFraisDTO {
 	private Long id;
 	private Long employeId;
 	private String employeName;
-	private Date date;
+	private DateTime date;
 	private BigDecimal amount;
 	private String description;
 	private List<Long> attachementsIds=new ArrayList<>();
@@ -80,7 +81,7 @@ public class NoteDeFraisDTO {
 	/**
 	 * @return the date
 	 */
-	public Date getDate() {
+	public DateTime getDate() {
 		return date;
 	}
 
@@ -88,7 +89,7 @@ public class NoteDeFraisDTO {
 	/**
 	 * @param date the date to set
 	 */
-	public void setDate(Date date) {
+	public void setDate(DateTime date) {
 		this.date = date;
 	}
 

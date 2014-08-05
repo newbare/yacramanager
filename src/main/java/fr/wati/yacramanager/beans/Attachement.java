@@ -4,7 +4,6 @@
 package fr.wati.yacramanager.beans;
 
 import java.io.Serializable;
-import java.util.Date;
 
 import javax.persistence.Basic;
 import javax.persistence.Entity;
@@ -14,6 +13,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
+
+import org.hibernate.annotations.Type;
+import org.joda.time.DateTime;
 
 /**
  * @author Rachid Ouattara
@@ -26,7 +28,8 @@ public class Attachement implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	private Date date;
+	@Type(type="org.joda.time.contrib.hibernate.PersistentDateTime")
+	private DateTime date;
 	private String name;
 	private String contentType;
 	@Lob
@@ -49,13 +52,13 @@ public class Attachement implements Serializable {
 	/**
 	 * @return the date
 	 */
-	public Date getDate() {
+	public DateTime getDate() {
 		return date;
 	}
 	/**
 	 * @param date the date to set
 	 */
-	public void setDate(Date date) {
+	public void setDate(DateTime date) {
 		this.date = date;
 	}
 	/**

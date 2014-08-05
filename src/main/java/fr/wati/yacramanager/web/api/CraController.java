@@ -3,6 +3,7 @@ package fr.wati.yacramanager.web.api;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
@@ -31,7 +32,7 @@ public class CraController {
     }
 	
 	@RequestMapping(method=RequestMethod.GET)
-	public @ResponseBody CraDTO getCra(@RequestParam(value="start", required=true) Date startDate, @RequestParam(value="end", required=true) Date endDate){
+	public @ResponseBody CraDTO getCra(@RequestParam(value="start", required=true) DateTime startDate, @RequestParam(value="end", required=true) DateTime endDate){
 		CraDTO craDTO=craService.generateCra(SecurityUtils.getConnectedUser(), startDate, endDate);
 		return craDTO;
 	}

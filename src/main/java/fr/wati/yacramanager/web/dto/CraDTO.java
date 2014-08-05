@@ -1,22 +1,14 @@
 package fr.wati.yacramanager.web.dto;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.databind.deser.std.DateDeserializers.DateDeserializer;
-import com.fasterxml.jackson.databind.ser.std.DateSerializer;
+import org.joda.time.DateTime;
 
 public class CraDTO {
 	
-	@JsonDeserialize(using=DateDeserializer.class)
-	@JsonSerialize(using=DateSerializer.class)
-	private Date startDate;
-	@JsonDeserialize(using=DateDeserializer.class)
-	@JsonSerialize(using=DateSerializer.class)
-	private Date endDate;
+	private DateTime startDate;
+	private DateTime endDate;
 	private List<Day> days;
 
 	
@@ -27,22 +19,22 @@ public class CraDTO {
 		days=new ArrayList<>();
 	}
 
-	public CraDTO(Date startDate, Date endDate) {
+	public CraDTO(DateTime startDate, DateTime endDate) {
 		this();
 		this.startDate = startDate;
 		this.endDate = endDate;
 	}
 	
-	public Date getStartDate() {
+	public DateTime getStartDate() {
 		return startDate;
 	}
-	public void setStartDate(Date startDate) {
+	public void setStartDate(DateTime startDate) {
 		this.startDate = startDate;
 	}
-	public Date getEndDate() {
+	public DateTime getEndDate() {
 		return endDate;
 	}
-	public void setEndDate(Date endDate) {
+	public void setEndDate(DateTime endDate) {
 		this.endDate = endDate;
 	}
 	public List<Day> getDays() {
@@ -57,7 +49,7 @@ public class CraDTO {
 	}
 	
 	public static class Day {
-		private Date date;
+		private DateTime date;
 		private DayElement morning;
 		private DayElement afternoon;
 		private boolean dayOff=false;
@@ -73,10 +65,10 @@ public class CraDTO {
 		public void setAfternoon(DayElement afternoon) {
 			this.afternoon = afternoon;
 		}
-		public Date getDate() {
+		public DateTime getDate() {
 			return date;
 		}
-		public void setDate(Date date) {
+		public void setDate(DateTime date) {
 			this.date = date;
 		}
 		public boolean isDayOff() {

@@ -3,12 +3,12 @@
  */
 package fr.wati.yacramanager.web.api;
 
-import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -42,7 +42,7 @@ public class AttachementController {
 		try {
 			if (file != null) {
 				Attachement attachement = new Attachement();
-				attachement.setDate(new Date());
+				attachement.setDate(new DateTime());
 				attachement.setName(file.getOriginalFilename());
 				attachement.setContentType(file.getContentType());
 				attachement.setContent(IOUtils.toByteArray(file

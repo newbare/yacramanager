@@ -5,15 +5,17 @@ package fr.wati.yacramanager.utils;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormatter;
+import org.joda.time.format.ISODateTimeFormat;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.TextNode;
-import com.fasterxml.jackson.databind.util.ISO8601DateFormat;
 
 /**
  * @author Rachid Ouattara
@@ -84,9 +86,9 @@ public abstract class Filter {
 
 	public static class FilterDateValue {
 
-		private Date date;;
-		private Date start;
-		private Date end;
+		private DateTime date;;
+		private DateTime start;
+		private DateTime end;
 
 		
 		
@@ -94,13 +96,13 @@ public abstract class Filter {
 		 * @param start
 		 * @param end
 		 */
-		public FilterDateValue(Date start, Date end) {
+		public FilterDateValue(DateTime start, DateTime end) {
 			super();
 			this.start = start;
 			this.end = end;
 		}
 		
-		public FilterDateValue(Date date) {
+		public FilterDateValue(DateTime date) {
 			super();
 			this.date = date;
 		}
@@ -108,7 +110,7 @@ public abstract class Filter {
 		/**
 		 * @return the start
 		 */
-		public Date getStart() {
+		public DateTime getStart() {
 			return start;
 		}
 
@@ -116,14 +118,14 @@ public abstract class Filter {
 		 * @param start
 		 *            the start to set
 		 */
-		public void setStart(Date start) {
+		public void setStart(DateTime start) {
 			this.start = start;
 		}
 
 		/**
 		 * @return the end
 		 */
-		public Date getEnd() {
+		public DateTime getEnd() {
 			return end;
 		}
 
@@ -131,21 +133,21 @@ public abstract class Filter {
 		 * @param end
 		 *            the end to set
 		 */
-		public void setEnd(Date end) {
+		public void setEnd(DateTime end) {
 			this.end = end;
 		}
 
 		/**
 		 * @return the date
 		 */
-		public Date getDate() {
+		public DateTime getDate() {
 			return date;
 		}
 
 		/**
 		 * @param date the date to set
 		 */
-		public void setDate(Date date) {
+		public void setDate(DateTime date) {
 			this.date = date;
 		}
 
@@ -386,7 +388,7 @@ public abstract class Filter {
 		@SuppressWarnings({ "unchecked", "rawtypes" })
 		public static List parse(String json) throws Exception{
 			List filters=new ArrayList<>();
-			ISO8601DateFormat iso8601DateFormat=new ISO8601DateFormat();
+			DateTimeFormatter dateTimeFormat=ISODateTimeFormat.dateTimeParser();
 			JsonNode filterNode = objectMapper.readTree(json);
 			ArrayNode filtersNode=(ArrayNode) filterNode.get("filter");
 			Iterator<JsonNode> iterator = filtersNode.iterator();
@@ -422,7 +424,7 @@ public abstract class Filter {
 					FilterDate filterRangeDate=new FilterDate();
 					filterRangeDate.setField(((TextNode)jsonNode.get("field")).asText());
 					filterRangeDate.setType(filterType);
-					FilterDateValue filterRangeDateValue=new FilterDateValue(iso8601DateFormat.parse(jsonNode.get("value").get("start").asText()), iso8601DateFormat.parse(jsonNode.get("value").get("end").asText()));
+					FilterDateValue filterRangeDateValue=new FilterDateValue(dateTimeFormat.parseDateTime(jsonNode.get("value").get("start").asText()), dateTimeFormat.parseDateTime(jsonNode.get("value").get("end").asText()));
 					filterRangeDate.setValue(filterRangeDateValue);
 					filterRangeDate.setRangedDate(true);
 					filters.add(filterRangeDate);
@@ -431,7 +433,7 @@ public abstract class Filter {
 					FilterDate filterDate=new FilterDate();
 					filterDate.setField(((TextNode)jsonNode.get("field")).asText());
 					filterDate.setType(filterType);
-					FilterDateValue filterDateValue=new FilterDateValue(iso8601DateFormat.parse(jsonNode.get("value").asText()));
+					FilterDateValue filterDateValue=new FilterDateValue(dateTimeFormat.parseDateTime(jsonNode.get("value").asText()));
 					filterDate.setValue(filterDateValue);
 					filters.add(filterDate);
 					break;

@@ -7,6 +7,7 @@ import java.util.List;
 
 import junit.framework.Assert;
 
+import org.joda.time.DateTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,13 +81,13 @@ public class CompanyServiceTest extends
 		company.setName("Mock company");
 		Calendar calendar=Calendar.getInstance();
 		calendar.set(2014, 07, 14);
-		company.setRegisteredDate(calendar.getTime());
+		company.setRegisteredDate(new DateTime(calendar.getTime()));
 		companyService.createCompany(company);
 		Calendar startCalendar=Calendar.getInstance();
 		startCalendar.set(2014, 07, 12);
 		Calendar endCalendar=Calendar.getInstance();
 		endCalendar.set(2014, 07, 16);
-		List<Company> findAll = companyRepository.findAll(CompanySpecifications.registeredDateBetween(startCalendar.getTime(), endCalendar.getTime()));
+		List<Company> findAll = companyRepository.findAll(CompanySpecifications.registeredDateBetween(new DateTime(startCalendar.getTime()), new DateTime(endCalendar.getTime())));
 		Assert.assertTrue(findAll.size()>0);
 	}
 	
@@ -99,7 +100,7 @@ public class CompanyServiceTest extends
 		company.setName("Mock company");
 		Calendar calendar=Calendar.getInstance();
 		calendar.set(2014, 07, 14);
-		company.setRegisteredDate(calendar.getTime());
+		company.setRegisteredDate(new DateTime(calendar.getTime()));
 		companyService.createCompany(company);
 		employe.setCompany(company);
 		employeService.save(employe);

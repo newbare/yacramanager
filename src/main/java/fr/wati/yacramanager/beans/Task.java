@@ -4,7 +4,6 @@
 package fr.wati.yacramanager.beans;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -15,6 +14,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+
+import org.hibernate.annotations.Type;
+import org.joda.time.DateTime;
 
 /**
  * @author Rachid Ouattara
@@ -28,7 +30,8 @@ public class Task implements Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	private String name;
-	private Date createdDate;
+	@Type(type="org.joda.time.contrib.hibernate.PersistentDateTime")
+	private DateTime createdDate;
 	private String description;
 	@ManyToOne
 	private Project project;
@@ -65,13 +68,13 @@ public class Task implements Serializable {
 	/**
 	 * @return the createdDate
 	 */
-	public Date getCreatedDate() {
+	public DateTime getCreatedDate() {
 		return createdDate;
 	}
 	/**
 	 * @param createdDate the createdDate to set
 	 */
-	public void setCreatedDate(Date createdDate) {
+	public void setCreatedDate(DateTime createdDate) {
 		this.createdDate = createdDate;
 	}
 	/**

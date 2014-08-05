@@ -2,7 +2,6 @@ package fr.wati.yacramanager.beans;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CollectionTable;
@@ -16,6 +15,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.PreRemove;
 
+import org.hibernate.annotations.Type;
+import org.joda.time.DateTime;
+
 @SuppressWarnings("serial")
 @Entity
 public class Company implements Serializable{
@@ -28,8 +30,10 @@ public class Company implements Serializable{
 	private List<Employe> employes=new ArrayList<>();
 	@OneToMany(mappedBy="company")
 	private List<Client> clients=new ArrayList<>();
-	private Date registeredDate;
-	private Date licenseEndDate;
+	@Type(type="org.joda.time.contrib.hibernate.PersistentDateTime")
+	private DateTime registeredDate;
+	@Type(type="org.joda.time.contrib.hibernate.PersistentDateTime")
+	private DateTime licenseEndDate;
 	@ElementCollection(fetch=FetchType.EAGER)
 	@CollectionTable(
 	        name="CONTACT",
@@ -67,25 +71,25 @@ public class Company implements Serializable{
 	/**
 	 * @return the licenseEndDate
 	 */
-	public Date getLicenseEndDate() {
+	public DateTime getLicenseEndDate() {
 		return licenseEndDate;
 	}
 	/**
 	 * @param licenseEndDate the licenseEndDate to set
 	 */
-	public void setLicenseEndDate(Date licenseEndDate) {
+	public void setLicenseEndDate(DateTime licenseEndDate) {
 		this.licenseEndDate = licenseEndDate;
 	}
 	/**
 	 * @return the registeredDate
 	 */
-	public Date getRegisteredDate() {
+	public DateTime getRegisteredDate() {
 		return registeredDate;
 	}
 	/**
 	 * @param registeredDate the registeredDate to set
 	 */
-	public void setRegisteredDate(Date registeredDate) {
+	public void setRegisteredDate(DateTime registeredDate) {
 		this.registeredDate = registeredDate;
 	}
 	/**

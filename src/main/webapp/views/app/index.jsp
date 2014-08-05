@@ -115,11 +115,13 @@
 				</ul>
 				<ul class="nav navtop navbar-nav navbar-right">
 					<li>
-						<div class="timer-widget" data-ng-controller="WorkLogCtrl" data-ng-class="{running: timerRunning}">
-							<a href="" data-ng-click="open=!open"><i class="fa fa-clock-o"></i><span class="caret"></span></a>
+						<div class="timer-widget dropdown" data-ng-controller="WorkLogCtrl" data-ng-class="{running: timerRunning}">
+							<a data-toggle="dropdown" href=""><i class="fa fa-clock-o"></i><span
+							class="caret"></span></a>
+							<span data-ng-show="timerRunning && task!==undefined" style="padding-right: 5px;">[{{task.name}}]:</span>
 							<timer autostart="false" interval="1000" data-ng-show="timerRunning">{{hhours}}:{{mminutes}}:{{sseconds}}</timer>
 							<button type="button" class="btn btn-danger btn-xs"  data-ng-click="stopTimer()" data-ng-show="timerRunning">Stop</button>
-							<div class="timer-widget-content" data-ng-show="open">
+							<div class="timer-widget-content dropdown-menu">
 									<form role="form">
 										<div class="form-group">
     										<label for="project">Project</label>

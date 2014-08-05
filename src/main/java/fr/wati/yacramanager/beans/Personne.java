@@ -3,15 +3,14 @@
  */
 package fr.wati.yacramanager.beans;
 
-import java.util.Date;
-
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.validation.constraints.Past;
 
-import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.annotations.Type;
+import org.joda.time.DateTime;
 
 /**
  * @author Rachid Ouattara
@@ -25,7 +24,8 @@ public class Personne extends Users {
 	private String nom;
 	private String prenom;
 	@Past
-	private Date dateNaissance;
+	@Type(type="org.joda.time.contrib.hibernate.PersistentDateTime")
+	private DateTime dateNaissance;
 	@Enumerated(EnumType.ORDINAL)
 	private Civilite civilite;
 	@Embedded
@@ -59,13 +59,13 @@ public class Personne extends Users {
 	/**
 	 * @return the dateNaissance
 	 */
-	public Date getDateNaissance() {
+	public DateTime getDateNaissance() {
 		return dateNaissance;
 	}
 	/**
 	 * @param dateNaissance the dateNaissance to set
 	 */
-	public void setDateNaissance(Date dateNaissance) {
+	public void setDateNaissance(DateTime dateNaissance) {
 		this.dateNaissance = dateNaissance;
 	}
 	/**

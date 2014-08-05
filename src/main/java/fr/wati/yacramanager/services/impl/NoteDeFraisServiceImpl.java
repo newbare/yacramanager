@@ -223,7 +223,7 @@ public class NoteDeFraisServiceImpl implements NoteDeFraisService {
 				FilterDate filterDate=(FilterDate) filter;
 				if("date".equals(filter.getField())){
 					if(filterDate.isRangedDate()){
-						return CommonSpecifications.between(filterDate.getValue().getStart(), filterDate.getValue().getEnd(), NoteDeFrais_.date);
+						//return CommonSpecifications.between(filterDate.getValue().getStart(), filterDate.getValue().getEnd(), NoteDeFrais_.date);
 					}else {
 						return CommonSpecifications.equals(filterDate.getValue().getDate(), NoteDeFrais_.date);
 					}

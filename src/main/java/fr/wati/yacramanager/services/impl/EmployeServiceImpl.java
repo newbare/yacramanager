@@ -1,13 +1,13 @@
 package fr.wati.yacramanager.services.impl;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import org.dozer.Mapper;
 import org.dozer.spring.DozerBeanMapperFactoryBean;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -141,7 +141,7 @@ public class EmployeServiceImpl implements EmployeService {
 		employe.setContact(contact);
 		Company company=new Company();
 		company.setName(registrationDTO.getCompanyName());
-		company.setRegisteredDate(new Date());
+		company.setRegisteredDate(new DateTime());
 		Company createCompany = companyService.createCompany(company);
 		employe.setCompany(createCompany);
 		Set<Role> roles=new HashSet<>();

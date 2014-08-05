@@ -4,7 +4,6 @@
 package fr.wati.yacramanager.web.api;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -12,6 +11,7 @@ import java.util.Map.Entry;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -140,7 +140,7 @@ public class NoteDeFraisController extends
 	public ResponseEntity<String> create(@RequestBody NoteDeFraisDTO dto) {
 		try {
 			NoteDeFrais noteDeFrais = dto.toNoteDeFrais();
-			noteDeFrais.setDate(new Date());
+			noteDeFrais.setDate(new DateTime());
 			noteDeFrais.setEmploye(SecurityUtils.getConnectedUser());
 			if (!dto.getAttachementsIds().isEmpty()) {
 				List<Attachement> findAttachementsByIds = attachementService

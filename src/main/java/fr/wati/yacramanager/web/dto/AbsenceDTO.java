@@ -1,6 +1,6 @@
 package fr.wati.yacramanager.web.dto;
 
-import java.util.Date;
+import org.joda.time.DateTime;
 
 import fr.wati.yacramanager.beans.Absence;
 
@@ -9,10 +9,10 @@ public class AbsenceDTO {
 	private Long id;
 	private Long employeId;
 	private String employeName;
-	private Date date;
+	private DateTime date;
 	private String description;
-	private Date startDate;
-	private Date endDate;
+	private DateTime startDate;
+	private DateTime endDate;
 	private String typeAbsence;
 	private boolean startAfternoon;
 	private boolean endMorning;
@@ -66,11 +66,11 @@ public class AbsenceDTO {
 		return toAbsence(new Absence());
 	}
 	
-	public Date getDate() {
+	public DateTime getDate() {
 		return date;
 	}
 
-	public void setDate(Date date) {
+	public void setDate(DateTime date) {
 		this.date = date;
 	}
 
@@ -80,16 +80,16 @@ public class AbsenceDTO {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	public Date getStartDate() {
+	public DateTime getStartDate() {
 		return startDate;
 	}
-	public void setStartDate(Date startDate) {
+	public void setStartDate(DateTime startDate) {
 		this.startDate = startDate;
 	}
-	public Date getEndDate() {
+	public DateTime getEndDate() {
 		return endDate;
 	}
-	public void setEndDate(Date endDate) {
+	public void setEndDate(DateTime endDate) {
 		this.endDate = endDate;
 	}
 	public String getTypeAbsence() {

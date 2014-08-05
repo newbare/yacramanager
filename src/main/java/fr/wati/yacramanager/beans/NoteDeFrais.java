@@ -6,7 +6,6 @@ package fr.wati.yacramanager.beans;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -15,6 +14,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+
+import org.hibernate.annotations.Type;
+import org.joda.time.DateTime;
 
 /**
  * @author Rachid Ouattara
@@ -27,7 +29,8 @@ public class NoteDeFrais implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	private Date date;
+	@Type(type="org.joda.time.contrib.hibernate.PersistentDateTime")
+	private DateTime date;
 	private BigDecimal amount;
 	private String description;
 	@OneToMany(mappedBy="noteDeFrais")
@@ -52,13 +55,13 @@ public class NoteDeFrais implements Serializable{
 	/**
 	 * @return the date
 	 */
-	public Date getDate() {
+	public DateTime getDate() {
 		return date;
 	}
 	/**
 	 * @param date the date to set
 	 */
-	public void setDate(Date date) {
+	public void setDate(DateTime date) {
 		this.date = date;
 	}
 	/**

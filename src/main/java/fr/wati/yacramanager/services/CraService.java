@@ -1,12 +1,12 @@
 package fr.wati.yacramanager.services;
 
-import java.util.Date;
+import org.joda.time.DateTime;
 
 import fr.wati.yacramanager.beans.Employe;
 import fr.wati.yacramanager.web.dto.CraDTO;
 
 public interface CraService {
 	
-	CraDTO generateCra(Employe employe,Date startDate,Date endDate);
+	CraDTO generateCra(Employe employe,DateTime startDate,DateTime endDate);
 
 }

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -52,14 +53,14 @@ public class ProjectServiceImpl implements ProjectService{
 	public Project createProject(Long clientId,Project project){
 		Client client=clientRepository.findOne(clientId);
 		project.setClient(client);
-		project.setCreatedDate(new Date());
+		project.setCreatedDate(new DateTime());
 		Project saveProject = projectRepository.save(project);
 		client.getProjects().add(project);
 		/*
 		 * Each project should have at least one default Task 
 		 */
 		Task defaulTask=new Task();
-		defaulTask.setCreatedDate(new Date());
+		defaulTask.setCreatedDate(new DateTime());
 		defaulTask.setName("Default Task");
 		taskService.createTask(saveProject.getId(), defaulTask);
 		return saveProject;
@@ -163,7 +164,7 @@ public class ProjectServiceImpl implements ProjectService{
 				FilterDate filterDate=(FilterDate) filter;
 				if("createdDate".equals(filter.getField())){
 					if(filterDate.isRangedDate()){
-						return CommonSpecifications.between(filterDate.getValue().getStart(), filterDate.getValue().getEnd(), Project_.createdDate);
+						//return CommonSpecifications.between(filterDate.getValue().getStart(), filterDate.getValue().getEnd(), Project_.createdDate);
 					}else {
 						return CommonSpecifications.equals(filterDate.getValue().getDate(), Project_.createdDate);
 					}

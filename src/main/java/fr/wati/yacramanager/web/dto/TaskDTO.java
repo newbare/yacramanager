@@ -3,7 +3,7 @@
  */
 package fr.wati.yacramanager.web.dto;
 
-import java.util.Date;
+import org.joda.time.DateTime;
 
 import fr.wati.yacramanager.beans.TaskStatus;
 
@@ -15,7 +15,7 @@ public class TaskDTO {
 
 	private Long id;
 	private String name;
-	private Date createdDate;
+	private DateTime createdDate;
 	private String description;
 	private Long projectId;
 	private TaskStatus taskStatus;
@@ -47,14 +47,14 @@ public class TaskDTO {
 	/**
 	 * @return the createdDate
 	 */
-	public Date getCreatedDate() {
+	public DateTime getCreatedDate() {
 		return createdDate;
 	}
 	/**
-	 * @param createdDate the createdDate to set
+	 * @param dateTime the createdDate to set
 	 */
-	public void setCreatedDate(Date createdDate) {
-		this.createdDate = createdDate;
+	public void setCreatedDate(DateTime dateTime) {
+		this.createdDate = dateTime;
 	}
 	/**
 	 * @return the description

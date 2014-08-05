@@ -1,67 +1,68 @@
 package fr.wati.yacramanager.utils;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import org.joda.time.DateTime;
+
 public class CalendarUtil {
 
-	private static List<Date> datesFeries;
+	private static List<DateTime> datesFeries;
 	
-	public static List<Date> getJourFeries(int annee) {
+	public static List<DateTime> getJourFeries(int annee) {
 		if(datesFeries==null){
-			datesFeries= new ArrayList<Date>();
+			datesFeries= new ArrayList<DateTime>();
 
 			// Jour de l'an
 			GregorianCalendar jourAn = new GregorianCalendar(annee, 0, 1);
-			datesFeries.add(jourAn.getTime());
+			datesFeries.add(new DateTime(jourAn));
 
 			// Lundi de pacques
 			GregorianCalendar pacques = calculLundiPacques(annee);
-			datesFeries.add(pacques.getTime());
+			datesFeries.add(new DateTime(pacques));
 
 			// Fete du travail
 			GregorianCalendar premierMai = new GregorianCalendar(annee, 4, 1);
-			datesFeries.add(premierMai.getTime());
+			datesFeries.add(new DateTime(premierMai));
 
 			// 8 mai
 			GregorianCalendar huitMai = new GregorianCalendar(annee, 4, 8);
-			datesFeries.add(huitMai.getTime());
+			datesFeries.add(new DateTime(huitMai));
 
 			// Ascension (= pâques + 38 jours)
 			GregorianCalendar ascension = new GregorianCalendar(annee,
 					pacques.get(GregorianCalendar.MONTH),
 					pacques.get(GregorianCalendar.DAY_OF_MONTH));
 			ascension.add(GregorianCalendar.DAY_OF_MONTH, 38);
-			datesFeries.add(ascension.getTime());
+			datesFeries.add(new DateTime(ascension));
 
 			// Pentecôte (= pâques + 49 jours)
 			GregorianCalendar pentecote = new GregorianCalendar(annee,
 					pacques.get(GregorianCalendar.MONTH),
 					pacques.get(GregorianCalendar.DAY_OF_MONTH));
 			pentecote.add(GregorianCalendar.DAY_OF_MONTH, 49);
-			datesFeries.add(pentecote.getTime());
+			datesFeries.add(new DateTime(pentecote));
 
 			// Fête Nationale
 			GregorianCalendar quatorzeJuillet = new GregorianCalendar(annee, 6, 14);
-			datesFeries.add(quatorzeJuillet.getTime());
+			datesFeries.add(new DateTime(quatorzeJuillet));
 
 			// Assomption
 			GregorianCalendar assomption = new GregorianCalendar(annee, 7, 15);
-			datesFeries.add(assomption.getTime());
+			datesFeries.add(new DateTime(assomption));
 
 			// La Toussaint
 			GregorianCalendar toussaint = new GregorianCalendar(annee, 10, 1);
-			datesFeries.add(toussaint.getTime());
+			datesFeries.add(new DateTime(toussaint));
 
 			// L'Armistice
 			GregorianCalendar armistice = new GregorianCalendar(annee, 10, 11);
-			datesFeries.add(armistice.getTime());
+			datesFeries.add(new DateTime(armistice));
 
 			// Noël
 			GregorianCalendar noel = new GregorianCalendar(annee, 11, 25);
-			datesFeries.add(noel.getTime());
+			datesFeries.add(new DateTime(noel));
 		} 
 		
 

@@ -45,6 +45,7 @@ public class PersistenceConfig
 		factory.setDataSource(dataSource());
 		factory.setJpaVendorAdapter(vendorAdapter);
 		factory.setPackagesToScan("fr.wati.yacramanager.beans");
+		factory.getJpaPropertyMap().put("jadira.usertype.autoRegisterUserTypes", "true");
 //		Properties jpaProperties = new Properties();
 //		jpaProperties.put("hibernate.hbm2ddl.auto", env.getProperty("hibernate.hbm2ddl.auto"));
 //		factory.setJpaProperties(jpaProperties);

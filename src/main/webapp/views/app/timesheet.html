@@ -20,7 +20,13 @@
 			<span style="vertical-align: middle;" data-ng-show="tableParams.settings().total>0"><b>{{startIndex}}</b> - <b>{{endIndex}}</b> of <b>{{tableParams.settings().total}}</b></span>
 		</div>
 		<div class="row">
-			<div data-ui-calendar="uiConfig.calendar" data-ng-model="eventSources"></div>
+			<div class="col-md-3">
+			<h5><span class="">Latest worklog</span></h5>
+			</div>
+			<div class="col-md-9">
+				<div data-ui-calendar="uiConfig.calendar" data-ng-model="eventSources"></div>
+			</div>
+			
 		</div>
 	</div>
 </div>

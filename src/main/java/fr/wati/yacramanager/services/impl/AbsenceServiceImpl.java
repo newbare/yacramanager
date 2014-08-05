@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -36,7 +37,7 @@ public class AbsenceServiceImpl implements AbsenceService {
 	private EmployeService employeService;
 
 	@Override
-	public Page<Absence> findByStartDateBetween(Date dateDebut, Date dateFin,
+	public Page<Absence> findByStartDateBetween(DateTime dateDebut, DateTime dateFin,
 			Pageable pageable) {
 		return absenceRepository.findByDateBetween(dateDebut, dateFin, pageable);
 	}
@@ -117,7 +118,7 @@ public class AbsenceServiceImpl implements AbsenceService {
 
 	@Override
 	public Page<Absence> findByEmployeAndStartDateBetween(Employe employe,
-			Date dateDebut, Date dateFin, Pageable pageable) {
+			DateTime dateDebut, DateTime dateFin, Pageable pageable) {
 		return absenceRepository.findByEmployeAndStartDateBetween(employe, dateDebut, dateFin, pageable);
 	}
 
@@ -130,7 +131,7 @@ public class AbsenceServiceImpl implements AbsenceService {
 
 	@Override
 	public List<Absence> findByEmployeAndStartDateBetween(Employe employe,
-			Date dateDebut, Date dateFin) {
+			DateTime dateDebut, DateTime dateFin) {
 		return absenceRepository.findByEmployeAndStartDateBetween(employe, dateDebut, dateFin);
 	}
 
@@ -184,7 +185,7 @@ public class AbsenceServiceImpl implements AbsenceService {
 				FilterDate filterDate=(FilterDate) filter;
 				if("date".equals(filter.getField())){
 					if(filterDate.isRangedDate()){
-						return CommonSpecifications.between(filterDate.getValue().getStart(), filterDate.getValue().getEnd(), Absence_.date);
+						//return CommonSpecifications.between(filterDate.getValue().getStart(), filterDate.getValue().getEnd(), Absence_.date);
 					}else {
 						return CommonSpecifications.equals(filterDate.getValue().getDate(), Absence_.date);
 					}

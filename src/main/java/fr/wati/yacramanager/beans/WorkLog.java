@@ -4,14 +4,15 @@
 package fr.wati.yacramanager.beans;
 
 import java.io.Serializable;
-import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.Transient;
+
+import org.hibernate.annotations.Type;
+import org.joda.time.DateTime;
 
 /**
  * @author Rachid Ouattara
@@ -24,17 +25,22 @@ public class WorkLog implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	private Date createdDate;
+	@Type(type="org.joda.time.contrib.hibernate.PersistentDateTime")
+	private DateTime createdDate;
 	@ManyToOne
 	private Task task;
 	@ManyToOne
 	private Employe employe;
-	private Date startDate;
-	private Date endDate;
-	@Transient
+	@Type(type="org.joda.time.contrib.hibernate.PersistentDateTime")
+	private DateTime startDate;
+	@Type(type="org.joda.time.contrib.hibernate.PersistentDateTime")
+	private DateTime endDate;
+	/**
+	 * the duration in seconds
+	 */
 	private Long duration;
 	private String description;
-	
+	private WorkLogType workLogType;
 	/**
 	 * @return the id
 	 */
@@ -50,13 +56,13 @@ public class WorkLog implements Serializable {
 	/**
 	 * @return the createdDate
 	 */
-	public Date getCreatedDate() {
+	public DateTime getCreatedDate() {
 		return createdDate;
 	}
 	/**
 	 * @param createdDate the createdDate to set
 	 */
-	public void setCreatedDate(Date createdDate) {
+	public void setCreatedDate(DateTime createdDate) {
 		this.createdDate = createdDate;
 	}
 	/**
@@ -83,16 +89,16 @@ public class WorkLog implements Serializable {
 	public void setEmploye(Employe employe) {
 		this.employe = employe;
 	}
-	public Date getStartDate() {
+	public DateTime getStartDate() {
 		return startDate;
 	}
-	public void setStartDate(Date startDate) {
+	public void setStartDate(DateTime startDate) {
 		this.startDate = startDate;
 	}
-	public Date getEndDate() {
+	public DateTime getEndDate() {
 		return endDate;
 	}
-	public void setEndDate(Date endDate) {
+	public void setEndDate(DateTime endDate) {
 		this.endDate = endDate;
 	}
 	public Long getDuration() {
@@ -106,6 +112,18 @@ public class WorkLog implements Serializable {
 	}
 	public void setDescription(String description) {
 		this.description = description;
+	}
+	/**
+	 * @return the workLogType
+	 */
+	public WorkLogType getWorkLogType() {
+		return workLogType;
+	}
+	/**
+	 * @param workLogType the workLogType to set
+	 */
+	public void setWorkLogType(WorkLogType workLogType) {
+		this.workLogType = workLogType;
 	}
 	
 	

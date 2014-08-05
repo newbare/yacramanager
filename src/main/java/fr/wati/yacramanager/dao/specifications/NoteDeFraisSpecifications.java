@@ -3,7 +3,6 @@
  */
 package fr.wati.yacramanager.dao.specifications;
 
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -11,6 +10,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
+import org.joda.time.DateTime;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.domain.Specifications;
 
@@ -34,7 +34,7 @@ public class NoteDeFraisSpecifications {
 	}
 	
 	public static Specification<NoteDeFrais> createdDateBetween(
-			final Date startRangeDate, final Date endRangeDate) {
+			final DateTime startRangeDate, final DateTime endRangeDate) {
 		return new Specification<NoteDeFrais>() {
 			public Predicate toPredicate(Root<NoteDeFrais> root,
 					CriteriaQuery<?> query, CriteriaBuilder builder) {

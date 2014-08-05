@@ -3,7 +3,7 @@
  */
 package fr.wati.yacramanager.web.dto;
 
-import java.util.Date;
+import org.joda.time.DateTime;
 
 import fr.wati.yacramanager.beans.Project;
 
@@ -16,7 +16,7 @@ public class ProjectDTO {
 	private Long id;
 	private String name;
 	private String description;
-	private Date createdDate;
+	private DateTime createdDate;
 	private ClientDTO clientDTO;
 	/**
 	 * @return the id
@@ -57,13 +57,13 @@ public class ProjectDTO {
 	/**
 	 * @return the createdDate
 	 */
-	public Date getCreatedDate() {
+	public DateTime getCreatedDate() {
 		return createdDate;
 	}
 	/**
 	 * @param createdDate the createdDate to set
 	 */
-	public void setCreatedDate(Date createdDate) {
+	public void setCreatedDate(DateTime createdDate) {
 		this.createdDate = createdDate;
 	}
 	/**

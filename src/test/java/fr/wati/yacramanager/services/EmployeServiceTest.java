@@ -3,11 +3,11 @@
  */
 package fr.wati.yacramanager.services;
 
-import java.util.Date;
 import java.util.List;
 
 import junit.framework.Assert;
 
+import org.joda.time.DateTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +44,7 @@ public class EmployeServiceTest extends
 		employe.setPrenom("prenom");
 		employe.setUsername("username");
 		employe.setPassword("password");
-		employe.setDateNaissance(new Date());
+		employe.setDateNaissance(new DateTime());
 		employe.setCompany(createCompany);
 		Employe saveEmploye = employeService.save(employe);
 		Employe manager = new Employe();

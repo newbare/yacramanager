@@ -1,7 +1,6 @@
 package fr.wati.yacramanager.beans;
 
 import java.io.Serializable;
-import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -13,6 +12,9 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
 
+import org.hibernate.annotations.Type;
+import org.joda.time.DateTime;
+
 import fr.wati.yacramanager.web.dto.AbsenceDTO.TypeAbsence;
 
 @Entity
@@ -22,11 +24,14 @@ public class Absence implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	private Date date;
+	@Type(type="org.joda.time.contrib.hibernate.PersistentDateTime")
+	private DateTime date;
 	private boolean endMorning;
 	private boolean startAfternoon;
-	private Date startDate;
-	private Date endDate;
+	@Type(type="org.joda.time.contrib.hibernate.PersistentDateTime")
+	private DateTime startDate;
+	@Type(type="org.joda.time.contrib.hibernate.PersistentDateTime")
+	private DateTime endDate;
 	private String description;
 	private boolean validated;
 	@ManyToOne
@@ -41,8 +46,8 @@ public class Absence implements Serializable {
 		super();
 	}
 	
-	public Absence(boolean endMorning, boolean startAfternoon, Date startDate,
-			Date endDate, String description) {
+	public Absence(boolean endMorning, boolean startAfternoon, DateTime startDate,
+			DateTime endDate, String description) {
 		super();
 		this.endMorning = endMorning;
 		this.startAfternoon = startAfternoon;
@@ -71,10 +76,10 @@ public class Absence implements Serializable {
 		this.validated = validated;
 	}
 
-	public Date getDate() {
+	public DateTime getDate() {
 		return date;
 	}
-	public void setDate(Date date) {
+	public void setDate(DateTime date) {
 		this.date = date;
 	}
 
@@ -94,20 +99,20 @@ public class Absence implements Serializable {
 		this.startAfternoon = startAfternoon;
 	}
 
-	public Date getStartDate() {
+	public DateTime getStartDate() {
 		return startDate;
 	}
 
-	public void setStartDate(Date startDate) {
+	public void setStartDate(DateTime startDate) {
 		this.startDate = startDate;
 	}
 
-	public Date getEndDate() {
+	public DateTime getEndDate() {
 		return endDate;
 	}
 
-	public void setEndDate(Date endDate) {
-		this.endDate = endDate;
+	public void setEndDate(DateTime date2) {
+		this.endDate = date2;
 	}
 
 	

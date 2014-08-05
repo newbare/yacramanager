@@ -1,7 +1,6 @@
 package fr.wati.yacramanager.web.api;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -9,6 +8,7 @@ import java.util.Map.Entry;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -120,7 +120,7 @@ public class AbsenceController implements RestCrudController<AbsenceDTO> {
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<String> create(@RequestBody AbsenceDTO dto) {
 		Absence absence = dto.toAbsence();
-		absence.setDate(new Date());
+		absence.setDate(new DateTime());
 		absence.setEmploye(SecurityUtils.getConnectedUser());
 		absenceService.save(absence);
 		return new ResponseEntity<>(HttpStatus.CREATED);

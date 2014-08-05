@@ -1,6 +1,5 @@
 package fr.wati.yacramanager.dao.specifications;
 
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -8,6 +7,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
+import org.joda.time.DateTime;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.domain.Specifications;
 
@@ -38,7 +38,7 @@ public class EmployeSpecifications {
 	}
 	
 	public static Specification<Employe> birthDayBetween(
-			final Date startRangeDate, final Date endRangeDate) {
+			final DateTime startRangeDate, final DateTime endRangeDate) {
 		return new Specification<Employe>() {
 			public Predicate toPredicate(Root<Employe> root,
 					CriteriaQuery<?> query, CriteriaBuilder builder) {

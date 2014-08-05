@@ -5,7 +5,6 @@ package fr.wati.yacramanager.beans;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -18,6 +17,9 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+
+import org.hibernate.annotations.Type;
+import org.joda.time.DateTime;
 
 /**
  * @author Rachid Ouattara
@@ -32,7 +34,8 @@ public class Project implements Serializable {
 	private Long id;
 	private String name;
 	private String description;
-	private Date createdDate;
+	@Type(type="org.joda.time.contrib.hibernate.PersistentDateTime")
+	private DateTime createdDate;
 	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(
 			name = "projects_employees",
@@ -92,7 +95,7 @@ public class Project implements Serializable {
 	/**
 	 * @return the createdDate
 	 */
-	public Date getCreatedDate() {
+	public DateTime getCreatedDate() {
 		return createdDate;
 	}
 
@@ -100,7 +103,7 @@ public class Project implements Serializable {
 	 * @param createdDate
 	 *            the createdDate to set
 	 */
-	public void setCreatedDate(Date createdDate) {
+	public void setCreatedDate(DateTime createdDate) {
 		this.createdDate = createdDate;
 	}
 

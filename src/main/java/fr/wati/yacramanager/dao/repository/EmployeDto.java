@@ -1,6 +1,6 @@
 package fr.wati.yacramanager.dao.repository;
 
-import java.util.Date;
+import org.joda.time.DateTime;
 
 import fr.wati.yacramanager.beans.Civilite;
 
@@ -9,7 +9,7 @@ public class EmployeDto extends UserDto {
 
 	private String nom;
 	private String prenom;
-	private Date dateNaissance;
+	private DateTime dateNaissance;
 	private Civilite civilite;
 	private String email;
 	private String numeroTelephone;
@@ -30,10 +30,10 @@ public class EmployeDto extends UserDto {
 	public void setPrenom(String prenom) {
 		this.prenom = prenom;
 	}
-	public Date getDateNaissance() {
+	public DateTime getDateNaissance() {
 		return dateNaissance;
 	}
-	public void setDateNaissance(Date dateNaissance) {
+	public void setDateNaissance(DateTime dateNaissance) {
 		this.dateNaissance = dateNaissance;
 	}
 	public Civilite getCivilite() {
