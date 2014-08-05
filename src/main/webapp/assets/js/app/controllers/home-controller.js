@@ -1,3 +1,3 @@
-function HomeController($scope,$rootScope) {
-	$rootScope.page={"title":"Home","description":"Dashboard"}
+function HomeController($scope,$rootScope,$translate) {
+	$rootScope.page={"title":"home.page.header.title","description":"home.page.header.description"}
 }

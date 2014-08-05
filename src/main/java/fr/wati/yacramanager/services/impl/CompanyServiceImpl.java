@@ -137,14 +137,14 @@ public class CompanyServiceImpl implements CompanyService {
 				FilterDate filterDate=(FilterDate) filter;
 				if("registeredDate".equals(filter.getField())){
 					if(filterDate.isRangedDate()){
-						//return CommonSpecifications.between(filterDate.getValue().getStart(), filterDate.getValue().getEnd(), Company_.registeredDate);
+						return CommonSpecifications.betweenDate(filterDate.getValue().getStart(), filterDate.getValue().getEnd(), Company.class,"registeredDate");
 					}else {
 						return CommonSpecifications.equals(filterDate.getValue().getDate(), Company_.registeredDate);
 					}
 				}
 				if("licenseEndDate".equals(filter.getField())){
 					if(filterDate.isRangedDate()){
-						//return CommonSpecifications.between(filterDate.getValue().getStart(), filterDate.getValue().getEnd(), Company_.licenseEndDate);
+						return CommonSpecifications.betweenDate(filterDate.getValue().getStart(), filterDate.getValue().getEnd(), Company.class,"licenseEndDate");
 					}else {
 						return CommonSpecifications.equals(filterDate.getValue().getDate(), Company_.licenseEndDate);
 					}

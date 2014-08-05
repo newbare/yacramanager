@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import fr.wati.yacramanager.web.api.AbsenceController;
 import fr.wati.yacramanager.web.api.ClientController;
 import fr.wati.yacramanager.web.api.CompanyController;
+import fr.wati.yacramanager.web.api.CraController;
 import fr.wati.yacramanager.web.api.CustomMapEditor;
 import fr.wati.yacramanager.web.api.NoteDeFraisController;
 import fr.wati.yacramanager.web.api.ProjectController;
@@ -39,7 +40,7 @@ import fr.wati.yacramanager.web.api.WorkLogRestController;
 		AbsenceController.class, CompanyController.class,
 		ClientController.class, UserRestController.class,
 		ProjectController.class, WorkLogRestController.class,
-		TaskRestController.class})
+		TaskRestController.class,CraController.class})
 public class RestControllerAdvice {
 
 	@Autowired

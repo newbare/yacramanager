@@ -18,8 +18,8 @@ function CraController($scope,$rootScope,CraREST,$filter,$http) {
 	
 	$scope.tableFilter="";
 	$scope.dateRange={
-			startDate:formatDate(currentMonthfirstDay),
-			endDate:formatDate(currentMonthlastDay)
+			startDate:currentMonthfirstDay,
+			endDate:currentMonthlastDay
 	}
 	$scope.employeCriteriaConfig={
 			name:"employe",
@@ -61,8 +61,8 @@ function CraController($scope,$rootScope,CraREST,$filter,$http) {
 			filterValue:"",
 			timePicker:true,
 			onFilter: function(filter) {
-				$scope.dateRange.startDate=formatDate(filter.value.start);
-				$scope.dateRange.endDate=formatDate(filter.value.end);
+				$scope.dateRange.startDate=filter.value.start;
+				$scope.dateRange.endDate=filter.value.end;
 				console.log('Filter text ['+filter.field+'] searching: '+filter.value);
 			},
 			currentFilter:{},
@@ -83,7 +83,7 @@ function CraController($scope,$rootScope,CraREST,$filter,$http) {
 		};
 	
 	$scope.retrieveCra=function(){
-		CraREST.get({start:formatDate($scope.dateRange.startDate),end:formatDate($scope.dateRange.endDate)},function(data) {
+		CraREST.get({start:$scope.dateRange.startDate,end:$scope.dateRange.endDate},function(data) {
 		    $scope.cra = data;
 		    $scope.respStartDate=data.startDate;
 		    $scope.respEndDate=data.endDate;

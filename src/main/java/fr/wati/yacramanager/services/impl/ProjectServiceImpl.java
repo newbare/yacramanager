@@ -1,7 +1,6 @@
 package fr.wati.yacramanager.services.impl;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.joda.time.DateTime;
@@ -164,7 +163,7 @@ public class ProjectServiceImpl implements ProjectService{
 				FilterDate filterDate=(FilterDate) filter;
 				if("createdDate".equals(filter.getField())){
 					if(filterDate.isRangedDate()){
-						//return CommonSpecifications.between(filterDate.getValue().getStart(), filterDate.getValue().getEnd(), Project_.createdDate);
+						return CommonSpecifications.betweenDate(filterDate.getValue().getStart(), filterDate.getValue().getEnd(), Project.class,"createdDate");
 					}else {
 						return CommonSpecifications.equals(filterDate.getValue().getDate(), Project_.createdDate);
 					}

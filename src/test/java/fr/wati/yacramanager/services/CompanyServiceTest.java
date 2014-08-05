@@ -1,6 +1,8 @@
 package fr.wati.yacramanager.services;
 
-import static org.springframework.util.Assert.*;
+import static org.springframework.util.Assert.isNull;
+import static org.springframework.util.Assert.isTrue;
+import static org.springframework.util.Assert.notNull;
 
 import java.util.Calendar;
 import java.util.List;
@@ -19,6 +21,7 @@ import fr.wati.yacramanager.beans.Company;
 import fr.wati.yacramanager.beans.Employe;
 import fr.wati.yacramanager.config.TestServicesConfig;
 import fr.wati.yacramanager.dao.repository.CompanyRepository;
+import fr.wati.yacramanager.dao.specifications.CommonSpecifications;
 import fr.wati.yacramanager.dao.specifications.CompanySpecifications;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -79,16 +82,14 @@ public class CompanyServiceTest extends
 	public void testRegisteredBetween(){
 		Company company=new Company();
 		company.setName("Mock company");
-		Calendar calendar=Calendar.getInstance();
-		calendar.set(2014, 07, 14);
-		company.setRegisteredDate(new DateTime(calendar.getTime()));
+		company.setRegisteredDate(new DateTime(2014, 7, 14, 0, 0));
 		companyService.createCompany(company);
-		Calendar startCalendar=Calendar.getInstance();
-		startCalendar.set(2014, 07, 12);
-		Calendar endCalendar=Calendar.getInstance();
-		endCalendar.set(2014, 07, 16);
-		List<Company> findAll = companyRepository.findAll(CompanySpecifications.registeredDateBetween(new DateTime(startCalendar.getTime()), new DateTime(endCalendar.getTime())));
+		List<Company> findAll = companyRepository.findAll(CompanySpecifications.registeredDateBetween(new DateTime(2014, 7, 12, 0, 0), new DateTime(2014, 7, 16, 0, 0)));
 		Assert.assertTrue(findAll.size()>0);
+		findAll=companyRepository.findAll(CommonSpecifications.betweenDate(new DateTime(2014, 7, 12, 0, 0), new DateTime(2014, 7, 16, 0, 0), Company.class, "registeredDate"));
+		Assert.assertTrue(findAll.size()>0);
+		findAll=companyRepository.findAll(CommonSpecifications.betweenDate(new DateTime(2014, 7, 15, 0, 0), new DateTime(2014, 7, 16, 0, 0), Company.class, "registeredDate"));
+		Assert.assertTrue(findAll.size()==0);
 	}
 	
 	@Test

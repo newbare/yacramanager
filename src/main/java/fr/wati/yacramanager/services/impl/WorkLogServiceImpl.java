@@ -1,8 +1,8 @@
 package fr.wati.yacramanager.services.impl;
 
-import java.util.Date;
 import java.util.List;
 
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,12 +13,13 @@ import org.springframework.transaction.annotation.Transactional;
 import fr.wati.yacramanager.beans.Employe;
 import fr.wati.yacramanager.beans.WorkLog;
 import fr.wati.yacramanager.dao.repository.WorkLogRepository;
+import fr.wati.yacramanager.services.SpecificationFactory;
 import fr.wati.yacramanager.services.WorkLogService;
 import fr.wati.yacramanager.utils.Filter;
 
 @Service
 @Transactional
-public class WorkLogServiceImpl implements WorkLogService {
+public class WorkLogServiceImpl implements WorkLogService,SpecificationFactory<WorkLog> {
 
 	@Autowired
 	private WorkLogRepository workLogRepository;
@@ -89,21 +90,21 @@ public class WorkLogServiceImpl implements WorkLogService {
 	}
 
 	@Override
-	public Page<WorkLog> findByStartDateBetween(Date dateDebut, Date dateFin,
+	public Page<WorkLog> findByStartDateBetween(DateTime dateDebut, DateTime dateFin,
 			Pageable pageable) {
 		return workLogRepository.findByStartDateBetween(dateDebut, dateFin, pageable);
 	}
 
 	@Override
 	public Page<WorkLog> findByEmployeAndStartDateBetween(Employe employe,
-			Date dateDebut, Date dateFin, Pageable pageable) {
+			DateTime dateDebut, DateTime dateFin, Pageable pageable) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public List<WorkLog> findByEmployeAndStartDateBetween(Employe employe,
-			Date dateDebut, Date dateFin) {
+			DateTime dateDebut, DateTime dateFin) {
 		return workLogRepository.findByEmployeAndStartDateBetween(employe, dateDebut, dateFin);
 	}
 

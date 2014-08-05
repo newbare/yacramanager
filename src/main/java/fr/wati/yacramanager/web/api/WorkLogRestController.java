@@ -1,9 +1,9 @@
 package fr.wati.yacramanager.web.api;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -44,8 +44,8 @@ public class WorkLogRestController implements RestCrudController<WorkLogDTO>{
 			@RequestParam(value = "start", required = true) long start,
 			@RequestParam(value = "end", required = true) long end) {
 		// We receive time in second
-		Date startDate = new Date(start * 1000);
-		Date endDate = new Date(end * 1000);
+		DateTime startDate = new DateTime(start * 1000);
+		DateTime endDate = new DateTime(end * 1000);
 		List<WorkLog> workLogs = workLogService.findByEmployeAndStartDateBetween(SecurityUtils.getConnectedUser(), startDate, endDate);
 		if(workLogs!=null && !workLogs.isEmpty()){
 			List<WorkLogDTO> dtos = DtoMapper.mapWorkLogs(workLogs);

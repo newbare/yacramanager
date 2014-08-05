@@ -4,8 +4,11 @@ var getUserInitials=function(name){
 }
 var yaCRAApp = {};
 
-var App = angular.module('yaCRAApp', [ 'ngResource', 'mgcrea.ngStrap','ng-criterias','ngHtmlCompile',
-		'ngRoute', 'ngAnimate', 'ngTable', 'ui.router', 'angularFileUpload','ui.calendar','http-auth-interceptor','timer','localytics.directives','daterangepicker' ]);
+var App = angular.module('yaCRAApp', [ 'ngResource', 'mgcrea.ngStrap',
+		'ng-criterias', 'ngHtmlCompile', 'ngRoute', 'ngAnimate', 'ngTable',
+		'ui.router', 'angularFileUpload', 'ui.calendar',
+		'http-auth-interceptor', 'timer', 'localytics.directives',
+		'daterangepicker','pascalprecht.translate' ]);
 
 
 App.config(['$httpProvider', function($httpProvider) {
@@ -13,6 +16,16 @@ App.config(['$httpProvider', function($httpProvider) {
 	$httpProvider.defaults.headers.common["FROM-ANGULAR"] = "true";
     $httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
 }]);
+
+App.config(['$translateProvider', function ($translateProvider) {
+	$translateProvider.preferredLanguage('en');
+    $translateProvider.useStaticFilesLoader({
+      prefix: _contextPath+'/assets/i18n/messages_',
+      suffix: '.json'
+    });
+}]);
+
+
 App.run(function($rootScope,$templateCache,UsersREST) {
 	$rootScope.page = '';
 //	$templateCache.removeAll();

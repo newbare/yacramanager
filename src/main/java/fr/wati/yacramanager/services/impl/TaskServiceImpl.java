@@ -14,11 +14,13 @@ import fr.wati.yacramanager.beans.Project;
 import fr.wati.yacramanager.beans.Task;
 import fr.wati.yacramanager.dao.repository.ProjectRepository;
 import fr.wati.yacramanager.dao.repository.TaskRepository;
+import fr.wati.yacramanager.services.SpecificationFactory;
 import fr.wati.yacramanager.services.TaskService;
+import fr.wati.yacramanager.utils.Filter;
 
 @Transactional
 @Service
-public class TaskServiceImpl implements TaskService {
+public class TaskServiceImpl implements TaskService,SpecificationFactory<Task> {
 
 	@Autowired
 	private TaskRepository taskRepository;
@@ -107,6 +109,12 @@ public class TaskServiceImpl implements TaskService {
 	@Override
 	public List<Task> findByProjectAndEmploye(Project project, Employe employe) {
 		return taskRepository.findByProjectAndEmploye(project, employe);
+	}
+
+	@Override
+	public Specification<Task> buildSpecification(Filter filter) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

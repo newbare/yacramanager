@@ -3,7 +3,7 @@
  */
 package fr.wati.yacramanager.web.dto;
 
-import java.util.Date;
+import org.joda.time.DateTime;
 
 /**
  * @author Rachid Ouattara
@@ -12,7 +12,7 @@ import java.util.Date;
 public class AttachementDTO {
 
 	private Long id;
-	private Date date;
+	private DateTime date;
 	private String name;
 	/**
 	 * @return the id
@@ -29,13 +29,13 @@ public class AttachementDTO {
 	/**
 	 * @return the date
 	 */
-	public Date getDate() {
+	public DateTime getDate() {
 		return date;
 	}
 	/**
 	 * @param date the date to set
 	 */
-	public void setDate(Date date) {
+	public void setDate(DateTime date) {
 		this.date = date;
 	}
 	/**

@@ -1,9 +1,9 @@
 package fr.wati.yacramanager.services.impl;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -128,8 +128,8 @@ public class NoteDeFraisServiceImpl implements NoteDeFraisService {
 	 * @see fr.wati.yacramanager.services.NoteDeFraisService#findByDateBetween(java.util.Date, java.util.Date, org.springframework.data.domain.Pageable)
 	 */
 	@Override
-	public Page<NoteDeFrais> findByDateBetween(Date dateDebut,
-			Date dateFin, Pageable pageable) {
+	public Page<NoteDeFrais> findByDateBetween(DateTime dateDebut,
+			DateTime dateFin, Pageable pageable) {
 		return noteDeFraisRepository.findByDateBetween(dateDebut, dateFin, pageable);
 	}
 
@@ -138,7 +138,7 @@ public class NoteDeFraisServiceImpl implements NoteDeFraisService {
 	 */
 	@Override
 	public Page<NoteDeFrais> findByEmployeAndDateBetween(
-			Employe employe, Date dateDebut, Date dateFin, Pageable pageable) {
+			Employe employe, DateTime dateDebut, DateTime dateFin, Pageable pageable) {
 		return noteDeFraisRepository.findByEmployeAndDateBetween(employe, dateDebut, dateFin, pageable);
 	}
 
@@ -147,7 +147,7 @@ public class NoteDeFraisServiceImpl implements NoteDeFraisService {
 	 */
 	@Override
 	public List<NoteDeFrais> findByEmployeAndDateBetween(
-			Employe employe, Date dateDebut, Date dateFin) {
+			Employe employe, DateTime dateDebut, DateTime dateFin) {
 		return noteDeFraisRepository.findByEmployeAndDateBetween(employe, dateDebut, dateFin);
 	}
 
@@ -223,7 +223,7 @@ public class NoteDeFraisServiceImpl implements NoteDeFraisService {
 				FilterDate filterDate=(FilterDate) filter;
 				if("date".equals(filter.getField())){
 					if(filterDate.isRangedDate()){
-						//return CommonSpecifications.between(filterDate.getValue().getStart(), filterDate.getValue().getEnd(), NoteDeFrais_.date);
+						return CommonSpecifications.betweenDate(filterDate.getValue().getStart(), filterDate.getValue().getEnd(), NoteDeFrais.class,"date");
 					}else {
 						return CommonSpecifications.equals(filterDate.getValue().getDate(), NoteDeFrais_.date);
 					}

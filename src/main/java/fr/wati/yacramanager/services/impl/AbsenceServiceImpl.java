@@ -185,7 +185,7 @@ public class AbsenceServiceImpl implements AbsenceService {
 				FilterDate filterDate=(FilterDate) filter;
 				if("date".equals(filter.getField())){
 					if(filterDate.isRangedDate()){
-						//return CommonSpecifications.between(filterDate.getValue().getStart(), filterDate.getValue().getEnd(), Absence_.date);
+						return CommonSpecifications.betweenDate(filterDate.getValue().getStart(), filterDate.getValue().getEnd(),Absence.class, "date");
 					}else {
 						return CommonSpecifications.equals(filterDate.getValue().getDate(), Absence_.date);
 					}

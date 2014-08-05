@@ -43,11 +43,18 @@ App.config(function($tooltipProvider) {
   });
 });
 
-App.controller('AppCtrl', [ '$scope', '$location', 'UsersREST','$rootScope',
-		function($scope, $location, UsersREST,$rootScope) {
+App.controller('AppCtrl', [ '$scope', '$location', 'UsersREST','$rootScope','$translate','$locale',
+		function($scope, $location, UsersREST,$rootScope,$translate,$locale) {
+			$scope.currentLanguage=$translate.preferredLanguage();
+			$scope.toggleLanguage = function (key) {
+				 if(key===$translate.use()){
+					 return;
+				 }   
+				 $translate.use(key);
+				 $scope.currentLanguage=key;
+			};
 			$scope.navClass = function(page) {
 				var currentRoute = $location.path().substring(1) || 'home';
-				//return page === currentRoute ? 'active' : '';
 				return currentRoute.indexOf(page)==0 ? 'active' :'';
 			};
 			

@@ -1,6 +1,8 @@
-function TimeSheetController($scope,$rootScope,$http) {
+function TimeSheetController($scope,$rootScope,$http,$sce,WorkLogCRUDREST,alertService) {
 	$rootScope.page={"title":"Timesheet","description":"View and manage timesheet"}
 	$scope.timeType="duration";
+	$scope.timesheetCalendarTitle=undefined;
+	$scope.durationTime=0;
 	var fetchProjects = function(queryParams) {
 		return $http.get(
 				_contextPath + "/app/api/" + _userCompanyId + "/project/employe/"
@@ -17,6 +19,10 @@ function TimeSheetController($scope,$rootScope,$http) {
 		$scope.project=project;
 		fetchTasks();
 	}
+	$scope.selectTask=function(task){
+		$scope.task=task;
+	}
+	
 	$scope.selectTask=function(task){
 		$scope.task=task;
 	}
@@ -69,9 +75,24 @@ function TimeSheetController($scope,$rootScope,$http) {
 			displayed: true
 	};
     
+    $scope.calendarDateCriteriaConfig={
+			name:"date",
+			defaultButtonLabel:"Calendar date",
+			filterType:"DATE",
+			closeable:true,
+			filterValue:"",
+			onFilter: function(value) {
+				console.log('Filter text ['+value.field+'] searching: '+value.value);
+				if($scope.currentView===undefined) return;
+				$scope.currentView.calendar.gotoDate(value.value);
+			},
+			currentFilter:{},
+			displayed: true
+	};
+    
     //criteria bar config
     $scope.criteriaBarConfig={
-    		criterions:[$scope.employeCriteriaConfig],
+    		criterions:[$scope.employeCriteriaConfig,$scope.calendarDateCriteriaConfig],
     		autoFilter:true,
     		filters:[]
     	};
@@ -97,6 +118,11 @@ function TimeSheetController($scope,$rootScope,$http) {
     	$scope.alertMessage="Start "+start+" End "+end;
     };
     
+    $scope.onViewRender=function(view, element){
+    	$scope.currentView=view;
+    	$scope.timesheetCalendarTitle=$sce.trustAsHtml(view.title);
+    };
+    
 	/* config object */
     $scope.uiConfig = {
       calendar:{
@@ -104,11 +130,12 @@ function TimeSheetController($scope,$rootScope,$http) {
         editable: true,
         selectable:true,
         header:{
-          left: 'today prev,next',
-          center: 'title',
-          right: 'agendaDay agendaWeek month  '
+          left: '',
+          center: '',
+          right: ''
         },
         defaultView:'agendaWeek',
+        viewRender: $scope.onViewRender,
         dayClick:$scope.onDayClick,
         eventClick: $scope.onEventClick,
         eventDrop: $scope.onEventDrop,
@@ -123,5 +150,47 @@ function TimeSheetController($scope,$rootScope,$http) {
     };
     $scope.eventSources = [$scope.eventSource];
     
+    /* Change View */
+    $scope.changeView = function(view,calendar) {
+      calendar.fullCalendar('changeView',view);
+    };
+    
+    $scope.next = function(calendar) {
+      calendar.fullCalendar('next');
+    };
+    $scope.previous = function(calendar) {
+        calendar.fullCalendar('prev');
+    };
+    
+    $scope.today = function(calendar) {
+        calendar.fullCalendar('today');
+    };
+    
+    $scope.isTodaySelected=function(){
+    	if($scope.currentView===undefined) return;
+    	var today = new Date();
+		if (today >= $scope.currentView.start && today < $scope.currentView.end) {
+			return true;
+		}
+		else {
+			return false;
+		}
+    };
+    $scope.postWorkLog = function(hideFn) {
+    	$scope.worklog={};
+    	 $scope.worklog.title="";
+    	 $scope.worklog.start=null;
+    	 $scope.worklog.end=null;
+    	 $scope.worklog.duration=$scope.durationTime;
+    	 $scope.worklog.taskId= $scope.task.id;
+    	 $scope.worklog.taskName=$scope.task.name;
+    	 $scope.worklog.description=$scope.description;
+    	 $scope.worklog.employeId=_userId;
+    	 WorkLogCRUDREST.save($scope.worklog).$promise.then(function(result) {
+    		 hideFn();
+    		 alertService.showInfo('Confirmation', 'Donn� sauvegard�');
+		});
+    	
+    }
     
 }

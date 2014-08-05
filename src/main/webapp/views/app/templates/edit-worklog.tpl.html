@@ -26,7 +26,7 @@
 					<div class="form-group">
 						<label for="task-select" class="col-md-2">Task</label>
 						<div class="col-md-6">
-							<select data-chosen 
+							<select data-chosen data-ng-change="selectTask(task)"
 						          data-placeholder="Select a task"
 						          data-ng-model="task"
 						          data-ng-options="t.name for t in tasks">
@@ -70,6 +70,9 @@
 							<input type="text" class="form-control" ng-model="durationStartDate"
 								data-autoclose="1" placeholder="Date" bs-datepicker>
 						</div>
+						<div class="col-md-3">
+							<input type="text" class="form-control" data-ng-model="durationTime"	 placeholder="Minutes">
+						</div>
 					</div>
 					<div class="form-group">
 						<label for="noteDescription" class="control-label col-md-2" style="text-align: left;">Description</label> 
@@ -82,7 +85,7 @@
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-primary"
-					data-ng-click="postAttachement($hide)" data-ng-show="!edition">Post</button>
+					data-ng-click="postWorkLog($hide)" data-ng-show="!edition">Post</button>
 				<button type="button" class="btn btn-primary"
 					data-ng-click="putNote()" data-ng-show="edition">Edit</button>
 				<button type="button" class="btn btn-link" data-ng-click="$hide()" data-dismiss="modal">Cancel</button>

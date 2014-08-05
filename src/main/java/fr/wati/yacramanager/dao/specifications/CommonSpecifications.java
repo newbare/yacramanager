@@ -2,6 +2,7 @@ package fr.wati.yacramanager.dao.specifications;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -12,10 +13,14 @@ import javax.persistence.criteria.Root;
 import javax.persistence.metamodel.ListAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 
+import org.joda.time.DateTime;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.util.ReflectionUtils.FieldCallback;
+
+import fr.wati.yacramanager.beans.Company;
+import fr.wati.yacramanager.beans.Company_;
 
 public class CommonSpecifications {
 
@@ -93,6 +98,18 @@ public class CommonSpecifications {
 			}
 		};
 	}
+	
+	public static <T> Specification<T> betweenDate(
+			final DateTime start, final DateTime end,Class<T> entityClass,final String attributName) {
+		return new Specification<T>() {
+			public Predicate toPredicate(Root<T> root,
+					CriteriaQuery<?> query, CriteriaBuilder builder) {
+				return builder.between(root.<Date>get(attributName), start.toDate(), end.toDate());
+			}
+		};
+	}
+	
+	
 	
 	public static <T,E> Specification<T> isMember(final E element,final ListAttribute<T, E> attribut) {
 		return new Specification<T>() {

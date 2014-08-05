@@ -9,6 +9,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 <link rel="stylesheet" href="${contextPath}/assets/css/app.css">
+<link rel="stylesheet" href="${contextPath}/assets/css/flags/flags.css">
 <link rel="stylesheet"
 	href="${contextPath}/assets/css/angular-criterias.css">
 <link rel="stylesheet" href="${contextPath}/assets/css/yacra-fonts.css">
@@ -97,34 +98,33 @@
 				<ul class="nav navtop navbar-nav navbar-left">
 					<li data-has-role="ROLE_ADMIN"
 						data-ng-class="navClass('admin/')"><a
-						data-ui-sref="admin">Admin</a></li>
+						data-ui-sref="admin">{{'app.navbar.menu.admin' | translate}}</a></li>
 					<li data-has-role="ROLE_SSII_ADMIN" data-ng-cloak
 						data-ng-class="navClass('company/')"><a
 						data-ui-sref="company"><i class="fa fa-university"></i>{{userInfo.company.name}}</a></li>
 					<li class="dropdown" data-ng-class="navClass('frais') + navClass('cra') + navClass('absences') + navClass('timesheet')">
-						<a href="" class="dropdown-toggle" data-toggle="dropdown">Workspace<span class="caret"></span></a>
+						<a href="" class="dropdown-toggle" data-toggle="dropdown">{{'app.navbar.menu.workspace' | translate}}<span class="caret"></span></a>
 						<ul class="workspace-menu dropdown-menu" role="menu">
-							<li data-ng-class="navClass('frais')"><a data-ui-sref="frais">Frais</a></li>
-							<li data-ng-class="navClass('cra')"><a data-ui-sref="cra">CRA</a></li>
+							<li data-ng-class="navClass('frais')"><a data-ui-sref="frais">{{'app.navbar.menu.frais' | translate}}</a></li>
+							<li data-ng-class="navClass('cra')"><a data-ui-sref="cra">{{'app.navbar.menu.cra' | translate}}</a></li>
 							<li data-ng-class="navClass('absences')"><a
-								data-ui-sref="absences">Absences</a></li>
+								data-ui-sref="absences">{{'app.navbar.menu.absences' | translate}}</a></li>
 							<li data-ng-class="navClass('timesheet')"><a
-								data-ui-sref="timesheet">Timesheet</a></li>
+								data-ui-sref="timesheet">{{'app.navbar.menu.timesheet' | translate}}</a></li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="nav navtop navbar-nav navbar-right">
 					<li>
 						<div class="timer-widget dropdown" data-ng-controller="WorkLogCtrl" data-ng-class="{running: timerRunning}">
-							<a data-toggle="dropdown" href=""><i class="fa fa-clock-o"></i><span
-							class="caret"></span></a>
-							<span data-ng-show="timerRunning && task!==undefined" style="padding-right: 5px;">[{{task.name}}]:</span>
+							<a data-toggle="dropdown" href=""><i class="fa fa-clock-o" data-ng-show="!timerRunning"></i>
+							<span data-ng-show="timerRunning && task!==undefined" style="padding-right: 5px;">[{{task.name}}]:</span></a>
 							<timer autostart="false" interval="1000" data-ng-show="timerRunning">{{hhours}}:{{mminutes}}:{{sseconds}}</timer>
 							<button type="button" class="btn btn-danger btn-xs"  data-ng-click="stopTimer()" data-ng-show="timerRunning">Stop</button>
 							<div class="timer-widget-content dropdown-menu">
 									<form role="form">
 										<div class="form-group">
-    										<label for="project">Project</label>
+    										<label for="project">{{'app.navbar.timer.project' | translate}}</label>
 											<select id="project" class="form-control"  data-chosen data-ng-change="selectProject(project)"
 									          data-placeholder="Select a project"
 									          data-ng-model="project"
@@ -155,18 +155,25 @@
 						data-ui-sref="messages"><i class="fa fa-envelope"></i></a></li>
 					<li data-ng-class="navClass('notifications')"><a
 						data-ui-sref="notifications"><i class="fa fa-bell"></i></a></li>
+					<li class="dropdown">
+						<a class="dropdown-toggle"	data-toggle="dropdown" href=""><i class="fa fa-globe"></i>{{currentLanguage | uppercase}}</a>
+						<ul class="dropdown-menu" role="menu">
+							<li><a href="" data-ng-click="toggleLanguage('fr')"><img class="flag flag-fr">Fr</a></li>
+							<li><a href="" data-ng-click="toggleLanguage('en')"><img class="flag flag-gb">Eng</a></li>
+						</ul>
+					</li>
 					<li
 						data-ng-class="navClass('user-settings') + navClass('user-profile')"
 						class="dropdown"><a href="" class="dropdown-toggle"
 						data-toggle="dropdown"><i class="fa fa-user"></i>${userFirstName}<span
 							class="caret"></span></a>
 						<ul class="user-menu dropdown-menu" role="menu">
-							<li><a data-ui-sref="user-settings"><i class="fa fa-cog"></i>Settings</a></li>
+							<li><a data-ui-sref="user-settings"><i class="fa fa-cog"></i>{{'app.navbar.menu.settings' | translate}}</a></li>
 							<li><a data-ui-sref="user-profile"><i class="fa fa-user"></i>
-									Profile</a></li>
+									{{'app.navbar.menu.profile' | translate}}</a></li>
 							<li class="divider"></li>
 							<li><a href="${contextPath}/auth/logout"><i
-									class="fa fa-power-off"></i>Logout</a></li>
+									class="fa fa-power-off"></i>{{'app.navbar.menu.logout' | translate}}</a></li>
 						</ul></li>
 				</ul>
 			</div>
@@ -179,8 +186,8 @@
 		<div class=""><!-- <div class="main-content"> -->
 			<div class="page-header">
 				<h4>
-					{{page.title}} <i class="fa fa-angle-double-right"
-						style="font-size: 80%"></i><small> {{page.description}}</small>
+					{{page.title | translate}} <i class="fa fa-angle-double-right"
+						style="font-size: 80%"></i><small> {{page.description | translate}}</small>
 				</h4>
 			</div>
 			<div data-ui-view="" class="" data-ng-cloak></div>
@@ -237,6 +244,10 @@
 		src="${contextPath}/assets/bower_components/angular-strap/dist/modules/select.js"></script>
 	<script
 		src="${contextPath}/assets/bower_components/moment/moment.js"></script>
+	<script
+		src="${contextPath}/assets/bower_components/angular-translate/angular-translate.min.js"></script>
+	<script
+		src="${contextPath}/assets/bower_components/angular-translate-loader-static-files/angular-translate-loader-static-files.min.js"></script>
 	<script
 		src="${contextPath}/assets/bower_components/angular-strap/dist/modules/modal.js"></script>
 	<script

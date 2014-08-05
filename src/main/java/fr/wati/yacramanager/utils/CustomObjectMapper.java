@@ -1,7 +1,5 @@
 package fr.wati.yacramanager.utils;
 
-import java.util.Date;
-
 import javax.annotation.PostConstruct;
 
 import org.springframework.stereotype.Component;
@@ -21,9 +19,6 @@ public class CustomObjectMapper extends ObjectMapper {
         registerModule(new JodaModule());
     }
     
-    public static void main(String[] args) {
-    	System.out.println(new ISO8601DateFormat().format(new Date()));
-	}
     @PostConstruct
     public void customConfiguration() {
         // Uses Enum.toString() for serialization of an Enum

@@ -1,0 +1,23 @@
+{
+	"home.page.header.title": "Acceuil",
+	"home.page.header.description": "Tableaux de bord",
+	
+	"app.navbar.menu.admin": "Administration",
+	"app.navbar.menu.absences" : "Absences",
+	"app.navbar.menu.timesheet" : "Feuille de temps",
+	"app.navbar.menu.workspace" : "Mon espace",
+	"app.navbar.menu.frais" : "Frais",
+	"app.navbar.timer.project" :"Projet",
+	"app.navbar.menu.cra" : "CRA",
+	"app.navbar.menu.settings" :"Péférences",
+	"app.navbar.menu.profile" : "Profil",
+	"app.navbar.menu.logout" : "Déconnexion",
+	
+	"app.timesheet.toolbar.agendaDay" : "Vue Jours",
+	"app.timesheet.toolbar.agendaWeek" : "Vue Semaine",
+	"app.timesheet.toolbar.agendaMonth" : "Vue Mois",
+	"app.timesheet.toolbar.next" : "Suivant",
+	"app.timesheet.toolbar.previous" : "Précédent",
+	"app.timesheet.toolbar.today" : "Aujourdhui"
+	
+}

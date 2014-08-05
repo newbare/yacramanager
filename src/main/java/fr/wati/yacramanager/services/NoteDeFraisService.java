@@ -1,8 +1,8 @@
 package fr.wati.yacramanager.services;
 
-import java.util.Date;
 import java.util.List;
 
+import org.joda.time.DateTime;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -12,11 +12,11 @@ import fr.wati.yacramanager.web.dto.NoteDeFraisDTO;
 
 public interface NoteDeFraisService extends CrudService<NoteDeFrais, Long>,SpecificationFactory<NoteDeFrais>{
 	
-	Page<NoteDeFrais> findByDateBetween(Date dateDebut,Date dateFin,Pageable pageable);
+	Page<NoteDeFrais> findByDateBetween(DateTime dateDebut,DateTime dateFin,Pageable pageable);
 	
-	Page<NoteDeFrais> findByEmployeAndDateBetween(Employe employe,Date dateDebut,Date dateFin,Pageable pageable);
+	Page<NoteDeFrais> findByEmployeAndDateBetween(Employe employe,DateTime dateDebut,DateTime dateFin,Pageable pageable);
 	
-	List<NoteDeFrais> findByEmployeAndDateBetween(Employe employe,Date dateDebut,Date dateFin);
+	List<NoteDeFrais> findByEmployeAndDateBetween(Employe employe,DateTime dateDebut,DateTime dateFin);
 	
 	Page<NoteDeFrais> findByEmploye(Employe employe,Pageable pageable);
 	
