@@ -15,6 +15,7 @@ function CompanyController($scope, $rootScope) {
 
 /*COMPANY-EMPLOYEE section*/
 function CompanyEmployeesViewController($scope, $rootScope,$http,EmployeesCRUDREST,ngTableParams,$state){
+	$scope.$state=$state;
 	$scope.companyCriteriaConfig={
 			name:"company",
 			defaultButtonLabel:"Company",
@@ -202,6 +203,7 @@ function CompanyEmployeesOverviewController($scope,EmployeesCRUDREST, $statePara
 /*COMPANY-CLIENT section*/
 function CompanyClientsViewController($scope, $rootScope,$http,ClientsCRUDREST,ngTableParams,$state){
 	$scope.tableFilter="";
+	$scope.$state=$state;
 	$scope.companyCriteriaConfig={
 			name:"company",
 			defaultButtonLabel:"Company",
@@ -351,6 +353,7 @@ function CompanyClientsOverviewController($scope,ClientsCRUDREST, $stateParams){
 /*COMPANY-PROJECT section*/
 function CompanyProjectsViewController($scope, $rootScope,$http,ProjectsCRUDREST,ngTableParams,$state){
 	$scope.tableFilter="";
+	$scope.$state=$state;
 	$scope.companyCriteriaConfig={
 			name:"company",
 			defaultButtonLabel:"Company",

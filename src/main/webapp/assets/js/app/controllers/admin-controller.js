@@ -111,7 +111,7 @@ function AdminCompaniesController($scope,$rootScope,CompanyCRUDREST,ngTableParam
 	}
 	$scope.postCompany = function(hideFn) {
 		CompanyCRUDREST.save($scope.company).$promise.then(function(result) {
-			alertService.showInfo('Confirmation', 'Donn� sauvegard�');
+			alertService.show('info','Confirmation', 'Donn� sauvegard�');
 			$scope.reset();
 			$scope.tableParams.reload();
 			hideFn();
@@ -122,15 +122,15 @@ function AdminCompaniesController($scope,$rootScope,CompanyCRUDREST,ngTableParam
 			id : id
 		}).$promise.then(function(result) {
 			$scope.tableParams.reload();
-			alertService.showInfo('Confirmation', 'Company supprimé');
+			alertService.show('info','Confirmation', 'Company supprimé');
 		}, function(error) {
 			console.log(error);
-			alertService.showError('' + error.status, error.data);
+			alertService.show('danger','' + error.status, error.data);
 		});
 	};
 	$scope.putCompany = function() {
 		CompanyCRUDREST.update($scope.company).$promise.then(function(result) {
-			alertService.showInfo('info','Created','Mise � jour effectu�');
+			alertService.show('info','Created','Mise � jour effectu�');
 			$scope.reset();
 			$scope.tableParams.reload();
 			hideFn();

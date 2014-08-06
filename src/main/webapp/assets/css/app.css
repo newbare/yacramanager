@@ -1,3 +1,34 @@
+.inverse-dropdown{
+  background-color: #222 !important;
+  border-color: #080808 !important;
+}
+ .inverse-dropdown>li>a{
+    color: #999 !important;
+ }
+.inverse-dropdown>.active>a,
+.inverse-dropdown>li>a:hover{
+      color: #fff !important;
+      background-color: #000 !important;
+}
+
+
+
+#loading-bar .bar{
+	top: 50px !important;
+	height: 3px !important;
+}
+#loading-bar-spinner{
+	top: 60px !important;
+	right: 10px !important;
+	left: auto !important;
+}
+.fc-view{
+	overflow: visible !important;
+}
+.popover.timesheet-event{
+	min-width: 300px;
+}
+
 .timer-widget {
 	padding: 15px 15px;
 }
@@ -151,7 +182,7 @@ fieldset.collapsible {
 
 fieldset.collapsible>legend {
 	margin-left: 20px;
-	margin-bottom: 5px !important;
+	margin-bottom: 1px !important;
 	padding: 0 5px;
 	width: auto;
 	border-bottom: 0 !important;
@@ -724,6 +755,6 @@ span.not-validated.icon {
 }
 
 .ng-table {
-	/* border: 1px solid #000; */
+	border: 1px solid #ececec; 
 	
 }

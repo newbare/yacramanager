@@ -169,8 +169,7 @@ function AbsencesController($scope, $rootScope, AbsenceCRUDREST,
 	$scope.postAbsence = function(hideFn) {
 		absence.typeAbsence=absence.typeAbsence.name;
 		AbsenceCRUDREST.save(clone(absence)).$promise.then(function(result) {
-			alertService.showInfo('Confirmation', 'Donn� sauvegard�');
-			notifService.notify('info','Created','Nouvelle absence enregistr�');
+			alertService.show('info','Confirmation', 'Donn� sauvegard�');
 			$scope.reset();
 			$scope.tableParams.reload();
 			hideFn();

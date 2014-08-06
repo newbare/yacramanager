@@ -3,16 +3,19 @@
  */
 package fr.wati.yacramanager.web.api;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -61,19 +64,25 @@ public class AttachementController {
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public ResponseEntity<byte[]> getFile(@PathVariable("id") Long id) {
-		List<Attachement> attachementsByIds = attachementService
-				.findAttachementsByIds(id);
-		if (!attachementsByIds.isEmpty()) {
-			HttpHeaders headers = new HttpHeaders();
-			headers.setContentType(MediaType.parseMediaType(attachementsByIds
-					.get(0).getContentType()));
-			headers.setContentDispositionFormData("attachment", attachementsByIds.get(0).getName());
-			return new ResponseEntity<byte[]>(
-					attachementService.getAttachementContent(id), headers,
-					HttpStatus.OK);
-		}
-		return new ResponseEntity<byte[]>(HttpStatus.NOT_FOUND);
+	public ResponseEntity<String> getFile(@PathVariable("id") Long id,HttpServletResponse response) throws RestServiceException {
+		
+		try {
 
+			List<Attachement> attachementsByIds = attachementService
+					.findAttachementsByIds(id);
+			if (!attachementsByIds.isEmpty()) {
+				InputStream inputStream = new ByteArrayInputStream(attachementService.getAttachementContent(id));
+				IOUtils.copy(inputStream, response.getOutputStream());
+				response.setContentType(attachementsByIds.get(0).getContentType());
+				response.setHeader("Content-Disposition",
+	                       "attachment; filename=" + attachementsByIds.get(0).getName());
+				response.flushBuffer();
+				return new ResponseEntity<String>(HttpStatus.FOUND);
+			}
+			return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
+		} catch (IOException ex) {
+			LOG.info(ex.getMessage(),ex);
+			throw new RestServiceException("IOError writing file to output stream");
+		}
 	}
 }

@@ -31,9 +31,8 @@ App.directive('httpRequestError', [ '$rootScope', 'alertService', 'notifService'
                      				restrict : 'AEC',
                      				link : function(scope, elem, attrs, ctrl) {
                      					scope.$on('event:http-request-error', function(event, error) {
-                     						console.log(error);
-                     						notifService.notify('error',error.title+': <strong>'+error.status+'</strong>',error.data);
-                     						//alertService.showError(error.title+': '+error.status+')',error.data);
+                     						//notifService.notify('error',error.title+': <strong>'+error.status+'</strong>',error.data);
+                     						alertService.show('danger',error.title+': '+error.status+')',error.data);
                      					});
                      				}
                      			};

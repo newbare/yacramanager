@@ -8,7 +8,7 @@ var App = angular.module('yaCRAApp', [ 'ngResource', 'mgcrea.ngStrap',
 		'ng-criterias', 'ngHtmlCompile', 'ngRoute', 'ngAnimate', 'ngTable',
 		'ui.router', 'angularFileUpload', 'ui.calendar',
 		'http-auth-interceptor', 'timer', 'localytics.directives',
-		'daterangepicker','pascalprecht.translate' ]);
+		'daterangepicker','pascalprecht.translate','angular-loading-bar' ]);
 
 
 App.config(['$httpProvider', function($httpProvider) {
@@ -36,6 +36,9 @@ App.config(['$translateProvider', function ($translateProvider) {
     });
 }]);
 
+App.config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
+    cfpLoadingBarProvider.parentSelector = '.main';
+  }])
 
 App.run(function($rootScope,$templateCache,UsersREST) {
 	$rootScope.page = '';
@@ -61,7 +64,6 @@ App.factory('httpRequestServerErrorInterceptor',function ($q,$rootScope) {
         'responseError': function(rejection) {
             // do something on error
             if(rejection.status === 500){
-            	//alertService.showError('Server error',rejection)
             	var requestError={
             			status: rejection.status,
             			title: rejection.statusText,

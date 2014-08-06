@@ -18,6 +18,8 @@
 <link rel="stylesheet"
 	href="${contextPath}/assets/bower_components/angular-motion/dist/angular-motion.css">
 <link rel="stylesheet"
+	href="${contextPath}/assets/bower_components/angular-loading-bar/build/loading-bar.css">
+<link rel="stylesheet"
 	href="${contextPath}/assets/bower_components/bootstrap-daterangepicker/daterangepicker-bs3.css">
 <link rel="stylesheet"
 	href="${contextPath}/assets/bower_components/ng-table/ng-table.min.css">
@@ -104,7 +106,7 @@
 						data-ui-sref="company"><i class="fa fa-university"></i>{{userInfo.company.name}}</a></li>
 					<li class="dropdown" data-ng-class="navClass('frais') + navClass('cra') + navClass('absences') + navClass('timesheet')">
 						<a href="" class="dropdown-toggle" data-toggle="dropdown">{{'app.navbar.menu.workspace' | translate}}<span class="caret"></span></a>
-						<ul class="workspace-menu dropdown-menu" role="menu">
+						<ul class="workspace-menu inverse-dropdown dropdown-menu " role="menu">
 							<li data-ng-class="navClass('frais')"><a data-ui-sref="frais">{{'app.navbar.menu.frais' | translate}}</a></li>
 							<li data-ng-class="navClass('cra')"><a data-ui-sref="cra">{{'app.navbar.menu.cra' | translate}}</a></li>
 							<li data-ng-class="navClass('absences')"><a
@@ -115,6 +117,7 @@
 					</li>
 				</ul>
 				<ul class="nav navtop navbar-nav navbar-right">
+					<li data-ng-class="navClass('home')"><a data-ui-sref="home"><i class="fa fa-home"></i></a></li>
 					<li>
 						<div class="timer-widget dropdown" data-ng-controller="WorkLogCtrl" data-ng-class="{running: timerRunning}">
 							<a data-toggle="dropdown" href=""><i class="fa fa-clock-o" ></i><span data-ng-show="timerRunning && task!==undefined">[{{task.name}}]</span></a>
@@ -149,16 +152,15 @@
 							</div>
 						</div>
 					</li>
-					<li data-ng-class="navClass('home')"><a data-ui-sref="home"><i class="fa fa-home"></i></a></li>
 					<li data-ng-class="navClass('messages')"><a
 						data-ui-sref="messages"><i class="fa fa-envelope"></i></a></li>
 					<li data-ng-class="navClass('notifications')"><a
 						data-ui-sref="notifications"><i class="fa fa-bell"></i></a></li>
 					<li class="dropdown">
 						<a class="dropdown-toggle"	data-toggle="dropdown" href=""><i class="fa fa-globe"></i>{{currentLanguage | uppercase}}</a>
-						<ul class="dropdown-menu" role="menu">
-							<li><a href="" data-ng-click="toggleLanguage('fr')"><img class="flag flag-fr">Fr</a></li>
-							<li><a href="" data-ng-click="toggleLanguage('en')"><img class="flag flag-gb">Eng</a></li>
+						<ul class="dropdown-menu inverse-dropdown" role="menu">
+							<li><a href="" data-ng-click="toggleLanguage('fr')"><img class="flag flag-fr"><span style="padding-left: 10px">Fr</span></a></li>
+							<li><a href="" data-ng-click="toggleLanguage('en')"><img class="flag flag-gb"><span style="padding-left: 10px">Eng</span></a></li>
 						</ul>
 					</li>
 					<li
@@ -166,7 +168,7 @@
 						class="dropdown"><a href="" class="dropdown-toggle"
 						data-toggle="dropdown"><i class="fa fa-user"></i>${userFirstName}<span
 							class="caret"></span></a>
-						<ul class="user-menu dropdown-menu" role="menu">
+						<ul class="user-menu dropdown-menu inverse-dropdown" role="menu">
 							<li><a data-ui-sref="user-settings"><i class="fa fa-cog"></i>{{'app.navbar.menu.settings' | translate}}</a></li>
 							<li><a data-ui-sref="user-profile"><i class="fa fa-user"></i>
 									{{'app.navbar.menu.profile' | translate}}</a></li>
@@ -182,13 +184,14 @@
 	<!-- End Fixed navbar -->
 	<div data-ng-class="containerClass()" data-ng-cloak data-http-request-error><!-- class="global-container" --> 
 		<!-- <div class="sidebar sidebar-fixed">hey i'am a side bar</div> -->
-		<div class=""><!-- <div class="main-content"> -->
+		<div class="main"><!-- <div class="main-content"> -->
 			<div class="page-header">
 				<h4>
 					{{page.title | translate}} <i class="fa fa-angle-double-right"
 						style="font-size: 80%"></i><small> {{page.description | translate}}</small>
 				</h4>
 			</div>
+			<div id="alerts-container"></div>
 			<div data-ui-view="" class="" data-ng-cloak></div>
 			<div class="footer">
 				<p class="text-muted">@ wati 2014</p>
@@ -235,6 +238,8 @@
 		src="${contextPath}/assets/bower_components/angular-strap/dist/modules/popover.tpl.min.js"></script>
 	<script
 		src="${contextPath}/assets/bower_components/angular-animate/angular-animate.min.js"></script>
+	<script
+		src="${contextPath}/assets/bower_components/angular-loading-bar/build/loading-bar.min.js"></script>
 	<script
 		src="${contextPath}/assets/bower_components/ng-table/ng-table.min.js"></script>
 	<script

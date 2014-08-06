@@ -1,8 +1,10 @@
 package fr.wati.yacramanager.web.dto;
 
+import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 
 import fr.wati.yacramanager.beans.WorkLog;
+import fr.wati.yacramanager.beans.WorkLogType;
 
 public class WorkLogDTO {
 
@@ -17,11 +19,21 @@ public class WorkLogDTO {
 	private String description;
 	private boolean editable=true;
 	private boolean allDay;
+	private String type;
+	private String color;
 	
 	public WorkLog toWorkLog(WorkLog workLog) {
 		workLog.setDescription(getDescription());
 		workLog.setStartDate(getStart());
-		workLog.setEndDate(getEnd());
+		if(StringUtils.isNotEmpty(getType())){
+			if(String.valueOf(WorkLogType.DURATION).equals(getType())){
+				workLog.setWorkLogType(WorkLogType.DURATION);
+				workLog.setDuration(getDuration());
+			}else {
+				workLog.setEndDate(getEnd());
+				workLog.setWorkLogType(WorkLogType.TIME);
+			}
+		}
 		return workLog;
 	}
 	
@@ -115,6 +127,22 @@ public class WorkLogDTO {
 
 	public void setDuration(Long duration) {
 		this.duration = duration;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public String getColor() {
+		return color;
+	}
+
+	public void setColor(String color) {
+		this.color = color;
 	}
 
 	

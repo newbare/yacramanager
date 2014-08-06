@@ -37,48 +37,48 @@
 					</div>
 					<div class="form-group">
 						<label class="radio-inline col-md-4 col-md-offset-2">
-						  <input type="radio" name="optionsRadios" data-ng-model="timeType" id="durationCheckBox" value="duration"> Duration
+						  <input type="radio" name="optionsRadios" data-ng-model="worklog.timeType" id="durationCheckBox" value="DURATION"> Duration
 						</label>
 						<label class="radio-inline  col-md-4 col-md-offset-2">
-						  <input type="radio" name="optionsRadios" data-ng-model="timeType" id="timeCheckBox" value="time"> Time
+						  <input type="radio" name="optionsRadios" data-ng-model="worklog.timeType" id="timeCheckBox" value="TIME"> Time
 						</label>
 					</div>
-					<div class="form-group" data-ng-show="timeType=='time'">
+					<div class="form-group" data-ng-show="worklog.timeType=='TIME'">
 						<label for="timeStartDate" class="control-label col-md-2" style="text-align: left;">When</label>
 						<div class="col-md-2">
-							<input type="text" class="form-control" ng-model="timeStartDate"
+							<input type="text" class="form-control" ng-model="worklog.timeStartDate"
 								data-autoclose="1" placeholder="Date" bs-datepicker>
 						</div>
 						<div class="col-md-2">
-							<input type="text" class="form-control" ng-model="timeStartDate"
+							<input type="text" class="form-control" ng-model="worklog.timeStartTime"
 								data-autoclose="1" placeholder="Time" bs-timepicker>
 						</div>
 						<label for="timeStartDate" class="control-label col-md-1" style="text-align: center;">To</label>
 						<div class="col-md-2">
 							<input type="text" class="form-control"
-								ng-model="timeEndDate" data-autoclose="1" placeholder="Date"
+								ng-model="worklog.timeEndDate" data-autoclose="1" placeholder="Date"
 								bs-datepicker>
 						</div>
 						<div class="col-md-2">
-							<input type="text" class="form-control" ng-model="timeEndDate"
+							<input type="text" class="form-control" ng-model="worklog.timeEndTime"
 								data-autoclose="1" placeholder="Time" bs-timepicker>
 						</div>
 					</div>
-					<div class="form-group" data-ng-show="timeType=='duration'">
+					<div class="form-group" data-ng-show="worklog.timeType=='DURATION'">
 						<label for="durationStartDate" class="control-label col-md-2" style="text-align: left;">Date</label>
 						<div class="col-md-3">
-							<input type="text" class="form-control" ng-model="durationStartDate"
+							<input type="text" class="form-control" ng-model="worklog.durationStartDate"
 								data-autoclose="1" placeholder="Date" bs-datepicker>
 						</div>
 						<div class="col-md-3">
-							<input type="text" class="form-control" data-ng-model="durationTime"	 placeholder="Minutes">
+							<input type="text" class="form-control" data-ng-model="worklog.durationTime"	 placeholder="Minutes">
 						</div>
 					</div>
 					<div class="form-group">
 						<label for="noteDescription" class="control-label col-md-2" style="text-align: left;">Description</label> 
 						<div class="col-md-9">
 							<textarea  id="noteDescription" class="form-control"
-								data-ng-model="description"		placeholder="Description (facultatif)"></textarea>
+								data-ng-model="worklog.description"		placeholder="Description (facultatif)"></textarea>
 						</div>
 					</div>
 				</form>

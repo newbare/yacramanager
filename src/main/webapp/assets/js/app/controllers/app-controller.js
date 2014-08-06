@@ -59,7 +59,7 @@ App.controller('AppCtrl', [ '$scope', '$location', 'UsersREST','$rootScope','$tr
 			};
 			
 			$scope.containerClass=function(){
-				return "container-fluid";
+				return "container";
 			}
 
 			$scope.containerNavClass=function(){
@@ -92,6 +92,7 @@ App.controller('WorkLogCtrl',['$scope','$http','WorkLogCRUDREST','alertService',
     	 $scope.updateStartable();
     	 console.log('Timer Stopped - data = ', data);
     	 $scope.worklog.title="";
+    	 $scope.worklog.type="TIME";
     	 $scope.worklog.start=start;
     	 $scope.worklog.end=moment().add('minutes', data.minutes);
     	 $scope.worklog.duration=data.minutes;
@@ -100,7 +101,7 @@ App.controller('WorkLogCtrl',['$scope','$http','WorkLogCRUDREST','alertService',
     	 $scope.worklog.description=$scope.description;
     	 $scope.worklog.employeId=_userId;
     	 WorkLogCRUDREST.save($scope.worklog).$promise.then(function(result) {
-			alertService.showInfo('Confirmation', 'Donn� sauvegard�');
+			alertService.show('success','Confirmation', 'Donn� sauvegard�');
 		});
      });
      
@@ -274,7 +275,7 @@ App.config([ '$stateProvider', '$urlRouterProvider',
 				//controller : EntrepriseController,
 			}).state('company.employees', {
 				url : "/employees",
-				templateUrl : _contextPath+'/views/app/company/employees/company-employees.html'
+				templateUrl : _contextPath+'/views/app/templates/partials/panel-view.html'
 				//controller : CompanyEmployeesController
 			}).state('company.employees.details', {
 				url : "/details/:id",
@@ -302,7 +303,7 @@ App.config([ '$stateProvider', '$urlRouterProvider',
 			})
 			.state('company.clients', {
 				url : "/clients",
-				templateUrl : _contextPath+'/views/app/company/clients/company-clients.html'
+				templateUrl : _contextPath+'/views/app/templates/partials/panel-view.html'
 				//controller : CompanyEmployeesController
 			}).state('company.clients.details', {
 				url : "/details/:id",
@@ -330,7 +331,7 @@ App.config([ '$stateProvider', '$urlRouterProvider',
 			})
 			.state('company.projects', {
 				url : "/projects",
-				templateUrl : _contextPath+'/views/app/company/projects/company-projects.html'
+				templateUrl : _contextPath+'/views/app/templates/partials/panel-view.html'
 				//controller : CompanyEmployeesController
 			}).state('company.projects.details', {
 				url : "/details/:id",

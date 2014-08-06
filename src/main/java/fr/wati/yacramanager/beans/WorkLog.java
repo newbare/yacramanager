@@ -6,6 +6,8 @@ package fr.wati.yacramanager.beans;
 import java.io.Serializable;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -36,10 +38,11 @@ public class WorkLog implements Serializable {
 	@Type(type="org.joda.time.contrib.hibernate.PersistentDateTime")
 	private DateTime endDate;
 	/**
-	 * the duration in seconds
+	 * the duration in minutes
 	 */
 	private Long duration;
 	private String description;
+	@Enumerated(EnumType.ORDINAL)
 	private WorkLogType workLogType;
 	/**
 	 * @return the id

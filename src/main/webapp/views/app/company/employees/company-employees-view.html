@@ -1,10 +1,14 @@
 		<div class="row">
-			<div class="toolbar">
-				<button type="button" class="btn btn-default" data-template="../views/app/templates/edit-company.tpl.html" data-bs-modal="modal" >
-						<span class="fa fa-plus-square" ></span> Register an employee
+			<div class="btn-toolbar" role="toolbar">
+			  <div class="btn-group btn-group-sm">
+			  	<button type="button" class="btn btn-default" data-template="../views/app/templates/edit-company.tpl.html" data-bs-modal="modal" >
+					<strong>+</strong> Ajouter
 				</button>
-				<a data-ui-sref="company.employees.view.list">List view</a>
-				<a data-ui-sref="company.employees.view.quick">Overview</a>
+			  </div>
+			  <div class="btn-group btn-group-sm">
+			  		 <button class="btn btn-default" data-ng-click="$state.go('company.employees.view.list')" data-title="List view" data-bs-tooltip><i class="fa fa-list"></i></button>
+					<button  class="btn btn-default" data-ng-click="$state.go('company.employees.view.quick')" data-title="Quick view" data-bs-tooltip><i class="fa fa-columns"></i></button>
+			  </div>
 			</div>
 		</div>
 		<div class="row">
