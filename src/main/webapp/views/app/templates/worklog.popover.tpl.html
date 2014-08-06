@@ -1,9 +1,31 @@
-
-<form name="popoverForm">
-	<span>{{event.description}}</span> <span>{{event.start}}</span>
-	<div class="form-actions">
-		<button type="button" class="btn btn-link" data-ng-click="$hide()">Close</button>
-		<button type="button" class="btn btn-primary"
-			data-ng-click="popover.saved=true;$hide()">Edit</button>
+<div class="popover timesheet-event">
+	<div class="arrow"></div>
+	<h3 class="popover-title">{{event.title}}</h3>
+	<div class="popover-content">
+		<form class="form-horizontal" role="form">
+			<div class="form-group">
+				<label class="col-md-4 control-label">Description</label>
+				<div class="col-md-8">
+					<p class="form-control-static">{{event.description}}</p>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-md-4 control-label">Start</label>
+				<div class="col-md-8">
+					<p class="form-control-static">{{event.start}}</p>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-md-4 control-label">End</label>
+				<div class="col-md-8">
+					<p class="form-control-static">{{event.end}}</p>
+				</div>
+			</div>
+			<div class="row pull-right">
+				<button type="button" class="btn btn-link" data-ng-click="$hide()">Close</button>
+				<button type="button" class="btn btn-link"
+					data-ng-click="popover.saved=true;$hide()">Edit</button>
+			</div>
+		</form>
 	</div>
-</form>
+</div

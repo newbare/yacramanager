@@ -41,6 +41,8 @@ public class Task implements Serializable {
 	private List<WorkLog> workLogs;
 	@ManyToOne
 	private Employe employe;
+	
+	private String color;
 	/**
 	 * @return the id
 	 */
@@ -136,6 +138,12 @@ public class Task implements Serializable {
 	 */
 	public void setEmploye(Employe employe) {
 		this.employe = employe;
+	}
+	public String getColor() {
+		return color;
+	}
+	public void setColor(String color) {
+		this.color = color;
 	}
 	
 	

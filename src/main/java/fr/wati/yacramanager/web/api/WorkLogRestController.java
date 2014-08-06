@@ -99,6 +99,7 @@ public class WorkLogRestController implements RestCrudController<WorkLogDTO>{
 			throw new RestServiceException("No given task ID error");
 		}
 		WorkLog workLog = dto.toWorkLog();
+		workLog.setCreatedDate(new DateTime());
 		if(dto.getEmployeId()==null){
 			workLog.setEmploye(SecurityUtils.getConnectedUser());
 		}else {

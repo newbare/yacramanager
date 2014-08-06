@@ -2,7 +2,19 @@ function TimeSheetController($scope,$rootScope,$http,$sce,WorkLogCRUDREST,alertS
 	$rootScope.page={"title":"Timesheet","description":"View and manage timesheet"}
 	$scope.timeType="duration";
 	$scope.timesheetCalendarTitle=undefined;
-	$scope.durationTime=0;
+	
+	
+	$scope.resetWorklogForm=function(){
+		$scope.worklog={}
+		$scope.worklog.durationTime=0;
+		$scope.worklog.timeType="DURATION";
+		$scope.worklog.description=undefined;
+		$scope.project=undefined;
+		$scope.task=undefined;
+	}
+	
+	$scope.resetWorklogForm();
+	
 	var fetchProjects = function(queryParams) {
 		return $http.get(
 				_contextPath + "/app/api/" + _userCompanyId + "/project/employe/"
@@ -124,9 +136,15 @@ function TimeSheetController($scope,$rootScope,$http,$sce,WorkLogCRUDREST,alertS
     };
     
     $scope.eventRender=function(event, element,view) {
-    	popover=$popover(element, {title: event.title,placement:'top',contentTemplate: _contextPath+'/views/app/templates/worklog.popover.tpl.html' });
+    	popover=$popover(element, {title: event.title,placement:'top',html:true,template: _contextPath+'/views/app/templates/worklog.popover.tpl.html' });
     	popover.$scope.event = event
     }
+    
+    $scope.eventSource = {
+            url: _contextPath+"/app/api/worklog",
+            type : 'GET'
+    };
+    $scope.eventSources = [$scope.eventSource];
     
 	/* config object */
     $scope.uiConfig = {
@@ -150,11 +168,6 @@ function TimeSheetController($scope,$rootScope,$http,$sce,WorkLogCRUDREST,alertS
       }
     };
     
-    $scope.eventSource = {
-            url: _contextPath+"/app/api/worklog",
-            type : 'GET'
-    };
-    $scope.eventSources = [$scope.eventSource];
     
     /* Change View */
     $scope.changeView = function(view,calendar) {
@@ -172,6 +185,7 @@ function TimeSheetController($scope,$rootScope,$http,$sce,WorkLogCRUDREST,alertS
         calendar.fullCalendar('today');
     };
     
+//    $scope.today( $scope.uiConfig.calendar);
     $scope.isTodaySelected=function(){
     	if($scope.currentView===undefined) return;
     	var today = new Date();
@@ -183,16 +197,25 @@ function TimeSheetController($scope,$rootScope,$http,$sce,WorkLogCRUDREST,alertS
 		}
     };
     $scope.postWorkLog = function(hideFn) {
-    	$scope.worklog={};
-    	 $scope.worklog.title="";
-    	 $scope.worklog.start=null;
-    	 $scope.worklog.end=null;
-    	 $scope.worklog.duration=$scope.durationTime;
-    	 $scope.worklog.taskId= $scope.task.id;
-    	 $scope.worklog.taskName=$scope.task.name;
-    	 $scope.worklog.description=$scope.description;
-    	 $scope.worklog.employeId=_userId;
-    	 WorkLogCRUDREST.save($scope.worklog).$promise.then(function(result) {
+    	var worklog={};
+    	 worklog.title=null;
+    	 worklog.type=$scope.worklog.timeType;
+    	 if("TIME"===$scope.worklog.timeType){
+    		 worklog.start=$scope.worklog.timeStartDate;
+    		 worklog.end=$scope.worklog.timeEndDate;
+    		 worklog.duration=null;
+    	 }else {
+    		 worklog.start=$scope.worklog.durationStartDate;
+    		 worklog.end=null;
+    		 worklog.duration=$scope.worklog.durationTime;
+		}
+    	
+    	 worklog.taskId= $scope.task.id;
+    	 worklog.taskName=$scope.task.name;
+    	 worklog.description=$scope.worklog.description;
+    	 worklog.employeId=_userId;
+    	 
+    	 WorkLogCRUDREST.save(worklog).$promise.then(function(result) {
     		 hideFn();
     		 alertService.showInfo('Confirmation', 'Donn� sauvegard�');
 		});

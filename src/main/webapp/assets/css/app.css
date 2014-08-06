@@ -1,3 +1,10 @@
+.fc-view{
+	overflow: visible !important;
+}
+.popover.timesheet-event{
+	min-width: 300px;
+}
+
 .timer-widget {
 	padding: 15px 15px;
 }

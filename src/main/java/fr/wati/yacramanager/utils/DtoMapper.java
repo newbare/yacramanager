@@ -201,9 +201,19 @@ public class DtoMapper {
 		workLogDTO.setEditable(true);
 		if(workLog.getTask()!=null){
 			workLogDTO.setTitle(workLog.getTask().getName());
+			workLogDTO.setColor(workLog.getTask().getColor());
 		}
-		workLogDTO.setAllDay(false);
+		workLogDTO.setType(String.valueOf(workLog.getWorkLogType()));
+		switch (workLog.getWorkLogType()) {
+		case DURATION:
+			workLogDTO.setAllDay(true);
+			break;
+		default:
+			workLogDTO.setAllDay(false);
+			break;
+		}
 		workLogDTO.setDescription(workLog.getDescription());
+		
 		return workLogDTO;
 	}
 
