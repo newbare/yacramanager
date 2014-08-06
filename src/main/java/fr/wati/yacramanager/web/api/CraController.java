@@ -6,6 +6,8 @@ import java.util.Date;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
@@ -27,12 +29,12 @@ public class CraController {
 	
 	@InitBinder
     public void initBinder(WebDataBinder binder) {
-        binder.registerCustomEditor(Date.class,
-                  new CustomDateEditor(new SimpleDateFormat("yyyy-MM-dd"),true));
+//        binder.registerCustomEditor(Date.class,
+//                  new CustomDateEditor(new SimpleDateFormat("yyyy-MM-dd"),true));
     }
 	
 	@RequestMapping(method=RequestMethod.GET)
-	public @ResponseBody CraDTO getCra(@RequestParam(value="start", required=true) DateTime startDate, @RequestParam(value="end", required=true) DateTime endDate){
+	public @ResponseBody CraDTO getCra(@RequestParam(value="start", required=true) @DateTimeFormat(iso=ISO.DATE_TIME) DateTime startDate, @RequestParam(value="end", required=true) @DateTimeFormat(iso=ISO.DATE_TIME) DateTime endDate){
 		CraDTO craDTO=craService.generateCra(SecurityUtils.getConnectedUser(), startDate, endDate);
 		return craDTO;
 	}

@@ -13,6 +13,17 @@ var App = angular.module('yaCRAApp', [ 'ngResource', 'mgcrea.ngStrap',
 
 App.config(['$httpProvider', function($httpProvider) {
 	$httpProvider.interceptors.push('httpRequestServerErrorInterceptor');
+	$httpProvider.interceptors.push(function($q) {
+        return {
+          responseError: function(rejection) {
+            if(rejection.status == 0) {
+              alert("Connection lost with server :(");
+              return;
+            }
+           return $q.reject(rejection);
+        }
+      };
+	});
 	$httpProvider.defaults.headers.common["FROM-ANGULAR"] = "true";
     $httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
 }]);

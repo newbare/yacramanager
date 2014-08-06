@@ -15,7 +15,7 @@ import com.fasterxml.jackson.datatype.joda.JodaModule;
 public class CustomObjectMapper extends ObjectMapper {
     public CustomObjectMapper() {
     	configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS , false);          
-        setDateFormat(new ISO8601DateFormat());
+        //setDateFormat(new ISO8601DateFormat());
         registerModule(new JodaModule());
     }
     

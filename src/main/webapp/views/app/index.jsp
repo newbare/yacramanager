@@ -117,8 +117,7 @@
 				<ul class="nav navtop navbar-nav navbar-right">
 					<li>
 						<div class="timer-widget dropdown" data-ng-controller="WorkLogCtrl" data-ng-class="{running: timerRunning}">
-							<a data-toggle="dropdown" href=""><i class="fa fa-clock-o" data-ng-show="!timerRunning"></i>
-							<span data-ng-show="timerRunning && task!==undefined" style="padding-right: 5px;">[{{task.name}}]:</span></a>
+							<a data-toggle="dropdown" href=""><i class="fa fa-clock-o" ></i><span data-ng-show="timerRunning && task!==undefined">[{{task.name}}]</span></a>
 							<timer autostart="false" interval="1000" data-ng-show="timerRunning">{{hhours}}:{{mminutes}}:{{sseconds}}</timer>
 							<button type="button" class="btn btn-danger btn-xs"  data-ng-click="stopTimer()" data-ng-show="timerRunning">Stop</button>
 							<div class="timer-widget-content dropdown-menu">
@@ -230,6 +229,10 @@
 		src="${contextPath}/assets/bower_components/angular-route/angular-route.min.js"></script>
 	<script
 		src="${contextPath}/assets/bower_components/angular-strap/dist/angular-strap.min.js"></script>
+	<script
+		src="${contextPath}/assets/bower_components/angular-strap/dist/modules/popover.js"></script>
+	<script
+		src="${contextPath}/assets/bower_components/angular-strap/dist/modules/popover.tpl.min.js"></script>
 	<script
 		src="${contextPath}/assets/bower_components/angular-animate/angular-animate.min.js"></script>
 	<script

@@ -1,0 +1,9 @@
+
+<form name="popoverForm">
+	<span>{{event.description}}</span> <span>{{event.start}}</span>
+	<div class="form-actions">
+		<button type="button" class="btn btn-link" data-ng-click="$hide()">Close</button>
+		<button type="button" class="btn btn-primary"
+			data-ng-click="popover.saved=true;$hide()">Edit</button>
+	</div>
+</form>

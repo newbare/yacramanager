@@ -18,8 +18,8 @@ function CraController($scope,$rootScope,CraREST,$filter,$http) {
 	
 	$scope.tableFilter="";
 	$scope.dateRange={
-			startDate:currentMonthfirstDay,
-			endDate:currentMonthlastDay
+			startDate:moment().startOf('month'),
+			endDate: moment().endOf('month')
 	}
 	$scope.employeCriteriaConfig={
 			name:"employe",
@@ -83,10 +83,19 @@ function CraController($scope,$rootScope,CraREST,$filter,$http) {
 		};
 	
 	$scope.retrieveCra=function(){
-		CraREST.get({start:$scope.dateRange.startDate,end:$scope.dateRange.endDate},function(data) {
-		    $scope.cra = data;
-		    $scope.respStartDate=data.startDate;
-		    $scope.respEndDate=data.endDate;
-		});
+		$http.get(
+				_contextPath + "/app/api/cra?start=" +$scope.dateRange.startDate.toISOString()+"&end="+$scope.dateRange.endDate.toISOString(), {
+					params : {}
+				}).then(function(response) {
+					$scope.cra = response.data;
+				    $scope.respStartDate=response.data.startDate;
+				    $scope.respEndDate=response.data.endDate;
+				});
+		
+//		CraREST.get({start:$scope.dateRange.startDate._d.toString(),end:$scope.dateRange.endDate._d.toString()},function(data) {
+//		    $scope.cra = data;
+//		    $scope.respStartDate=data.startDate;
+//		    $scope.respEndDate=data.endDate;
+//		});
 	};	
 }

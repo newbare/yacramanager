@@ -9,10 +9,10 @@
 	padding: 12px 15px;
 }
 
-.timer-widget>a,
+/* .timer-widget>a,
 timer{
 	padding-right: 5px;
-}
+} */
 
 .timer-widget>a:HOVER {
 	color: #fff;

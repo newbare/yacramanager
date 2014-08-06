@@ -1,4 +1,4 @@
-function TimeSheetController($scope,$rootScope,$http,$sce,WorkLogCRUDREST,alertService) {
+function TimeSheetController($scope,$rootScope,$http,$sce,WorkLogCRUDREST,alertService,$popover,$compile) {
 	$rootScope.page={"title":"Timesheet","description":"View and manage timesheet"}
 	$scope.timeType="duration";
 	$scope.timesheetCalendarTitle=undefined;
@@ -123,6 +123,11 @@ function TimeSheetController($scope,$rootScope,$http,$sce,WorkLogCRUDREST,alertS
     	$scope.timesheetCalendarTitle=$sce.trustAsHtml(view.title);
     };
     
+    $scope.eventRender=function(event, element,view) {
+    	popover=$popover(element, {title: event.title,placement:'top',contentTemplate: _contextPath+'/views/app/templates/worklog.popover.tpl.html' });
+    	popover.$scope.event = event
+    }
+    
 	/* config object */
     $scope.uiConfig = {
       calendar:{
@@ -140,7 +145,8 @@ function TimeSheetController($scope,$rootScope,$http,$sce,WorkLogCRUDREST,alertS
         eventClick: $scope.onEventClick,
         eventDrop: $scope.onEventDrop,
         eventResize: $scope.onEventResize,
-        select:$scope.onSelection
+        select:$scope.onSelection,
+        eventRender: $scope.eventRender
       }
     };
     
