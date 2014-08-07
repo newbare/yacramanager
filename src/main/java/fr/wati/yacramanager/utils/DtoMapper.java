@@ -207,6 +207,7 @@ public class DtoMapper {
 		switch (workLog.getWorkLogType()) {
 		case DURATION:
 			workLogDTO.setAllDay(true);
+			workLogDTO.setDuration(workLog.getDuration());
 			break;
 		default:
 			workLogDTO.setAllDay(false);

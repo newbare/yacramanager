@@ -1,8 +1,11 @@
-function TimeSheetController($scope,$rootScope,$http,$sce,WorkLogCRUDREST,alertService,$popover,$compile) {
+function TimeSheetController($scope,$rootScope,$http,$sce,WorkLogCRUDREST,alertService,$popover,$compile,$modal) {
 	$rootScope.page={"title":"Timesheet","description":"View and manage timesheet"}
 	$scope.timeType="duration";
 	$scope.timesheetCalendarTitle=undefined;
-	
+	var editWorklogModal = $modal({scope: $scope, template: _contextPath+'/views/app/templates/edit-worklog.tpl.html', show: false});
+	$scope.showEditWorkLogModal = function() {
+		editWorklogModal.$promise.then(editWorklogModal.show);
+	};
 	
 	$scope.resetWorklogForm=function(){
 		$scope.worklog={}
@@ -127,6 +130,11 @@ function TimeSheetController($scope,$rootScope,$http,$sce,WorkLogCRUDREST,alertS
     };
     
     $scope.onSelection=function( start, end, jsEvent, view ){
+    	$scope.resetWorklogForm();
+    	$scope.worklog.timeStartDate=start;
+    	$scope.worklog.timeEndDate=end;
+    	$scope.worklog.timeType="TIME";
+    	$scope.showEditWorkLogModal();
     	$scope.alertMessage="Start "+start+" End "+end;
     };
     
@@ -136,7 +144,7 @@ function TimeSheetController($scope,$rootScope,$http,$sce,WorkLogCRUDREST,alertS
     };
     
     $scope.eventRender=function(event, element,view) {
-    	popover=$popover(element, {title: event.title,placement:'top',html:true,template: _contextPath+'/views/app/templates/worklog.popover.tpl.html' });
+    	popover=$popover(element, {title: event.title,placement:'top',html:true,template: _contextPath+'/views/app/templates/worklog.popover.tpl.html',container:'body' });
     	popover.$scope.event = event
     }
     

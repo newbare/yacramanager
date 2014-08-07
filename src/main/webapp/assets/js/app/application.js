@@ -8,7 +8,7 @@ var App = angular.module('yaCRAApp', [ 'ngResource', 'mgcrea.ngStrap',
 		'ng-criterias', 'ngHtmlCompile', 'ngRoute', 'ngAnimate', 'ngTable',
 		'ui.router', 'angularFileUpload', 'ui.calendar',
 		'http-auth-interceptor', 'timer', 'localytics.directives',
-		'daterangepicker','pascalprecht.translate','angular-loading-bar' ]);
+		'daterangepicker','pascalprecht.translate','angular-loading-bar','ngQuickDate' ]);
 
 
 App.config(['$httpProvider', function($httpProvider) {

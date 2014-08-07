@@ -45,23 +45,14 @@
 					</div>
 					<div class="form-group" data-ng-show="worklog.timeType=='TIME'">
 						<label for="timeStartDate" class="control-label col-md-2" style="text-align: left;">When</label>
-						<div class="col-md-2">
-							<input type="text" class="form-control" ng-model="worklog.timeStartDate"
-								data-autoclose="1" placeholder="Date" bs-datepicker>
-						</div>
-						<div class="col-md-2">
-							<input type="text" class="form-control" ng-model="worklog.timeStartTime"
-								data-autoclose="1" placeholder="Time" bs-timepicker>
+						<div class="col-md-4">
+							<quick-datepicker  class="form-control" ng-model="worklog.timeStartDate"
+								 placeholder="Date" ></quick-datepicker>
 						</div>
 						<label for="timeStartDate" class="control-label col-md-1" style="text-align: center;">To</label>
-						<div class="col-md-2">
-							<input type="text" class="form-control"
-								ng-model="worklog.timeEndDate" data-autoclose="1" placeholder="Date"
-								bs-datepicker>
-						</div>
-						<div class="col-md-2">
-							<input type="text" class="form-control" ng-model="worklog.timeEndTime"
-								data-autoclose="1" placeholder="Time" bs-timepicker>
+						<div class="col-md-4">
+							<quick-datepicker class="form-control"
+								ng-model="worklog.timeEndDate" data-autoclose="1" placeholder="Date"></quick-datepicker>
 						</div>
 					</div>
 					<div class="form-group" data-ng-show="worklog.timeType=='DURATION'">

@@ -1,3 +1,7 @@
+.popover-content .form-group{
+	margin-bottom: auto !important;
+}
+
 .inverse-dropdown{
   background-color: #222 !important;
   border-color: #080808 !important;
@@ -22,9 +26,7 @@
 	right: 10px !important;
 	left: auto !important;
 }
-.fc-view{
-	overflow: visible !important;
-}
+
 .popover.timesheet-event{
 	min-width: 300px;
 }

@@ -24,6 +24,10 @@
 <link rel="stylesheet"
 	href="${contextPath}/assets/bower_components/ng-table/ng-table.min.css">
 <link rel="stylesheet"
+	href="${contextPath}/assets/bower_components/ngQuickDate/dist/ng-quick-date.css">
+	<link rel="stylesheet"
+	href="${contextPath}/assets/bower_components/ngQuickDate/dist/ng-quick-date-default-theme.css">
+<link rel="stylesheet"
 	href="${contextPath}/assets/bower_components/fullcalendar/fullcalendar.css">
 	<link rel="stylesheet" href="${contextPath}/assets/bower_components/chosen/chosen.min.css">
 <link rel="stylesheet"
@@ -258,6 +262,8 @@
 		src="${contextPath}/assets/bower_components/angular-translate-loader-static-files/angular-translate-loader-static-files.min.js"></script>
 	<script
 		src="${contextPath}/assets/bower_components/angular-strap/dist/modules/modal.js"></script>
+	<script
+		src="${contextPath}/assets/bower_components/ngQuickDate/dist/ng-quick-date.min.js"></script>
 	<script
 		src="${contextPath}/assets/bower_components/angular-strap/dist/angular-strap.tpl.min.js"></script>
 	<script

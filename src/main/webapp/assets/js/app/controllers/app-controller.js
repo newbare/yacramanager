@@ -29,6 +29,21 @@ App.config(function($datepickerProvider) {
 	});
 });
 
+App.config(function(ngQuickDateDefaultsProvider) {
+	  // Configure with icons from font-awesome
+	  return ngQuickDateDefaultsProvider.set({
+	    closeButtonHtml: "<i class='fa fa-times'></i>",
+	    buttonIconHtml: "<i class='fa fa-clock-o'></i>",
+	    nextLinkHtml: "<i class='fa fa-chevron-right'></i>",
+	    prevLinkHtml: "<i class='fa fa-chevron-left'></i>"
+	    // Take advantage of Sugar.js date parsing
+//	    parseDateFunction: function(str) {
+//	      d = Date.create(str);
+//	      return d.isValid() ? d : null;
+//	    }
+	  });
+	});
+
 App.config(function($timepickerProvider) {
 	angular.extend($timepickerProvider.defaults, {
 		template : _contextPath+'/assets/others/timepicker/timepicker.tpl.html'
@@ -172,9 +187,12 @@ App.controller('LoginCtrl', [ '$scope','$http','authService',function($scope,$ht
 	    }
 }]);
 
-App.config([ '$stateProvider', '$urlRouterProvider',
-		function($stateProvider, $urlRouterProvider) {
+App.config([ '$stateProvider', '$urlRouterProvider','$locationProvider',
+		function($stateProvider, $urlRouterProvider,$locationProvider) {
 
+//	 		if(window.history && window.history.pushState){
+//	 			$locationProvider.html5Mode(true);
+//	 		}
 			// Use $urlRouterProvider to configure any redirects (when) and
 			// invalid urls (otherwise).
 			$urlRouterProvider
