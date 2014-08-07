@@ -654,33 +654,6 @@ a .badge {
 	margin-bottom: 15px;
 }
 
-/* Datepicker section */
-/* .datepicker{
-	z-index: 99999999999999 !important;
-	}
-.datepicker.dropdown-menu {
-	width: 250px;
-  height: 250px;
-	padding: 0px;
-}
-
-.datepicker.dropdown-menu button {
-	outline: none;
-	border: 0px;
-}
-
-.datepicker.dropdown-menu tbody {
-	height: 120px;
-}
-
-.datepicker.dropdown-menu tbody button {
-	padding: 1px;
-}
-
-.datepicker.dropdown-menu.datepicker-mode-1 tbody button,.datepicker.dropdown-menu.datepicker-mode-2 tbody button
-	{
-	height: 25px;
-} */
 .datepicker.table>thead>tr>th,.datepicker.table>tbody>tr>th,.datepicker.table>tfoot>tr>th,.datepicker.table>thead>tr>td,.datepicker.table>tbody>tr>td,.datepicker.table>tfoot>tr>td
 	{
 	padding: 0px !important;
