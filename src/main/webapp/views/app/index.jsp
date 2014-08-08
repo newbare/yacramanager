@@ -158,8 +158,8 @@
 					</li>
 					<li data-ng-class="navClass('messages')"><a
 						data-ui-sref="messages"><i class="fa fa-envelope"></i></a></li>
-					<li data-ng-class="navClass('notifications')"><a
-						data-ui-sref="notifications"><i class="fa fa-bell"></i></a></li>
+					<!-- <li data-ng-class="navClass('notifications')"><a
+						data-ui-sref="notifications"><i class="fa fa-bell"></i></a></li> -->
 					<li class="dropdown">
 						<a class="dropdown-toggle"	data-toggle="dropdown" href=""><i class="fa fa-globe"></i>{{currentLanguage | uppercase}}</a>
 						<ul class="dropdown-menu inverse-dropdown" role="menu">

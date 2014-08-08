@@ -3,9 +3,9 @@
 	<div class="col-md-2">
 		<div class="table-responsive">
 		<table
-			class="table table-hover ng-table-rowselected"
+			class="table table-hover ng-table-rowselected "
 			data-ng-table="tableParams" >
-			<tr align="left" data-ng-repeat="employe in $data"
+			<tr align="left" data-ng-repeat="employe in $data" style="height: 50px"
 				data-ng-click="employe.$selected = !user.$selected; changeSelection(user)"
 				data-ng-class="{'active': employe.$selected}">
 				<td data-title="'Employees'" data-sortable="'nom'">

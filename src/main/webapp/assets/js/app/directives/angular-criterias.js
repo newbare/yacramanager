@@ -40,12 +40,14 @@ angular
 								},
 								template : 
 										  '<span class="ng-criterion inlineBlock" data-ng-class="{active: active, noteditable: !isEditable, disabled: !isEditable}" data-ng-show="criteriaConfig.displayed" >'
-										+ '<button type="button" class="criterion-btn" ng-click="toggleFilterContent( $event )" ng-bind-html="buttonLabel" data-ng-disabled="!isEditable"></button>'
+										+'<div class="btn-group dropdown">'
+										+ '<button type="button" class="criterion-btn dropdown-toggle"  data-toggle="dropdown" ng-bind-html="buttonLabel" data-ng-disabled="!isEditable"></button>'
 										+ '<a href="" class="criterion-remove" data-ng-click="dismissCriteria(criteriaConfig.name)" data-ng-show="closeable" data-ng-disabled="!isEditable">'
 										+ '<i class="fa fa-times-circle"></i>'
 										+ '</a>'
-										+'<div class="filter-content hide" ng-html-compile="filterContentHTML">'
+										+'<div class="filter-content dropdown-menu" ng-html-compile="filterContentHTML">'
 										+'</div>' 
+										+'</div>'
 										+ '</span>',
 								link : function($scope, element, attrs) {
 									debugEnabled=false;
@@ -100,7 +102,9 @@ angular
 											$scope.filterValue=undefined;
 										}
 									}
-									
+									$scope.closeFilterContent=function(){
+										$('[data-toggle="dropdown"]').parent().removeClass('open');
+									}
 									$scope.initialiseTemplates=function(){
 										// compute content depending on the
 										// filter type
@@ -368,87 +372,6 @@ angular
 															return res;
 														});
 									}
-									$scope.openFilterContent = function() {
-										$scope.active=true;
-										angular.element($scope.filterContentDiv).addClass('show');
-										angular.element($scope.filterContentDiv).removeClass('hide');
-										angular.element(clickedEl).addClass('buttonClicked');
-										angular.element(document).bind('click',	$scope.externalClickListener);
-									};
-									$scope.closeFilterContent = function() {
-										$scope.active=false;
-										angular.element($scope.filterContentDiv).removeClass('show');
-										angular.element($scope.filterContentDiv).addClass('hide');
-										angular.element(clickedEl).removeClass('buttonClicked');
-										angular.element(document).unbind('click',$scope.externalClickListener);
-									};
-									// UI operations to show/hide checkboxes
-									// based on click event..
-									$scope.toggleFilterContent = function(e) {
-										// We grab the checkboxLayer
-										$scope.filterContentDiv = element
-												.children()[2];
-										// We grab the button
-										clickedEl = element.children()[0];
-										// Just to make sure.. had a bug where
-										// key events were recorded twice
-										angular.element(document).unbind('click',$scope.externalClickListener);
-										angular.element(document).unbind('keydown',	$scope.keyboardListener);
-										// close if ESC key is pressed.
-										if (e.keyCode === 27) {
-											angular.element($scope.filterContentDiv).removeClass('show');
-											angular.element(clickedEl).removeClass('buttonClicked');
-											angular.element(document).unbind('click',$scope.externalClickListener);
-											// clear the focused element;
-											$scope.removeFocusStyle($scope.tabIndex);
-											// close callback
-											$scope.onClose({data : element});
-											return true;
-										}
-										// The idea below was taken from another
-										// multi-select directive -
-										// https://github.com/amitava82/angular-multiselect
-										// His version is awesome if you need a
-										// more simple multi-select approach.
-										// close
-										if (angular.element($scope.filterContentDiv).hasClass('show')) {
-											$scope.closeFilterContent();
-											// close callback
-											$scope.onClose({data : element});
-										}
-										// open
-										else {
-											helperItems = [];
-											helperItemsLength = 0;
-											$scope.openFilterContent();
-											// open callback
-											$scope.onOpen({data : element});
-										}
-									};
-
-									// handle clicks outside the button / multi
-									// select layer
-									$scope.externalClickListener = function(e) {
-										targetsArr = element
-												.find(e.target.tagName);
-										for (var i = 0; i < targetsArr.length; i++) {
-											if (e.target == targetsArr[i]) {
-												return;
-											}
-										}
-										if($scope.filterType=="DATE" && $scope.dateSelector=="byRangeDate"
-											//&& angular.element(document.querySelector('.daterangepicker')).attr("style").indexOf("display: block")!== -1
-										){
-											return;
-										}
-										$scope.closeFilterContent();
-										// close callback
-										$timeout(function() {
-											$scope.onClose({
-												data : element
-											});
-										}, 0);
-									};
 
 								}
 							};

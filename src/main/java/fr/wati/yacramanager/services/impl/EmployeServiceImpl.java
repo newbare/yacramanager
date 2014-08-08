@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -159,8 +160,18 @@ public class EmployeServiceImpl implements EmployeService {
 
 	@Override
 	public List<Employe> getManagedEmployees(Long requesterId) {
-		Employe requester=employeRepository.findOne(requesterId);
-		return employeRepository.findAll(EmployeSpecifications.hasManager(requester));
+		Employe requester = employeRepository.findOne(requesterId);
+		Specifications<Employe> specifications = Specifications.where(
+				EmployeSpecifications.hasManager(requester)).and(
+				EmployeSpecifications.forCompany(requester.getCompany()));
+		List<Employe> requesterManagedEmployees = employeRepository
+				.findAll(specifications);
+		List<Employe> managedEmployees = new ArrayList<>();
+		for (Employe employe : requesterManagedEmployees) {
+			managedEmployees.addAll(getManagedEmployees(employe.getId()));
+		}
+		requesterManagedEmployees.addAll(managedEmployees);
+		return requesterManagedEmployees;
 	}
 
 	@Override

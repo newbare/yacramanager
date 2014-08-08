@@ -244,11 +244,11 @@ body {
 	color: #707070;
 	font-weight: normal;
 	background: #F2F2F2;
-	background-image: -webkit-linear-gradient(top, #f8f8f8 0, #ececec 100%);
+	/* background-image: -webkit-linear-gradient(top, #f8f8f8 0, #ececec 100%);
 	background-image: linear-gradient(to bottom, #f8f8f8 0, #ececec 100%);
 	background-repeat: repeat-x;
 	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fff8f8f8',
-		endColorstr='#ffececec', GradientType=0);
+		endColorstr='#ffececec', GradientType=0); */
 }
 
 .table.table-bordered>thead>tr>th:first-child {
@@ -729,7 +729,7 @@ span.not-validated.icon {
 	content: "\f057";
 }
 
-.ng-table {
+.ng-table.bordered{
 	border: 1px solid #ececec; 
 	
 }
