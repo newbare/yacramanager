@@ -44,7 +44,7 @@ angular
 										+ '<a href="" class="criterion-remove" data-ng-click="dismissCriteria(criteriaConfig.name)" data-ng-show="closeable" data-ng-disabled="!isEditable">'
 										+ '<i class="fa fa-times-circle"></i>'
 										+ '</a>'
-										+'<div class="filter-content hide col-md-2 col-xs-4" ng-html-compile="filterContentHTML">'
+										+'<div class="filter-content hide" ng-html-compile="filterContentHTML">'
 										+'</div>' 
 										+ '</span>',
 								link : function($scope, element, attrs) {
@@ -481,10 +481,12 @@ angular
 											+ '<div data-ng-criteria data-criteria-config="criterion" data-on-filter-triggered="filterTriggered(criterion.currentFilter)" data-on-remove-criteria="removeFilter(criterion.name)"></div>'
 										+ '</li>'
 										+ '<li class="divider-vertical"></li>'
-										+ '<li class="pull-right">'
-										+ '<span id="manage-filter-btn">'
-											+ '<button type="button" class="btn btn-default" ng-click="toggleMoreContent( $event )"> <i class="fa fa-filter"></i> <span class="caret"></span></button>'
-											+ '<div class="more-content hide col-md-2 col-xs-3">'
+										+ '<li class="dropdown pull-right">'
+//										+ '<span id="manage-filter-btn">'
+										+'<div class="btn-group">'
+											+ '<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"> <i class="fa fa-filter"></i> <span class="caret"></span></button>'
+											+ '<div class="more-content dropdown-menu">'
+											+ '<form role="form">'
 											+ '<div class="checkbox">'
 												+ '<label>'
 													+ '<input type="checkbox" data-ng-model="autoSearchEnable"> auto filter'
@@ -505,7 +507,9 @@ angular
 													+ '</li>'
 												+ '</ul>'
 											+ '</div>'
-										+ '</span>'
+											+'</form>'
+											+'</div>'
+//										+ '</span>'
 										+ '</li>'
 										+ '<li class="pull-right">'
 											+ '<button type="button" class="btn btn-primary" data-ng-click="doFilter(filters)"><i class="fa fa-search"></i></button>'
@@ -529,32 +533,6 @@ angular
 												}
 											});
 										;
-									$scope.moreContentElement=element.find(".more-content");
-									$scope.closeManageFilter=function(){
-										$scope.moreContentElement.removeClass('show');
-										$scope.moreContentElement.addClass('hide');
-										angular.element(document).unbind('click',
-												$scope.externalManageFilterClickListener);
-									}
-									
-									$scope.openManageFilter=function(){
-										$scope.moreContentElement.removeClass('hide');
-										$scope.moreContentElement.addClass('show');
-										angular.element(document).bind('click',
-												$scope.externalManageFilterClickListener);
-									}
-									
-									$scope.toggleMoreContent=function( $event ){
-										//close
-										if ($scope.moreContentElement
-												.hasClass('show')) {
-											$scope.closeManageFilter();
-										}
-										// open
-										else {
-											$scope.openManageFilter();
-										}
-									};
 									
 									$scope.showHideCriterion=function(criterion){
 										if(criterion.displayed===false){
@@ -609,19 +587,6 @@ angular
 												}
 											}
 									};
-									//handle external click for moreelement
-									//manage filter content
-									$scope.externalManageFilterClickListener = function(e) {
-										targetsArr = element.find("#manage-filter-btn")
-												.find(e.target.tagName);
-										for (var i = 0; i < targetsArr.length; i++) {
-											if (e.target == targetsArr[i]) {
-												return;
-											}
-										}
-										$scope.closeManageFilter();
-									};
-									
 									}
 								}
 							}

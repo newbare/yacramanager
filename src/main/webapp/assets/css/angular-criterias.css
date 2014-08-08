@@ -64,6 +64,10 @@
 	border-left: 1px solid #f2f2f2;
 }
 
+.ng-criterion .filter-content{
+	max-width: 400px;
+}
+
 .ng-criterion .filter-content,.ng-criteria-bar .more-content {
 	position: absolute;
 	z-index: 999;
@@ -76,10 +80,16 @@
 	padding: 8px;
 	background-color: white;
 	text-align: left;
+	
+}
+
+.ng-criteria-bar .more-content {
+	left: auto;
+	right: 0;
 }
 
 .ng-criteria-bar .more-content{
-	right: 0;
+	/* right: 0; */
 }
 .ng-criterion ul>li,.ng-criteria-bar ul>li {
 	padding-top: 0px !important;

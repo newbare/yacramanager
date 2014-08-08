@@ -1,6 +1,6 @@
 <div class="modal" id="editionFormModal" tabindex="-1"
 	role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-	<div class="modal-dialog" style="width: 60%">
+	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" ng-click="$hide()">
@@ -45,14 +45,12 @@
 					</div>
 					<div class="form-group" data-ng-show="worklog.timeType=='TIME'">
 						<label for="timeStartDate" class="control-label col-md-2" style="text-align: left;">When</label>
-						<div class="col-md-4">
-							<quick-datepicker  class="form-control" ng-model="worklog.timeStartDate"
-								 placeholder="Date" ></quick-datepicker>
-						</div>
-						<label for="timeStartDate" class="control-label col-md-1" style="text-align: center;">To</label>
-						<div class="col-md-4">
-							<quick-datepicker class="form-control"
-								ng-model="worklog.timeEndDate" data-autoclose="1" placeholder="Date"></quick-datepicker>
+						<div class="col-md-8">
+							<quick-datepicker  class="" ng-model="worklog.timeStartDate"
+								 placeholder="Select start date" ></quick-datepicker>
+							<label for="timeStartDate" class="control-label" style="text-align: center;">To</label>
+							<quick-datepicker class=""
+								ng-model="worklog.timeEndDate" data-autoclose="1" placeholder="Select end date"></quick-datepicker>
 						</div>
 					</div>
 					<div class="form-group" data-ng-show="worklog.timeType=='DURATION'">
