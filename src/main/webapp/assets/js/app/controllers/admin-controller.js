@@ -10,7 +10,6 @@ function AdminCompaniesController($scope,$rootScope,CompanyCRUDREST,ngTableParam
 	$scope.page={"title":"Companies management","description":"Home page"};
 	var allCompany=[];
 	$scope.hasDatas=false;
-	
 	$scope.startIndex=0;
 	$scope.endIndex=0;
 	$scope.company={};
@@ -23,6 +22,41 @@ function AdminCompaniesController($scope,$rootScope,CompanyCRUDREST,ngTableParam
 		$scope.company.contacts=[];
 	};
 	
+	$scope.postCompany = function(hideFn) {
+		CompanyCRUDREST.save($scope.company).$promise.then(function(result) {
+			alertService.show('info','Confirmation', 'Donn� sauvegard�');
+			$scope.reset();
+			$scope.tableParams.reload();
+			hideFn();
+		});
+	};
+	$scope.deleteCompany = function(id) {
+		CompanyCRUDREST.remove({
+			id : id
+		}).$promise.then(function(result) {
+			$scope.tableParams.reload();
+			alertService.show('info','Confirmation', 'Company supprimé');
+		}, function(error) {
+			console.log(error);
+			alertService.show('danger','' + error.status, error.data);
+		});
+	};
+	$scope.putCompany = function() {
+		CompanyCRUDREST.update($scope.company).$promise.then(function(result) {
+			alertService.show('info','Created','Mise � jour effectu�');
+			$scope.reset();
+			$scope.tableParams.reload();
+			hideFn();
+		});
+	};
+	
+	
+}
+
+
+function AdminCompanyViewController($scope, $rootScope,$http,CompanyCRUDREST,ngTableParams,$state){
+	
+	$scope.$state=$state;
 	$scope.tableFilter="";
 	$scope.nameCriteriaConfig={
 			name:"name",
@@ -68,14 +102,6 @@ function AdminCompaniesController($scope,$rootScope,CompanyCRUDREST,ngTableParam
 		filters:[]
 	};
 	
-	$scope.doFilter=function(data){
-		console.log("Server filer launch with: "+JSON.stringify(data));
-		var serverFilter={filter:data};
-		$scope.tableFilter=JSON.stringify(serverFilter);
-		$scope.refreshDatas();
-	};
-	
-	
 	$scope.tableParams = new ngTableParams({
 		page : 1, // show first page
 		count : 10, // count per page
@@ -106,36 +132,43 @@ function AdminCompaniesController($scope,$rootScope,CompanyCRUDREST,ngTableParam
 				$defer.resolve(data.result);
 			});
 		}});
+	
+	$scope.doFilter=function(data){
+		console.log("Server filer launch with: "+JSON.stringify(data));
+		var serverFilter={filter:data};
+		$scope.tableFilter=JSON.stringify(serverFilter);
+		$scope.refreshDatas();
+	};
+	
 	$scope.refreshDatas=function(){
 		$scope.tableParams.reload();
 	}
-	$scope.postCompany = function(hideFn) {
-		CompanyCRUDREST.save($scope.company).$promise.then(function(result) {
-			alertService.show('info','Confirmation', 'Donn� sauvegard�');
-			$scope.reset();
-			$scope.tableParams.reload();
-			hideFn();
-		});
-	};
-	$scope.deleteCompany = function(id) {
-		CompanyCRUDREST.remove({
-			id : id
-		}).$promise.then(function(result) {
-			$scope.tableParams.reload();
-			alertService.show('info','Confirmation', 'Company supprimé');
-		}, function(error) {
-			console.log(error);
-			alertService.show('danger','' + error.status, error.data);
-		});
-	};
-	$scope.putCompany = function() {
-		CompanyCRUDREST.update($scope.company).$promise.then(function(result) {
-			alertService.show('info','Created','Mise � jour effectu�');
-			$scope.reset();
-			$scope.tableParams.reload();
-			hideFn();
-		});
-	};
+}
+
+
+function AdminCompanyQuickViewController($scope,$http){
+//	$scope.doFilterList($scope.criteriaBarFilter);
+//	$scope.$on('criteriaDofilter', function(event, args) {
+//		$scope.doFilterList(args);
+//	});
+	$scope.tableParams.settings().counts=[];
+}
+
+
+function AdminCompanyListController($scope, $rootScope,$http,$state){
+	 $scope.changeSelection = function(company) {
+	      $state.go('admin.company.details',{ id:company.id });
+	 };
+	 $scope.tableParams.settings().counts=[10, 25, 50, 100];
+};
+
+function AdminCompanyOverviewController($scope,CompanyCRUDREST, $stateParams){
+	$scope.companyId=$stateParams.id;
+	$scope.company=undefined;
+	CompanyCRUDREST.get(
+			{companyId : _userCompanyId,id:$scope.companyId},function(data) {
+				$scope.company=data;
+			});
 }
 
 function AdminSettingsController($scope,$rootScope) {

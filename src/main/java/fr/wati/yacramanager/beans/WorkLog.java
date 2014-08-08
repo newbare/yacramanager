@@ -3,8 +3,6 @@
  */
 package fr.wati.yacramanager.beans;
 
-import java.io.Serializable;
-
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -22,13 +20,11 @@ import org.joda.time.DateTime;
  */
 @SuppressWarnings("serial")
 @Entity
-public class WorkLog implements Serializable {
+public class WorkLog extends AuditableEntity  {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	@Type(type="org.joda.time.contrib.hibernate.PersistentDateTime")
-	private DateTime createdDate;
 	@ManyToOne
 	private Task task;
 	@ManyToOne
@@ -55,18 +51,6 @@ public class WorkLog implements Serializable {
 	 */
 	public void setId(Long id) {
 		this.id = id;
-	}
-	/**
-	 * @return the createdDate
-	 */
-	public DateTime getCreatedDate() {
-		return createdDate;
-	}
-	/**
-	 * @param createdDate the createdDate to set
-	 */
-	public void setCreatedDate(DateTime createdDate) {
-		this.createdDate = createdDate;
 	}
 	/**
 	 * @return the task

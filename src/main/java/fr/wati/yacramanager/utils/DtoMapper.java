@@ -238,7 +238,7 @@ public class DtoMapper {
 		TaskDTO dto=new TaskDTO();
 		dto.setCreatedDate(task.getCreatedDate());
 		dto.setDescription(task.getDescription());
-		dto.setEmployeId(task.getEmploye().getId());
+//		dto.setEmployeId(task.getEmploye().getId());
 		dto.setId(task.getId());
 		dto.setName(task.getName());
 		dto.setTaskStatus(task.getTaskStatus());

@@ -47,7 +47,7 @@
 	var _userCompanyId = "${userCompanyId}";
 </script>
 </head>
-<body data-ng-controller="AppCtrl" data-web-socket data-auth-application-support class="waiting-for-angular">
+<body data-ng-controller="AppCtrl" data-web-socket data-auth-application-support class="waiting-for-angular" data-events-to-wait="eventsToWait" data-application-loading-support>
 	<div id="initializing-panel"></div>
 	<div id="app-login-content" data-ng-controller="LoginCtrl">
 		<div class="row">
@@ -170,7 +170,7 @@
 					<li
 						data-ng-class="navClass('user-settings') + navClass('user-profile')"
 						class="dropdown"><a href="" class="dropdown-toggle"
-						data-toggle="dropdown"><i class="fa fa-user"></i>${userFirstName}<span
+						data-toggle="dropdown"><i class="fa fa-user"></i>{{userInfo.prenom}} {{userInfo.nom}}<span
 							class="caret"></span></a>
 						<ul class="user-menu dropdown-menu inverse-dropdown" role="menu">
 							<li><a data-ui-sref="user-settings"><i class="fa fa-cog"></i>{{'app.navbar.menu.settings' | translate}}</a></li>

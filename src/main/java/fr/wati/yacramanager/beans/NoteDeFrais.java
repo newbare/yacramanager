@@ -3,7 +3,6 @@
  */
 package fr.wati.yacramanager.beans;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +23,7 @@ import org.joda.time.DateTime;
  */
 @SuppressWarnings("serial")
 @Entity
-public class NoteDeFrais implements Serializable{
+public class NoteDeFrais extends AuditableEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)

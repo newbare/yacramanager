@@ -3,8 +3,6 @@
  */
 package fr.wati.yacramanager.beans;
 
-import java.io.Serializable;
-
 import javax.persistence.Basic;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -23,7 +21,7 @@ import org.joda.time.DateTime;
  */
 @SuppressWarnings("serial")
 @Entity
-public class Attachement implements Serializable {
+public class Attachement extends AuditableEntity  {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)

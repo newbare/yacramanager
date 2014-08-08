@@ -1,6 +1,5 @@
 package fr.wati.yacramanager.beans;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +19,7 @@ import org.joda.time.DateTime;
 
 @SuppressWarnings("serial")
 @Entity
-public class Company implements Serializable{
+public class Company extends AuditableEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -40,6 +39,11 @@ public class Company implements Serializable{
 	        joinColumns=@JoinColumn(name="OWNER_ID")
 	  )
 	private List<Contact> contacts=new ArrayList<>();
+	
+	@OneToMany
+	@JoinColumn(name="companyId", referencedColumnName="id")
+	private List<Settings> settings=new ArrayList<>();
+	
 	public Long getId() {
 		return id;
 	}
@@ -103,6 +107,18 @@ public class Company implements Serializable{
 	 */
 	public void setContacts(List<Contact> contacts) {
 		this.contacts = contacts;
+	}
+	/**
+	 * @return the settings
+	 */
+	public List<Settings> getSettings() {
+		return settings;
+	}
+	/**
+	 * @param settings the settings to set
+	 */
+	public void setSettings(List<Settings> settings) {
+		this.settings = settings;
 	}
 	
 }

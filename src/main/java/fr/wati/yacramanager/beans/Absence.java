@@ -1,7 +1,5 @@
 package fr.wati.yacramanager.beans;
 
-import java.io.Serializable;
-
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -20,7 +18,7 @@ import fr.wati.yacramanager.web.dto.AbsenceDTO.TypeAbsence;
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @SuppressWarnings("serial")
-public class Absence implements Serializable {
+public class Absence extends AuditableEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;

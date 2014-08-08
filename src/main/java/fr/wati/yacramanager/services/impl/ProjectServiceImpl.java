@@ -132,7 +132,7 @@ public class ProjectServiceImpl implements ProjectService{
 	}
 
 	@Override
-	public Specification<Project> buildSpecification(Filter filter) {
+	public Specification buildSpecification(Filter filter) {
 		if(filter!=null){
 			FilterType filterType = filter.getType();
 			switch (filterType) {

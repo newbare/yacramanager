@@ -3,7 +3,6 @@
  */
 package fr.wati.yacramanager.beans;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,24 +17,19 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
-import org.hibernate.annotations.Type;
-import org.joda.time.DateTime;
-
 /**
  * @author Rachid Ouattara
  * 
  */
 @SuppressWarnings("serial")
 @Entity
-public class Project implements Serializable {
+public class Project extends AuditableEntity  {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	private String name;
 	private String description;
-	@Type(type="org.joda.time.contrib.hibernate.PersistentDateTime")
-	private DateTime createdDate;
 	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(
 			name = "projects_employees",
@@ -92,20 +86,6 @@ public class Project implements Serializable {
 		this.description = description;
 	}
 
-	/**
-	 * @return the createdDate
-	 */
-	public DateTime getCreatedDate() {
-		return createdDate;
-	}
-
-	/**
-	 * @param createdDate
-	 *            the createdDate to set
-	 */
-	public void setCreatedDate(DateTime createdDate) {
-		this.createdDate = createdDate;
-	}
 
 	/**
 	 * @return the tasks

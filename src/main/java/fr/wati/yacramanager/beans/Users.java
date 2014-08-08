@@ -3,14 +3,15 @@
  */
 package fr.wati.yacramanager.beans;
 
-import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -19,6 +20,7 @@ import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 
 /**
  * @author Rachid Ouattara
@@ -27,8 +29,7 @@ import javax.persistence.ManyToMany;
 @SuppressWarnings("serial")
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-@EntityListeners({UserPasswordEntityListener.class})
-public class Users implements Serializable {
+public class Users extends AuditableEntity  {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -40,7 +41,9 @@ public class Users implements Serializable {
 	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(name = "users_roles", joinColumns = { @JoinColumn(name = "userId") }, inverseJoinColumns = { @JoinColumn(name = "roleId") })
 	private Set<Role> roles = new HashSet<>();
-
+	@OneToMany
+	@JoinColumn(name="userId", referencedColumnName="id")
+	private List<Settings> settings=new ArrayList<>();
 	/**
 	 * @return the password
 	 */
@@ -107,6 +110,20 @@ public class Users implements Serializable {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	/**
+	 * @return the settings
+	 */
+	public List<Settings> getSettings() {
+		return settings;
+	}
+
+	/**
+	 * @param settings the settings to set
+	 */
+	public void setSettings(List<Settings> settings) {
+		this.settings = settings;
 	}
 
 }

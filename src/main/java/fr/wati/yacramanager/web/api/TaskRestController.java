@@ -62,7 +62,7 @@ public class TaskRestController extends RestCrudControllerAdapter<TaskDTO> {
 		if(project==null){
 			throw new RestServiceException("The given project doesn't exist");
 		}
-		List<Task> tasks = taskService.findByProjectAndEmploye(project, employe);
+		List<Task> tasks = taskService.findByProjectAndAssignedEmployeesIn(project, employe);
 		if(tasks!=null && !tasks.isEmpty()){
 			ResponseWrapper<List<TaskDTO>> responseWrapper = new ResponseWrapper<>(
 					DtoMapper.mapTasks(tasks), tasks.size());

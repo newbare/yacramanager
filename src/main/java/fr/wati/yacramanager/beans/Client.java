@@ -3,7 +3,6 @@
  */
 package fr.wati.yacramanager.beans;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +20,7 @@ import javax.persistence.OneToMany;
  */
 @SuppressWarnings("serial")
 @Entity
-public class Client implements Serializable{
+public class Client extends AuditableEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)

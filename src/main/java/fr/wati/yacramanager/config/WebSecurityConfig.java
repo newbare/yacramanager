@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -32,6 +33,7 @@ import org.springframework.security.web.authentication.rememberme.JdbcTokenRepos
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.security.web.header.writers.frameoptions.XFrameOptionsHeaderWriter;
 
+import fr.wati.yacramanager.services.CustomUserDetailsService;
 import fr.wati.yacramanager.web.filters.AjaxTimeoutRedirectFilter;
 
 /**
@@ -49,6 +51,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	private DataSource dataSource;
 	@Autowired
 	private PasswordEncoder passwordEncoder;
+	
+	@Autowired
+	private CustomUserDetailsService customUserDetailsService;
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
@@ -129,13 +134,21 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth)
 			throws Exception {
-		auth.jdbcAuthentication()
-				.dataSource(dataSource)
-				.authoritiesByUsernameQuery(
-						"SELECT u.USERNAME, r.ROLE FROM USERs u, USERs_ROLEs ur,ROLE r WHERE u.ID = ur.userId and r.id=ur.roleId AND u.USERNAME=?;")
-				.usersByUsernameQuery(
-						"SELECT USERNAME, PASSWORD, ENABLED FROM USERs WHERE USERNAME=?;")
-				.passwordEncoder(passwordEncoder);
+		auth.authenticationProvider(authenticationProvider());
+//		auth.jdbcAuthentication()
+//				.dataSource(dataSource)
+//				.authoritiesByUsernameQuery(
+//						"SELECT u.USERNAME, r.ROLE FROM USERs u, USERs_ROLEs ur,ROLE r WHERE u.ID = ur.userId and r.id=ur.roleId AND u.USERNAME=?;")
+//				.usersByUsernameQuery(
+//						"SELECT USERNAME, PASSWORD, ENABLED FROM USERs WHERE USERNAME=?;")
+//				.passwordEncoder(passwordEncoder);
 
+	}
+	
+	public DaoAuthenticationProvider authenticationProvider(){
+		DaoAuthenticationProvider authenticationProvider=new DaoAuthenticationProvider();
+		authenticationProvider.setPasswordEncoder(passwordEncoder);
+		authenticationProvider.setUserDetailsService(customUserDetailsService);
+		return authenticationProvider;
 	}
 }

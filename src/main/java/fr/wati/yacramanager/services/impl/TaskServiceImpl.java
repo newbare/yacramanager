@@ -107,8 +107,8 @@ public class TaskServiceImpl implements TaskService,SpecificationFactory<Task> {
 	 * @see fr.wati.yacramanager.services.TaskService#findByProjectAndEmploye(fr.wati.yacramanager.beans.Project, fr.wati.yacramanager.beans.Employe)
 	 */
 	@Override
-	public List<Task> findByProjectAndEmploye(Project project, Employe employe) {
-		return taskRepository.findByProjectAndEmploye(project, employe);
+	public List<Task> findByProjectAndAssignedEmployeesIn(Project project, Employe employe) {
+		return taskRepository.findByProjectAndAssignedEmployeesIn(project, employe);
 	}
 
 	@Override

@@ -12,5 +12,5 @@ public interface TaskService extends CrudService<Task, Long> {
 
 	void deleteTask(Long projectId, Long taskId);
 	
-	List<Task> findByProjectAndEmploye(Project project, Employe employe);
+	List<Task> findByProjectAndAssignedEmployeesIn(Project project, Employe employe);
 }

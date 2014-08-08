@@ -1,14 +1,12 @@
 <div class="panel panel-default am-fade">
 	<div class="panel-body">
 		<div class="row">
-			<div class="col-md-4">
-				<!-- Single button -->
-					<button type="button" class="btn btn-primary" data-template="../views/app/templates/edit-notes.tpl.html" data-bs-modal="modal">
-						<span class="fa fa-plus-square" ></span> Ajouter 
-					</button>
-					<button type="button" class="btn btn-default"
-						data-ng-show="initialSelectionChanged || edition" data-ng-click="reset()">
-						Cancel</button>
+			<div class="btn-toolbar" role="toolbar">
+			  <div class="btn-group btn-group-sm">
+			  	<button type="button" class="btn btn-default" data-template="../views/app/templates/edit-notes.tpl.html" data-bs-modal="modal" >
+					<strong>+</strong> Ajouter
+				</button>
+			  </div>
 			</div>
 		</div>
 		<div class="row">

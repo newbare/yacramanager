@@ -50,12 +50,6 @@ angular
 										+'</div>'
 										+ '</span>',
 								link : function($scope, element, attrs) {
-									debugEnabled=false;
-									debug=function(text){
-										if(debugEnabled){
-											console.log(text);
-										}
-									};
 									// default config values
 									var textFilterTemplate = _contextPath
 											+ '/assets/others/criteria/criteria-text.tpl.html';

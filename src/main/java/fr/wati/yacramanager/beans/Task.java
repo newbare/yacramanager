@@ -3,20 +3,21 @@
  */
 package fr.wati.yacramanager.beans;
 
-import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-
-import org.hibernate.annotations.Type;
-import org.joda.time.DateTime;
 
 /**
  * @author Rachid Ouattara
@@ -24,14 +25,12 @@ import org.joda.time.DateTime;
  */
 @SuppressWarnings("serial")
 @Entity
-public class Task implements Serializable {
+public class Task extends AuditableEntity  {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	private String name;
-	@Type(type="org.joda.time.contrib.hibernate.PersistentDateTime")
-	private DateTime createdDate;
 	private String description;
 	@ManyToOne
 	private Project project;
@@ -39,8 +38,12 @@ public class Task implements Serializable {
 	private TaskStatus taskStatus;
 	@OneToMany(mappedBy="task")
 	private List<WorkLog> workLogs;
-	@ManyToOne
-	private Employe employe;
+	@ManyToMany(cascade = CascadeType.ALL)
+	@JoinTable(
+			name = "tasks_employees",
+			joinColumns = { @JoinColumn(name = "taskId", referencedColumnName = "id") },
+			inverseJoinColumns = { @JoinColumn(name = "employeId", referencedColumnName = "id") })
+	private List<Employe> assignedEmployees = new ArrayList<>();
 	
 	private String color;
 	/**
@@ -66,18 +69,6 @@ public class Task implements Serializable {
 	 */
 	public void setName(String name) {
 		this.name = name;
-	}
-	/**
-	 * @return the createdDate
-	 */
-	public DateTime getCreatedDate() {
-		return createdDate;
-	}
-	/**
-	 * @param createdDate the createdDate to set
-	 */
-	public void setCreatedDate(DateTime createdDate) {
-		this.createdDate = createdDate;
 	}
 	/**
 	 * @return the description
@@ -127,17 +118,18 @@ public class Task implements Serializable {
 	public void setWorkLogs(List<WorkLog> workLogs) {
 		this.workLogs = workLogs;
 	}
+	
 	/**
-	 * @return the employe
+	 * @return the assignedEmployees
 	 */
-	public Employe getEmploye() {
-		return employe;
+	public List<Employe> getAssignedEmployees() {
+		return assignedEmployees;
 	}
 	/**
-	 * @param employe the employe to set
+	 * @param assignedEmployees the assignedEmployees to set
 	 */
-	public void setEmploye(Employe employe) {
-		this.employe = employe;
+	public void setAssignedEmployees(List<Employe> assignedEmployees) {
+		this.assignedEmployees = assignedEmployees;
 	}
 	public String getColor() {
 		return color;

@@ -14,6 +14,10 @@
 			<b>projects</b>
 		</field-exclude>
 		<field-exclude>
+			<a>tasks</a>
+			<b>tasks</b>
+		</field-exclude>
+		<field-exclude>
 			<a>workLogs</a>
 			<b>workLogs</b>
 		</field-exclude>
@@ -25,7 +29,14 @@
 			<a>manager</a>
 			<b>manager</b>
 		</field-exclude>
-		
+		<field-exclude>
+			<a>lastModifiedBy</a>
+			<b>lastModifiedBy</b>
+		</field-exclude>
+		<field-exclude>
+			<a>createdBy</a>
+			<b>createdBy</b>
+		</field-exclude>
 	</mapping>
 	<mapping>
 		<class-a>fr.wati.yacramanager.beans.Role</class-a>

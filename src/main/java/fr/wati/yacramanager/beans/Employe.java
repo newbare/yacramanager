@@ -35,6 +35,9 @@ public class Employe extends Personne {
 	@ManyToMany(mappedBy="assignedEmployees")
 	private List<Project> projects=new ArrayList<>();
 	
+	@ManyToMany(mappedBy="assignedEmployees")
+	private List<Task> tasks=new ArrayList<>();
+	
 	public List<Absence> getAbsences() {
 		return absences;
 	}
@@ -82,6 +85,18 @@ public class Employe extends Personne {
 	}
 	public void setProjects(List<Project> projects) {
 		this.projects = projects;
+	}
+	/**
+	 * @return the tasks
+	 */
+	public List<Task> getTasks() {
+		return tasks;
+	}
+	/**
+	 * @param tasks the tasks to set
+	 */
+	public void setTasks(List<Task> tasks) {
+		this.tasks = tasks;
 	}
 	
 	
