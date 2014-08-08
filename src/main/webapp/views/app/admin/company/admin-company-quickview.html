@@ -5,12 +5,12 @@
 			<table
 				class="table table-hover ng-table-rowselected "
 				data-ng-table="tableParams" >
-				<tr align="left" data-ng-repeat="client in $data" style="height: 50px"
-					data-ng-click="client.$selected = !client.$selected; changeSelection(client)"
-					data-ng-class="{'active': client.$selected}">
-					<td data-title="'Client'" data-sortable="'name'">
-						<a data-ui-sref="company.clients.view.quick.overview({ id: client.id })">
-							{{client.name}}
+				<tr align="left" data-ng-repeat="company in $data" style="height: 50px"
+					data-ng-click="company.$selected = !company.$selected; changeSelection(company)"
+					data-ng-class="{'active': company.$selected}">
+					<td data-title="'Company'" data-sortable="'name'">
+						<a data-ui-sref="admin.company.view.quick.overview({ id: company.id })">
+							{{company.name}}
 						</a>
 					</td>
 				</tr>

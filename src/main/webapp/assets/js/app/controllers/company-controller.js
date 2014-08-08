@@ -159,21 +159,9 @@ function CompanyEmployeesViewController($scope, $rootScope,$http,EmployeesCRUDRE
 function CompanyEmployeesQuickViewController($scope,$http,EmployeesCRUDREST,ngTableParams,$state){
 	$scope.employees=[];
 	$scope.employeesListFilter="";
-	$scope.refreshEmployeesList=function(){
-		if($scope.employeesListFilter !=="" && $scope.employeesListFilter !== undefined ){
-			EmployeesCRUDREST.get(
-					{
-						//sort:params.$params.sorting,
-						filter:$scope.employeesListFilter
-					},function(data) {
-						$scope.employees=data.result;
-					});
-		}
-	};
 	$scope.doFilterList=function(data){
 		console.log("Server filer launch with: "+JSON.stringify(data));
 		$scope.employeesListFilter=data;
-		$scope.refreshEmployeesList();
 	};
 	$scope.tableParams.settings().counts=[];
 	$scope.doFilterList($scope.criteriaBarFilter);
@@ -255,54 +243,23 @@ function CompanyClientsViewController($scope, $rootScope,$http,ClientsCRUDREST,n
 		$scope.criteriaBarFilter=JSON.stringify(serverFilter);
 		$scope.$broadcast('criteriaDofilter', JSON.stringify(serverFilter));
 	};
-}
-
-function CompanyClientsQuickViewController($scope,$http,ClientsCRUDREST,ngTableParams,$state){
-	$scope.clients=[];
-	$scope.clientsListFilter="";
-	$scope.refreshClientsList=function(){
-		if($scope.clientsListFilter !=="" && $scope.clientsListFilter !== undefined ){
-			ClientsCRUDREST.get(
-					{
-						companyId : _userCompanyId,
-						//sort:params.$params.sorting,
-						filter:$scope.clientsListFilter
-					},function(data) {
-						$scope.clients=data.result;
-					});
-		}
-	};
-	$scope.doFilterList=function(data){
-		console.log("Server filer launch with: "+JSON.stringify(data));
-		$scope.clientsListFilter=data;
-		$scope.refreshClientsList();
-	};
-	$scope.doFilterList($scope.criteriaBarFilter);
-	$scope.$on('criteriaDofilter', function(event, args) {
-		$scope.doFilterList(args);
-	});
-}
-
-function CompanyClientsListController($scope, $rootScope,$http,ClientsCRUDREST,ngTableParams,$state){
-	
-	 $scope.changeSelection = function(client) {
-	        //console.info(user);
-	        $state.go('company.clients.details',{ id:client.id });
-	 };
-	
-	$scope.hasDatas=false;
 	
 	$scope.refreshDatas=function(){
 		$scope.tableParams.reload();
 	};
-	$scope.tableFilter="";
 	
+	$scope.hasDatas=false;
 	
 	$scope.doFilterList=function(data){
 		console.log("Server filer launch with: "+JSON.stringify(data));
 		$scope.tableFilter=data;
 		$scope.refreshDatas();
 	};
+	
+	$scope.$on('criteriaDofilter', function(event, args) {
+		$scope.doFilterList(args);
+	});
+	
 	$scope.tableParams = new ngTableParams({
 		page : 1, // show first page
 		count : 10, // count per page
@@ -335,11 +292,27 @@ function CompanyClientsListController($scope, $rootScope,$http,ClientsCRUDREST,n
 				});
 			}
 		}});
+}
+
+function CompanyClientsQuickViewController($scope,$http,ClientsCRUDREST,ngTableParams,$state){
+	$scope.clients=[];
+	$scope.clientsListFilter="";
+	$scope.tableParams.settings().counts=[];
+	$scope.doFilterList=function(data){
+		console.log("Server filer launch with: "+JSON.stringify(data));
+		$scope.clientsListFilter=data;
+	};
 	$scope.doFilterList($scope.criteriaBarFilter);
 	$scope.$on('criteriaDofilter', function(event, args) {
 		$scope.doFilterList(args);
 	});
-	
+}
+
+function CompanyClientsListController($scope, $rootScope,$http,ClientsCRUDREST,ngTableParams,$state){
+	 $scope.changeSelection = function(client) {
+	      $state.go('company.clients.details',{ id:client.id });
+	 };
+	 $scope.tableParams.settings().counts=[10, 25, 50, 100];
 };
 
 function CompanyClientsOverviewController($scope,ClientsCRUDREST, $stateParams){
@@ -463,40 +436,6 @@ function CompanyProjectsViewController($scope, $rootScope,$http,ProjectsCRUDREST
 		$scope.criteriaBarFilter=JSON.stringify(serverFilter);
 		$scope.$broadcast('criteriaDofilter', JSON.stringify(serverFilter));
 	};
-}
-
-function CompanyProjectsQuickViewController($scope,$http,ProjectsCRUDREST,ngTableParams,$state){
-	$scope.projects=[];
-	$scope.projectsListFilter="";
-	$scope.refreshProjectsList=function(){
-		if($scope.projectsListFilter !=="" && $scope.projectsListFilter !== undefined ){
-			ProjectsCRUDREST.get(
-					{
-						companyId : _userCompanyId,
-						//sort:params.$params.sorting,
-						filter:$scope.projectsListFilter
-					},function(data) {
-						$scope.projects=data.result;
-					});
-		}
-	};
-	$scope.doFilterList=function(data){
-		console.log("Server filer launch with: "+JSON.stringify(data));
-		$scope.projectsListFilter=data;
-		$scope.refreshProjectsList();
-	};
-	$scope.doFilterList($scope.criteriaBarFilter);
-	$scope.$on('criteriaDofilter', function(event, args) {
-		$scope.doFilterList(args);
-	});
-}
-
-function CompanyProjectsListController($scope, $rootScope,$http,ProjectsCRUDREST,ngTableParams,$state){
-	
-	 $scope.changeSelection = function(project) {
-	        //console.info(user);
-	        $state.go('company.projects.details',{ id:project.id });
-	 };
 	
 	$scope.hasDatas=false;
 	
@@ -547,6 +486,29 @@ function CompanyProjectsListController($scope, $rootScope,$http,ProjectsCRUDREST
 	$scope.$on('criteriaDofilter', function(event, args) {
 		$scope.doFilterList(args);
 	});
+	
+}
+
+function CompanyProjectsQuickViewController($scope,$http,ProjectsCRUDREST,ngTableParams,$state){
+	$scope.projects=[];
+	$scope.projectsListFilter="";
+	$scope.tableParams.settings().counts=[];
+	$scope.doFilterList=function(data){
+		console.log("Server filer launch with: "+JSON.stringify(data));
+		$scope.projectsListFilter=data;
+	};
+	$scope.doFilterList($scope.criteriaBarFilter);
+	$scope.$on('criteriaDofilter', function(event, args) {
+		$scope.doFilterList(args);
+	});
+}
+
+function CompanyProjectsListController($scope, $rootScope,$http,ProjectsCRUDREST,ngTableParams,$state){
+	 $scope.tableParams.settings().counts=[10, 25, 50, 100];
+	 $scope.changeSelection = function(project) {
+	        //console.info(user);
+	        $state.go('company.projects.details',{ id:project.id });
+	 };
 	
 };
 

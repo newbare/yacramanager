@@ -60,6 +60,8 @@ App.config(function($tooltipProvider) {
 
 App.controller('AppCtrl', [ '$scope', '$location', 'UsersREST','$rootScope','$translate','$locale',
 		function($scope, $location, UsersREST,$rootScope,$translate,$locale) {
+			
+			$scope.eventsToWait=['userInfo'];
 			$scope.currentLanguage=$translate.preferredLanguage();
 			$scope.toggleLanguage = function (key) {
 				 if(key===$translate.use()){
@@ -198,6 +200,7 @@ App.config([ '$stateProvider', '$urlRouterProvider','$locationProvider',
 			$urlRouterProvider
 			.when('','/home')
 			.when('/company', '/company/home')
+			.when('/admin/company', '/admin/company/view/quickview')
 			.when('/company/employees', '/company/employees/view/quickview')
 			.when('/company/clients', '/company/clients/view/quickview')
 			.when('/company/projects', '/company/projects/view/quickview')
@@ -392,10 +395,34 @@ App.config([ '$stateProvider', '$urlRouterProvider','$locationProvider',
 				url : "/home",
 				templateUrl : _contextPath+'/views/app/admin/admin-home.html',
 				controller : AdminHomeController
-			}).state('admin.companies', {
-				url : "/companies",
-				templateUrl : _contextPath+'/views/app/admin/admin-companies.html',
+			})
+			.state('admin.company', {
+				url : "/company",
+				templateUrl : _contextPath+'/views/app/templates/partials/panel-view.html',
 				controller : AdminCompaniesController
+			}).state('admin.company.details', {
+				url : "/details/:id",
+				templateUrl : _contextPath+'/views/app/admin/company/admin-company-overview.html',
+				controller : AdminCompanyOverviewController
+			})
+			.state('admin.company.view', {
+				url : "/view",
+				templateUrl : _contextPath+'/views/app/admin/company/admin-company-view.html',
+				controller : AdminCompanyViewController
+			})
+			.state('admin.company.view.list', {
+				url : "/list",
+				templateUrl : _contextPath+'/views/app/admin/company/admin-company-list.html',
+				controller : AdminCompanyListController
+			}).state('admin.company.view.quick', {
+				url : "/quickview",
+				templateUrl : _contextPath+'/views/app/admin/company/admin-company-quickview.html',
+				controller : AdminCompanyQuickViewController
+			})
+			.state('admin.company.view.quick.overview', {
+				url : "/:id",
+				templateUrl : _contextPath+'/views/app/admin/company/admin-company-overview.html',
+				controller : AdminCompanyOverviewController
 			})
 			.state('admin.messages', {
 				url : "/messages",

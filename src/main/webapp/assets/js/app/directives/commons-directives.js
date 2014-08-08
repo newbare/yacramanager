@@ -107,7 +107,7 @@ App.directive('collapsibleFieldset',	function() {
 				elem.addClass("collapsible");
 				var legendImgElement="<img class=\"tool-img tool-toggle\"  src=\"data:image/gif;base64,R0lGODlhAQABAID/AMDAwAAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==\">";
 				var legendElement="<legend>"+legendImgElement+" <span> "+title+"</span></legend>";
-				elem.append(legendElement);
+				elem.prepend(legendElement);
 				if(collapsed){
 					elem.addClass("collapsed");
 					elem.find('.tool-img').addClass("collapsed");
@@ -129,10 +129,6 @@ App.directive('authApplicationSupport', function($timeout) {
     return {
         restrict: 'A',
         link: function(scope, elem, attrs) {
-          //once Angular is started, remove class:
-        	$timeout(function() {
-        		elem.removeClass('waiting-for-angular');
-			},0);
           var login = elem.find('#app-login-content');
           var main = elem.find('#app-content');
           
@@ -147,6 +143,36 @@ App.directive('authApplicationSupport', function($timeout) {
             main.show();
             login.slideUp();
           });
+        }
+      }
+    });
+
+App.directive('applicationLoadingSupport', function($timeout) {
+    return {
+        restrict: 'A',
+        scope : true,
+        link: function(scope, elem, attrs) {
+        	var eventsToWait=scope.eventsToWait;
+        	if(eventsToWait!== undefined){
+        		angular.forEach(eventsToWait,function(event){
+        			scope.$on(event, function() {
+        				for (var i in eventsToWait) {
+							  if(eventsToWait[i]===event){
+								  eventsToWait.splice(i, 1);
+								  debug("event "+event+' finished');
+								}
+							};
+						if(eventsToWait.length==0){
+	        				 debug('All event finished');
+	        				//once Angular is started, remove class:
+	    		        	$timeout(function() {
+	    		        		elem.removeClass('waiting-for-angular');
+	    					},0);
+	        			}
+        	          });
+        			
+        		});
+        	}
         }
       }
     });

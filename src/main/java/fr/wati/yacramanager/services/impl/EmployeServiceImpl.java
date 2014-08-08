@@ -123,6 +123,7 @@ public class EmployeServiceImpl implements EmployeService {
 		Employe loadEmploye = employeRepository.findOne(idPersonne);
 		UserInfoDTO userInfoDTO = new UserInfoDTO();
 		((Mapper) dozerBeanMapper.getObject()).map(loadEmploye, userInfoDTO);
+		userInfoDTO.setPassword(null);
 		return userInfoDTO;
 	}
 

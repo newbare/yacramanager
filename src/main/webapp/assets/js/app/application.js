@@ -1,3 +1,9 @@
+var debugEnabled=true;
+var debug=function(text){
+		if(debugEnabled){
+			console.log(text);
+		}
+	};
 var getUserInitials=function(name){
 	wordArray=name.split(" ");
 	return wordArray[0]+"."+ wordArray[1].substr(0,1);

@@ -145,8 +145,7 @@ function FraisController($scope, $rootScope, NoteCRUDREST, alertService,
 	
 	$scope.postNote=function(note,hideFn){
 		 NoteCRUDREST.save(note).$promise.then(function(result) {
-			notifService
-					.notify('info', 'Created', 'Nouvelle note enregistr���');
+			alertService.show('success', 'Created', 'Nouvelle note sauvegarde');
 			hideFn();
 			$scope.reset();
 			$scope.tableParams.reload();
