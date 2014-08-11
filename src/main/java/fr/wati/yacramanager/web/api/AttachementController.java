@@ -73,6 +73,7 @@ public class AttachementController {
 			if (!attachementsByIds.isEmpty()) {
 				InputStream inputStream = new ByteArrayInputStream(attachementService.getAttachementContent(id));
 				IOUtils.copy(inputStream, response.getOutputStream());
+				response.setContentType("text/html;charset=UTF-8");
 				response.setContentType(attachementsByIds.get(0).getContentType());
 				response.setHeader("Content-Disposition",
 	                       "attachment; filename=" + attachementsByIds.get(0).getName());

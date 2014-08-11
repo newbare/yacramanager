@@ -9,3 +9,7 @@ App.factory("ClientsCRUDREST", function($resource) {
 App.factory("ProjectsCRUDREST", function($resource) {
 	return $resource(_contextPath+"/app/api/:companyId/project/:id" , {companyId :'@companyId'}, {update: { method: 'PUT', params: {id: '@id'} }});
 });
+
+App.factory("CompanySettingsREST", function($resource) {
+	return $resource(_contextPath+"/app/api/settings/company/"+_userCompanyId+"/:id",{},{update: { method: 'PUT'}});
+});
