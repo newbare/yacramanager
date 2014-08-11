@@ -385,8 +385,8 @@ App.config([ '$stateProvider', '$urlRouterProvider','$locationProvider',
 			})
 			.state('company.settings', {
 				url : "/settings",
-				templateUrl : _contextPath+'/views/app/company/company-settings.html'
-				//controller : EntrepriseController,
+				templateUrl : _contextPath+'/views/app/company/company-settings.html',
+				controller : CompanySettingsController,
 			}).state('admin', {
 				url : "/admin",
 				templateUrl : _contextPath+'/views/app/admin.html',

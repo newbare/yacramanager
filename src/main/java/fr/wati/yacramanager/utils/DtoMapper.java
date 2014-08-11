@@ -12,6 +12,7 @@ import fr.wati.yacramanager.beans.Company;
 import fr.wati.yacramanager.beans.Employe;
 import fr.wati.yacramanager.beans.NoteDeFrais;
 import fr.wati.yacramanager.beans.Project;
+import fr.wati.yacramanager.beans.Settings;
 import fr.wati.yacramanager.beans.Task;
 import fr.wati.yacramanager.beans.Users;
 import fr.wati.yacramanager.beans.WorkLog;
@@ -22,6 +23,7 @@ import fr.wati.yacramanager.web.dto.ClientDTO;
 import fr.wati.yacramanager.web.dto.CompanyDTO;
 import fr.wati.yacramanager.web.dto.NoteDeFraisDTO;
 import fr.wati.yacramanager.web.dto.ProjectDTO;
+import fr.wati.yacramanager.web.dto.SettingsDTO;
 import fr.wati.yacramanager.web.dto.TaskDTO;
 import fr.wati.yacramanager.web.dto.UserInfoDTO.ManagedEmployeInfoDTO;
 import fr.wati.yacramanager.web.dto.WorkLogDTO;
@@ -72,6 +74,23 @@ public class DtoMapper {
 		List<ProjectDTO> dtos = new ArrayList<>();
 		for (Project project : projects) {
 			dtos.add(map(project));
+		}
+		return dtos;
+	}
+	
+	public static SettingsDTO map(Settings settings) {
+		SettingsDTO dto = new SettingsDTO();
+		dto.setId(settings.getId());
+		dto.setKey(settings.getKey());
+		dto.setValue(settings.getValue());
+		dto.setDescription(settings.getDescription());
+		return dto;
+	}
+	
+	public static List<SettingsDTO> mapSettings(Iterable<Settings> settings) {
+		List<SettingsDTO> dtos = new ArrayList<>();
+		for (Settings setting : settings) {
+			dtos.add(map(setting));
 		}
 		return dtos;
 	}

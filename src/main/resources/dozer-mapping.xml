@@ -14,6 +14,10 @@
 			<b>projects</b>
 		</field-exclude>
 		<field-exclude>
+			<a>settings</a>
+			<b>settings</b>
+		</field-exclude>
+		<field-exclude>
 			<a>tasks</a>
 			<b>tasks</b>
 		</field-exclude>
@@ -37,6 +41,10 @@
 			<a>createdBy</a>
 			<b>createdBy</b>
 		</field-exclude>
+		<field-exclude>
+			<a>noteDeFrais</a>
+			<b>noteDeFrais</b>
+		</field-exclude>
 	</mapping>
 	<mapping>
 		<class-a>fr.wati.yacramanager.beans.Role</class-a>
@@ -56,6 +64,10 @@
 		<field-exclude>
 			<a>clients</a>
 			<b>clients</b>
+		</field-exclude>
+		<field-exclude>
+			<a>settings</a>
+			<b>settings</b>
 		</field-exclude>
 	</mapping>
 	<mapping>

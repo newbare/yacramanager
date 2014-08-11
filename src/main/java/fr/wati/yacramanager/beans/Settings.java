@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 @SuppressWarnings("serial")
 @Entity
@@ -16,7 +17,14 @@ public class Settings extends AuditableEntity {
 	private String key;
 	
 	private String value;
+	
+	private String description;
 
+	@ManyToOne
+	private Users user;
+	
+	@ManyToOne
+	private Company company;
 	/**
 	 * @return the id
 	 */
@@ -57,6 +65,30 @@ public class Settings extends AuditableEntity {
 	 */
 	public void setValue(String value) {
 		this.value = value;
+	}
+
+	public Users getUser() {
+		return user;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public Company getCompany() {
+		return company;
+	}
+
+	public void setCompany(Company company) {
+		this.company = company;
+	}
+
+	public void setUser(Users user) {
+		this.user = user;
 	}
 	
 	
