@@ -683,10 +683,8 @@ function CompanyProjectsController($scope, $rootScope,$http,ngTableParams,Projec
 function CompanySettingsController($scope,CompanySettingsREST,$rootScope){
 	$rootScope.page={"title":"Company settings","description":"Edit your settings"};
 	$scope.settingsFilter='';
-	
 	$scope.settings=[];
 	$scope.inserted={};
-	
 	CompanySettingsREST.get(function(data) {
 		    $scope.settings = data.result;
 	});
