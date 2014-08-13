@@ -92,7 +92,7 @@ public class CompanyServiceImpl implements CompanyService {
 		 * client we create a default one
 		 */
 		Client defaultClient = new Client();
-		defaultClient.setName("Internal");
+		defaultClient.setName(company.getName());
 		clientService.createClient(saveCompany.getId(), defaultClient);
 		return saveCompany;
 	}

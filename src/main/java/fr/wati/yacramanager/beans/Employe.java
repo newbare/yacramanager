@@ -10,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 /**
  * @author Rachid Ouattara
@@ -34,6 +35,9 @@ public class Employe extends Personne {
 	
 	@ManyToMany(mappedBy="assignedEmployees")
 	private List<Project> projects=new ArrayList<>();
+	
+	@OneToOne
+	private Project activeProject;
 	
 	@ManyToMany(mappedBy="assignedEmployees")
 	private List<Task> tasks=new ArrayList<>();
@@ -97,6 +101,12 @@ public class Employe extends Personne {
 	 */
 	public void setTasks(List<Task> tasks) {
 		this.tasks = tasks;
+	}
+	public Project getActiveProject() {
+		return activeProject;
+	}
+	public void setActiveProject(Project activeProject) {
+		this.activeProject = activeProject;
 	}
 	
 	

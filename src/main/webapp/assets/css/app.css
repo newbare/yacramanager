@@ -662,7 +662,7 @@ a .badge {
 }
 
 /* End of Date picker section */
-#cra-container {
+.cra-container {
 	max-width: 100%;
 	overflow: auto;
 }

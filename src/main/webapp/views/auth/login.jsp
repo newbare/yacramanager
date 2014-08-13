@@ -31,7 +31,8 @@
 	</div>
 </c:if>
 <body>
-	<div class="container-fluid">
+	<div class="container">
+		<div id="alerts-container"></div>
 		<div data-ng-view="" class="am-fade"></div>
 	</div>
 	<script
@@ -45,6 +46,12 @@
 		src="${contextPath}/assets/bower_components/angular-route/angular-route.min.js"></script>
 	<script
 		src="${contextPath}/assets/bower_components/angular-animate/angular-animate.min.js"></script>
+	<script
+		src="${contextPath}/assets/bower_components/angular-strap/dist/angular-strap.min.js"></script>
+	<script
+		src="${contextPath}/assets/bower_components/angular-strap/dist/modules/modal.js"></script>
+	<script
+		src="${contextPath}/assets/bower_components/angular-strap/dist/modules/alert.min.js"></script>
 	<script src="${contextPath}/assets/js/app/login.js"></script>
 </body>
 </html>

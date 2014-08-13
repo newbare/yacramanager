@@ -80,7 +80,7 @@ App.controller('AppCtrl', [ '$scope', '$location', 'UsersREST','$rootScope','$tr
 			}
 
 			$scope.containerNavClass=function(){
-				return "container-fluid";
+				return "container";
 			}
 		} ]);
 

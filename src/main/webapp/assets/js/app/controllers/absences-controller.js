@@ -13,15 +13,15 @@ function AbsencesController($scope, $rootScope, AbsenceCRUDREST,
 	$scope.tableFilter="";
 	$scope.employeCriteriaConfig={
 			name:"employe",
-			defaultButtonLabel:"Who",
+			defaultButtonLabel:'<i class="fa fa-user"></i>',
 			filterType:"ARRAY",
 			closeable:false,
 			filterValue:[],
 			buttonSelectedItemsFormater:function(data){
 				if(data.name==""+_userId+""){
-					return '<i class="fa fa-user"></i> Me';
+					return ' Me';
 				}else {
-					return '<i class="fa fa-user"></i> '+getUserInitials(data.label);
+					return ' '+getUserInitials(data.label);
 				}
 			},
 			defaultSelectedItems:function(data){
@@ -54,7 +54,7 @@ function AbsencesController($scope, $rootScope, AbsenceCRUDREST,
 				console.log('Filter checkbox ['+value.field+'] selected items '+value.value.length);
 			},
 			currentFilter:{},
-			displayed: true
+			displayed: false
 	};
 	$scope.booleanCriteriaConfig={
 			name:"validated",
@@ -65,7 +65,7 @@ function AbsencesController($scope, $rootScope, AbsenceCRUDREST,
 				console.log('Filter boolean ['+value.field+']='+value.value);
 			},
 			currentFilter:{},
-			displayed: true
+			displayed: false
 	};
 	$scope.descriptionCriteriaConfig={
 			name:"description",
@@ -77,7 +77,7 @@ function AbsencesController($scope, $rootScope, AbsenceCRUDREST,
 				console.log('Filter text ['+value.field+'] searching: '+value.value);
 			},
 			currentFilter:{},
-			displayed: true
+			displayed: false
 	};
 	
 	$scope.dateCriteriaConfig={
@@ -90,7 +90,7 @@ function AbsencesController($scope, $rootScope, AbsenceCRUDREST,
 				console.log('Filter text ['+value.field+'] searching: '+value.value);
 			},
 			currentFilter:{},
-			displayed: true
+			displayed: false
 	};
 	
 	$scope.criteriaBarConfig={

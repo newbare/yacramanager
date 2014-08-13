@@ -158,7 +158,7 @@
 							</div>
 						</div>
 					</li>
-					<li data-ng-class="navClass('messages')"><a
+					<li data-ng-class="navClass('messages')" data-ng-show="userInfo.hasNewMessages"><a
 						data-ui-sref="messages"><i class="fa fa-envelope"></i></a></li>
 					<!-- <li data-ng-class="navClass('notifications')"><a
 						data-ui-sref="notifications"><i class="fa fa-bell"></i></a></li> -->
@@ -175,6 +175,10 @@
 						data-toggle="dropdown"><i class="fa fa-user"></i>{{userInfo.prenom}} {{userInfo.nom}}<span
 							class="caret"></span></a>
 						<ul class="user-menu dropdown-menu inverse-dropdown" role="menu">
+							<li data-ng-class="navClass('messages')" >
+								<a data-ui-sref="messages"><i class="fa fa-envelope"></i>Messages</a>
+							</li>
+							<li class="divider"></li>
 							<li><a data-ui-sref="user-settings"><i class="fa fa-cog"></i>{{'app.navbar.menu.settings' | translate}}</a></li>
 							<li><a data-ui-sref="user-profile"><i class="fa fa-user"></i>
 									{{'app.navbar.menu.profile' | translate}}</a></li>

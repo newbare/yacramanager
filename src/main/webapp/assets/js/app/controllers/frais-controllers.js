@@ -16,15 +16,15 @@ function FraisController($scope, $rootScope, NoteCRUDREST, alertService,
 	$scope.tableFilter="";
 	$scope.employeCriteriaConfig={
 			name:"employe",
-			defaultButtonLabel:"Who",
+			defaultButtonLabel:'<i class="fa fa-user"></i>',
 			filterType:"ARRAY",
 			closeable:false,
 			filterValue:[],
 			buttonSelectedItemsFormater:function(data){
 				if(data.name==""+_userId+""){
-					return '<i class="fa fa-user"></i> Me';
+					return ' Me';
 				}else {
-					return '<i class="fa fa-user"></i> '+getUserInitials(data.label);
+					return ' '+getUserInitials(data.label);
 				}
 			},
 			defaultSelectedItems:function(data){
@@ -55,7 +55,7 @@ function FraisController($scope, $rootScope, NoteCRUDREST, alertService,
 				console.log('Filter text ['+value.field+'] searching: '+value.value);
 			},
 			currentFilter:{},
-			displayed: true
+			displayed: false
 	};
 	
 	$scope.dateCriteriaConfig={
@@ -68,7 +68,7 @@ function FraisController($scope, $rootScope, NoteCRUDREST, alertService,
 				console.log('Filter text ['+value.field+'] searching: '+value.value);
 			},
 			currentFilter:{},
-			displayed: true
+			displayed: false
 	};
 	$scope.amountCriteriaConfig={
 			name:"amount",
@@ -80,7 +80,7 @@ function FraisController($scope, $rootScope, NoteCRUDREST, alertService,
 				console.log('Filter text ['+value.field+'] searching: '+value.value);
 			},
 			currentFilter:{},
-			displayed: true
+			displayed: false
 	};
 	$scope.criteriaBarConfig={
 		criterions:[$scope.employeCriteriaConfig,$scope.descriptionCriteriaConfig,$scope.dateCriteriaConfig,$scope.amountCriteriaConfig],

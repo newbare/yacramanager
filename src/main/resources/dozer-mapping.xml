@@ -10,12 +10,12 @@
 			<b>absences</b>
 		</field-exclude>
 		<field-exclude>
-			<a>projects</a>
-			<b>projects</b>
-		</field-exclude>
-		<field-exclude>
 			<a>settings</a>
 			<b>settings</b>
+		</field-exclude>
+		<field-exclude>
+			<a>projects</a>
+			<b>projects</b>
 		</field-exclude>
 		<field-exclude>
 			<a>tasks</a>
@@ -68,6 +68,18 @@
 		<field-exclude>
 			<a>settings</a>
 			<b>settings</b>
+		</field-exclude>
+	</mapping>
+	<mapping>
+		<class-a>fr.wati.yacramanager.beans.Project</class-a>
+		<class-b>fr.wati.yacramanager.beans.Project</class-b>
+		<field-exclude>
+			<a>assignedEmployees</a>
+			<b>assignedEmployees</b>
+		</field-exclude>
+		<field-exclude>
+			<a>tasks</a>
+			<b>tasks</b>
 		</field-exclude>
 	</mapping>
 	<mapping>

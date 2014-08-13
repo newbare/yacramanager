@@ -1,9 +1,26 @@
 var yaCRAApp = {};
 
-var App = angular.module('yaCRAApp', [ 'ngResource', 'ngRoute', 'ngAnimate' ]);
+var App = angular.module('yaCRAApp', [ 'ngResource', 'ngRoute', 'ngAnimate','mgcrea.ngStrap' ]);
 
 App.factory("RegistrationRest", function($resource) {
 	return $resource(_contextPath+"/auth/api/register" , {}, {});
+});
+
+App.service('alertService', function($alert) {
+	this.show = function(type,title, content) {
+		// Service usage
+		var myAlert = $alert({
+			title : title,
+			content : content,
+			type : type,
+			keyboard : true,
+			show : false,
+			duration: 5,
+			template:  _contextPath+'/assets/others/alert/alert.tpl.html',
+			container: '#alerts-container'
+		});
+		myAlert.$promise.then(myAlert.show);
+	};
 });
 
 function LoginController($scope, $location) {
@@ -31,7 +48,7 @@ function LoginController($scope, $location) {
 	}
 };
 
-function RegisterController($scope, $location,RegistrationRest) {
+function RegisterController($scope, $location,RegistrationRest,alertService) {
 	$scope.loadLogin = function() {
 		$location.url('/');
 	};
@@ -39,7 +56,8 @@ function RegisterController($scope, $location,RegistrationRest) {
 	$scope.register=function(){
 		RegistrationRest.save($scope.user)
 			.$promise.then(function(result) {
-			console.log(result);
+				alertService.show('success','Saved','Account has been created !');
+				$scope.loadLogin();
 		});
 	}
 }

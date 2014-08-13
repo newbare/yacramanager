@@ -187,7 +187,7 @@ angular
 									var spanCaret= ($scope.isEditable=== true) ?' <span class="caret"></span>':'';
 									
 									$scope.computeButtonLabel = function(value) {
-										$scope.buttonLabel = $sce.trustAsHtml($scope.criteriaConfig.defaultButtonLabel + ': '+ value + spanCaret);
+										$scope.buttonLabel = $sce.trustAsHtml($scope.criteriaConfig.defaultButtonLabel + ' '+ value + spanCaret);
 									}
 									$scope.resetButtonLabel = function() {
 										$scope.buttonLabel = $sce
