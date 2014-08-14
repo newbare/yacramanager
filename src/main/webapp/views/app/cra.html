@@ -49,35 +49,44 @@
 			  <li class="next"><a href="" data-ng-click="next(timesheetCalendar)">{{'app.timesheet.toolbar.next' | translate}} <i class="fa fa-long-arrow-right"></i></a></li>
 			</ul>
 		</div>
-		<div class="cra-container">
+		<div class="" data-ng-repeat="employeCraDetail in craDetails.employeCraDetailsDTOs">
+			<div class="row"><h4><span class="label label-info"> {{employeCraDetail.employeName}}</span></h4></div>
 			<div class="table-responsive">
 			<table class="table table-condensed table-bordered">
 				<thead>
 					<tr>
 					     <th>Task</th>
-					     <th data-ng-repeat="day in cra.days" data-ng-class="{'cra-we' : day.dayOff}">
+					     <th data-ng-repeat="day in employeCraDetail.days" data-ng-class="{'cra-we' : day.dayOff}">
 					     	<small>{{day.date | date : craDateFormat}}</small>
 					     </th>
 					     <th>Actions</th>
-					     <th></th>
+					     <th>Total</th>
 					</tr>
 				</thead>
 				<tbody>
-					<tr>
-						<td></td>
-						<td data-ng-repeat="day in cra.days" data-ng-class="{'cra-we' : day.dayOff}">
-							<label data-placement="bottom-left" data-type="info" data-animation="am-fade-and-scale" data-bs-tooltip="{'title':day.morning.absenceDTO.type +' '+ day.morning.absenceDTO.description}">
-	  							<input type="checkbox" class="custom-checkbox"	data-ng-model="day.morning.worked" value="{{day.morning.worked}}" data-ng-disabled="day.dayOff || day.morning.absenceDTO!=null" />
-								<span></span>
-							</label>
+					<tr data-ng-repeat="taskRow in employeCraDetail.taskRows">
+						<td>{{taskRow.project.name}} - {{taskRow.task.name}}</td>
+						<td data-ng-repeat="day in employeCraDetail.days" data-ng-class="{'cra-we' : day.dayOff}">
+							<a href="#" editable-text="taskRow.duration[day.date]">{{ taskRow.duration[day.date] || 0 }}</a>
 						</td>
-						<td>total</td>
-						
+						<td></td>
+						<td></td>
+					</tr>
+					<tr data-ng-show="employeCraDetail.craAbsenceDetail">
+						<td>Time off</td>
+						<td data-ng-repeat="day in employeCraDetail.days" data-ng-class="{'cra-we' : day.dayOff}">
+							<a href="#" editable-text="employeCraDetail.craAbsenceDetail.duration[day.date]">{{ employeCraDetail.craAbsenceDetail.duration[day.date]  || 0 }}</a>
+						</td>
+						<td></td>
+						<td></td>
 					</tr>
 				</tbody>
 				<tfoot>
 					<tr>
 						<td ><button class="btn btn-default"> Add</button></td>
+						<td data-ng-repeat="day in employeCraDetail.days"></td>
+						<td></td>
+						<td></td>
 					</tr>
 				</tfoot>
 			</table>

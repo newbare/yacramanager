@@ -18,8 +18,8 @@ function CraController($scope,$rootScope,CraREST,$filter,$http) {
 	
 	$scope.tableFilter="";
 	$scope.dateRange={
-			startDate:moment().startOf('month'),
-			endDate: moment().endOf('month')
+			startDate:moment().startOf('week'),
+			endDate: moment().endOf('week')
 	}
 	$scope.employeCriteriaConfig={
 			name:"employe",
@@ -80,6 +80,7 @@ function CraController($scope,$rootScope,CraREST,$filter,$http) {
 			var serverFilter={filter:data};
 			$scope.tableFilter=JSON.stringify(serverFilter);
 			$scope.retrieveCra();
+			$scope.retrieveCraDetails(data);
 		};
 	
 	$scope.retrieveCra=function(){
@@ -91,11 +92,25 @@ function CraController($scope,$rootScope,CraREST,$filter,$http) {
 				    $scope.respStartDate=response.data.startDate;
 				    $scope.respEndDate=response.data.endDate;
 				});
-		
-//		CraREST.get({start:$scope.dateRange.startDate._d.toString(),end:$scope.dateRange.endDate._d.toString()},function(data) {
-//		    $scope.cra = data;
-//		    $scope.respStartDate=data.startDate;
-//		    $scope.respEndDate=data.endDate;
-//		});
-	};	
+	};
+	$scope.retrieveCraDetails=function(filter){
+		var userIds=[];
+		angular.forEach(filter,function(filterElement){
+			if(filterElement.field==='employe'){
+				angular.forEach(filterElement.value,function(value){
+					userIds.push(value.name);
+				});
+				
+			}
+		});
+		$http.get(
+				_contextPath + "/app/api/cra/details?employeIds="+_userId+"&start=" +$scope.dateRange.startDate.toISOString()+"&end="+$scope.dateRange.endDate.toISOString(), {
+					params : {}
+				}).then(function(response) {
+					$scope.craDetails = response.data;
+				});
+	};
+	$scope.formatCraDetailDuration=function(duration){
+		return $filter('date')(duration*1000, 'shortTime');
+	}
 }

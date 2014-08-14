@@ -253,7 +253,7 @@ public class DtoMapper {
 	 * @param task
 	 * @return
 	 */
-	private static TaskDTO map(Task task) {
+	public static TaskDTO map(Task task) {
 		TaskDTO dto=new TaskDTO();
 		dto.setCreatedDate(task.getCreatedDate());
 		dto.setDescription(task.getDescription());

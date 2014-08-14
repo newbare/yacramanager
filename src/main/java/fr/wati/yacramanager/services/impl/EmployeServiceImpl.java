@@ -150,8 +150,13 @@ public class EmployeServiceImpl implements EmployeService {
 		roles.add(roleRepository.findByRole(Role.ROLE_SSII_ADMIN));
 		roles.add(roleRepository.findByRole(Role.ROLE_INDEP));
 		employe.setRoles(roles);
+		
 		createCompany.getClients().get(0).getProjects().get(0).getAssignedEmployees().add(employe);
 		employe.getProjects().add(createCompany.getClients().get(0).getProjects().get(0));
+		
+		createCompany.getClients().get(0).getProjects().get(0).getTasks().get(0).getAssignedEmployees().add(employe);
+		employe.getTasks().add(createCompany.getClients().get(0).getProjects().get(0).getTasks().get(0));
+		
 		Employe saveEmploye = employeRepository.save(employe);
 		return saveEmploye;
 	}
