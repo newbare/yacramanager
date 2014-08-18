@@ -3,10 +3,14 @@ App.directive('webSocket', [ '$timeout', 'WebSocketService', 'notifService',
 			return {
 				restrict : 'AEC',
 				link : function(scope, elem, attrs, ctrl) {
-					timer(function() {
+					scope.$on('application-loaded', function() {
 						WebSocketService.connect();
-						//notifService.notify('info', 'WebSocket', 'Connected');
-					}, 0);
+					})
+					
+//					timer(function() {
+//						WebSocketService.connect();
+//						//notifService.notify('info', 'WebSocket', 'Connected');
+//					}, 0);
 				}
 			};
 		} ]);
@@ -164,6 +168,7 @@ App.directive('applicationLoadingSupport', function($timeout) {
 							};
 						if(eventsToWait.length==0){
 	        				 debug('All event finished');
+	        				 scope.$broadcast('application-loaded');
 	        				//once Angular is started, remove class:
 	    		        	$timeout(function() {
 	    		        		elem.removeClass('waiting-for-angular');

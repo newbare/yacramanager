@@ -19,7 +19,18 @@
 			  			  
 			</div>
 		</div>
+		<div data-ng-criteria-bar data-criteria-bar-config="criteriaBarConfig" data-do-filter="doFilter(criteriaBarConfig.filters)"></div>		
 		<div class="row">
+			<ul class="pager">
+			  <li class="previous"><a href=""  data-ng-click="previous()"><i class="fa fa-long-arrow-left"></i>{{'app.timesheet.toolbar.previous' | translate}}</a></li>
+			  <li><span><strong>{{dateRange.startDate.toDate() | date : shortDate}} - {{dateRange.endDate.toDate() | date : shortDate}}</strong></span></li>
+			  <li class="next"><a href="" data-ng-click="next()">{{'app.timesheet.toolbar.next' | translate}} <i class="fa fa-long-arrow-right"></i></a></li>
+			</ul>
+		</div>
+		<div class="" data-ng-repeat="employeCraDetail in craDetails.employeCraDetailsDTOs">
+			<hr>
+			<div class="row"><h4><span class="label label-info"> {{employeCraDetail.employeName}}</span></h4></div>
+			<div class="row">
 			<div class="col-md-4">
 				<fieldset data-collapsible-fieldset="Used on selected period">
 					<div>
@@ -41,17 +52,6 @@
 				</fieldset>
 			</div>
 		</div>
-		
-		<div data-ng-criteria-bar data-criteria-bar-config="criteriaBarConfig" data-do-filter="doFilter(criteriaBarConfig.filters)"></div>		
-		<div class="row">
-			<ul class="pager">
-			  <li class="previous"><a href=""  data-ng-click="previous()"><i class="fa fa-long-arrow-left"></i>{{'app.timesheet.toolbar.previous' | translate}}</a></li>
-			  <li><span><strong>{{dateRange.startDate.toDate() | date : shortDate}} - {{dateRange.endDate.toDate() | date : shortDate}}</strong></span></li>
-			  <li class="next"><a href="" data-ng-click="next()">{{'app.timesheet.toolbar.next' | translate}} <i class="fa fa-long-arrow-right"></i></a></li>
-			</ul>
-		</div>
-		<div class="" data-ng-repeat="employeCraDetail in craDetails.employeCraDetailsDTOs">
-			<div class="row"><h4><span class="label label-info"> {{employeCraDetail.employeName}}</span></h4></div>
 			<div class="cra-container">
 			<div class="table-responsive">
 			<table class="table table-condensed table-bordered">
@@ -69,7 +69,7 @@
 					<tr data-ng-repeat="taskRow in employeCraDetail.taskRows">
 						<td class="cra-table-task">{{taskRow.project.name}} - {{taskRow.task.name}}</td>
 						<td data-ng-repeat="day in employeCraDetail.days" data-ng-class="{'cra-we' : day.dayOff}">
-							<a href="#" editable-text="taskRow.duration[day.date]">{{ taskRow.duration[day.date] || 0 }}</a>
+							<a href="#" editable-text="taskRow.duration[day.date]" buttons="no">{{ taskRow.duration[day.date] || 0 }}</a>
 						</td>
 						<td></td>
 						<td></td>
@@ -77,7 +77,7 @@
 					<tr data-ng-show="employeCraDetail.craAbsenceDetail">
 						<td>Time off</td>
 						<td data-ng-repeat="day in employeCraDetail.days" data-ng-class="{'cra-we' : day.dayOff}">
-							<a href="#" editable-text="employeCraDetail.craAbsenceDetail.duration[day.date]">{{ employeCraDetail.craAbsenceDetail.duration[day.date]  || 0 }}</a>
+							<a href="#" editable-text="employeCraDetail.craAbsenceDetail.duration[day.date]" buttons="no">{{ employeCraDetail.craAbsenceDetail.duration[day.date]  || 0 }}</a>
 						</td>
 						<td></td>
 						<td></td>

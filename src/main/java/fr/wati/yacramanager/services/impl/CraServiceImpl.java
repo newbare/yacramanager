@@ -1,6 +1,8 @@
 package fr.wati.yacramanager.services.impl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
@@ -151,39 +153,47 @@ public class CraServiceImpl implements CraService {
 					.findByEmployeAndStartDateBetween(currentEmploye,
 							startDate, endDate);
 			// handle CraTaskRow
-
+			CraTaskRow craTaskRow = null;
+			Map<Long, CraTaskRow> craTaskMap=new HashMap<>();
 			for (WorkLog workLog : employeWorkLogs) {
-				CraTaskRow craTaskRow = new CraTaskRow();
+				if(craTaskMap.containsKey(workLog.getTask().getId())){
+					craTaskRow=craTaskMap.get(workLog.getTask().getId());
+				}else {
+					craTaskRow=new CraTaskRow();
+					craTaskRow.setProject(DtoMapper.map(workLog.getTask()
+							.getProject()));
+					craTaskRow.setTask(DtoMapper.map(workLog.getTask()));
+					craTaskMap.put(workLog.getTask().getId(), craTaskRow);
+					employeCraDetailsDTO.getTaskRows().add(craTaskRow);
+				}
 				for (DateTime currentDate = startDate; currentDate
 						.isBefore(endDate); currentDate = currentDate
 						.plusDays(1)) {
-					
+					Long currentDuration=0L;
 					switch (workLog.getWorkLogType()) {
 					case DURATION:
 						if (DateTimeComparator
 								.getDateOnlyInstance().compare(currentDate, workLog.getStartDate())==0) {
-							craTaskRow.setProject(DtoMapper.map(workLog.getTask()
-									.getProject()));
-							craTaskRow.setTask(DtoMapper.map(workLog.getTask()));
-							craTaskRow.getDuration().put(currentDate,
-									workLog.getDuration());
+							currentDuration=workLog.getDuration();
 						}
 						break;
 					case TIME:
 						if(isDayBetween(currentDate, workLog.getStartDate(),
 								workLog.getEndDate())){
-							craTaskRow.setProject(DtoMapper.map(workLog.getTask()
-									.getProject()));
-							craTaskRow.setTask(DtoMapper.map(workLog.getTask()));
-							craTaskRow.getDuration().put(currentDate,
-									(workLog.getEndDate().getMillis()-workLog.getStartDate().getMillis())/1000);
+							currentDuration=(workLog.getEndDate().getMillis()-workLog.getStartDate().getMillis())/1000;
 						}
 						break;
 					default:
 						break;
 					}
+					if(!craTaskRow.getDuration().containsKey(currentDate)){
+						craTaskRow.getDuration().put(currentDate,
+								currentDuration);
+					}else {
+						craTaskRow.getDuration().put(currentDate,craTaskRow.getDuration().get(currentDate)+
+								currentDuration);
+					}
 				}
-				employeCraDetailsDTO.getTaskRows().add(craTaskRow);
 			}
 
 			for (DateTime currentDate = startDate; currentDate
