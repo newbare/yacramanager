@@ -155,17 +155,6 @@ function AbsencesController($scope, $rootScope, AbsenceCRUDREST,
 		$scope.tableParams.reload();
 	}
 	
-	function clone(obj) {
-		if (null == obj || "object" != typeof obj)
-			return obj;
-		var copy = obj.constructor();
-		for ( var attr in obj) {
-			if (obj.hasOwnProperty(attr))
-				copy[attr] = obj[attr];
-		}
-		return copy;
-	}
-
 	$scope.postAbsence = function(hideFn) {
 		absence.typeAbsence=absence.typeAbsence.name;
 		AbsenceCRUDREST.save(clone(absence)).$promise.then(function(result) {

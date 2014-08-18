@@ -264,6 +264,8 @@
 		src="${contextPath}/assets/bower_components/angular-strap/dist/modules/select.js"></script>
 	<script
 		src="${contextPath}/assets/bower_components/moment/moment.js"></script>
+		<script
+		src="${contextPath}/assets/bower_components/moment-range/lib/moment-range.js"></script>
 	<script
 		src="${contextPath}/assets/bower_components/angular-translate/angular-translate.min.js"></script>
 	<script

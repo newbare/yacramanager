@@ -157,24 +157,30 @@ public class CraServiceImpl implements CraService {
 				for (DateTime currentDate = startDate; currentDate
 						.isBefore(endDate); currentDate = currentDate
 						.plusDays(1)) {
-					if (isDayBetween(currentDate, workLog.getStartDate(),
-							workLog.getEndDate())) {
-						craTaskRow.setProject(DtoMapper.map(workLog.getTask()
-								.getProject()));
-						craTaskRow.setTask(DtoMapper.map(workLog.getTask()));
-						switch (workLog.getWorkLogType()) {
-						case DURATION:
+					
+					switch (workLog.getWorkLogType()) {
+					case DURATION:
+						if (DateTimeComparator
+								.getDateOnlyInstance().compare(currentDate, workLog.getStartDate())==0) {
+							craTaskRow.setProject(DtoMapper.map(workLog.getTask()
+									.getProject()));
+							craTaskRow.setTask(DtoMapper.map(workLog.getTask()));
 							craTaskRow.getDuration().put(currentDate,
 									workLog.getDuration());
-							break;
-						case TIME:
+						}
+						break;
+					case TIME:
+						if(isDayBetween(currentDate, workLog.getStartDate(),
+								workLog.getEndDate())){
+							craTaskRow.setProject(DtoMapper.map(workLog.getTask()
+									.getProject()));
+							craTaskRow.setTask(DtoMapper.map(workLog.getTask()));
 							craTaskRow.getDuration().put(currentDate,
 									(workLog.getEndDate().getMillis()-workLog.getStartDate().getMillis())/1000);
-							break;
-						default:
-							break;
 						}
-						
+						break;
+					default:
+						break;
 					}
 				}
 				employeCraDetailsDTO.getTaskRows().add(craTaskRow);
@@ -204,7 +210,10 @@ public class CraServiceImpl implements CraService {
 									8 * 60L);
 						}
 					} else {
-						craAbsenceDetail.getDuration().put(currentDate, 0L);
+						if(!craAbsenceDetail.getDuration().containsKey(currentDate)){
+							craAbsenceDetail.getDuration().put(currentDate, 0L);
+						}
+						
 					}
 				}
 				employeCraDetailsDTO.setCraAbsenceDetail(craAbsenceDetail);

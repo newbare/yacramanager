@@ -667,6 +667,10 @@ a .badge {
 	overflow: auto;
 }
 
+.cra-table-task{
+	width: 50%;
+}
+
 .scrollable-x {
 	max-width: 100%;
 	overflow: auto;
