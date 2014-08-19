@@ -180,7 +180,7 @@ public class CraServiceImpl implements CraService {
 					case TIME:
 						if(isDayBetween(currentDate, workLog.getStartDate(),
 								workLog.getEndDate())){
-							currentDuration=(workLog.getEndDate().getMillis()-workLog.getStartDate().getMillis())/1000;
+							currentDuration=(workLog.getEndDate().getMillis()-workLog.getStartDate().getMillis())/1000/60;
 						}
 						break;
 					default:

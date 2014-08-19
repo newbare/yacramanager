@@ -111,14 +111,16 @@ App.controller('WorkLogCtrl',['$scope','$http','WorkLogCRUDREST','alertService',
     	 $scope.worklog.title="";
     	 $scope.worklog.type="TIME";
     	 $scope.worklog.start=start;
-    	 $scope.worklog.end=moment().add('minutes', data.minutes);
-    	 $scope.worklog.duration=data.minutes;
+    	 $scope.worklog.end=start.clone().add('minutes', data.minutes);
+    	 //duration in minutes
+    	 $scope.worklog.duration=0;//Math.round((data.millis/1000)/60);
     	 $scope.worklog.taskId= $scope.task.id;
     	 $scope.worklog.taskName=$scope.task.name;
     	 $scope.worklog.description=$scope.description;
     	 $scope.worklog.employeId=_userId;
     	 WorkLogCRUDREST.save($scope.worklog).$promise.then(function(result) {
-			alertService.show('success','Confirmation', 'Donn� sauvegard�');
+    		 $scope.resetWorkLog();
+    		 alertService.show('success','Confirmation', 'Donn� sauvegard�');
 		});
      });
      

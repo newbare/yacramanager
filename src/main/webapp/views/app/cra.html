@@ -28,8 +28,17 @@
 			</ul>
 		</div>
 		<div class="" data-ng-repeat="employeCraDetail in craDetails.employeCraDetailsDTOs">
-			<hr>
-			<div class="row"><h4><span class="label label-info"> {{employeCraDetail.employeName}}</span></h4></div>
+			<div class="row">
+				<div class="col-md-3"><h4><span class="label label-info"> {{employeCraDetail.employeName}}</span></h4></div>
+				<div class="col-md-9">
+				<div class="btn-toolbar" role="toolbar">
+					<div class="btn-group btn-group-sm pull-right">
+	                     <button class="btn btn-success" >Send for validation</button>
+	                     <button class="btn btn-default" ><i class="fa fa-print"></i> Print</button>
+				  	</div>
+			  	</div>
+			  </div>
+			</div>
 			<div class="row">
 			<div class="col-md-4">
 				<fieldset data-collapsible-fieldset="Used on selected period">
@@ -58,37 +67,33 @@
 				<thead>
 					<tr>
 					     <th class="cra-table-task">Task</th>
-					     <th data-ng-repeat="day in employeCraDetail.days" data-ng-class="{'cra-we' : day.dayOff}">
+					     <th style="width: 10px;" data-ng-repeat="day in employeCraDetail.days" data-ng-class="{'cra-we' : day.dayOff}">
 					     	<small>{{day.date | date : craDateFormat}}</small>
 					     </th>
-					     <th>Actions</th>
-					     <th>Total</th>
+					     <th style="width: 80px;"></th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr data-ng-repeat="taskRow in employeCraDetail.taskRows">
 						<td class="cra-table-task">{{taskRow.project.name}} - {{taskRow.task.name}}</td>
-						<td data-ng-repeat="day in employeCraDetail.days" data-ng-class="{'cra-we' : day.dayOff}">
-							<a href="#" editable-text="taskRow.duration[day.date]" buttons="no">{{ taskRow.duration[day.date] || 0 }}</a>
+						<td data-ng-repeat="day in employeCraDetail.days" data-ng-class="{'cra-we' : day.dayOff}" style="width: 10px;">
+							<a href="#" editable-text="taskRow.duration[day.date]" buttons="no" e-style="width: 30px;">{{ taskRow.duration[day.date] || 0 | duration  }}</a>
 						</td>
-						<td></td>
 						<td></td>
 					</tr>
 					<tr data-ng-show="employeCraDetail.craAbsenceDetail">
 						<td>Time off</td>
-						<td data-ng-repeat="day in employeCraDetail.days" data-ng-class="{'cra-we' : day.dayOff}">
-							<a href="#" editable-text="employeCraDetail.craAbsenceDetail.duration[day.date]" buttons="no">{{ employeCraDetail.craAbsenceDetail.duration[day.date]  || 0 }}</a>
+						<td data-ng-repeat="day in employeCraDetail.days" data-ng-class="{'cra-we' : day.dayOff}" style="width: 10px;">
+							<a href="#" editable-text="employeCraDetail.craAbsenceDetail.duration[day.date]" buttons="no" e-style="width: 30px;">{{ employeCraDetail.craAbsenceDetail.duration[day.date]  || 0 | duration }}</a>
 						</td>
-						<td></td>
-						<td></td>
+						<td style="width: 80px;"></td>
 					</tr>
 				</tbody>
 				<tfoot>
 					<tr>
-						<td ><button class="btn btn-default"> Add</button></td>
+						<td><button class="btn btn-primary btn-sm"> Add Task</button></td>
 						<td data-ng-repeat="day in employeCraDetail.days"></td>
-						<td></td>
-						<td></td>
+						<td style="width: 80px;"></td>
 					</tr>
 				</tfoot>
 			</table>

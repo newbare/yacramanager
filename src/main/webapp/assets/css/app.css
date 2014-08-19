@@ -663,12 +663,12 @@ a .badge {
 
 /* End of Date picker section */
 .cra-container {
-	max-width: 100%;
-	overflow: auto;
+	/* max-width: 100%;
+	overflow: auto; */
 }
 
 .cra-table-task{
-	width: 50%;
+	min-width: 50%;
 }
 
 .scrollable-x {

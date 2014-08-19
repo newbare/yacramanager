@@ -292,7 +292,7 @@
 	<script src="${contextPath}/assets/js/colResizable-1.3.min.js"></script>
 	<script src="${contextPath}/assets/bower_components/angular-chosen-localytics/chosen.js"></script>
 	<script src="${contextPath}/assets/bower_components/chosen/chosen.jquery.js"></script>
-	<!-- 	<script src="${contextPath}/assets/js/app/filters/commons-filters.js"></script> -->
+	<script src="${contextPath}/assets/js/app/filters/commons-filters.js"></script>
 	<script src="${contextPath}/assets/js/app/factories/users-factories.js"></script>
 	<script
 		src="${contextPath}/assets/js/app/factories/companies-factories.js"></script>
