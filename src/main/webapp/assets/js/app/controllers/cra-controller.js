@@ -64,15 +64,15 @@ function CraController($scope,$rootScope,CraREST,$filter,$http) {
 	
 	$scope.employeCriteriaConfig={
 			name:"employe",
-			defaultButtonLabel:"Who",
+			defaultButtonLabel:"<i class='fa fa-user'></i>",
 			filterType:"ARRAY",
 			closeable:false,
 			filterValue:[],
 			buttonSelectedItemsFormater:function(data){
 				if(data.name==""+_userId+""){
-					return '<i class="fa fa-user"></i> Me';
+					return ' Me';
 				}else {
-					return '<i class="fa fa-user"></i> '+getUserInitials(data.label);
+					return ' '+getUserInitials(data.label);
 				}
 			},
 			defaultSelectedItems:function(data){
@@ -146,4 +146,8 @@ function CraController($scope,$rootScope,CraREST,$filter,$http) {
 		$scope.retrieveCraDetails($scope.currentFilter);
 		//$scope.retrieveCra();
 	});
+	
+	$scope.isCurrentEmploye=function(employeId){
+		return employeId==_userId;
+	}
 }

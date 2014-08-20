@@ -15,6 +15,8 @@ public class EmployeDto extends UserDto {
 	private String numeroTelephone;
 	private String rue;
 	private String codePostal;
+	private Long companyId;
+	private Long managerId;
 	
 	public EmployeDto() {
 	}
@@ -65,6 +67,18 @@ public class EmployeDto extends UserDto {
 	}
 	public void setCodePostal(String codePostal) {
 		this.codePostal = codePostal;
+	}
+	public Long getCompanyId() {
+		return companyId;
+	}
+	public void setCompanyId(Long companyId) {
+		this.companyId = companyId;
+	}
+	public Long getManagerId() {
+		return managerId;
+	}
+	public void setManagerId(Long managerId) {
+		this.managerId = managerId;
 	}
 
 }

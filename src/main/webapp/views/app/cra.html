@@ -29,15 +29,13 @@
 		</div>
 		<div class="" data-ng-repeat="employeCraDetail in craDetails.employeCraDetailsDTOs">
 			<div class="row">
-				<div class="col-md-3"><h4><span class="label label-info"> {{employeCraDetail.employeName}}</span></h4></div>
-				<div class="col-md-9">
 				<div class="btn-toolbar" role="toolbar">
+					<div class="btn-group"><h4><span class="label label-info"> {{employeCraDetail.employeName}}</span></h4></div>
 					<div class="btn-group btn-group-sm pull-right">
-	                     <button class="btn btn-success" >Send for validation</button>
+	                     <button class="btn btn-success" data-ng-show="isCurrentEmploye(employeCraDetail.employeId)">Send for validation</button>
 	                     <button class="btn btn-default" ><i class="fa fa-print"></i> Print</button>
 				  	</div>
 			  	</div>
-			  </div>
 			</div>
 			<div class="row">
 			<div class="col-md-4">

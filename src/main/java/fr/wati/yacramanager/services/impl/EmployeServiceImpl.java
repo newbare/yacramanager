@@ -22,6 +22,7 @@ import fr.wati.yacramanager.beans.Company;
 import fr.wati.yacramanager.beans.Contact;
 import fr.wati.yacramanager.beans.Employe;
 import fr.wati.yacramanager.beans.Role;
+import fr.wati.yacramanager.dao.repository.EmployeDto;
 import fr.wati.yacramanager.dao.repository.EmployeRepository;
 import fr.wati.yacramanager.dao.repository.RoleRepository;
 import fr.wati.yacramanager.dao.specifications.EmployeSpecifications;
@@ -236,5 +237,37 @@ public class EmployeServiceImpl implements EmployeService {
 			}
 		}
 		return null;
+	}
+
+	@Override
+	public void createNewEmployee(EmployeDto employeDto, Long companyId,
+			Long managerId) {
+		if(!companyService.exists(companyId)){
+			throw new IllegalArgumentException("The given company doesn't exist");
+		}
+		Company company=companyService.findOne(companyId);
+		Employe employe = new Employe();
+		employe.setPrenom(employeDto.getPrenom());
+		employe.setNom(employeDto.getNom());
+		employe.setUsername(getDefaultUsername(employeDto.getPrenom(), employeDto.getNom()));
+		employe.setPassword(employeDto.getPassword());
+		employe.setCivilite(employeDto.getCivilite());
+		employe.setDateNaissance(employeDto.getDateNaissance());
+		employe.getContact().setEmail(employeDto.getEmail());
+		employe.setCompany(company);
+		
+		save(employe);
+		company.getEmployes().add(employe);
+		
+		if(managerId!=null && exists(managerId)){
+			Employe manager=findOne(managerId);
+			employe.setManager(manager);
+			manager.getManagedEmployes().add(employe);
+		}
+		
+	}
+	
+	private String getDefaultUsername(String firstName,String lastName){
+		return firstName.toLowerCase().substring(0, 1)+lastName.toLowerCase();
 	}
 }

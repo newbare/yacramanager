@@ -1,5 +1,7 @@
 package fr.wati.yacramanager.services.impl;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,6 +13,8 @@ import org.joda.time.DateTimeComparator;
 import org.joda.time.DateTimeConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.google.common.collect.Lists;
 
 import fr.wati.yacramanager.beans.Absence;
 import fr.wati.yacramanager.beans.Employe;
@@ -139,7 +143,15 @@ public class CraServiceImpl implements CraService {
 		craDTO.setEndDate(endDate);
 		EmployeCraDetailsDTO employeCraDetailsDTO = null;
 		// iterate over employees
-		for (Employe currentEmploye : employes) {
+		
+		List<Employe> employesList=Lists.newArrayList(employes);
+		Collections.sort(employesList, new Comparator<Employe>() {
+			@Override
+			public int compare(Employe employe1, Employe employe2) {
+				return employe1.getId().compareTo(employe2.getId());
+			}
+		});
+		for (Employe currentEmploye : employesList) {
 
 			employeCraDetailsDTO = new EmployeCraDetailsDTO();
 			employeCraDetailsDTO.setEmployeId(currentEmploye.getId());

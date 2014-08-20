@@ -3,6 +3,7 @@ package fr.wati.yacramanager.services;
 import java.util.List;
 
 import fr.wati.yacramanager.beans.Employe;
+import fr.wati.yacramanager.dao.repository.EmployeDto;
 import fr.wati.yacramanager.web.dto.RegistrationDTO;
 import fr.wati.yacramanager.web.dto.UserInfoDTO;
 
@@ -15,4 +16,6 @@ public interface EmployeService extends CrudService<Employe, Long>,Specification
 	List<Employe> getManagedEmployees(Long requesterId);
 	
 	void addManagedEmploye(Long managerId,Long employeId);
+	
+	void createNewEmployee(EmployeDto employeDto,Long companyId,Long managerId);
 }

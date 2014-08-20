@@ -19,6 +19,13 @@
 	"app.timesheet.toolbar.agendaMonth" : "AgendaMonth",
 	"app.timesheet.toolbar.next" : "Next",
 	"app.timesheet.toolbar.previous" : "Previous",
-	"app.timesheet.toolbar.today" : "Today"
+	"app.timesheet.toolbar.today" : "Today",
+	
+	"form.edit.employe.firstname" : "First name",
+	"form.edit.employe.lastname" : "Last name",
+	"form.edit.employe.email" : "Email",
+	"form.edit.employe.manager" : "Manager",
+	
+	"form.edit.client.name" : "Client name"
 	
 }

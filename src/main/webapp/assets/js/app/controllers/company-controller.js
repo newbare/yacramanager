@@ -14,10 +14,11 @@ function CompanyController($scope, $rootScope) {
 };
 
 /*COMPANY-EMPLOYEE section*/
-function CompanyEmployeesViewController($scope, $rootScope,$http,EmployeesCRUDREST,ngTableParams,$state){
+function CompanyEmployeesViewController($scope, $rootScope,$http,EmployeesCRUDREST,ngTableParams,$state,alertService){
 	$scope.$state=$state;
 	$scope.hasDatas=false;
 	$scope.viewStyle=undefined;
+	$scope.employe={};
 	$scope.companyCriteriaConfig={
 			name:"company",
 			defaultButtonLabel:"Company",
@@ -154,6 +155,14 @@ function CompanyEmployeesViewController($scope, $rootScope,$http,EmployeesCRUDRE
 				});
 			}
 		}});
+	
+	$scope.postEmploye=function(hideFn){
+		$scope.employe.companyId=_userCompanyId;
+		EmployeesCRUDREST.save($scope.employe).$promise.then(function(result) {
+   		 hideFn();
+   		 alertService.show('info','Confirmation', 'Employe created');
+		});
+	}
 }
 
 function CompanyEmployeesQuickViewController($scope,$http,EmployeesCRUDREST,ngTableParams,$state){
@@ -192,9 +201,10 @@ function CompanyEmployeesOverviewController($scope,EmployeesCRUDREST, $statePara
 
 
 /*COMPANY-CLIENT section*/
-function CompanyClientsViewController($scope, $rootScope,$http,ClientsCRUDREST,ngTableParams,$state){
+function CompanyClientsViewController($scope, $rootScope,$http,ClientsCRUDREST,ngTableParams,$state,alertService){
 	$scope.tableFilter="";
 	$scope.$state=$state;
+	$scope.client={};
 	$scope.companyCriteriaConfig={
 			name:"company",
 			defaultButtonLabel:"Company",
@@ -292,6 +302,13 @@ function CompanyClientsViewController($scope, $rootScope,$http,ClientsCRUDREST,n
 				});
 			}
 		}});
+	$scope.postClient=function(hideFn){
+		$scope.client.companyId=parseInt(_userCompanyId);
+		ClientsCRUDREST.save({companyId :_userCompanyId},$scope.client).$promise.then(function(result) {
+   		 hideFn();
+   		 alertService.show('info','Confirmation', 'Client created');
+		});
+	}
 }
 
 function CompanyClientsQuickViewController($scope,$http,ClientsCRUDREST,ngTableParams,$state){

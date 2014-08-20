@@ -1,0 +1,40 @@
+<div class="modal" id="editionFormModal" tabindex="-1"
+	role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" ng-click="$hide()">
+					<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+				</button>
+				<h3 data-ng-show="!edition" class="panel-title">Add employe</h3>
+				<h3 data-ng-show="edition" class="panel-title">Edit employe</h3>
+			</div>
+			<div class="modal-body" >
+				<form role="form" class="">
+					<div class="form-group">
+					    <label for="firstname">{{'form.edit.employe.firstname' | translate}}</label>
+					    <input type="text" data-ng-model="employe.prenom" class="form-control" id="firstname" placeholder="{{'form.edit.employe.firstname' | translate}}" required autofocus="autofocus">
+					  </div>
+					  <div class="form-group">
+					    <label for="lastname">{{'form.edit.employe.lastname' | translate}}</label>
+					    <input type="text" data-ng-model="employe.nom" class="form-control" id="lastname" placeholder="{{'form.edit.employe.lastname' | translate}}" required>
+					</div>
+					<div class="form-group">
+					    <label for="email">{{'form.edit.employe.email' | translate}}</label>
+					    <input type="email" data-ng-model="employe.email" class="form-control" id="email" placeholder="{{'form.edit.employe.email' | translate}}" required>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary"
+					data-ng-click="postEmploye($hide)" data-ng-show="!edition">Save</button>
+				<button type="button" class="btn btn-primary"
+					data-ng-click="editEmploye()" data-ng-show="edition">Edit</button>
+				<button type="button" class="btn btn-link" data-ng-click="$hide()" data-dismiss="modal">Cancel</button>
+			</div>
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->

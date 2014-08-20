@@ -78,15 +78,8 @@ public class UserRestController implements RestCrudController<EmployeDto> {
 
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<String> create(@RequestBody EmployeDto employeDto) {
-		Employe employe = new Employe();
-		employe.setPrenom(employeDto.getPrenom());
-		employe.setNom(employeDto.getNom());
-		employe.setUsername(employeDto.getUsername());
-		employe.setPassword(employeDto.getPassword());
-		employe.setCivilite(employeDto.getCivilite());
-		employe.setDateNaissance(employeDto.getDateNaissance());
-		employe.getContact().setEmail(employeDto.getEmail());
-		employeService.save(employe);
+		
+		employeService.createNewEmployee(employeDto, employeDto.getCompanyId(), employeDto.getManagerId());
 		return new ResponseEntity<String>(employeDto.getNom() + " created",
 				HttpStatus.CREATED);
 	}
