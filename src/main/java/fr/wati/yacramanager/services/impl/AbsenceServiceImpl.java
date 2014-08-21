@@ -13,10 +13,12 @@ import org.springframework.stereotype.Service;
 import fr.wati.yacramanager.beans.Absence;
 import fr.wati.yacramanager.beans.Absence_;
 import fr.wati.yacramanager.beans.Employe;
+import fr.wati.yacramanager.beans.ValidationStatus;
 import fr.wati.yacramanager.dao.repository.AbsenceRepository;
 import fr.wati.yacramanager.dao.specifications.CommonSpecifications;
 import fr.wati.yacramanager.services.AbsenceService;
 import fr.wati.yacramanager.services.EmployeService;
+import fr.wati.yacramanager.services.ServiceException;
 import fr.wati.yacramanager.utils.Filter;
 import fr.wati.yacramanager.utils.Filter.FilterArray;
 import fr.wati.yacramanager.utils.Filter.FilterArrayValue;
@@ -40,14 +42,6 @@ public class AbsenceServiceImpl implements AbsenceService {
 			Pageable pageable) {
 		return absenceRepository.findByDateBetween(dateDebut, dateFin, pageable);
 	}
-
-
-	@Override
-	public void validateAbsence(Absence absence) {
-		// TODO Auto-generated method stub
-
-	}
-
 
 	@Override
 	public <S extends Absence> S save(S entity) {
@@ -195,6 +189,28 @@ public class AbsenceServiceImpl implements AbsenceService {
 			}
 		}
 		return null;
+	}
+
+
+	@Override
+	public void validate(Employe validator, Absence absence) throws ServiceException{
+		Absence findOne = absenceRepository.findOne(absence.getId());
+		if(employeService.isManager(validator.getId(), findOne.getEmploye().getId())){
+			absence.setValidationStatus(ValidationStatus.APPROVED);
+		}else {
+			throw new ServiceException(validator.getFullName()+ " is not the manager of "+findOne.getEmploye().getFullName());
+		}
+	}
+
+
+	@Override
+	public void reject(Employe validator, Absence absence) throws ServiceException {
+		Absence findOne = absenceRepository.findOne(absence.getId());
+		if(employeService.isManager(validator.getId(), findOne.getEmploye().getId())){
+			absence.setValidationStatus(ValidationStatus.REJECTED);
+		}else {
+			throw new ServiceException(validator.getFullName()+ " is not the manager of "+findOne.getEmploye().getFullName());
+		}
 	}
 
 }

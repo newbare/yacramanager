@@ -29,19 +29,9 @@ var App = angular.module('yaCRAApp', [ 'ngResource', 'mgcrea.ngStrap',
 		'daterangepicker','pascalprecht.translate','angular-loading-bar','ngQuickDate','xeditable' ]);
 
 
-App.config(['$httpProvider', function($httpProvider) {
+App.config(['$httpProvider', function($httpProvider,$modal) {
 	$httpProvider.interceptors.push('httpRequestServerErrorInterceptor');
-	$httpProvider.interceptors.push(function($q) {
-        return {
-          responseError: function(rejection) {
-            if(rejection.status == 0) {
-              alert("Connection lost with server :(");
-              return;
-            }
-           return $q.reject(rejection);
-        }
-      };
-	});
+	$httpProvider.interceptors.push('httpConnectionLostInterceptor');
 	$httpProvider.defaults.headers.common["FROM-ANGULAR"] = "true";
     $httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
 }]);
@@ -94,4 +84,17 @@ App.factory('httpRequestServerErrorInterceptor',function ($q,$rootScope) {
             return $q.reject(rejection);
          }
      }
+});
+
+App.factory('httpConnectionLostInterceptor', function($q,$rootScope) {
+	return {
+		responseError : function(rejection) {
+			if (rejection.status == 0) {
+				$rootScope.$broadcast('event:http-connection-lost');
+				//alert("Connection lost with server :(");
+				return;
+			}
+			return $q.reject(rejection);
+		}
+	};
 });

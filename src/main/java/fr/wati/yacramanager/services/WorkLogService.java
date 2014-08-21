@@ -9,7 +9,7 @@ import org.springframework.data.domain.Pageable;
 import fr.wati.yacramanager.beans.Employe;
 import fr.wati.yacramanager.beans.WorkLog;
 
-public interface WorkLogService extends CrudService<WorkLog, Long>,SpecificationFactory<WorkLog>{
+public interface WorkLogService extends CrudService<WorkLog, Long>,SpecificationFactory<WorkLog>,StatusValidator<WorkLog, Employe>{
 	
 	Page<WorkLog> findByStartDateBetween(DateTime dateDebut,DateTime dateFin,Pageable pageable);
 	

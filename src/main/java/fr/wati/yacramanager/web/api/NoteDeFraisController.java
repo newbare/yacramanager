@@ -32,6 +32,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import fr.wati.yacramanager.beans.Attachement;
 import fr.wati.yacramanager.beans.NoteDeFrais;
+import fr.wati.yacramanager.beans.ValidationStatus;
 import fr.wati.yacramanager.services.AttachementService;
 import fr.wati.yacramanager.services.NoteDeFraisService;
 import fr.wati.yacramanager.utils.Filter.FilterBuilder;
@@ -139,6 +140,7 @@ public class NoteDeFraisController extends
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<String> create(@RequestBody NoteDeFraisDTO dto) {
 		try {
+			dto.setValidationStatus(ValidationStatus.WAIT_FOR_APPROVEMENT);
 			NoteDeFrais noteDeFrais = dto.toNoteDeFrais();
 			noteDeFrais.setDate(new DateTime());
 			noteDeFrais.setEmploye(SecurityUtils.getConnectedUser());

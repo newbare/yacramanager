@@ -15,6 +15,14 @@ public interface EmployeService extends CrudService<Employe, Long>,Specification
 
 	List<Employe> getManagedEmployees(Long requesterId);
 	
+	/**
+	 * 
+	 * @param requester the manager
+	 * @param employeId the employee to test
+	 * @return
+	 */
+	boolean isManager(Long requester,Long employeId);
+	
 	void addManagedEmploye(Long managerId,Long employeId);
 	
 	void createNewEmployee(EmployeDto employeDto,Long companyId,Long managerId);

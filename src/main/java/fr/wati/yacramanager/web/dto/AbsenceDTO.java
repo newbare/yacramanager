@@ -3,8 +3,10 @@ package fr.wati.yacramanager.web.dto;
 import org.joda.time.DateTime;
 
 import fr.wati.yacramanager.beans.Absence;
+import fr.wati.yacramanager.beans.ValidationStatus;
+import fr.wati.yacramanager.beans.Valideable;
 
-public class AbsenceDTO {
+public class AbsenceDTO implements Valideable{
 
 	private Long id;
 	private Long employeId;
@@ -16,7 +18,7 @@ public class AbsenceDTO {
 	private String typeAbsence;
 	private boolean startAfternoon;
 	private boolean endMorning;
-	private boolean validated;
+	private ValidationStatus validationStatus;
 	
 	public Absence toAbsence(Absence absence){
 		absence.setDescription(getDescription());
@@ -26,7 +28,7 @@ public class AbsenceDTO {
 		absence.setEndMorning(isEndMorning());
 		absence.setDate(getDate());
 		absence.setTypeAbsence(TypeAbsence.valueOf(getTypeAbsence()));
-		absence.setValidated(isValidated());
+		absence.setValidationStatus(getValidationStatus());
 		return absence;
 	}
 	
@@ -39,7 +41,7 @@ public class AbsenceDTO {
 		absenceDTO.setEndDate(absence.getEndDate());
 		absenceDTO.setStartAfternoon(absence.isStartAfternoon());
 		absenceDTO.setEndMorning(absence.isEndMorning());
-		absenceDTO.setValidated(absence.isValidated());
+		absenceDTO.setValidationStatus(absence.getValidationStatus());
 		absenceDTO.setTypeAbsence(absence.getTypeAbsence().name());
 		absenceDTO.setDate(absence.getDate());
 		absenceDTO.setId(absence.getId());
@@ -48,14 +50,6 @@ public class AbsenceDTO {
 	
 	public Long getId() {
 		return id;
-	}
-
-	public boolean isValidated() {
-		return validated;
-	}
-
-	public void setValidated(boolean validated) {
-		this.validated = validated;
 	}
 
 	public void setId(Long id) {
@@ -177,5 +171,14 @@ public class AbsenceDTO {
 			return label;
 		}
 		
+	}
+	@Override
+	public ValidationStatus getValidationStatus() {
+		return validationStatus;
+	}
+
+	@Override
+	public void setValidationStatus(ValidationStatus validationStatus) {
+		this.validationStatus=validationStatus;
 	}
 }

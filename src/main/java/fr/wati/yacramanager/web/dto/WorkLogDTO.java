@@ -3,10 +3,12 @@ package fr.wati.yacramanager.web.dto;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 
+import fr.wati.yacramanager.beans.ValidationStatus;
+import fr.wati.yacramanager.beans.Valideable;
 import fr.wati.yacramanager.beans.WorkLog;
 import fr.wati.yacramanager.beans.WorkLogType;
 
-public class WorkLogDTO {
+public class WorkLogDTO implements Valideable{
 
 	private long id;
 	private String title;
@@ -21,10 +23,12 @@ public class WorkLogDTO {
 	private boolean allDay;
 	private String type;
 	private String color;
+	private ValidationStatus validationStatus;
 	
 	public WorkLog toWorkLog(WorkLog workLog) {
 		workLog.setDescription(getDescription());
 		workLog.setStartDate(getStart());
+		workLog.setValidationStatus(getValidationStatus());
 		if(StringUtils.isNotEmpty(getType())){
 			if(String.valueOf(WorkLogType.DURATION).equals(getType())){
 				workLog.setWorkLogType(WorkLogType.DURATION);
@@ -143,6 +147,16 @@ public class WorkLogDTO {
 
 	public void setColor(String color) {
 		this.color = color;
+	}
+
+	@Override
+	public ValidationStatus getValidationStatus() {
+		return validationStatus;
+	}
+
+	@Override
+	public void setValidationStatus(ValidationStatus validationStatus) {
+		this.validationStatus=validationStatus;
 	}
 
 	

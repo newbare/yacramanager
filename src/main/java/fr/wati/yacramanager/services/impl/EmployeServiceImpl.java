@@ -270,4 +270,9 @@ public class EmployeServiceImpl implements EmployeService {
 	private String getDefaultUsername(String firstName,String lastName){
 		return firstName.toLowerCase().substring(0, 1)+lastName.toLowerCase();
 	}
+
+	@Override
+	public boolean isManager(Long requester, Long employeId) {
+		return getManagedEmployees(requester).contains(employeRepository.findOne(employeId));
+	}
 }

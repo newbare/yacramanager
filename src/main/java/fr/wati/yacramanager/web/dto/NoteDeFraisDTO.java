@@ -10,12 +10,14 @@ import java.util.List;
 import org.joda.time.DateTime;
 
 import fr.wati.yacramanager.beans.NoteDeFrais;
+import fr.wati.yacramanager.beans.ValidationStatus;
+import fr.wati.yacramanager.beans.Valideable;
 
 /**
  * @author Rachid Ouattara
  *
  */
-public class NoteDeFraisDTO {
+public class NoteDeFraisDTO implements Valideable {
 
 	private Long id;
 	private Long employeId;
@@ -24,6 +26,7 @@ public class NoteDeFraisDTO {
 	private BigDecimal amount;
 	private String description;
 	private List<Long> attachementsIds=new ArrayList<>();
+	private ValidationStatus validationStatus;
 	
 	
 	public NoteDeFrais toNoteDeFrais(NoteDeFrais noteDeFrais){
@@ -42,6 +45,7 @@ public class NoteDeFraisDTO {
 		noteDeFrais.setAmount(getAmount());
 		noteDeFrais.setDate(getDate());
 		noteDeFrais.setDescription(getDescription());
+		noteDeFrais.setValidationStatus(getValidationStatus());
 		return noteDeFrais;
 	}
 
@@ -155,6 +159,18 @@ public class NoteDeFraisDTO {
 	 */
 	public void setEmployeName(String employeName) {
 		this.employeName = employeName;
+	}
+
+
+	@Override
+	public ValidationStatus getValidationStatus() {
+		return validationStatus;
+	}
+
+
+	@Override
+	public void setValidationStatus(ValidationStatus validationStatus) {
+		this.validationStatus=validationStatus;
 	}
 
 

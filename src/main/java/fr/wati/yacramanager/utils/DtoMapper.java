@@ -106,7 +106,7 @@ public class DtoMapper {
 		dto.setTypeAbsence(String.valueOf(absence.getTypeAbsence()));
 		dto.setDate(absence.getDate());
 		dto.setId(absence.getId());
-		dto.setValidated(absence.isValidated());
+		dto.setValidationStatus(absence.getValidationStatus());
 		return dto;
 	}
 	
@@ -218,6 +218,7 @@ public class DtoMapper {
 		workLogDTO.setEnd(workLog.getEndDate());
 		workLogDTO.setId(workLog.getId());
 		workLogDTO.setEditable(true);
+		workLogDTO.setValidationStatus(workLog.getValidationStatus());
 		if(workLog.getTask()!=null){
 			workLogDTO.setTitle(workLog.getTask().getName());
 			workLogDTO.setColor(workLog.getTask().getColor());

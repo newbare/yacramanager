@@ -60,7 +60,7 @@ public class ProjectServiceImpl implements ProjectService{
 		 */
 		Task defaulTask=new Task();
 		defaulTask.setCreatedDate(new DateTime());
-		defaulTask.setName("Default Task");
+		defaulTask.setName(project.getName()+" - default");
 		taskService.createTask(saveProject.getId(), defaulTask);
 		return saveProject;
 	}

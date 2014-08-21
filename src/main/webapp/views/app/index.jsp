@@ -12,6 +12,8 @@
 <link rel="stylesheet" href="${contextPath}/assets/css/flags/flags.css">
 <link rel="stylesheet"
 	href="${contextPath}/assets/css/angular-criterias.css">
+<link rel="stylesheet"
+	href="${contextPath}/assets/css/jquery.jOrgChart.css">
 <link rel="stylesheet" href="${contextPath}/assets/css/yacra-fonts.css">
 <link rel="stylesheet"
 	href="${contextPath}/assets/bower_components/bootstrap-additions/dist/bootstrap-additions.min.css">
@@ -49,7 +51,7 @@
 	var _userCompanyId = "${userCompanyId}";
 </script>
 </head>
-<body data-ng-controller="AppCtrl" data-web-socket data-auth-application-support class="waiting-for-angular" data-events-to-wait="eventsToWait" data-application-loading-support>
+<body data-ng-controller="AppCtrl" data-web-socket data-auth-application-support class="waiting-for-angular" data-events-to-wait="eventsToWait" data-application-loading-support data-connection-lost-support>
 	<div id="initializing-panel"></div>
 	<div id="app-login-content" data-ng-controller="LoginCtrl">
 		<div class="row">
@@ -220,6 +222,7 @@
 		src="${contextPath}/assets/bower_components/jquery-ui/jquery-ui.min.js"></script>
 	<script src="${contextPath}/assets/bower_components/angular/angular.js"></script>
 	<script src="${contextPath}/assets/js/app/application.js"></script>
+	<script src="${contextPath}/assets/js/jquery.jOrgChart.js"></script>
 	<script
 		src="${contextPath}/assets/js/app/controllers/app-controller.js"></script>
 	<script

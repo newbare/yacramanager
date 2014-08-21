@@ -18,7 +18,7 @@ import fr.wati.yacramanager.web.dto.AbsenceDTO.TypeAbsence;
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @SuppressWarnings("serial")
-public class Absence extends AuditableEntity {
+public class Absence extends AuditableEntity implements Valideable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
@@ -31,11 +31,12 @@ public class Absence extends AuditableEntity {
 	@Type(type="org.joda.time.contrib.hibernate.PersistentDateTime")
 	private DateTime endDate;
 	private String description;
-	private boolean validated;
 	@ManyToOne
 	private Employe employe;
 	@Enumerated(EnumType.STRING)
 	private TypeAbsence typeAbsence;
+	@Enumerated(EnumType.STRING)
+	private ValidationStatus validationStatus;
 	
 	
 	
@@ -66,12 +67,6 @@ public class Absence extends AuditableEntity {
 	}
 	public void setDescription(String description) {
 		this.description = description;
-	}
-	public boolean isValidated() {
-		return validated;
-	}
-	public void setValidated(boolean validated) {
-		this.validated = validated;
 	}
 
 	public DateTime getDate() {
@@ -135,6 +130,16 @@ public class Absence extends AuditableEntity {
 
 	public void setTypeAbsence(TypeAbsence typeAbsence) {
 		this.typeAbsence = typeAbsence;
+	}
+
+	@Override
+	public ValidationStatus getValidationStatus() {
+		return validationStatus;
+	}
+
+	@Override
+	public void setValidationStatus(ValidationStatus validationStatus) {
+		this.validationStatus=validationStatus;
 	}
 	
 	

@@ -83,9 +83,9 @@ public class ProjectDTO {
 	 * @return 
 	 */
 	public Project toProject(Project project) {
-		project.setCreatedDate(project.getCreatedDate());
-		project.setDescription(project.getDescription());
-		project.setName(project.getName());
+		project.setCreatedDate(getCreatedDate()!=null?getCreatedDate():new DateTime());
+		project.setDescription(getDescription());
+		project.setName(getName());
 		return project;
 	}
 	

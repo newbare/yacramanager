@@ -77,10 +77,19 @@ App.controller('AppCtrl', [ '$scope', '$location', 'UsersREST','$rootScope','$tr
 			
 			$scope.containerClass=function(){
 				return "container";
-			}
+			};
 
 			$scope.containerNavClass=function(){
 				return "container";
+			};
+			$scope.isValidated=function(data){
+				return 'APPROVED'==data.validationStatus;
+			}
+			$scope.isWaiting=function(data){
+				return 'WAIT_FOR_APPROVEMENT'==data.validationStatus;
+			}
+			$scope.isRejected=function(data){
+				return 'REJECTED'==data.validationStatus;
 			}
 		} ]);
 
@@ -379,6 +388,11 @@ App.config([ '$stateProvider', '$urlRouterProvider','$locationProvider',
 				url : "/:id",
 				templateUrl : _contextPath+'/views/app/company/projects/company-projects-overview.html',
 				controller : CompanyProjectsOverviewController
+			})
+			.state('company.organigram', {
+				url : "/organigram",
+				templateUrl : _contextPath+'/views/app/company/company-organigram.html'
+				//controller : EntrepriseController,
 			})
 			.state('company.messages', {
 				url : "/messages",

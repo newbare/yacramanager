@@ -40,6 +40,7 @@
 							<td data-title="'Date'" data-sortable="'date'">{{ note.date | date : 'short'}}</td>
 							<td data-title="'Description'" data-sortable="'description'">{{ note.description}}</td>
 							<td data-title="'Amount'" data-sortable="'amount'">{{ note.amount | currency:"EUR " }} </td>
+							<td data-title="'Validation'" data-sortable="'validationStatus'" align="right"><span class="label" data-ng-class="{'label-success' : isValidated(note) , 'label-warning' : isWaiting(note), 'label-danger' : isRejected(note)}">{{note.validationStatus}}</span></td>
 							<td style="width:20px;" align="center" data-header="'ng-table/headers/attachement.html'">
 								<a href="api/attachements/{{id}}" data-ng-repeat="id in note.attachementsIds" data-ng-show="note.attachementsIds.length>0" >
 									<i class="fa fa-cloud-download"></i>

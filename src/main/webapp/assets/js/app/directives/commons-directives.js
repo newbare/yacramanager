@@ -65,6 +65,18 @@ App.directive('colResizable',function($compile) {
 		}
 	});
 
+App.directive('organigram',function($compile) {
+	return {
+		restrict : 'A',
+		link : function($scope, elem, attrs) {
+			elem.jOrgChart({
+	            chartElement : '#'+attrs.organigram,
+	            dragAndDrop  : true
+	        });
+		}
+	}
+});
+
 App.directive('hasRole', ['notifService',
                      		function(notifService) {
                      			return {
@@ -181,3 +193,24 @@ App.directive('applicationLoadingSupport', function($timeout) {
         }
       }
     });
+
+App.directive('connectionLostSupport', function($modal) {
+	return {
+		restrict : 'A',
+		scope : true,
+		link : function(scope, elem, attrs) {
+			scope.$on('event:http-connection-lost', function() {
+				//Show a basic modal from a controller
+				var connectionLostModal = $modal({
+					title : 'Network error',
+					content : 'Connection lost with server :(',
+					show : true,
+					backdrop : 'static'
+				});
+			});
+			
+		}
+	}
+});
+
+

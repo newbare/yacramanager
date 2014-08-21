@@ -11,8 +11,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import fr.wati.yacramanager.beans.Employe;
+import fr.wati.yacramanager.beans.ValidationStatus;
 import fr.wati.yacramanager.beans.WorkLog;
 import fr.wati.yacramanager.dao.repository.WorkLogRepository;
+import fr.wati.yacramanager.services.EmployeService;
+import fr.wati.yacramanager.services.ServiceException;
 import fr.wati.yacramanager.services.SpecificationFactory;
 import fr.wati.yacramanager.services.WorkLogService;
 import fr.wati.yacramanager.utils.Filter;
@@ -23,6 +26,10 @@ public class WorkLogServiceImpl implements WorkLogService,SpecificationFactory<W
 
 	@Autowired
 	private WorkLogRepository workLogRepository;
+	
+	@Autowired
+	private EmployeService employeService;
+	
 	@Override
 	public <S extends WorkLog> S save(S entity) {
 		return workLogRepository.save(entity);
@@ -112,6 +119,26 @@ public class WorkLogServiceImpl implements WorkLogService,SpecificationFactory<W
 	public Page<WorkLog> findByEmploye(Employe employe, Pageable pageable) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public void validate(Employe validator, WorkLog workLog) throws ServiceException {
+		WorkLog findOne = workLogRepository.findOne(workLog.getId());
+		if(employeService.isManager(validator.getId(), findOne.getEmploye().getId())){
+			workLog.setValidationStatus(ValidationStatus.APPROVED);
+		}else {
+			throw new ServiceException(validator.getFullName()+ " is not the manager of "+findOne.getEmploye().getFullName());
+		}
+	}
+
+	@Override
+	public void reject(Employe validator, WorkLog workLog) throws ServiceException {
+		WorkLog findOne = workLogRepository.findOne(workLog.getId());
+		if(employeService.isManager(validator.getId(), findOne.getEmploye().getId())){
+			workLog.setValidationStatus(ValidationStatus.REJECTED);
+		}else {
+			throw new ServiceException(validator.getFullName()+ " is not the manager of "+findOne.getEmploye().getFullName());
+		}
 	}
 
 }

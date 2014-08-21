@@ -102,7 +102,7 @@ function TimeSheetController($scope,$rootScope,$http,$sce,WorkLogCRUDREST,alertS
 				$scope.currentView.calendar.gotoDate(value.value);
 			},
 			currentFilter:{},
-			displayed: true
+			displayed: false
 	};
     
     //criteria bar config
@@ -144,8 +144,11 @@ function TimeSheetController($scope,$rootScope,$http,$sce,WorkLogCRUDREST,alertS
     };
     
     $scope.eventRender=function(event, element,view) {
-    	popover=$popover(element, {title: event.title,placement:'top',html:true,template: _contextPath+'/views/app/templates/worklog.popover.tpl.html',container:'body' });
+    	popover=$popover(element, {title: event.title,placement:'top',trigger:'click',html:true,template: _contextPath+'/views/app/templates/worklog.popover.tpl.html',container:'body' });
     	popover.$scope.event = event
+    	popover.$scope.isValidated=$scope.isValidated;
+    	popover.$scope.isWaiting=$scope.isWaiting;
+    	popover.$scope.isRejected=$scope.isRejected;
     }
     
     $scope.eventSource = {

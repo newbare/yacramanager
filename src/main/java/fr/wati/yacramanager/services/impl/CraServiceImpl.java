@@ -18,6 +18,7 @@ import com.google.common.collect.Lists;
 
 import fr.wati.yacramanager.beans.Absence;
 import fr.wati.yacramanager.beans.Employe;
+import fr.wati.yacramanager.beans.ValidationStatus;
 import fr.wati.yacramanager.beans.WorkLog;
 import fr.wati.yacramanager.services.AbsenceService;
 import fr.wati.yacramanager.services.CraService;
@@ -218,7 +219,7 @@ public class CraServiceImpl implements CraService {
 					if (isDayBetween(currentDate,
 							currentAbsence.getStartDate(),
 							currentAbsence.getEndDate())
-							&& currentAbsence.isValidated()) {
+							&& ValidationStatus.APPROVED.equals(currentAbsence.getValidationStatus())) {
 						if ((currentAbsence.isStartAfternoon() && currentAbsence
 								.getStartDate().toDateMidnight()
 								.isEqual(currentDate.toDateMidnight()))

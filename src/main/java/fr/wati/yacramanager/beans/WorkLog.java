@@ -20,7 +20,7 @@ import org.joda.time.DateTime;
  */
 @SuppressWarnings("serial")
 @Entity
-public class WorkLog extends AuditableEntity  {
+public class WorkLog extends AuditableEntity implements Valideable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -40,6 +40,8 @@ public class WorkLog extends AuditableEntity  {
 	private String description;
 	@Enumerated(EnumType.ORDINAL)
 	private WorkLogType workLogType;
+	@Enumerated(EnumType.STRING)
+	private ValidationStatus validationStatus;
 	/**
 	 * @return the id
 	 */
@@ -111,6 +113,14 @@ public class WorkLog extends AuditableEntity  {
 	 */
 	public void setWorkLogType(WorkLogType workLogType) {
 		this.workLogType = workLogType;
+	}
+	@Override
+	public ValidationStatus getValidationStatus() {
+		return validationStatus;
+	}
+	@Override
+	public void setValidationStatus(ValidationStatus validationStatus) {
+		this.validationStatus=validationStatus;
 	}
 	
 	

@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import fr.wati.yacramanager.beans.Absence;
+import fr.wati.yacramanager.beans.ValidationStatus;
 import fr.wati.yacramanager.services.AbsenceService;
 import fr.wati.yacramanager.utils.DtoMapper;
 import fr.wati.yacramanager.utils.Filter.FilterBuilder;
@@ -122,6 +123,7 @@ public class AbsenceController implements RestCrudController<AbsenceDTO> {
 		Absence absence = dto.toAbsence();
 		absence.setDate(new DateTime());
 		absence.setEmploye(SecurityUtils.getConnectedUser());
+		absence.setValidationStatus(ValidationStatus.WAIT_FOR_APPROVEMENT);
 		absenceService.save(absence);
 		return new ResponseEntity<>(HttpStatus.CREATED);
 	}

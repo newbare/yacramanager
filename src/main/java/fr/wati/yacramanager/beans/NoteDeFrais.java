@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -23,7 +25,7 @@ import org.joda.time.DateTime;
  */
 @SuppressWarnings("serial")
 @Entity
-public class NoteDeFrais extends AuditableEntity {
+public class NoteDeFrais extends AuditableEntity implements Valideable{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -36,6 +38,8 @@ public class NoteDeFrais extends AuditableEntity {
 	private List<Attachement> attachements=new ArrayList<>();
 	@ManyToOne
 	private Employe employe;
+	@Enumerated(EnumType.STRING)
+	private ValidationStatus validationStatus;
 	
 	
 	
@@ -122,6 +126,14 @@ public class NoteDeFrais extends AuditableEntity {
 		this.attachements.remove(attachement);
 	}
 	
-	
+	@Override
+	public ValidationStatus getValidationStatus() {
+		return validationStatus;
+	}
+
+	@Override
+	public void setValidationStatus(ValidationStatus validationStatus) {
+		this.validationStatus=validationStatus;
+	}
 	
 }

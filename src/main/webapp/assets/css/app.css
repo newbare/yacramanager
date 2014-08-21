@@ -21,10 +21,12 @@
 	top: 50px !important;
 	height: 3px !important;
 }
+
 #loading-bar-spinner{
 	top: 60px !important;
 	right: 10px !important;
 	left: auto !important;
+	z-index: 1049 !important;
 }
 
 .popover.timesheet-event{
@@ -139,9 +141,9 @@ body.waiting-for-angular div#initializing-panel {
 
 .sub-menu.nav>li>a:HOVER,.sub-menu.nav-pills>li.active>a,.sub-menu.nav-pills>li.active>a:HOVER
 	{
-	border-bottom: 3px solid #428bca;
+	border-bottom: 5px solid #428bca;
 	background: none;
-	border-radius: 0;
+	border-radius: 3px;
 	color: #2a6496;
 }
 

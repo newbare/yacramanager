@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import fr.wati.yacramanager.beans.Employe;
 import fr.wati.yacramanager.beans.Task;
+import fr.wati.yacramanager.beans.ValidationStatus;
 import fr.wati.yacramanager.beans.WorkLog;
 import fr.wati.yacramanager.services.EmployeService;
 import fr.wati.yacramanager.services.TaskService;
@@ -98,6 +99,7 @@ public class WorkLogRestController implements RestCrudController<WorkLogDTO>{
 		if(dto.getTaskId()==null){
 			throw new RestServiceException("No given task ID error");
 		}
+		dto.setValidationStatus(ValidationStatus.WAIT_FOR_APPROVEMENT);
 		WorkLog workLog = dto.toWorkLog();
 		workLog.setCreatedDate(new DateTime());
 		if(dto.getEmployeId()==null){

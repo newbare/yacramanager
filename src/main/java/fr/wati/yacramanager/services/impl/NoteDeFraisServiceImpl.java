@@ -15,10 +15,12 @@ import fr.wati.yacramanager.beans.Attachement;
 import fr.wati.yacramanager.beans.Employe;
 import fr.wati.yacramanager.beans.NoteDeFrais;
 import fr.wati.yacramanager.beans.NoteDeFrais_;
+import fr.wati.yacramanager.beans.ValidationStatus;
 import fr.wati.yacramanager.dao.repository.NoteDeFraisRepository;
 import fr.wati.yacramanager.dao.specifications.CommonSpecifications;
 import fr.wati.yacramanager.services.EmployeService;
 import fr.wati.yacramanager.services.NoteDeFraisService;
+import fr.wati.yacramanager.services.ServiceException;
 import fr.wati.yacramanager.utils.Filter;
 import fr.wati.yacramanager.utils.Filter.FilterArray;
 import fr.wati.yacramanager.utils.Filter.FilterArrayValue;
@@ -178,6 +180,7 @@ public class NoteDeFraisServiceImpl implements NoteDeFraisService {
 		dto.setEmployeId(noteDeFrais.getEmploye().getId());
 		dto.setEmployeName(noteDeFrais.getEmploye().getFullName());
 		dto.setId(findOne.getId());
+		dto.setValidationStatus(findOne.getValidationStatus());
 		List<Long> attachementIds=new ArrayList<>();
 		for(Attachement attachement: findOne.getAttachements()){
 			attachementIds.add(attachement.getId());
@@ -254,6 +257,26 @@ public class NoteDeFraisServiceImpl implements NoteDeFraisService {
 			}
 		}
 		return null;
+	}
+
+	@Override
+	public void validate(Employe validator, NoteDeFrais noteDeFrais) throws ServiceException {
+		NoteDeFrais findOne = noteDeFraisRepository.findOne(noteDeFrais.getId());
+		if(employeService.isManager(validator.getId(), findOne.getEmploye().getId())){
+			noteDeFrais.setValidationStatus(ValidationStatus.APPROVED);
+		}else {
+			throw new ServiceException(validator.getFullName()+ " is not the manager of "+findOne.getEmploye().getFullName());
+		}
+	}
+
+	@Override
+	public void reject(Employe validator, NoteDeFrais noteDeFrais) throws ServiceException{
+		NoteDeFrais findOne = noteDeFraisRepository.findOne(noteDeFrais.getId());
+		if(employeService.isManager(validator.getId(), findOne.getEmploye().getId())){
+			noteDeFrais.setValidationStatus(ValidationStatus.REJECTED);
+		}else {
+			throw new ServiceException(validator.getFullName()+ " is not the manager of "+findOne.getEmploye().getFullName());
+		}
 	}
 	
 	

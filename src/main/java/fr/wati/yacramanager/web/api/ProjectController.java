@@ -18,6 +18,7 @@ import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -132,9 +133,9 @@ public class ProjectController {
 		return responseWrapper;
 	}
 
-	@RequestMapping(value = "/", method = RequestMethod.POST)
+	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<String> create(
-			@PathVariable("companyId") Long companyId,@RequestParam("clientId") Long clientId, ProjectDTO dto) {
+			@PathVariable("companyId") Long companyId,@RequestParam("clientId") Long clientId,@RequestBody ProjectDTO dto) {
 		projectService.createProject(clientId, dto.toProject(new Project()));
 		return new ResponseEntity<String>(HttpStatus.CREATED);
 	}

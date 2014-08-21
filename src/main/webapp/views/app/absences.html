@@ -38,12 +38,12 @@
 								</label>
 							</td>
 							<td data-title="'Posted'" data-sortable="'date'">{{ absence.date | date : 'short'}}</td>
-							<td data-title="'Who ?'" data-sortable="'employe'" >{{ absence.employeName}}</td>
+							<td data-title="'Employee'" data-sortable="'employe'" >{{ absence.employeName}}</td>
 							<td data-title="'Type'" data-sortable="'typeAbsence'" >{{ absence.typeAbsence}}</td>
 							<td data-title="'From'" data-sortable="'startDate'">{{ absence.startDate | date : dateFormat }}</td>
 							<td data-title="'To'" data-sortable="'endDate'">{{ absence.endDate | date : dateFormat }}</td>
 							<td data-title="'Description'" data-sortable="'description'">{{ absence.description }}</td>
-							<td data-title="'Validation'" data-sortable="'validated'" align="center" style="width:20px;"><span class="icon" data-ng-class="{'validated fa fa-check-circle' : absence.validated , 'not-validated fa fa-times-circle' : !absence.validated}"></span></td>
+							<td data-title="'Validation'" data-sortable="'validationStatus'" align="right"><span class="label" data-ng-class="{'label-success' : isValidated(absence) , 'label-warning' : isWaiting(absence), 'label-danger' : isRejected(absence)}">{{absence.validationStatus}}</span></td>
 							<td style="width:20px;">
 								<div class="btn-group">
 								 <button type="button" class="btn btn-link dropdown-toggle" style="color: grey;" data-toggle="dropdown">

@@ -27,6 +27,7 @@
 					<p  data-ng-show="event.duration" class="form-control-static">{{event.duration}} mins</p>
 				</div>
 			</div>
+			<span class="label" data-ng-class="{'label-success' : isValidated(event) , 'label-warning' : isWaiting(event), 'label-danger' : isRejected(event)}">{{event.validationStatus}}</span></td>
 			<div class="row pull-right">
 				<button type="button" class="btn btn-link" data-ng-click="$hide()">Close</button>
 				<button type="button" class="btn btn-link"

@@ -344,9 +344,10 @@ function CompanyClientsOverviewController($scope,ClientsCRUDREST, $stateParams){
 
 
 /*COMPANY-PROJECT section*/
-function CompanyProjectsViewController($scope, $rootScope,$http,ProjectsCRUDREST,ngTableParams,$state){
+function CompanyProjectsViewController($scope, $rootScope,$http,ProjectsCRUDREST,ngTableParams,$state,alertService){
 	$scope.tableFilter="";
 	$scope.$state=$state;
+	$scope.project={};
 	$scope.companyCriteriaConfig={
 			name:"company",
 			defaultButtonLabel:"Company",
@@ -503,7 +504,12 @@ function CompanyProjectsViewController($scope, $rootScope,$http,ProjectsCRUDREST
 	$scope.$on('criteriaDofilter', function(event, args) {
 		$scope.doFilterList(args);
 	});
-	
+	$scope.postProject=function(hideFn){
+		ProjectsCRUDREST.save({companyId :_userCompanyId,clientId :12},$scope.project).$promise.then(function(result) {
+   		 hideFn();
+   		 alertService.show('info','Confirmation', 'Project created');
+		});
+	}
 }
 
 function CompanyProjectsQuickViewController($scope,$http,ProjectsCRUDREST,ngTableParams,$state){

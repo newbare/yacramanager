@@ -26,6 +26,9 @@
 	"form.edit.employe.email" : "Email",
 	"form.edit.employe.manager" : "Manager",
 	
-	"form.edit.client.name" : "Client name"
+	"form.edit.client.name" : "Client name",
+	
+	"form.edit.project.name" : "Project name",
+	"form.edit.project.description" : "Project description"
 	
 }
