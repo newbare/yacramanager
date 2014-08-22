@@ -1,6 +1,6 @@
 'use strict';
 
-function CraController($scope,$rootScope,CraREST,$filter,$http) {
+function CraController($scope,$rootScope,CraREST,$filter,$http,WorkLogCRUDREST,alertService) {
 	$rootScope.page={"title":"CRA","description":"View and manage you CRA"};
 	$scope.dateFormat="dd MMMM yyyy";
 	$scope.craDateFormat="EEE dd/MM";
@@ -150,4 +150,28 @@ function CraController($scope,$rootScope,CraREST,$filter,$http) {
 	$scope.isCurrentEmploye=function(employeId){
 		return employeId==_userId;
 	}
+	
+
+
+	$scope.updateCraValue = function(newValue, taskRow, day) {
+		var diff = newValue - taskRow.duration[day.date];
+		if (diff < 0) {
+			return 'Cannot reduce worklog';
+		}
+		var worklog = {};
+		worklog.title = null;
+		worklog.type = 'DURATION';
+		worklog.start = day.date;
+		worklog.end = null;
+		worklog.duration = diff;
+		worklog.taskId = taskRow.task.id;
+		worklog.taskName = taskRow.task.name;
+		worklog.description = 'Created from Cra view';
+		worklog.employeId = _userId;
+		return WorkLogCRUDREST.save(worklog).$promise.then(function(result) {
+			alertService.show('info', 'Confirmation', 'Donn� sauvegard�');
+		});
+	};
+	
+	
 }

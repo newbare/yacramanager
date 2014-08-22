@@ -67,6 +67,10 @@ public class DtoMapper {
 		dto.setName(project.getName());
 		dto.setCreatedDate(project.getCreatedDate());
 		dto.setDescription(project.getDescription());
+		if(project.getClient()!=null){
+			ClientDTO clientDTO=map(project.getClient());
+			dto.setClient(clientDTO);
+		}
 		return dto;
 	}
 

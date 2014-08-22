@@ -182,29 +182,44 @@ public class CraServiceImpl implements CraService {
 				for (DateTime currentDate = startDate; currentDate
 						.isBefore(endDate); currentDate = currentDate
 						.plusDays(1)) {
-					Long currentDuration=0L;
+					Long currentDuration = 0L;
 					switch (workLog.getWorkLogType()) {
 					case DURATION:
-						if (DateTimeComparator
-								.getDateOnlyInstance().compare(currentDate, workLog.getStartDate())==0) {
-							currentDuration=workLog.getDuration();
+						if (DateTimeComparator.getDateOnlyInstance().compare(
+								currentDate, workLog.getStartDate()) == 0) {
+							currentDuration = workLog.getDuration();
 						}
 						break;
 					case TIME:
-						if(isDayBetween(currentDate, workLog.getStartDate(),
-								workLog.getEndDate())){
-							currentDuration=(workLog.getEndDate().getMillis()-workLog.getStartDate().getMillis())/1000/60;
+						if (isDayBetween(currentDate, workLog.getStartDate(),
+								workLog.getEndDate())) {
+							currentDuration = (workLog.getEndDate().getMillis() - workLog
+									.getStartDate().getMillis()) / 1000 / 60;
 						}
 						break;
 					default:
 						break;
 					}
-					if(!craTaskRow.getDuration().containsKey(currentDate)){
+					if (!craTaskRow.getDuration().containsKey(currentDate)) {
 						craTaskRow.getDuration().put(currentDate,
 								currentDuration);
-					}else {
-						craTaskRow.getDuration().put(currentDate,craTaskRow.getDuration().get(currentDate)+
-								currentDuration);
+					} else {
+						craTaskRow.getDuration().put(
+								currentDate,
+								craTaskRow.getDuration().get(currentDate)
+										+ currentDuration);
+					}
+					if (!craTaskRow.getValidationStatus().containsKey(
+							currentDate)) {
+						craTaskRow.getValidationStatus().put(currentDate,
+								workLog.getValidationStatus());
+					} else {
+						craTaskRow.getValidationStatus().put(
+								currentDate,
+								ValidationStatus.isApprovedAndOperator(
+										craTaskRow.getValidationStatus().get(
+												currentDate),
+										workLog.getValidationStatus()));
 					}
 				}
 			}

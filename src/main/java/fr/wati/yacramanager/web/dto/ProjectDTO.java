@@ -17,7 +17,7 @@ public class ProjectDTO {
 	private String name;
 	private String description;
 	private DateTime createdDate;
-	private ClientDTO clientDTO;
+	private ClientDTO client;
 	/**
 	 * @return the id
 	 */
@@ -69,14 +69,14 @@ public class ProjectDTO {
 	/**
 	 * @return the clientDTO
 	 */
-	public ClientDTO getClientDTO() {
-		return clientDTO;
+	public ClientDTO getClient() {
+		return client;
 	}
 	/**
 	 * @param clientDTO the clientDTO to set
 	 */
-	public void setClientDTO(ClientDTO clientDTO) {
-		this.clientDTO = clientDTO;
+	public void setClient(ClientDTO clientDTO) {
+		this.client = clientDTO;
 	}
 	/**
 	 * @param project

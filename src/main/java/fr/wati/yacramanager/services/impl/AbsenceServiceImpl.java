@@ -22,7 +22,6 @@ import fr.wati.yacramanager.services.ServiceException;
 import fr.wati.yacramanager.utils.Filter;
 import fr.wati.yacramanager.utils.Filter.FilterArray;
 import fr.wati.yacramanager.utils.Filter.FilterArrayValue;
-import fr.wati.yacramanager.utils.Filter.FilterBoolean;
 import fr.wati.yacramanager.utils.Filter.FilterDate;
 import fr.wati.yacramanager.utils.Filter.FilterText;
 import fr.wati.yacramanager.utils.Filter.FilterType;
@@ -161,16 +160,6 @@ public class AbsenceServiceImpl implements AbsenceService {
 				FilterText filterText=(FilterText) filter;
 				if("description".equals(filterText.getField())){
 					return CommonSpecifications.likeIgnoreCase(filterText.getValue(), Absence_.description);
-				}
-				break;
-			case BOOLEAN:
-				FilterBoolean filterBoolean=(FilterBoolean) filter;
-				if("validated".equals(filter.getField())){
-					if(filterBoolean.isValue()){
-						return CommonSpecifications.isTrue(Absence_.validated);
-					}else {
-						return CommonSpecifications.isFalse(Absence_.validated);
-					}
 				}
 				break;
 			case DATE:

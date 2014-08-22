@@ -381,9 +381,31 @@
 				</configuration>
 			</plugin>
 			<plugin>
+			    <groupId>org.codehaus.mojo</groupId>
+			    <artifactId>keytool-maven-plugin</artifactId>
+			    <version>1.5</version>
+			    <configuration>
+			        <keystore>${project.basedir}/src/main/config/tomcat-ssl.keystore</keystore>
+			        <dname>cn=localhost</dname>
+			        <!--Both `keypass` and `storepass` must be at least 6 characters long. -->
+			        <keypass>tomcat7</keypass>
+			        <storepass>tomcat7</storepass>
+			        <alias>tomcat7</alias>
+			        <keyalg>RSA</keyalg>
+			        <validity>99999</validity>
+			        <file>${project.basedir}/src/main/config/tomcat-ssl.cer</file>
+			    </configuration>
+			</plugin>
+			<plugin>
 				<groupId>org.apache.tomcat.maven</groupId>
 				<artifactId>tomcat7-maven-plugin</artifactId>
 				<version>2.2</version>
+				<configuration>
+			        <port>8080</port>
+			        <httpsPort>9090</httpsPort>
+			        <keystoreFile>${project.basedir}/src/main/config/tomcat-ssl.keystore</keystoreFile>
+			        <keystorePass>tomcat7</keystorePass>
+			    </configuration>
 			</plugin>
 		</plugins>
 		<pluginManagement>

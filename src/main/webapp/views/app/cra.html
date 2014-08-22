@@ -67,16 +67,17 @@
 				</thead>
 				<tbody>
 					<tr data-ng-repeat="taskRow in employeCraDetail.taskRows">
-						<td class="cra-table-task"><h6><span><strong>{{taskRow.task.name}}</strong></span></h6><h6><span class="text-muted">{{taskRow.project.name}}</span></h6></td>
+						<td class="cra-table-task"><h6><span><strong>{{taskRow.task.name}}</strong></span></h6><h6><span class="text-muted">{{taskRow.project.client.name}} - {{taskRow.project.name}}</span></h6></td>
 						<td data-ng-repeat="day in employeCraDetail.days" data-ng-class="{'cra-we' : day.dayOff}" style="width: 40px;vertical-align: middle;">
-							<a href="#" data-editable-text="taskRow.duration[day.date]" buttons="no" e-style="width: 40px;">{{ taskRow.duration[day.date] || 0 | duration  }}</a>
+							<a href="#" data-editable-text="taskRow.duration[day.date]" buttons="no" e-style="width: 40px;" data-e-required onbeforesave="updateCraValue($data,taskRow,day)">{{ taskRow.duration[day.date] || 0 | duration  }}</a>
+							<span data-ng-show="taskRow.validationStatus[day.date]!='APPROVED'"><i class="fa fa-exclamation-triangle"></i></span>
 						</td>
 						<td></td>
 					</tr>
 					<tr data-ng-show="employeCraDetail.craAbsenceDetail">
 						<td><h6><span><strong>Time off</strong></span></h6></td>
 						<td data-ng-repeat="day in employeCraDetail.days" data-ng-class="{'cra-we' : day.dayOff}" style="width: 40px;vertical-align: middle;">
-							<a href="#" data-editable-text="employeCraDetail.craAbsenceDetail.duration[day.date]" buttons="no" e-style="width: 40px;">{{ employeCraDetail.craAbsenceDetail.duration[day.date]  || 0 | duration }}</a>
+							<a href="#" data-editable-text="employeCraDetail.craAbsenceDetail.duration[day.date]" buttons="no" e-style="width: 40px;" data-e-required>{{ employeCraDetail.craAbsenceDetail.duration[day.date]  || 0 | duration }}</a>
 						</td>
 						<td style="width: 80px;"></td>
 					</tr>

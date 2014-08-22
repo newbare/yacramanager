@@ -7,6 +7,8 @@ import java.util.Map;
 
 import org.joda.time.DateTime;
 
+import fr.wati.yacramanager.beans.ValidationStatus;
+
 public class CraDetailsDTO {
 
 	private DateTime startDate;
@@ -116,6 +118,7 @@ public class CraDetailsDTO {
 		private ProjectDTO project;
 		private TaskDTO task;
 		private Map<DateTime, Long> duration = new HashMap<>();
+		private Map<DateTime, ValidationStatus> validationStatus =new HashMap<>();
 
 		public ProjectDTO getProject() {
 			return project;
@@ -139,6 +142,14 @@ public class CraDetailsDTO {
 
 		public void setDuration(Map<DateTime, Long> duration) {
 			this.duration = duration;
+		}
+
+		public Map<DateTime, ValidationStatus> getValidationStatus() {
+			return validationStatus;
+		}
+
+		public void setValidationStatus(Map<DateTime, ValidationStatus> validationStatus) {
+			this.validationStatus = validationStatus;
 		}
 
 	}
