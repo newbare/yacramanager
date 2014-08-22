@@ -200,7 +200,7 @@ public class DtoMapper {
 		return dtos;
 	}
 
-	public static List<WorkLogDTO> mapWorkLogs(List<WorkLog> workLogs) {
+	public static List<WorkLogDTO> mapWorkLogs(Iterable<WorkLog> workLogs) {
 		List<WorkLogDTO> dtos=new ArrayList<>();
 		for (WorkLog workLog : workLogs) {
 			dtos.add(map(workLog));

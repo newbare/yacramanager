@@ -1,4 +1,4 @@
-function TimeSheetController($scope,$rootScope,$http,$sce,WorkLogCRUDREST,alertService,$popover,$compile,$modal) {
+function TimeSheetController($scope,$rootScope,$http,$sce,WorkLogCRUDREST,alertService,$popover,$compile,$modal,ngTableParams) {
 	$rootScope.page={"title":"Timesheet","description":"View and manage timesheet"}
 	$scope.timeType="duration";
 	$scope.timesheetCalendarTitle=undefined;
@@ -140,7 +140,7 @@ function TimeSheetController($scope,$rootScope,$http,$sce,WorkLogCRUDREST,alertS
     
     $scope.onViewRender=function(view, element){
     	$scope.currentView=view;
-    	$scope.timesheetCalendarTitle=$sce.trustAsHtml(view.title);
+    	$scope.timesheetCalendarTitle=$sce.trustAsHtml('<strong>'+view.title+'</strong>');
     };
     
     $scope.eventRender=function(event, element,view) {
@@ -152,7 +152,7 @@ function TimeSheetController($scope,$rootScope,$http,$sce,WorkLogCRUDREST,alertS
     }
     
     $scope.eventSource = {
-            url: _contextPath+"/app/api/worklog",
+            url: _contextPath+"/app/api/worklog/calendar",
             type : 'GET'
     };
     $scope.eventSources = [$scope.eventSource];
@@ -182,8 +182,12 @@ function TimeSheetController($scope,$rootScope,$http,$sce,WorkLogCRUDREST,alertS
     
     /* Change View */
     $scope.changeView = function(view,calendar) {
-      calendar.fullCalendar('changeView',view);
+    	$scope.showTable(false);
+    	calendar.fullCalendar('changeView',view);
     };
+    $scope.showTable=function(visible){
+    	$scope.tableVisible=visible;
+    }
     
     $scope.next = function(calendar) {
       calendar.fullCalendar('next');
@@ -231,6 +235,36 @@ function TimeSheetController($scope,$rootScope,$http,$sce,WorkLogCRUDREST,alertS
     		 alertService.show('info','Confirmation', 'Donn� sauvegard�');
 		});
     	
-    }
+    };
     
+    
+    $scope.tableParams = new ngTableParams({
+		page : 1, // show first page
+		count : 10, // count per page
+		sorting : {
+			id : 'desc' // initial sorting
+		}
+	}, {
+		total : 0, // length of data
+		getData : function($defer, params) {
+			
+			WorkLogCRUDREST.get(
+					{
+						page:params.$params.page-1,
+						size:params.$params.count,
+						sort:params.$params.sorting,
+						filter:$scope.tableFilter
+					},function(data) {
+				params.total(data.totalCount);
+				$scope.startIndex=data.startIndex;
+				$scope.endIndex=data.endIndex;
+				if(data.totalCount>=1){
+					$scope.hasDatas=true;
+				}else {
+					$scope.hasDatas=false;
+				}
+				// set new data
+				$defer.resolve(data.result);
+			});
+		}});
 }

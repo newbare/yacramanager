@@ -14,9 +14,10 @@
 	"app.navbar.menu.profile" : "Profile",
 	"app.navbar.menu.logout" : "Logout",
 	
-	"app.timesheet.toolbar.agendaDay" : "AgendaDay",
-	"app.timesheet.toolbar.agendaWeek" : "AgendaWeek",
-	"app.timesheet.toolbar.agendaMonth" : "AgendaMonth",
+	"app.timesheet.toolbar.agendaDay" : "Day view",
+	"app.timesheet.toolbar.agendaWeek" : "Week view",
+	"app.timesheet.toolbar.agendaMonth" : "Month view",
+	"app.timesheet.toolbar.agendaTable" : "Table view",
 	"app.timesheet.toolbar.next" : "Next",
 	"app.timesheet.toolbar.previous" : "Previous",
 	"app.timesheet.toolbar.today" : "Today",
