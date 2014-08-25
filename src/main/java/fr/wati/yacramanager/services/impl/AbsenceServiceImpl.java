@@ -188,7 +188,8 @@ public class AbsenceServiceImpl implements AbsenceService {
 	public void validate(Employe validator, Absence absence) throws ServiceException{
 		Absence findOne = absenceRepository.findOne(absence.getId());
 		if(employeService.isManager(validator.getId(), findOne.getEmploye().getId())){
-			absence.setValidationStatus(ValidationStatus.APPROVED);
+			findOne.setValidationStatus(ValidationStatus.APPROVED);
+			absenceRepository.save(findOne);
 		}else {
 			throw new ServiceException(validator.getFullName()+ " is not the manager of "+findOne.getEmploye().getFullName());
 		}
@@ -199,7 +200,8 @@ public class AbsenceServiceImpl implements AbsenceService {
 	public void reject(Employe validator, Absence absence) throws ServiceException {
 		Absence findOne = absenceRepository.findOne(absence.getId());
 		if(employeService.isManager(validator.getId(), findOne.getEmploye().getId())){
-			absence.setValidationStatus(ValidationStatus.REJECTED);
+			findOne.setValidationStatus(ValidationStatus.REJECTED);
+			absenceRepository.save(findOne);
 		}else {
 			throw new ServiceException(validator.getFullName()+ " is not the manager of "+findOne.getEmploye().getFullName());
 		}

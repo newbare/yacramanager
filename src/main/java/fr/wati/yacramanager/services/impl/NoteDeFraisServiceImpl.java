@@ -8,8 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.google.common.collect.Lists;
 
 import fr.wati.yacramanager.beans.Attachement;
 import fr.wati.yacramanager.beans.Employe;
@@ -263,7 +266,8 @@ public class NoteDeFraisServiceImpl implements NoteDeFraisService {
 	public void validate(Employe validator, NoteDeFrais noteDeFrais) throws ServiceException {
 		NoteDeFrais findOne = noteDeFraisRepository.findOne(noteDeFrais.getId());
 		if(employeService.isManager(validator.getId(), findOne.getEmploye().getId())){
-			noteDeFrais.setValidationStatus(ValidationStatus.APPROVED);
+			findOne.setValidationStatus(ValidationStatus.APPROVED);
+			save(findOne);
 		}else {
 			throw new ServiceException(validator.getFullName()+ " is not the manager of "+findOne.getEmploye().getFullName());
 		}
@@ -273,7 +277,8 @@ public class NoteDeFraisServiceImpl implements NoteDeFraisService {
 	public void reject(Employe validator, NoteDeFrais noteDeFrais) throws ServiceException{
 		NoteDeFrais findOne = noteDeFraisRepository.findOne(noteDeFrais.getId());
 		if(employeService.isManager(validator.getId(), findOne.getEmploye().getId())){
-			noteDeFrais.setValidationStatus(ValidationStatus.REJECTED);
+			findOne.setValidationStatus(ValidationStatus.REJECTED);
+			save(findOne);
 		}else {
 			throw new ServiceException(validator.getFullName()+ " is not the manager of "+findOne.getEmploye().getFullName());
 		}
@@ -284,7 +289,14 @@ public class NoteDeFraisServiceImpl implements NoteDeFraisService {
 	 */
 	@Override
 	public List<NoteDeFrais> getEntitiesToApproved(Long employeId) {
-		return null;
+		List<Employe> managedEmployes=employeService.getManagedEmployees(employeId);
+		List<NoteDeFrais> noteDeFraisToApproved=new ArrayList<>();
+		for (Employe employe : managedEmployes) {
+			Specifications<NoteDeFrais> specifications = Specifications.where(CommonSpecifications.equals(employe, NoteDeFrais_.employe))
+			.and(CommonSpecifications.equalsAny(Lists.newArrayList(ValidationStatus.WAIT_FOR_APPROVEMENT), NoteDeFrais_.validationStatus));
+			noteDeFraisToApproved.addAll(noteDeFraisRepository.findAll(specifications));
+		}
+		return noteDeFraisToApproved;
 	}
 	
 	

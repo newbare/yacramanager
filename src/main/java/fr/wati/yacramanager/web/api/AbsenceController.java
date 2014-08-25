@@ -32,6 +32,9 @@ import fr.wati.yacramanager.beans.Absence;
 import fr.wati.yacramanager.beans.Employe;
 import fr.wati.yacramanager.beans.ValidationStatus;
 import fr.wati.yacramanager.services.AbsenceService;
+import fr.wati.yacramanager.services.CompanyService;
+import fr.wati.yacramanager.services.EmployeService;
+import fr.wati.yacramanager.services.ServiceException;
 import fr.wati.yacramanager.utils.DtoMapper;
 import fr.wati.yacramanager.utils.Filter.FilterBuilder;
 import fr.wati.yacramanager.utils.SecurityUtils;
@@ -49,7 +52,13 @@ public class AbsenceController implements RestCrudController<AbsenceDTO>,Approva
 	private static final Log LOG=LogFactory.getLog(AbsenceController.class); 
 	@Autowired
 	private AbsenceService absenceService;
+	
+	@Autowired
+	private EmployeService employeService;
 
+	@Autowired
+	private CompanyService companyService;
+	
 	@Override
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public @ResponseBody
@@ -174,5 +183,44 @@ public class AbsenceController implements RestCrudController<AbsenceDTO>,Approva
 		}
 		ResponseWrapper<List<ApprovalDTO<AbsenceDTO>>> response=new ResponseWrapper<List<ApprovalDTO<AbsenceDTO>>>(approvalDTOs,approvalDTOs.size());
 		return response;
+	}
+
+	@Override
+	@RequestMapping(value = "/approval/approve/{requesterId}/{entityId}", method = RequestMethod.PUT)
+	@ResponseStatus(value=HttpStatus.OK)
+	public void approve(@PathVariable(value="requesterId") Long requesterId, @PathVariable(value="entityId") Long entityId) throws RestServiceException{
+		Employe employe = employeService.findOne(requesterId);
+		if(employe==null){
+			throw new RestServiceException("The given employe does not exist");
+		}
+		Absence absence = absenceService.findOne(entityId);
+		if(absence==null){
+			throw new RestServiceException("The given absence id does not exist");
+		}
+		try {
+			absenceService.validate(employe, absence);
+		} catch (ServiceException e) {
+			LOG.error(e.getMessage(), e);
+			throw new RestServiceException(e.getMessage(), e);
+		}
+	}
+
+	@Override
+	@RequestMapping(value = "/approval/reject/{requesterId}/{entityId}", method = RequestMethod.PUT)
+	public void reject(@PathVariable(value="requesterId") Long requesterId, @PathVariable(value="entityId") Long entityId) throws RestServiceException {
+		Employe employe = employeService.findOne(requesterId);
+		if(employe==null){
+			throw new RestServiceException("The given employe does not exist");
+		}
+		Absence absence = absenceService.findOne(entityId);
+		if(absence==null){
+			throw new RestServiceException("The given absence id does not exist");
+		}
+		try {
+			absenceService.reject(employe, absence);
+		} catch (ServiceException e) {
+			LOG.error(e.getMessage(), e);
+			throw new RestServiceException(e.getMessage(), e);
+		}
 	}
 }

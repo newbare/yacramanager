@@ -4,6 +4,16 @@ function FraisController($scope, $rootScope, NoteCRUDREST, alertService,
 		"title" : "Frais",
 		"description" : "Gerez vos notes de frais"
 	};
+	$scope.currentTab='myExpenses';
+	$scope.approvementTotal=0;
+	$scope.approvements=[];
+	
+	$scope.activateTab=function(tab){
+		$scope.currentTab=tab;
+	}
+	$scope.isActiveTab=function(tab){
+		return tab==$scope.currentTab;
+	}
 	$scope.initialActionLabel = "Ajouter une note";
 	$scope.dateFormat = "dd MMMM yyyy";
 	$scope.hasDatas = false;
@@ -12,7 +22,29 @@ function FraisController($scope, $rootScope, NoteCRUDREST, alertService,
 	$scope.selectedFile=undefined;
 	var allNote = [];
 	
+	$scope.refreshApproval=function(){
+		$http.get(_contextPath+"/app/api/frais/approval",{params:{"requesterId":_userId} })
+		.success(function(data, status) {
+			$scope.approvementTotal=data.totalCount;
+			$scope.approvements=data.result;
+		});
+	};
 	
+	$scope.refreshApproval();
+	$scope.approve=function(id){
+		$http.put(_contextPath+"/app/api/frais/approval/approve/"+parseInt(_userId)+"/"+id)
+		.success(function(data, status) {
+			alertService.show('success','Updated', 'Data has been updated');
+			$scope.refreshApproval();
+		});
+	};
+	$scope.reject=function(id){
+		$http.put(_contextPath+"/app/api/frais/approval/reject/"+parseInt(_userId)+"/"+id)
+		.success(function(data, status) {
+			alertService.show('success','Updated', 'Data has been updated');
+			$scope.refreshApproval();
+		});
+	};
 	$scope.tableFilter="";
 	$scope.employeCriteriaConfig={
 			name:"employe",

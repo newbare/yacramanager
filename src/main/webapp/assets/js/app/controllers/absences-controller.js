@@ -246,11 +246,29 @@ function AbsencesController($scope, $rootScope, AbsenceCRUDREST,
 		}});
 	
 	
-	$http.get(_contextPath+"/app/api/absences/approval",{params:{"requesterId":_userId} })
-	.success(function(data, status) {
-		$scope.approvementTotal=data.totalCount;
-		$scope.approvements=data.result;
-	});
+	
+	$scope.refreshApproval=function(){
+		$http.get(_contextPath+"/app/api/absences/approval",{params:{"requesterId":_userId} })
+		.success(function(data, status) {
+			$scope.approvementTotal=data.totalCount;
+			$scope.approvements=data.result;
+		});
+	};
+	$scope.refreshApproval();
+	$scope.approve=function(id){
+		$http.put(_contextPath+"/app/api/absences/approval/approve/"+parseInt(_userId)+"/"+id)
+		.success(function(data, status) {
+			alertService.show('success','Updated', 'Data has been updated');
+			$scope.refreshApproval();
+		});
+	};
+	$scope.reject=function(id){
+		$http.put(_contextPath+"/app/api/absences/approval/reject/"+parseInt(_userId)+"/"+id)
+		.success(function(data, status) {
+			alertService.show('success','Updated', 'Data has been updated');
+			$scope.refreshApproval();
+		});
+	};
 	
 //	$scope.approvementTableParams = new ngTableParams({
 //		page : 1, // show first page

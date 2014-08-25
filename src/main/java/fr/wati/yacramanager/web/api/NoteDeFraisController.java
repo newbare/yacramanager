@@ -4,6 +4,7 @@
 package fr.wati.yacramanager.web.api;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -31,15 +32,19 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import fr.wati.yacramanager.beans.Attachement;
+import fr.wati.yacramanager.beans.Employe;
 import fr.wati.yacramanager.beans.NoteDeFrais;
 import fr.wati.yacramanager.beans.ValidationStatus;
 import fr.wati.yacramanager.services.AttachementService;
+import fr.wati.yacramanager.services.EmployeService;
 import fr.wati.yacramanager.services.NoteDeFraisService;
+import fr.wati.yacramanager.services.ServiceException;
 import fr.wati.yacramanager.utils.Filter.FilterBuilder;
 import fr.wati.yacramanager.utils.SecurityUtils;
 import fr.wati.yacramanager.utils.SpecificationBuilder;
 import fr.wati.yacramanager.web.dto.AbsenceDTO.TypeAbsence;
 import fr.wati.yacramanager.web.dto.AbsenceDTO.TypeAbsenceDTO;
+import fr.wati.yacramanager.web.dto.ApprovalDTO;
 import fr.wati.yacramanager.web.dto.NoteDeFraisDTO;
 import fr.wati.yacramanager.web.dto.ResponseWrapper;
 
@@ -50,13 +55,16 @@ import fr.wati.yacramanager.web.dto.ResponseWrapper;
 @RestController()
 @RequestMapping("/app/api/frais")
 public class NoteDeFraisController extends
-		RestCrudControllerAdapter<NoteDeFraisDTO> {
+		RestCrudControllerAdapter<NoteDeFraisDTO> implements ApprovalRestService<ApprovalDTO<NoteDeFraisDTO>> {
 
 	private static final Log LOG = LogFactory
 			.getLog(NoteDeFraisController.class);
 
 	@Autowired
 	private NoteDeFraisService noteDeFraisService;
+	
+	@Autowired
+	private EmployeService employeService;
 
 	@Autowired
 	private AttachementService attachementService;
@@ -183,5 +191,70 @@ public class NoteDeFraisController extends
 			absenceDTOs.add(TypeAbsenceDTO.fromEnum(absence));
 		}
 		return absenceDTOs;
+	}
+
+	@Override
+	@RequestMapping(value = "/approval", method = RequestMethod.GET)
+	public @ResponseBody ResponseWrapper<List<ApprovalDTO<NoteDeFraisDTO>>> getApproval(
+			@RequestParam(value="requesterId") Long requesterId) {
+		List<ApprovalDTO<NoteDeFraisDTO>> approvalDTOs=new ArrayList<ApprovalDTO<NoteDeFraisDTO>>();
+		List<NoteDeFrais> entitiesToApproved = noteDeFraisService.getEntitiesToApproved(requesterId);
+		Map<Employe, List<NoteDeFrais>> employeAbsencesMap=new HashMap<>();
+		for (NoteDeFrais noteDeFrais : entitiesToApproved) {
+			Employe currentEmploye=noteDeFrais.getEmploye();
+			if(!employeAbsencesMap.containsKey(currentEmploye)){
+				employeAbsencesMap.put(currentEmploye, new ArrayList<NoteDeFrais>());
+			}
+			employeAbsencesMap.get(currentEmploye).add(noteDeFrais);
+		}
+		for(Entry<Employe, List<NoteDeFrais>> entry:employeAbsencesMap.entrySet()){
+			ApprovalDTO<NoteDeFraisDTO> approvalDTO=new ApprovalDTO<>();
+			approvalDTO.setEmployeId(entry.getKey().getId());
+			approvalDTO.setEmployeFirstName(entry.getKey().getPrenom());
+			approvalDTO.setEmployeLastName(entry.getKey().getNom());
+			approvalDTO.setApprovalEntities(noteDeFraisService.mapNoteDeFrais(entry.getValue()));
+			approvalDTOs.add(approvalDTO);
+		}
+		ResponseWrapper<List<ApprovalDTO<NoteDeFraisDTO>>> response=new ResponseWrapper<List<ApprovalDTO<NoteDeFraisDTO>>>(approvalDTOs,approvalDTOs.size());
+		return response;
+	}
+	
+	@Override
+	@RequestMapping(value = "/approval/approve/{requesterId}/{entityId}", method = RequestMethod.PUT)
+	@ResponseStatus(value=HttpStatus.OK)
+	public void approve(@PathVariable(value="requesterId") Long requesterId, @PathVariable(value="entityId") Long entityId) throws RestServiceException{
+		Employe employe = employeService.findOne(requesterId);
+		if(employe==null){
+			throw new RestServiceException("The given employe does not exist");
+		}
+		NoteDeFrais noteDeFrais = noteDeFraisService.findOne(entityId);
+		if(noteDeFrais==null){
+			throw new RestServiceException("The given expense id does not exist");
+		}
+		try {
+			noteDeFraisService.validate(employe, noteDeFrais);
+		} catch (ServiceException e) {
+			LOG.error(e.getMessage(), e);
+			throw new RestServiceException(e.getMessage(), e);
+		}
+	}
+
+	@Override
+	@RequestMapping(value = "/approval/reject/{requesterId}/{entityId}", method = RequestMethod.PUT)
+	public void reject(@PathVariable(value="requesterId") Long requesterId, @PathVariable(value="entityId") Long entityId) throws RestServiceException {
+		Employe employe = employeService.findOne(requesterId);
+		if(employe==null){
+			throw new RestServiceException("The given employe does not exist");
+		}
+		NoteDeFrais noteDeFrais = noteDeFraisService.findOne(entityId);
+		if(noteDeFrais==null){
+			throw new RestServiceException("The given expense id does not exist");
+		}
+		try {
+			noteDeFraisService.reject(employe, noteDeFrais);
+		} catch (ServiceException e) {
+			LOG.error(e.getMessage(), e);
+			throw new RestServiceException(e.getMessage(), e);
+		}
 	}
 }

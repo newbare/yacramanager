@@ -9,7 +9,7 @@
 			  </div>
 			</div>
 		</div>
-		<ul class="nav nav-pills" role="tablist" id="tabs">
+		<ul class="nav nav-pills sub-menu" role="tablist" id="tabs">
 		  <li class="active"><a href="" role="tab" data-toggle="tab" data-ng-click="activateTab('myTimeOff')">My time off</a></li>
 		  <li><a href="" role="tab" data-toggle="tab" data-ng-click="activateTab('toBeApprouved')">To be aproved <span class="badge" data-ng-show="approvementTotal>0">{{approvementTotal}}</span></a></li>
 		</ul>
@@ -78,9 +78,14 @@
 			<ul class="list-group">
 				<!-- Iterate over Employe -->
 				<li class="list-group-item" data-ng-repeat="approvement in approvements" style="border: none;">
-					<h4><span class="text-muted"><strong>{{approvement.employeFirstName}} {{approvement.employeLastName}}</strong></span></h4>
+					<h4><span class="text-muted"><i class="fa fa-user"></i><strong> {{approvement.employeFirstName}} {{approvement.employeLastName}}</strong></span></h4>
 					<table class="table table-hover">
 						<tr>
+							<th style="width:20px;">
+								<label class="checkbox-inline">
+								  <input type="checkbox"  data-ng-model="checkboxes.items[absence.id]">
+								</label>
+							</th>
 							<th>Submit date</th>
 							<th>Type</th>
 							<th>From</th>
@@ -90,6 +95,11 @@
 							<th></th>
 						</tr>
 						<tr data-ng-repeat="absence in approvement.approvalEntities">
+							<td>
+								<label class="checkbox-inline">
+								  <input type="checkbox"  data-ng-model="checkboxes.items[absence.id]">
+								</label>
+							</td>
 							<td>{{ absence.date | date : 'short'}}</td>
 							<td>{{ absence.typeAbsence}}</td>
 							<td>{{absence.startDate | date : dateFormat}}</td>
@@ -97,8 +107,8 @@
 							<td>{{absence.description}}</td>
 							<td><span class="label" data-ng-class="{'label-success' : isValidated(absence) , 'label-warning' : isWaiting(absence), 'label-danger' : isRejected(absence)}">{{absence.validationStatus}}</span></td>
 							<td>
-								<button type="button" class="btn btn-success btn-xs">Approve</button>
-								<button type="button" class="btn btn-danger btn-xs">Reject</button>
+								<button type="button" class="btn btn-success btn-xs" data-ng-click="approve(absence.id)">Approve</button>
+								<button type="button" class="btn btn-danger btn-xs" data-ng-click="reject(absence.id)">Reject</button>
 							</td>
 						</tr>
 					</table>

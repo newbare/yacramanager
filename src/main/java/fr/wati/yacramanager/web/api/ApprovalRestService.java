@@ -13,5 +13,9 @@ import fr.wati.yacramanager.web.dto.ResponseWrapper;
  */
 public interface ApprovalRestService<T> {
 
-	ResponseWrapper<List<T>> getApproval(Long requesterId);
+	ResponseWrapper<List<T>> getApproval(Long requesterId) throws RestServiceException;
+	
+	void approve(Long requesterId,Long entityId) throws RestServiceException;
+	
+	void reject(Long requesterId,Long entityId) throws RestServiceException;
 }
