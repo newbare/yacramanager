@@ -30,6 +30,7 @@ public class Project extends AuditableEntity  {
 	private Long id;
 	private String name;
 	private String description;
+	private String color;
 	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(
 			name = "projects_employees",
@@ -130,6 +131,20 @@ public class Project extends AuditableEntity  {
 	 */
 	public void setAssignedEmployees(List<Employe> assignedEmployees) {
 		this.assignedEmployees = assignedEmployees;
+	}
+
+	/**
+	 * @return the color
+	 */
+	public String getColor() {
+		return color;
+	}
+
+	/**
+	 * @param color the color to set
+	 */
+	public void setColor(String color) {
+		this.color = color;
 	}
 
 }

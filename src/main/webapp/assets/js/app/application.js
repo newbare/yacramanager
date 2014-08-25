@@ -26,7 +26,7 @@ var App = angular.module('yaCRAApp', [ 'ngResource', 'mgcrea.ngStrap',
 		'ng-criterias', 'ngHtmlCompile', 'ngRoute', 'ngAnimate', 'ngTable',
 		'ui.router', 'angularFileUpload', 'ui.calendar',
 		'http-auth-interceptor', 'timer', 'localytics.directives',
-		'daterangepicker','pascalprecht.translate','angular-loading-bar','ngQuickDate','xeditable' ]);
+		'daterangepicker','pascalprecht.translate','angular-loading-bar','ngQuickDate','xeditable','colorpicker.module' ]);
 
 
 App.config(['$httpProvider', function($httpProvider,$modal) {
@@ -65,6 +65,12 @@ App.run(function($rootScope,$templateCache,UsersREST) {
 		});
 	};
 	loadUserInfo();
+});
+
+App.run(function(editableOptions,editableThemes) {
+	editableThemes.bs3.inputClass = 'input-sm';
+	editableThemes.bs3.buttonsClass = 'btn-sm';
+	editableOptions.theme = 'bs3';
 });
 
 App.factory('httpRequestServerErrorInterceptor',function ($q,$rootScope) {

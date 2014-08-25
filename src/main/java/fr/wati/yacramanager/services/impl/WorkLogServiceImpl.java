@@ -141,4 +141,12 @@ public class WorkLogServiceImpl implements WorkLogService,SpecificationFactory<W
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see fr.wati.yacramanager.services.StatusValidator#getEntitiesToApproved(java.lang.Long)
+	 */
+	@Override
+	public List<WorkLog> getEntitiesToApproved(Long employeId) {
+		return null;
+	}
+
 }

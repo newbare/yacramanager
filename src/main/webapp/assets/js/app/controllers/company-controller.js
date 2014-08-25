@@ -102,7 +102,6 @@ function CompanyEmployeesViewController($scope, $rootScope,$http,EmployeesCRUDRE
 	};
 	
 	$scope.doFilter=function(data){
-		console.log("Server filer launch with: "+JSON.stringify(data));
 		var serverFilter={filter:data};
 		$scope.criteriaBarFilter=JSON.stringify(serverFilter);
 		$scope.$broadcast('criteriaDofilter', JSON.stringify(serverFilter));
@@ -115,7 +114,6 @@ function CompanyEmployeesViewController($scope, $rootScope,$http,EmployeesCRUDRE
 	
 	
 	$scope.doFilterList=function(data){
-		console.log("Server filer launch with: "+JSON.stringify(data));
 		$scope.tableFilter=data;
 		$scope.refreshDatas();
 	};
@@ -169,7 +167,6 @@ function CompanyEmployeesQuickViewController($scope,$http,EmployeesCRUDREST,ngTa
 	$scope.employees=[];
 	$scope.employeesListFilter="";
 	$scope.doFilterList=function(data){
-		console.log("Server filer launch with: "+JSON.stringify(data));
 		$scope.employeesListFilter=data;
 	};
 	$scope.tableParams.settings().counts=[];
@@ -248,7 +245,6 @@ function CompanyClientsViewController($scope, $rootScope,$http,ClientsCRUDREST,n
 	};
 	
 	$scope.doFilter=function(data){
-		console.log("Server filer launch with: "+JSON.stringify(data));
 		var serverFilter={filter:data};
 		$scope.criteriaBarFilter=JSON.stringify(serverFilter);
 		$scope.$broadcast('criteriaDofilter', JSON.stringify(serverFilter));
@@ -261,7 +257,6 @@ function CompanyClientsViewController($scope, $rootScope,$http,ClientsCRUDREST,n
 	$scope.hasDatas=false;
 	
 	$scope.doFilterList=function(data){
-		console.log("Server filer launch with: "+JSON.stringify(data));
 		$scope.tableFilter=data;
 		$scope.refreshDatas();
 	};
@@ -316,7 +311,6 @@ function CompanyClientsQuickViewController($scope,$http,ClientsCRUDREST,ngTableP
 	$scope.clientsListFilter="";
 	$scope.tableParams.settings().counts=[];
 	$scope.doFilterList=function(data){
-		console.log("Server filer launch with: "+JSON.stringify(data));
 		$scope.clientsListFilter=data;
 	};
 	$scope.doFilterList($scope.criteriaBarFilter);
@@ -449,7 +443,6 @@ function CompanyProjectsViewController($scope, $rootScope,$http,ProjectsCRUDREST
 	};
 	
 	$scope.doFilter=function(data){
-		console.log("Server filer launch with: "+JSON.stringify(data));
 		var serverFilter={filter:data};
 		$scope.criteriaBarFilter=JSON.stringify(serverFilter);
 		$scope.$broadcast('criteriaDofilter', JSON.stringify(serverFilter));
@@ -464,7 +457,6 @@ function CompanyProjectsViewController($scope, $rootScope,$http,ProjectsCRUDREST
 	
 	
 	$scope.doFilterList=function(data){
-		console.log("Server filer launch with: "+JSON.stringify(data));
 		$scope.tableFilter=data;
 		$scope.refreshDatas();
 	};
@@ -517,7 +509,6 @@ function CompanyProjectsQuickViewController($scope,$http,ProjectsCRUDREST,ngTabl
 	$scope.projectsListFilter="";
 	$scope.tableParams.settings().counts=[];
 	$scope.doFilterList=function(data){
-		console.log("Server filer launch with: "+JSON.stringify(data));
 		$scope.projectsListFilter=data;
 	};
 	$scope.doFilterList($scope.criteriaBarFilter);
@@ -662,7 +653,6 @@ function CompanyProjectsController($scope, $rootScope,$http,ngTableParams,Projec
 	};
 	
 	$scope.doFilter=function(data){
-		console.log("Server filer launch with: "+JSON.stringify(data));
 		var serverFilter={filter:data};
 		$scope.tableFilter=JSON.stringify(serverFilter);
 		$scope.refreshDatas();

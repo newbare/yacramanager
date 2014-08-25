@@ -101,7 +101,6 @@ function CraController($scope,$rootScope,CraREST,$filter,$http,WorkLogCRUDREST,a
 		};
 		
 		$scope.doFilter=function(data){
-			console.log("Server filer launch with: "+JSON.stringify(data));
 			$scope.currentFilter=data;
 			var serverFilter={filter:data};
 			$scope.tableFilter=JSON.stringify(serverFilter);
@@ -151,9 +150,16 @@ function CraController($scope,$rootScope,CraREST,$filter,$http,WorkLogCRUDREST,a
 		return employeId==_userId;
 	}
 	
+	$scope.taskRowTotal=function(taskRow,days){
+		var rowTotal=0;
+		angular.forEach(days,function(day){
+			rowTotal=rowTotal+taskRow.duration[day.date]
+		});
+		return rowTotal;
+	};
 
-
-	$scope.updateCraValue = function(newValue, taskRow, day) {
+	$scope.updateCraValue = function(newValue, taskRow, day,days) {
+		newValue=parseInt(newValue);
 		var diff = newValue - taskRow.duration[day.date];
 		if (diff < 0) {
 			return 'Cannot reduce worklog';

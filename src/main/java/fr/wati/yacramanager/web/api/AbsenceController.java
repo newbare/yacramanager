@@ -1,6 +1,7 @@
 package fr.wati.yacramanager.web.api;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -28,6 +29,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import fr.wati.yacramanager.beans.Absence;
+import fr.wati.yacramanager.beans.Employe;
 import fr.wati.yacramanager.beans.ValidationStatus;
 import fr.wati.yacramanager.services.AbsenceService;
 import fr.wati.yacramanager.utils.DtoMapper;
@@ -37,11 +39,12 @@ import fr.wati.yacramanager.utils.SpecificationBuilder;
 import fr.wati.yacramanager.web.dto.AbsenceDTO;
 import fr.wati.yacramanager.web.dto.AbsenceDTO.TypeAbsence;
 import fr.wati.yacramanager.web.dto.AbsenceDTO.TypeAbsenceDTO;
+import fr.wati.yacramanager.web.dto.ApprovalDTO;
 import fr.wati.yacramanager.web.dto.ResponseWrapper;
 
 @RestController()
 @RequestMapping("/app/api/absences")
-public class AbsenceController implements RestCrudController<AbsenceDTO> {
+public class AbsenceController implements RestCrudController<AbsenceDTO>,ApprovalRestService<ApprovalDTO<AbsenceDTO>> {
 
 	private static final Log LOG=LogFactory.getLog(AbsenceController.class); 
 	@Autowired
@@ -142,5 +145,34 @@ public class AbsenceController implements RestCrudController<AbsenceDTO> {
 			absenceDTOs.add(TypeAbsenceDTO.fromEnum(absence));
 		}
 		return absenceDTOs;
+	}
+
+	/* (non-Javadoc)
+	 * @see fr.wati.yacramanager.web.api.ApprovalRestService#getApproval(java.lang.Long)
+	 */
+	@Override
+	@RequestMapping(value = "/approval", method = RequestMethod.GET)
+	public @ResponseBody ResponseWrapper<List<ApprovalDTO<AbsenceDTO>>> getApproval(
+			@RequestParam(value="requesterId") Long requesterId) {
+		List<ApprovalDTO<AbsenceDTO>> approvalDTOs=new ArrayList<ApprovalDTO<AbsenceDTO>>();
+		List<Absence> entitiesToApproved = absenceService.getEntitiesToApproved(requesterId);
+		Map<Employe, List<Absence>> employeAbsencesMap=new HashMap<>();
+		for (Absence absence : entitiesToApproved) {
+			Employe currentEmploye=absence.getEmploye();
+			if(!employeAbsencesMap.containsKey(currentEmploye)){
+				employeAbsencesMap.put(currentEmploye, new ArrayList<Absence>());
+			}
+			employeAbsencesMap.get(currentEmploye).add(absence);
+		}
+		for(Entry<Employe, List<Absence>> entry:employeAbsencesMap.entrySet()){
+			ApprovalDTO<AbsenceDTO> approvalDTO=new ApprovalDTO<>();
+			approvalDTO.setEmployeId(entry.getKey().getId());
+			approvalDTO.setEmployeFirstName(entry.getKey().getPrenom());
+			approvalDTO.setEmployeLastName(entry.getKey().getNom());
+			approvalDTO.setApprovalEntities(DtoMapper.mapAbsences(entry.getValue()));
+			approvalDTOs.add(approvalDTO);
+		}
+		ResponseWrapper<List<ApprovalDTO<AbsenceDTO>>> response=new ResponseWrapper<List<ApprovalDTO<AbsenceDTO>>>(approvalDTOs,approvalDTOs.size());
+		return response;
 	}
 }

@@ -8,7 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.stereotype.Service;
+
+import com.google.common.collect.Lists;
 
 import fr.wati.yacramanager.beans.Absence;
 import fr.wati.yacramanager.beans.Absence_;
@@ -200,6 +203,17 @@ public class AbsenceServiceImpl implements AbsenceService {
 		}else {
 			throw new ServiceException(validator.getFullName()+ " is not the manager of "+findOne.getEmploye().getFullName());
 		}
+	}
+	
+	public List<Absence> getEntitiesToApproved(Long employeId){
+		List<Employe> managedEmployes=employeService.getManagedEmployees(employeId);
+		List<Absence> absencesToApproved=new ArrayList<>();
+		for (Employe employe : managedEmployes) {
+			Specifications<Absence> specifications = Specifications.where(CommonSpecifications.equals(employe, Absence_.employe))
+			.and(CommonSpecifications.equalsAny(Lists.newArrayList(ValidationStatus.WAIT_FOR_APPROVEMENT), Absence_.validationStatus));
+			absencesToApproved.addAll(absenceRepository.findAll(specifications));
+		}
+		return absencesToApproved;
 	}
 
 }

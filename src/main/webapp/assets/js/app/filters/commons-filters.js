@@ -6,9 +6,17 @@
 //    }
 //});
 
-App.filter("duration", function () {
-    return function(input){
-    	var millis=input*60*1000
-    	return moment.duration(input*60*1000).hours()+'h'+ moment.duration(input*60*1000).minutes();
-    }
+App.filter("duration", function() {
+	return function(input) {
+		var millis = input * 60 * 1000
+		return moment.duration(millis).hours() + 'h'
+				+ moment.duration(millis).minutes();
+	}
+});
+
+App.filter("durationHours", function() {
+	return function(input) {
+		var millis = input * 60 * 1000
+		return moment.duration(millis).asHours()+'h';
+	}
 });

@@ -1,6 +1,12 @@
 <div class="popover timesheet-event">
 	<div class="arrow"></div>
-	<h3 class="popover-title">{{event.title}}</h3>
+	<div class="popover-title">
+		<div class="row">
+			{{event.title}}
+		<span class="label" data-ng-class="{'label-success' : isValidated(event) , 'label-warning' : isWaiting(event), 'label-danger' : isRejected(event)}">{{event.validationStatus}}</span>	
+		</div>
+			
+	</div>
 	<div class="popover-content">
 		<form class="form-horizontal" role="form">
 			<div class="form-group">
@@ -27,7 +33,6 @@
 					<p  data-ng-show="event.duration" class="form-control-static">{{event.duration}} mins</p>
 				</div>
 			</div>
-			<span class="label" data-ng-class="{'label-success' : isValidated(event) , 'label-warning' : isWaiting(event), 'label-danger' : isRejected(event)}">{{event.validationStatus}}</span></td>
 			<div class="row pull-right">
 				<button type="button" class="btn btn-link" data-ng-click="$hide()">Close</button>
 				<button type="button" class="btn btn-link"
@@ -35,4 +40,4 @@
 			</div>
 		</form>
 	</div>
-</div
+</div>

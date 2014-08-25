@@ -6,6 +6,17 @@ function AbsencesController($scope, $rootScope, AbsenceCRUDREST,
 		"title" : "Absences",
 		"description" : "Declarez vos absences"
 	};
+	$scope.currentTab='myTimeOff';
+	$scope.approvementTotal=0;
+	$scope.approvements=[];
+	
+	$scope.activateTab=function(tab){
+		$scope.currentTab=tab;
+	}
+	$scope.isActiveTab=function(tab){
+		return tab==$scope.currentTab;
+	}
+	
 	/*
 	 * criteria config
 	 */
@@ -100,7 +111,6 @@ function AbsencesController($scope, $rootScope, AbsenceCRUDREST,
 	};
 	
 	$scope.doFilter=function(data){
-		console.log("Server filer launch with: "+JSON.stringify(data));
 		var serverFilter={filter:data};
 		$scope.tableFilter=JSON.stringify(serverFilter);
 		$scope.refreshDatas();
@@ -234,6 +244,32 @@ function AbsencesController($scope, $rootScope, AbsenceCRUDREST,
 				$defer.resolve(data.result);
 			});
 		}});
+	
+	
+	$http.get(_contextPath+"/app/api/absences/approval",{params:{"requesterId":_userId} })
+	.success(function(data, status) {
+		$scope.approvementTotal=data.totalCount;
+		$scope.approvements=data.result;
+	});
+	
+//	$scope.approvementTableParams = new ngTableParams({
+//		page : 1, // show first page
+//		count : 10, // count per page
+//		sorting : {
+//			date : 'desc' // initial sorting
+//		}
+//	}, {
+//		total : 0, // length of data
+//		getData : function($defer, params) {
+//			$http.get(_contextPath+"/app/api/absences/approval",{params:{"requesterId":_userId} })
+//			.success(function(data, status) {
+//				params.total(data.totalCount);
+//				$scope.approvementTotal=data.totalCount;
+//				$scope.approvements=data.result;
+//				// set new data
+//				$defer.resolve(data.result.approvalEntities);
+//			});
+//		}});
 	
 	$scope.checkboxes = { 'checked': false, items: {} };
 

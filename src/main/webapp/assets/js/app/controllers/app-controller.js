@@ -242,7 +242,15 @@ App.config([ '$stateProvider', '$urlRouterProvider','$locationProvider',
 				data: {
 			        pageTitle: 'Home'
 			      }
-			}).state('frais', {
+			}).state('tasks', {
+				url : "/tasks",
+				templateUrl : _contextPath+'/views/app/tasks.html',
+				controller : TasksController,
+				data: {
+			        pageTitle: 'Tasks'
+			      }
+			})
+			.state('frais', {
 				url : "/frais",
 				templateUrl : _contextPath+'/views/app/frais.html',
 				controller : FraisController,

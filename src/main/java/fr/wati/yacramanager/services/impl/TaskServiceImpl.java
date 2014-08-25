@@ -2,6 +2,7 @@ package fr.wati.yacramanager.services.impl;
 
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -86,6 +87,9 @@ public class TaskServiceImpl implements TaskService,SpecificationFactory<Task> {
 	public Task createTask(Long projectId, Task task) {
 		Project project=projectRepository.findOne(projectId);
 		task.setProject(project);
+		if(StringUtils.isEmpty(task.getColor())){
+			task.setColor(project.getColor());
+		}
 		Task saveTask = taskRepository.save(task);
 		project.getTasks().add(saveTask);
 		return saveTask;

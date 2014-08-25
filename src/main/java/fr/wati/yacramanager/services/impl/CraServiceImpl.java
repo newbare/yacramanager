@@ -209,18 +209,22 @@ public class CraServiceImpl implements CraService {
 								craTaskRow.getDuration().get(currentDate)
 										+ currentDuration);
 					}
-					if (!craTaskRow.getValidationStatus().containsKey(
-							currentDate)) {
-						craTaskRow.getValidationStatus().put(currentDate,
-								workLog.getValidationStatus());
-					} else {
-						craTaskRow.getValidationStatus().put(
-								currentDate,
-								ValidationStatus.isApprovedAndOperator(
-										craTaskRow.getValidationStatus().get(
-												currentDate),
-										workLog.getValidationStatus()));
+					if(DateTimeComparator
+							.getDateOnlyInstance().compare(currentDate, workLog.getStartDate())==0){
+						if (!craTaskRow.getValidationStatus().containsKey(
+								currentDate)) {
+							craTaskRow.getValidationStatus().put(currentDate,
+									workLog.getValidationStatus());
+						} else {
+							craTaskRow.getValidationStatus().put(
+									currentDate,
+									ValidationStatus.isApprovedAndOperator(
+											craTaskRow.getValidationStatus().get(
+													currentDate),
+											workLog.getValidationStatus()));
+						}
 					}
+					
 				}
 			}
 
@@ -228,7 +232,9 @@ public class CraServiceImpl implements CraService {
 					.isBefore(endDate); currentDate = currentDate.plusDays(1)) {
 				employeCraDetailsDTO.getDays().add(
 						new CraDetailDay(currentDate, isDayOff(currentDate)));
-
+				if(!craAbsenceDetail.getDuration().containsKey(currentDate)){
+					craAbsenceDetail.getDuration().put(currentDate, 0L);
+				}
 				// handle absence row
 				for (Absence currentAbsence : absences) {
 					if (isDayBetween(currentDate,
@@ -247,11 +253,6 @@ public class CraServiceImpl implements CraService {
 							craAbsenceDetail.getDuration().put(currentDate,
 									8 * 60L);
 						}
-					} else {
-						if(!craAbsenceDetail.getDuration().containsKey(currentDate)){
-							craAbsenceDetail.getDuration().put(currentDate, 0L);
-						}
-						
 					}
 				}
 				employeCraDetailsDTO.setCraAbsenceDetail(craAbsenceDetail);

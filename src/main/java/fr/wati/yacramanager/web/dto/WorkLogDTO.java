@@ -19,6 +19,8 @@ public class WorkLogDTO implements Valideable{
 	private String taskName;
 	private Long duration;
 	private String description;
+	private String projectName;
+	private String clientName;
 	private boolean editable=true;
 	private boolean allDay;
 	private String type;
@@ -79,6 +81,35 @@ public class WorkLogDTO implements Valideable{
 
 	public DateTime getEnd() {
 		return end;
+	}
+
+	
+	/**
+	 * @return the projectName
+	 */
+	public String getProjectName() {
+		return projectName;
+	}
+
+	/**
+	 * @param projectName the projectName to set
+	 */
+	public void setProjectName(String projectName) {
+		this.projectName = projectName;
+	}
+
+	/**
+	 * @return the clientName
+	 */
+	public String getClientName() {
+		return clientName;
+	}
+
+	/**
+	 * @param clientName the clientName to set
+	 */
+	public void setClientName(String clientName) {
+		this.clientName = clientName;
 	}
 
 	public void setEnd(DateTime end) {

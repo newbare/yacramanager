@@ -9,6 +9,7 @@
 	"app.navbar.menu.workspace" : "Workspace",
 	"app.navbar.menu.frais" : "Frais",
 	"app.navbar.menu.cra" : "CRA",
+	"app.navbar.menu.tasks" : "Tasks",
 	"app.navbar.timer.project" :"Project",
 	"app.navbar.menu.settings" :"Settings",
 	"app.navbar.menu.profile" : "Profile",
@@ -30,6 +31,7 @@
 	"form.edit.client.name" : "Client name",
 	
 	"form.edit.project.name" : "Project name",
-	"form.edit.project.description" : "Project description"
+	"form.edit.project.description" : "Project description",
+	"form.edit.project.color" : "Project color"
 	
 }

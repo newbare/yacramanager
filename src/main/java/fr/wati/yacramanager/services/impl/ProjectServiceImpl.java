@@ -61,6 +61,7 @@ public class ProjectServiceImpl implements ProjectService{
 		Task defaulTask=new Task();
 		defaulTask.setCreatedDate(new DateTime());
 		defaulTask.setName(project.getName()+" - default");
+		defaulTask.setColor(project.getColor());
 		taskService.createTask(saveProject.getId(), defaulTask);
 		return saveProject;
 	}

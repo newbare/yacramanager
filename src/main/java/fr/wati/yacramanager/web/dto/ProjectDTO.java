@@ -17,6 +17,7 @@ public class ProjectDTO {
 	private String name;
 	private String description;
 	private DateTime createdDate;
+	private String color;
 	private ClientDTO client;
 	/**
 	 * @return the id
@@ -78,6 +79,20 @@ public class ProjectDTO {
 	public void setClient(ClientDTO clientDTO) {
 		this.client = clientDTO;
 	}
+	
+	
+	/**
+	 * @return the color
+	 */
+	public String getColor() {
+		return color;
+	}
+	/**
+	 * @param color the color to set
+	 */
+	public void setColor(String color) {
+		this.color = color;
+	}
 	/**
 	 * @param project
 	 * @return 
@@ -85,6 +100,7 @@ public class ProjectDTO {
 	public Project toProject(Project project) {
 		project.setCreatedDate(getCreatedDate()!=null?getCreatedDate():new DateTime());
 		project.setDescription(getDescription());
+		project.setColor(getColor());
 		project.setName(getName());
 		return project;
 	}

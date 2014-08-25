@@ -278,6 +278,14 @@ public class NoteDeFraisServiceImpl implements NoteDeFraisService {
 			throw new ServiceException(validator.getFullName()+ " is not the manager of "+findOne.getEmploye().getFullName());
 		}
 	}
+
+	/* (non-Javadoc)
+	 * @see fr.wati.yacramanager.services.StatusValidator#getEntitiesToApproved(java.lang.Long)
+	 */
+	@Override
+	public List<NoteDeFrais> getEntitiesToApproved(Long employeId) {
+		return null;
+	}
 	
 	
 

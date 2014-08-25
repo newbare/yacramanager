@@ -28,6 +28,8 @@
 <link rel="stylesheet"
 	href="${contextPath}/assets/bower_components/angular-xeditable/dist/css/xeditable.css">
 <link rel="stylesheet"
+	href="${contextPath}/assets/bower_components/angular-bootstrap-colorpicker/css/colorpicker.css">
+<link rel="stylesheet"
 	href="${contextPath}/assets/bower_components/ngQuickDate/dist/ng-quick-date.css">
 	<link rel="stylesheet"
 	href="${contextPath}/assets/bower_components/ngQuickDate/dist/ng-quick-date-default-theme.css">
@@ -123,6 +125,9 @@
 								data-ui-sref="timesheet">{{'app.navbar.menu.timesheet' | translate}}</a></li>
 						</ul>
 					</li>
+					<li data-ng-class="navClass('tasks')">
+						<a data-ui-sref="tasks"><i class="fa fa-tasks"></i>{{'app.navbar.menu.tasks' | translate}}</a>
+					</li>
 				</ul>
 				<ul class="nav navtop navbar-nav navbar-right">
 					<li data-ng-class="navClass('home')"><a data-ui-sref="home"><i class="fa fa-home"></i></a></li>
@@ -134,7 +139,7 @@
 							<div class="timer-widget-content dropdown-menu">
 									<form role="form">
 										<div class="form-group">
-    										<label for="project">{{'app.navbar.timer.project' | translate}}</label>
+    										<!-- <label for="project">{{'app.navbar.timer.project' | translate}}</label> -->
 											<select id="project" class="form-control"  data-chosen data-ng-change="selectProject(project)"
 									          data-placeholder="Select a project"
 									          data-ng-model="project"
@@ -143,7 +148,7 @@
 								  			</select>
 								  		</div>
 								  		<div class="form-group">
-    										<label for="task">Task</label>
+    										<!-- <label for="task">Task</label> -->
 								  			<select id="task" class="form-control"  data-chosen data-ng-change="selectTask(task)"
 										          data-placeholder="Select a task"
 										          data-ng-model="task"
@@ -276,6 +281,8 @@
 	<script
 		src="${contextPath}/assets/bower_components/angular-strap/dist/modules/modal.js"></script>
 	<script
+		src="${contextPath}/assets/bower_components/angular-bootstrap-colorpicker/js/bootstrap-colorpicker-module.js"></script>
+	<script
 		src="${contextPath}/assets/bower_components/ngQuickDate/dist/ng-quick-date.min.js"></script>
 	<script
 		src="${contextPath}/assets/bower_components/angular-strap/dist/angular-strap.tpl.min.js"></script>
@@ -329,6 +336,8 @@
 		src="${contextPath}/assets/js/app/controllers/users-controller.js"></script>
 	<script
 		src="${contextPath}/assets/js/app/controllers/absences-controller.js"></script>
+	<script
+		src="${contextPath}/assets/js/app/controllers/tasks-controller.js"></script>
 	<script
 		src="${contextPath}/assets/js/app/controllers/cra-controller.js"></script>
 	<script

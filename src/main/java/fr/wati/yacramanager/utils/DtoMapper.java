@@ -67,6 +67,7 @@ public class DtoMapper {
 		dto.setName(project.getName());
 		dto.setCreatedDate(project.getCreatedDate());
 		dto.setDescription(project.getDescription());
+		dto.setColor(project.getColor());
 		if(project.getClient()!=null){
 			ClientDTO clientDTO=map(project.getClient());
 			dto.setClient(clientDTO);
@@ -224,8 +225,13 @@ public class DtoMapper {
 		workLogDTO.setEditable(true);
 		workLogDTO.setValidationStatus(workLog.getValidationStatus());
 		if(workLog.getTask()!=null){
+			workLogDTO.setTaskName(workLog.getTask().getName());
 			workLogDTO.setTitle(workLog.getTask().getName());
-			workLogDTO.setColor(workLog.getTask().getColor());
+			workLogDTO.setProjectName(workLog.getTask().getProject().getName());
+			workLogDTO.setClientName(workLog.getTask().getProject().getClient().getName());
+			workLogDTO.setColor(workLog.getTask().getColor() != null ? workLog
+					.getTask().getColor() : workLog.getTask().getProject()
+					.getColor());
 		}
 		workLogDTO.setType(String.valueOf(workLog.getWorkLogType()));
 		switch (workLog.getWorkLogType()) {

@@ -134,7 +134,6 @@ function AdminCompanyViewController($scope, $rootScope,$http,CompanyCRUDREST,ngT
 		}});
 	
 	$scope.doFilter=function(data){
-		console.log("Server filer launch with: "+JSON.stringify(data));
 		var serverFilter={filter:data};
 		$scope.tableFilter=JSON.stringify(serverFilter);
 		$scope.refreshDatas();

@@ -15,6 +15,11 @@
       background-color: #000 !important;
 }
 
+.tasks .project-list-group-item{
+	border: none;
+}
+table.table .tool-btn{
+}
 
 
 #loading-bar .bar{
@@ -672,6 +677,27 @@ a .badge {
 .cra-container {
 	/* max-width: 100%;
 	overflow: auto; */
+}
+
+.cra-container .input-sm{
+	padding: 5px 5px;
+}
+
+ 
+
+.cra-container a.editable-click { 
+    padding: 2px 7px;
+    border: 1px solid;
+    border-radius: 4px;
+    font-weight:bold;
+    border-color: transparent;
+    background-color: #f5f5f5;
+}
+
+.cra-container a.editable-click:hover { 
+     padding: 2px 7px;
+     border: 1px solid;
+     border-color: #ccc;
 }
 
 .cra-table-task{

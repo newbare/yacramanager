@@ -55,11 +55,12 @@
 								  <input type="checkbox"  data-ng-model="checkboxes.items[worklog.id]">
 								</label>
 							</td>
-							<td data-title="'Task'" >{{ worklog.taskName}}</td>
-							<td data-title="'Title'">{{ worklog.title}}</td>
+							<td data-title="'Task'" >
+								<h6><span><strong>{{ worklog.taskName}}</strong></span></h6><h6><span class="text-muted">{{ worklog.clientName}} - {{ worklog.projectName}}</span></h6>
+							</td>
 							<td data-title="'Description'" data-sortable="'description'" >{{ worklog.description}}</td>
-							<td data-title="'From'" data-sortable="'startDate'">{{ worklog.start | date : dateFormat }}</td>
-							<td data-title="'To'" data-sortable="'endDate'">{{ worklog.end | date : dateFormat }}</td>
+							<td data-title="'From'" data-sortable="'startDate'">{{ worklog.start | date : 'short' }}</td>
+							<td data-title="'To'" data-sortable="'endDate'">{{ worklog.end | date : 'short' }}</td>
 							<td data-title="'Duration'" data-sortable="'duration'">{{ worklog.duration }}</td>
 							<td data-title="'Validation'" data-sortable="'validationStatus'" align="right"><span class="label" data-ng-class="{'label-success' : isValidated(worklog) , 'label-warning' : isWaiting(worklog), 'label-danger' : isRejected(worklog)}">{{worklog.validationStatus}}</span></td>
 							<td style="width:20px;">
@@ -68,7 +69,6 @@
 								    <i class="fa fa-cog"></i><span class="caret"></span>
 								  </button>
 								  <ul class="dropdown-menu table-action" role="menu">
-								    <li data-ng-show="!absence.validated"><a href="" data-ng-click="validateAbsence(absence.id)"><i class="fa fa-check" style="color: green;"></i>Validate</a></li>
 								    <li><a href="" data-ng-click="editAbsence(absence.id)"><i class="fa fa-pencil-square-o"></i>Edit</a></li>
 								    <li class="divider"></li>
 								    <li><a href="" data-ng-click="deleteAbsence(absence.id)"><i class="fa fa-trash-o" style="color: red;"></i>Delete</a></li>
@@ -79,7 +79,7 @@
 				</table>
 				<script type="text/ng-template" id="ng-table/headers/checkbox.html">
         			<label class="checkbox-inline">
-						  <input type="checkbox" data-ng-model="checkboxes.checked" id="select_all" name="filter-checkbox" value="" />All
+						  <input type="checkbox" data-ng-model="checkboxes.checked" id="select_all" name="filter-checkbox" value="" />
 					</label>
    				 </script>
 			</div>

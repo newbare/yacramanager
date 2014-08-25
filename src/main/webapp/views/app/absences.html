@@ -9,7 +9,14 @@
 			  </div>
 			</div>
 		</div>
-			<div data-ng-criteria-bar data-criteria-bar-config="criteriaBarConfig" data-do-filter="doFilter(criteriaBarConfig.filters)"></div>		
+		<ul class="nav nav-pills" role="tablist" id="tabs">
+		  <li class="active"><a href="" role="tab" data-toggle="tab" data-ng-click="activateTab('myTimeOff')">My time off</a></li>
+		  <li><a href="" role="tab" data-toggle="tab" data-ng-click="activateTab('toBeApprouved')">To be aproved <span class="badge" data-ng-show="approvementTotal>0">{{approvementTotal}}</span></a></li>
+		</ul>
+		<div class="row"></div>
+		<div class="tab-content">
+		  <div class="tab-pane" data-ng-class="{'active' : isActiveTab('myTimeOff') }">
+		  	<div data-ng-criteria-bar data-criteria-bar-config="criteriaBarConfig" data-do-filter="doFilter(criteriaBarConfig.filters)"></div>		
 			<div class="alert alert-info text-center" role="alert" ng-show="!hasDatas">
 				<h4>No data found for selected criterias</h4>
 			</div>
@@ -45,7 +52,7 @@
 							<td data-title="'Description'" data-sortable="'description'">{{ absence.description }}</td>
 							<td data-title="'Validation'" data-sortable="'validationStatus'" align="right"><span class="label" data-ng-class="{'label-success' : isValidated(absence) , 'label-warning' : isWaiting(absence), 'label-danger' : isRejected(absence)}">{{absence.validationStatus}}</span></td>
 							<td style="width:20px;">
-								<div class="btn-group">
+								<div class="btn-group ">
 								 <button type="button" class="btn btn-link dropdown-toggle" style="color: grey;" data-toggle="dropdown">
 								    <i class="fa fa-cog"></i><span class="caret"></span>
 								  </button>
@@ -65,5 +72,42 @@
 					</label>
    				 </script>
 			</div>
+		  </div>
+		  <div class="tab-pane" data-ng-class="{'active' : isActiveTab('toBeApprouved') }">
+		  	
+			<ul class="list-group">
+				<!-- Iterate over Employe -->
+				<li class="list-group-item" data-ng-repeat="approvement in approvements" style="border: none;">
+					<h4><span class="text-muted"><strong>{{approvement.employeFirstName}} {{approvement.employeLastName}}</strong></span></h4>
+					<table class="table table-hover">
+						<tr>
+							<th>Submit date</th>
+							<th>Type</th>
+							<th>From</th>
+							<th>To</th>
+							<th>Description</th>
+							<th>Status</th>
+							<th></th>
+						</tr>
+						<tr data-ng-repeat="absence in approvement.approvalEntities">
+							<td>{{ absence.date | date : 'short'}}</td>
+							<td>{{ absence.typeAbsence}}</td>
+							<td>{{absence.startDate | date : dateFormat}}</td>
+							<td>{{absence.endDate | date : dateFormat}}</td>
+							<td>{{absence.description}}</td>
+							<td><span class="label" data-ng-class="{'label-success' : isValidated(absence) , 'label-warning' : isWaiting(absence), 'label-danger' : isRejected(absence)}">{{absence.validationStatus}}</span></td>
+							<td>
+								<button type="button" class="btn btn-success btn-xs">Approve</button>
+								<button type="button" class="btn btn-danger btn-xs">Reject</button>
+							</td>
+						</tr>
+					</table>
+				</li>
+			</ul>
+		  </div>
+		</div>
+		
+		
+			
 	</div>
 </div>
