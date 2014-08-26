@@ -11,7 +11,7 @@ public interface EmployeRepository extends JpaRepository<Employe, Long> ,JpaSpec
 
 	Employe findByUsername(String username);
 
-	Page<Employe> findByNomLike(String string, Pageable pageRequest);
+	Page<Employe> findByLastNameLike(String string, Pageable pageRequest);
 
-	Page<Employe> findByPrenomLike(String string, Pageable pageRequest);
+	Page<Employe> findByFirstNameLike(String string, Pageable pageRequest);
 }

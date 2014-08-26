@@ -21,7 +21,7 @@ public class RestCrudControllerAdapter<DTO> implements RestCrudController<DTO> {
 	 * @see fr.wati.yacramanager.web.rest.RestCrudController#read(java.lang.Long)
 	 */
 	@Override
-	public DTO read(Long id) {
+	public ResponseEntity<DTO> read(Long id) {
 		return null;
 	}
 

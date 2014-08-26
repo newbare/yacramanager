@@ -12,6 +12,7 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeComparator;
 import org.joda.time.DateTimeConstants;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import com.google.common.collect.Lists;
@@ -47,6 +48,8 @@ public class CraServiceImpl implements CraService {
 
 	@Autowired
 	private EmployeService employeService;
+
+	private ApplicationEventPublisher applicationEventPublisher;
 
 	@Override
 	public CraDTO generateCra(Employe employe, DateTime startDate,
@@ -261,4 +264,16 @@ public class CraServiceImpl implements CraService {
 		return craDTO;
 	}
 
+	@Override
+	public void setApplicationEventPublisher(
+			ApplicationEventPublisher applicationEventPublisher) {
+		this.applicationEventPublisher=applicationEventPublisher;
+	}
+
+	@Override
+	public void approve(Iterable<Employe> employes, DateTime startDate,
+			DateTime endDate) {
+		// TODO Auto-generated method stub
+		
+	}
 }

@@ -45,8 +45,11 @@ public class CompanyController implements RestCrudController<CompanyDTO> {
 	
 	@Override
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public @ResponseBody CompanyDTO read(@PathVariable("id") Long id) {
-		return companyService.toCompanyDTO(companyService.findOne(id));
+	public @ResponseBody ResponseEntity<CompanyDTO> read(@PathVariable("id") Long id) {
+		if(companyService.exists(id)){
+			return new ResponseEntity<CompanyDTO>(companyService.toCompanyDTO(companyService.findOne(id)), HttpStatus.OK);
+		}
+		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
 
 	@Override

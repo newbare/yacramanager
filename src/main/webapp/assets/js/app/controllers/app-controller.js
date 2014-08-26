@@ -315,8 +315,8 @@ App.config([ '$stateProvider', '$urlRouterProvider','$locationProvider',
 				//controller : EntrepriseController,
 			}).state('company.employees', {
 				url : "/employees",
-				templateUrl : _contextPath+'/views/app/templates/partials/panel-view.html'
-				//controller : CompanyEmployeesController
+				templateUrl : _contextPath+'/views/app/templates/partials/panel-view.html',
+				controller : CompanyEmployeesController
 			}).state('company.employees.details', {
 				url : "/details/:id",
 				templateUrl : _contextPath+'/views/app/company/employees/company-employees-overview.html',

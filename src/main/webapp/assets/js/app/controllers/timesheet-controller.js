@@ -231,8 +231,10 @@ function TimeSheetController($scope,$rootScope,$http,$sce,WorkLogCRUDREST,alertS
     	 worklog.employeId=_userId;
     	 
     	 WorkLogCRUDREST.save(worklog).$promise.then(function(result) {
+    		 $scope.currentView.calendar.refetchEvents();
     		 hideFn();
-    		 alertService.show('info','Confirmation', 'Donn� sauvegard�');
+    		 alertService.show('success','Confirmation', 'Donn� sauvegard�');
+    		 $scope.resetWorklogForm();
 		});
     	
     };

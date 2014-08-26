@@ -37,7 +37,7 @@
 				
 				<div class="table-responsive">
 						<table class="table table-hover" data-ng-table="tableParams" data-ng-show="hasDatas">
-							<tr align="left" style="vertical-align: middle;" data-ng-repeat="note in $data">
+							<tr data-ng-repeat="note in $data">
 								<td style="width:20px;" data-header="'ng-table/headers/checkbox.html'">
 									<label class="checkbox-inline">
 									  <input type="checkbox"  data-ng-model="checkboxes.items[note.id]">
@@ -45,17 +45,17 @@
 								</td>
 								<td data-title="'Date'" data-sortable="'date'">{{ note.date | date : 'short'}}</td>
 								<td data-title="'Employee'" data-sortable="'employe'" >{{ note.employeName}}</td>
-								<td data-title="'Description'" data-sortable="'description'">{{ note.description}}</td>
+								<td data-title="'Description'" data-sortable="'description'" class="hidden-xs">{{ note.description}}</td>
 								<td data-title="'Amount'" data-sortable="'amount'">{{ note.amount | currency:"EUR " }} </td>
-								<td data-title="'Validation'" data-sortable="'validationStatus'" align="right"><span class="label" data-ng-class="{'label-success' : isValidated(note) , 'label-warning' : isWaiting(note), 'label-danger' : isRejected(note)}">{{note.validationStatus}}</span></td>
+								<td data-title="'Validation'" data-sortable="'validationStatus'"><span class="label" data-ng-class="{'label-success' : isValidated(note) , 'label-warning' : isWaiting(note), 'label-danger' : isRejected(note)}">{{note.validationStatus}}</span></td>
 								<td style="width:20px;" align="center" data-header="'ng-table/headers/attachement.html'">
 									<a href="api/attachements/{{id}}" data-ng-repeat="id in note.attachementsIds" data-ng-show="note.attachementsIds.length>0" >
 										<i class="fa fa-cloud-download"></i>
 									</a>
 								</td>
-								<td style="width:20px;">
+								<td class="tool-btn-col">
 									<div class="btn-group">
-									  <button type="button" class="btn btn-link dropdown-toggle" style="color: grey;" data-toggle="dropdown">
+									  <button type="button" class="btn btn-link dropdown-toggle tool-btn" style="color: grey;" data-toggle="dropdown">
 									    <i class="fa fa-cog"></i><span class="caret"></span>
 									  </button>
 									  <ul class="dropdown-menu table-action" role="menu">
@@ -83,41 +83,43 @@
 				<!-- Iterate over Employe -->
 				<li class="list-group-item" data-ng-repeat="approvement in approvements" style="border: none;">
 					<h4><span class="text-muted"><i class="fa fa-user"></i><strong> {{approvement.employeFirstName}} {{approvement.employeLastName}}</strong></span></h4>
-					<table class="table table-hover">
-						<tr>
-							<th style="width:20px;">
-								<label class="checkbox-inline">
-								  <input type="checkbox"  data-ng-model="checkboxes.items[absence.id]">
-								</label>
-							</th>
-							<th>Submit date</th>
-							<th>Description</th>
-							<th>Amount</th>
-							<th>Attachements</th>
-							<th>Status</th>
-							<th></th>
-						</tr>
-						<tr data-ng-repeat="expense in approvement.approvalEntities">
-							<td>
-								<label class="checkbox-inline">
-								  <input type="checkbox"  data-ng-model="checkboxes.items[absence.id]">
-								</label>
-							</td>
-							<td>{{ expense.date | date : 'short'}}</td>
-							<td>{{ expense.description}}</td>
-							<td>{{ expense.amount | currency:"EUR " }}</td>
-							<td style="width:20px;" align="center" >
-									<a href="api/attachements/{{id}}" data-ng-repeat="id in expense.attachementsIds" data-ng-show="expense.attachementsIds.length>0" >
-										<i class="fa fa-cloud-download"></i>
-									</a>
-							</td>
-							<td><span class="label" data-ng-class="{'label-success' : isValidated(expense) , 'label-warning' : isWaiting(expense), 'label-danger' : isRejected(expense)}">{{expense.validationStatus}}</span></td>
-							<td>
-								<button type="button" class="btn btn-success btn-xs" data-ng-click="approve(expense.id)">Approve</button>
-								<button type="button" class="btn btn-danger btn-xs" data-ng-click="reject(expense.id)">Reject</button>
-							</td>
-						</tr>
-					</table>
+					<div class="table-responsive">
+						<table class="table table-hover">
+							<tr>
+								<th style="width:20px;">
+									<label class="checkbox-inline">
+									  <input type="checkbox"  data-ng-model="checkboxes.items[absence.id]">
+									</label>
+								</th>
+								<th>Submit date</th>
+								<th class="hidden-xs">Description</th>
+								<th>Amount</th>
+								<th><i class="fa fa-paperclip"></i></th>
+								<th>Status</th>
+								<th></th>
+							</tr>
+							<tr data-ng-repeat="expense in approvement.approvalEntities">
+								<td>
+									<label class="checkbox-inline">
+									  <input type="checkbox"  data-ng-model="checkboxes.items[absence.id]">
+									</label>
+								</td>
+								<td>{{ expense.date | date : 'short'}}</td>
+								<td class="hidden-xs">{{ expense.description}}</td>
+								<td>{{ expense.amount | currency:"EUR " }}</td>
+								<td style="width:20px;" align="center" >
+										<a href="api/attachements/{{id}}" data-ng-repeat="id in expense.attachementsIds" data-ng-show="expense.attachementsIds.length>0" >
+											<i class="fa fa-cloud-download"></i>
+										</a>
+								</td>
+								<td><span class="label" data-ng-class="{'label-success' : isValidated(expense) , 'label-warning' : isWaiting(expense), 'label-danger' : isRejected(expense)}">{{expense.validationStatus}}</span></td>
+								<td>
+									<button type="button" class="btn btn-success btn-xs" data-ng-click="approve(expense.id)">Approve</button>
+									<button type="button" class="btn btn-danger btn-xs" data-ng-click="reject(expense.id)">Reject</button>
+								</td>
+							</tr>
+						</table>
+					</div>
 				</li>
 			</ul>
 		  </div>

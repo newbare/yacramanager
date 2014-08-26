@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -42,6 +43,8 @@ public class ClientServiceImpl implements ClientService {
 	
 	@Autowired
 	private ProjectService projectService;
+
+	private ApplicationEventPublisher applicationEventPublisher;
 	
 	@Override
 	public <S extends Client> S save(S entity) {
@@ -167,5 +170,10 @@ public class ClientServiceImpl implements ClientService {
 			}
 		}
 		return null;
+	}
+	@Override
+	public void setApplicationEventPublisher(
+			ApplicationEventPublisher applicationEventPublisher) {
+		this.applicationEventPublisher=applicationEventPublisher;
 	}
 }

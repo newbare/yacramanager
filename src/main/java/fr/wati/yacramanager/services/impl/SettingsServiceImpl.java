@@ -3,6 +3,7 @@ package fr.wati.yacramanager.services.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -29,6 +30,8 @@ public class SettingsServiceImpl implements SettingsService {
 	
 	@Autowired
 	private CompanyRepository companyRepository;
+
+	private ApplicationEventPublisher applicationEventPublisher;
 	
 	@Override
 	public <S extends Settings> S save(S entity) {
@@ -117,4 +120,9 @@ public class SettingsServiceImpl implements SettingsService {
 		findOne.getSettings().add(settings);
 	}
 
+	@Override
+	public void setApplicationEventPublisher(
+			ApplicationEventPublisher applicationEventPublisher) {
+		this.applicationEventPublisher=applicationEventPublisher;
+	}
 }

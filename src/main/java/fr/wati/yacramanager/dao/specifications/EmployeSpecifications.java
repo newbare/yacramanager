@@ -11,7 +11,7 @@ import org.joda.time.DateTime;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.domain.Specifications;
 
-import fr.wati.yacramanager.beans.Civilite;
+import fr.wati.yacramanager.beans.Gender;
 import fr.wati.yacramanager.beans.Company;
 import fr.wati.yacramanager.beans.Employe;
 import fr.wati.yacramanager.beans.Employe_;
@@ -32,7 +32,7 @@ public class EmployeSpecifications {
 		return new Specification<Employe>() {
 			public Predicate toPredicate(Root<Employe> root,
 					CriteriaQuery<?> query, CriteriaBuilder builder) {
-				return builder.like(builder.lower(root.get(Employe_.prenom)), "%" + searchTerm.toLowerCase() + "%");
+				return builder.like(builder.lower(root.get(Employe_.firstName)), "%" + searchTerm.toLowerCase() + "%");
 			}
 		};
 	}
@@ -42,7 +42,7 @@ public class EmployeSpecifications {
 		return new Specification<Employe>() {
 			public Predicate toPredicate(Root<Employe> root,
 					CriteriaQuery<?> query, CriteriaBuilder builder) {
-				return builder.between(root.get(Employe_.dateNaissance),
+				return builder.between(root.get(Employe_.birthDay),
 						startRangeDate, endRangeDate);
 			}
 		};
@@ -73,7 +73,7 @@ public class EmployeSpecifications {
 		return new Specification<Employe>() {
 			public Predicate toPredicate(Root<Employe> root,
 					CriteriaQuery<?> query, CriteriaBuilder builder) {
-				return builder.like(builder.lower(root.get(Employe_.nom)), "%" + searchTerm.toLowerCase() + "%");
+				return builder.like(builder.lower(root.get(Employe_.lastName)), "%" + searchTerm.toLowerCase() + "%");
 			}
 		};
 	}
@@ -82,25 +82,25 @@ public class EmployeSpecifications {
 	 * @param civilities
 	 * @return
 	 */
-	public static Specification<Employe> withCivilities(
-			List<Civilite> civilities) {
+	public static Specification<Employe> withGenders(
+			List<Gender> civilities) {
 		Specifications<Employe> specifications=null;
-		for(Civilite civility:civilities){
+		for(Gender civility:civilities){
 			if(specifications==null){
-				specifications=Specifications.where(withCivility(civility));
+				specifications=Specifications.where(withGender(civility));
 			}else {
-				specifications=specifications.or(withCivility(civility));
+				specifications=specifications.or(withGender(civility));
 			}
 		}
 		return specifications;
 	}
 	
 	
-	public static Specification<Employe> withCivility(final Civilite typeAbsence) {
+	public static Specification<Employe> withGender(final Gender gender) {
 		return new Specification<Employe>() {
 			public Predicate toPredicate(Root<Employe> root,
 					CriteriaQuery<?> query, CriteriaBuilder builder) {
-				return builder.equal(root.get(Employe_.civilite),typeAbsence);
+				return builder.equal(root.get(Employe_.gender),gender);
 			}
 		};
 	}

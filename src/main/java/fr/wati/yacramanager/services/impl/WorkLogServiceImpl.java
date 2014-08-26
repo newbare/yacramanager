@@ -4,16 +4,19 @@ import java.util.List;
 
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import fr.wati.yacramanager.beans.Activities.ActivityOperation;
 import fr.wati.yacramanager.beans.Employe;
 import fr.wati.yacramanager.beans.ValidationStatus;
 import fr.wati.yacramanager.beans.WorkLog;
 import fr.wati.yacramanager.dao.repository.WorkLogRepository;
+import fr.wati.yacramanager.listeners.ActivityEvent;
 import fr.wati.yacramanager.services.EmployeService;
 import fr.wati.yacramanager.services.ServiceException;
 import fr.wati.yacramanager.services.SpecificationFactory;
@@ -29,10 +32,17 @@ public class WorkLogServiceImpl implements WorkLogService,SpecificationFactory<W
 	
 	@Autowired
 	private EmployeService employeService;
+
+	private ApplicationEventPublisher applicationEventPublisher;
 	
 	@Override
 	public <S extends WorkLog> S save(S entity) {
-		return workLogRepository.save(entity);
+		S save = workLogRepository.save(entity);
+		applicationEventPublisher.publishEvent(ActivityEvent
+				.createWithSource(this).user()
+				.operation(ActivityOperation.CREATE)
+				.onEntity(WorkLog.class, save.getId()));
+		return save;
 	}
 
 	@Override
@@ -125,7 +135,12 @@ public class WorkLogServiceImpl implements WorkLogService,SpecificationFactory<W
 	public void validate(Employe validator, WorkLog workLog) throws ServiceException {
 		WorkLog findOne = workLogRepository.findOne(workLog.getId());
 		if(employeService.isManager(validator.getId(), findOne.getEmploye().getId())){
-			workLog.setValidationStatus(ValidationStatus.APPROVED);
+			findOne.setValidationStatus(ValidationStatus.APPROVED);
+			workLogRepository.save(findOne);
+			applicationEventPublisher.publishEvent(ActivityEvent
+					.createWithSource(this).user()
+					.operation(ActivityOperation.VALIDATE)
+					.onEntity(WorkLog.class, findOne.getId()));
 		}else {
 			throw new ServiceException(validator.getFullName()+ " is not the manager of "+findOne.getEmploye().getFullName());
 		}
@@ -135,7 +150,12 @@ public class WorkLogServiceImpl implements WorkLogService,SpecificationFactory<W
 	public void reject(Employe validator, WorkLog workLog) throws ServiceException {
 		WorkLog findOne = workLogRepository.findOne(workLog.getId());
 		if(employeService.isManager(validator.getId(), findOne.getEmploye().getId())){
-			workLog.setValidationStatus(ValidationStatus.REJECTED);
+			findOne.setValidationStatus(ValidationStatus.REJECTED);
+			workLogRepository.save(findOne);
+			applicationEventPublisher.publishEvent(ActivityEvent
+					.createWithSource(this).user()
+					.operation(ActivityOperation.REJECT)
+					.onEntity(WorkLog.class, findOne.getId()));
 		}else {
 			throw new ServiceException(validator.getFullName()+ " is not the manager of "+findOne.getEmploye().getFullName());
 		}
@@ -149,4 +169,9 @@ public class WorkLogServiceImpl implements WorkLogService,SpecificationFactory<W
 		return null;
 	}
 
+	@Override
+	public void setApplicationEventPublisher(
+			ApplicationEventPublisher applicationEventPublisher) {
+		this.applicationEventPublisher=applicationEventPublisher;
+	}
 }

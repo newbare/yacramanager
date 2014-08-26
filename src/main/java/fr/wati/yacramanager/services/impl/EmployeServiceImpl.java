@@ -9,6 +9,7 @@ import org.dozer.Mapper;
 import org.dozer.spring.DozerBeanMapperFactoryBean;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -17,7 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import fr.wati.yacramanager.beans.Civilite;
+import fr.wati.yacramanager.beans.Gender;
 import fr.wati.yacramanager.beans.Company;
 import fr.wati.yacramanager.beans.Contact;
 import fr.wati.yacramanager.beans.Employe;
@@ -55,6 +56,8 @@ public class EmployeServiceImpl implements EmployeService {
 	
 	@Autowired
 	private RoleRepository roleRepository;
+
+	private ApplicationEventPublisher applicationEventPublisher;
 
 	public EmployeServiceImpl() {
 	}
@@ -137,8 +140,8 @@ public class EmployeServiceImpl implements EmployeService {
 		employe.setUsername(registrationDTO.getUsername());
 		employe.setPassword(passwordEncoder.encode(registrationDTO.getPassword()));
 		employe.setEnabled(true);
-		employe.setNom(registrationDTO.getLastName());
-		employe.setPrenom(registrationDTO.getFirstName());
+		employe.setLastName(registrationDTO.getLastName());
+		employe.setFirstName(registrationDTO.getFirstName());
 		Contact contact=new Contact();
 		contact.setEmail(registrationDTO.getEmail());
 		employe.setContact(contact);
@@ -209,26 +212,26 @@ public class EmployeServiceImpl implements EmployeService {
 					return EmployeSpecifications.forCompanies(companies);
 				}
 				if("civilite".equals(filter.getField())){
-					List<Civilite> civilities=new ArrayList<>();
+					List<Gender> civilities=new ArrayList<>();
 					for(FilterArrayValue filterArrayValue: filterArray.getValue()){
-						civilities.add(Civilite.valueOf(filterArrayValue.getName()));
+						civilities.add(Gender.valueOf(filterArrayValue.getName()));
 					}
-					return EmployeSpecifications.withCivilities(civilities);
+					return EmployeSpecifications.withGenders(civilities);
 				}
 				break;
 			case TEXT:
 				FilterText filterText=(FilterText) filter;
-				if("nom".equals(filterText.getField())){
+				if("lastName".equals(filterText.getField())){
 					return EmployeSpecifications.lastNamelike(filterText.getValue());
 				}
-				if("prenom".equals(filterText.getField())){
+				if("firstName".equals(filterText.getField())){
 					return EmployeSpecifications.firstNamelike(filterText.getValue());
 				}
 				break;
 			case DATE:
 			case DATE_RANGE:
 				FilterDate filterDate=(FilterDate) filter;
-				if("dateNaissance".equals(filter.getField())){
+				if("birthDay".equals(filter.getField())){
 					return EmployeSpecifications.birthDayBetween(filterDate.getValue().getStart(), filterDate.getValue().getEnd());
 				}
 				break;
@@ -247,12 +250,12 @@ public class EmployeServiceImpl implements EmployeService {
 		}
 		Company company=companyService.findOne(companyId);
 		Employe employe = new Employe();
-		employe.setPrenom(employeDto.getPrenom());
-		employe.setNom(employeDto.getNom());
-		employe.setUsername(getDefaultUsername(employeDto.getPrenom(), employeDto.getNom()));
+		employe.setFirstName(employeDto.getFirstName());
+		employe.setLastName(employeDto.getLastName());
+		employe.setUsername(getDefaultUsername(employeDto.getFirstName(), employeDto.getLastName()));
 		employe.setPassword(employeDto.getPassword());
-		employe.setCivilite(employeDto.getCivilite());
-		employe.setDateNaissance(employeDto.getDateNaissance());
+		employe.setGender(employeDto.getGender());
+		employe.setBirthDay(employeDto.getBirthDay());
 		employe.getContact().setEmail(employeDto.getEmail());
 		employe.setCompany(company);
 		
@@ -274,5 +277,10 @@ public class EmployeServiceImpl implements EmployeService {
 	@Override
 	public boolean isManager(Long requester, Long employeId) {
 		return getManagedEmployees(requester).contains(employeRepository.findOne(employeId));
+	}
+	@Override
+	public void setApplicationEventPublisher(
+			ApplicationEventPublisher applicationEventPublisher) {
+		this.applicationEventPublisher=applicationEventPublisher;
 	}
 }

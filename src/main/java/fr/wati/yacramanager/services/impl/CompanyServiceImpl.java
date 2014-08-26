@@ -1,6 +1,7 @@
 package fr.wati.yacramanager.services.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -28,6 +29,7 @@ public class CompanyServiceImpl implements CompanyService {
 	private CompanyRepository companyRepository;
 	@Autowired
 	private ClientService clientService;
+	private ApplicationEventPublisher applicationEventPublisher;
 
 	@Override
 	public <S extends Company> S save(S entity) {
@@ -99,7 +101,7 @@ public class CompanyServiceImpl implements CompanyService {
 
 	@Override
 	public CompanyDTO toCompanyDTO(Company company) {
-		CompanyDTO companyDTO=new CompanyDTO();
+		CompanyDTO companyDTO = new CompanyDTO();
 		companyDTO.setId(company.getId());
 		companyDTO.setName(company.getName());
 		companyDTO.setRegisteredDate(company.getRegisteredDate());
@@ -118,35 +120,46 @@ public class CompanyServiceImpl implements CompanyService {
 		return companyRepository.findAll(spec, pageable);
 	}
 
-	/* (non-Javadoc)
-	 * @see fr.wati.yacramanager.services.SpecificationFactory#buildSpecification(fr.wati.yacramanager.utils.Filter)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * fr.wati.yacramanager.services.SpecificationFactory#buildSpecification
+	 * (fr.wati.yacramanager.utils.Filter)
 	 */
 	@Override
 	public Specification<Company> buildSpecification(Filter filter) {
-		if(filter!=null){
+		if (filter != null) {
 			FilterType filterType = filter.getType();
 			switch (filterType) {
 			case TEXT:
-				FilterText filterText=(FilterText) filter;
-				if("name".equals(filterText.getField())){
-					return CommonSpecifications.likeIgnoreCase(filterText.getValue(), Company_.name);
+				FilterText filterText = (FilterText) filter;
+				if ("name".equals(filterText.getField())) {
+					return CommonSpecifications.likeIgnoreCase(
+							filterText.getValue(), Company_.name);
 				}
 				break;
 			case DATE:
 			case DATE_RANGE:
-				FilterDate filterDate=(FilterDate) filter;
-				if("registeredDate".equals(filter.getField())){
-					if(filterDate.isRangedDate()){
-						return CommonSpecifications.betweenDate(filterDate.getValue().getStart(), filterDate.getValue().getEnd(), Company.class,"registeredDate");
-					}else {
-						return CommonSpecifications.equals(filterDate.getValue().getDate(), Company_.registeredDate);
+				FilterDate filterDate = (FilterDate) filter;
+				if ("registeredDate".equals(filter.getField())) {
+					if (filterDate.isRangedDate()) {
+						return CommonSpecifications.betweenDate(filterDate
+								.getValue().getStart(), filterDate.getValue()
+								.getEnd(), Company.class, "registeredDate");
+					} else {
+						return CommonSpecifications.equals(filterDate
+								.getValue().getDate(), Company_.registeredDate);
 					}
 				}
-				if("licenseEndDate".equals(filter.getField())){
-					if(filterDate.isRangedDate()){
-						return CommonSpecifications.betweenDate(filterDate.getValue().getStart(), filterDate.getValue().getEnd(), Company.class,"licenseEndDate");
-					}else {
-						return CommonSpecifications.equals(filterDate.getValue().getDate(), Company_.licenseEndDate);
+				if ("licenseEndDate".equals(filter.getField())) {
+					if (filterDate.isRangedDate()) {
+						return CommonSpecifications.betweenDate(filterDate
+								.getValue().getStart(), filterDate.getValue()
+								.getEnd(), Company.class, "licenseEndDate");
+					} else {
+						return CommonSpecifications.equals(filterDate
+								.getValue().getDate(), Company_.licenseEndDate);
 					}
 				}
 				break;
@@ -157,4 +170,9 @@ public class CompanyServiceImpl implements CompanyService {
 		return null;
 	}
 
+	@Override
+	public void setApplicationEventPublisher(
+			ApplicationEventPublisher applicationEventPublisher) {
+		this.applicationEventPublisher = applicationEventPublisher;
+	}
 }

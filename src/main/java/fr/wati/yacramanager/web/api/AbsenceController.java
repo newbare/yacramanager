@@ -62,8 +62,11 @@ public class AbsenceController implements RestCrudController<AbsenceDTO>,Approva
 	@Override
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public @ResponseBody
-	AbsenceDTO read(@PathVariable("id") Long id) {
-		return DtoMapper.map(absenceService.findOne(id));
+	ResponseEntity<AbsenceDTO> read(@PathVariable("id") Long id) {
+		if(absenceService.exists(id)){
+			return new ResponseEntity<AbsenceDTO>(DtoMapper.map(absenceService.findOne(id)),HttpStatus.OK);
+		}
+		return new ResponseEntity<AbsenceDTO>(HttpStatus.NOT_FOUND);
 	}
 
 	@Override
@@ -176,8 +179,8 @@ public class AbsenceController implements RestCrudController<AbsenceDTO>,Approva
 		for(Entry<Employe, List<Absence>> entry:employeAbsencesMap.entrySet()){
 			ApprovalDTO<AbsenceDTO> approvalDTO=new ApprovalDTO<>();
 			approvalDTO.setEmployeId(entry.getKey().getId());
-			approvalDTO.setEmployeFirstName(entry.getKey().getPrenom());
-			approvalDTO.setEmployeLastName(entry.getKey().getNom());
+			approvalDTO.setEmployeFirstName(entry.getKey().getFirstName());
+			approvalDTO.setEmployeLastName(entry.getKey().getLastName());
 			approvalDTO.setApprovalEntities(DtoMapper.mapAbsences(entry.getValue()));
 			approvalDTOs.add(approvalDTO);
 		}

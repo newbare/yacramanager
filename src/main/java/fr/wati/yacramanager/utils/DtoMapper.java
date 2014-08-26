@@ -186,13 +186,13 @@ public class DtoMapper {
 		EmployeDto dto = new EmployeDto();
 		dto.setId(Long.valueOf(employe.getId().toString()));
 		dto.setUsername(employe.getUsername());
-		dto.setNom(employe.getNom());
-		dto.setPrenom(employe.getPrenom());
-		dto.setCivilite(employe.getCivilite());
+		dto.setLastName(employe.getLastName());
+		dto.setFirstName(employe.getFirstName());
+		dto.setGender(employe.getGender());
 		dto.setCodePostal(employe.getContact().getAdresse().getCodePostal());
 		dto.setEmail(employe.getContact().getEmail());
 		dto.setRue(employe.getContact().getAdresse().getRue());
-		dto.setDateNaissance(employe.getDateNaissance());
+		dto.setBirthDay(employe.getBirthDay());
 		dto.setNumeroTelephone(employe.getContact().getNumeroTelephone());
 		return dto;
 	}

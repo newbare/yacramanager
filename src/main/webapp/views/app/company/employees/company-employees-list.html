@@ -30,12 +30,12 @@
 			<tr align="left" data-ng-repeat="user in $data"
 				data-ng-click="user.$selected = !user.$selected; changeSelection(user)"
 				data-ng-class="{'active': user.$selected}">
-				<td data-title="'First name'" data-sortable="'prenom'">{{user.prenom}}</td>
-				<td data-title="'Last name'" data-sortable="'nom'">{{user.nom}}</td>
-				<td data-title="'Civility'" data-sortable="'civilite'">{{
-					user.civilite}}</td>
-				<td data-title="'Birthday'" data-sortable="'dateNaissance'">{{
-					user.dateNaissance | date : dateFormat }}</td>
+				<td data-title="'First name'" data-sortable="'firstName'">{{user.firstName}}</td>
+				<td data-title="'Last name'" data-sortable="'lastName'">{{user.lastName}}</td>
+				<td data-title="'Gender'" data-sortable="'gender'">{{
+					user.gender}}</td>
+				<td data-title="'Birthday'" data-sortable="'birthDay'">{{
+					user.birthDay | date : dateFormat }}</td>
 				<td style="width: 20px;">
 					<div class="btn-group">
 						<button type="button" class="btn btn-link dropdown-toggle"
