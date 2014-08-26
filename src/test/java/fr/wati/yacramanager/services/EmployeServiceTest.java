@@ -40,16 +40,16 @@ public class EmployeServiceTest extends
 		company.setName("company-test");
 		Company createCompany = companyService.createCompany(company);
 		Employe employe = new Employe();
-		employe.setNom("name");
-		employe.setPrenom("prenom");
+		employe.setLastName("name");
+		employe.setFirstName("prenom");
 		employe.setUsername("username");
 		employe.setPassword("password");
-		employe.setDateNaissance(new DateTime());
+		employe.setBirthDay(new DateTime());
 		employe.setCompany(createCompany);
 		Employe saveEmploye = employeService.save(employe);
 		Employe manager = new Employe();
-		manager.setNom("Manager");
-		manager.setPrenom("Manager");
+		manager.setLastName("Manager");
+		manager.setFirstName("Manager");
 		employeService.save(manager);
 		employeService.addManagedEmploye(manager.getId(), saveEmploye.getId());
 		UserInfoDTO userInfoDTO = employeService.toUserInfoDTO(saveEmploye
@@ -60,17 +60,17 @@ public class EmployeServiceTest extends
 	@Test
 	public void testRetrieveManagedEmployees() {
 		Employe manager = new Employe();
-		manager.setNom("Manager");
-		manager.setPrenom("Manager");
+		manager.setLastName("Manager");
+		manager.setFirstName("Manager");
 		employeService.save(manager);
 		Employe managedEmploye1 = new Employe();
-		managedEmploye1.setNom("managedEmploye1");
-		managedEmploye1.setPrenom("managedEmploye1");
+		managedEmploye1.setLastName("managedEmploye1");
+		managedEmploye1.setFirstName("managedEmploye1");
 		employeService.save(managedEmploye1);
 		employeService.addManagedEmploye(manager.getId(), managedEmploye1.getId());
 		Employe managedEmploye2 = new Employe();
-		managedEmploye2.setNom("managedEmploye2");
-		managedEmploye2.setPrenom("managedEmploye2");
+		managedEmploye2.setLastName("managedEmploye2");
+		managedEmploye2.setFirstName("managedEmploye2");
 		employeService.save(managedEmploye2);
 		employeService.addManagedEmploye(manager.getId(), managedEmploye2.getId());
 		List<Employe> managedEmployes=employeService.getManagedEmployees(manager.getId());

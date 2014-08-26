@@ -14,11 +14,29 @@ function CompanyController($scope, $rootScope) {
 };
 
 /*COMPANY-EMPLOYEE section*/
+function CompanyEmployeesController($scope) {
+	$scope.currentTab = 'basicInfos';
+	$scope.activateTab = function(tab) {
+		$scope.currentTab = tab;
+	}
+	$scope.isActiveTab = function(tab) {
+		return tab == $scope.currentTab;
+	}
+	$scope.civilities = [ {
+		value : 'HOMME',
+		text : 'Homme'
+	}, {
+		value : 'FEMME',
+		text : 'Femme'
+	} ];
+}
+
 function CompanyEmployeesViewController($scope, $rootScope,$http,EmployeesCRUDREST,ngTableParams,$state,alertService){
 	$scope.$state=$state;
 	$scope.hasDatas=false;
 	$scope.viewStyle=undefined;
 	$scope.employe={};
+	
 	$scope.companyCriteriaConfig={
 			name:"company",
 			defaultButtonLabel:"Company",
@@ -42,7 +60,7 @@ function CompanyEmployeesViewController($scope, $rootScope,$http,EmployeesCRUDRE
 			displayed: true
 	};
 	$scope.firstNameCriteriaConfig={
-			name:"prenom",
+			name:"firstName",
 			defaultButtonLabel:"First name",
 			filterType:"TEXT",
 			closeable:true,
@@ -55,7 +73,7 @@ function CompanyEmployeesViewController($scope, $rootScope,$http,EmployeesCRUDRE
 	};
 	
 	$scope.lastNameCriteriaConfig={
-			name:"nom",
+			name:"lastName",
 			defaultButtonLabel:"Last name",
 			filterType:"TEXT",
 			closeable:true,
@@ -68,7 +86,7 @@ function CompanyEmployeesViewController($scope, $rootScope,$http,EmployeesCRUDRE
 	};
 	
 	$scope.civilityCriteriaConfig={
-			name:"civilite",
+			name:"gender",
 			defaultButtonLabel:"H/F",
 			filterType:"ARRAY",
 			closeable:true,
@@ -79,11 +97,11 @@ function CompanyEmployeesViewController($scope, $rootScope,$http,EmployeesCRUDRE
 				console.log('Filter checkbox ['+value.field+'] selected items '+value.value.length);
 			},
 			currentFilter:{},
-			displayed: true
+			displayed: false
 	};
 	
 	$scope.dateNaissanceCriteriaConfig={
-			name:"dateNaissance",
+			name:"birthDay",
 			defaultButtonLabel:"Date",
 			filterType:"DATE",
 			closeable:true,
@@ -92,7 +110,7 @@ function CompanyEmployeesViewController($scope, $rootScope,$http,EmployeesCRUDRE
 				console.log('Filter text ['+value.field+'] searching: '+value.value);
 			},
 			currentFilter:{},
-			displayed: true
+			displayed: false
 	};
 	
 	$scope.criteriaBarConfig={
@@ -189,10 +207,21 @@ function CompanyEmployeesListController($scope, $rootScope,$http,EmployeesCRUDRE
 function CompanyEmployeesOverviewController($scope,EmployeesCRUDREST, $stateParams){
 	$scope.employeId=$stateParams.id;
 	$scope.employe=undefined;
-	EmployeesCRUDREST.get(
-			{id:$scope.employeId},function(data) {
-				$scope.employe=data;
-			});
+	$scope.refresh=function(){
+		EmployeesCRUDREST.get(
+				{id:$scope.employeId},function(data) {
+					$scope.employe=data;
+				},function(error){
+					$scope.employe=undefined;
+				});
+	};
+	
+	$scope.refresh();
+	
+	$scope.updateEmploye = function() {
+		return EmployeesCRUDREST.update($scope.employe);
+		
+	};
 }
 /*COMPANY-EMPLOYEE End of section*/
 

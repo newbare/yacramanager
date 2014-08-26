@@ -86,8 +86,11 @@ public class WorkLogRestController implements RestCrudController<WorkLogDTO>{
 	@Override
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public @ResponseBody
-	WorkLogDTO read(@PathVariable("id") Long id) {
-		return DtoMapper.map(workLogService.findOne(id));
+	ResponseEntity<WorkLogDTO> read(@PathVariable("id") Long id) {
+		if(workLogService.exists(id)){
+			return new ResponseEntity<WorkLogDTO>(DtoMapper.map(workLogService.findOne(id)), HttpStatus.OK);
+		}
+		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
 
 

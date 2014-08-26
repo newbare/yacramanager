@@ -10,7 +10,7 @@
 					data-ng-class="{'active': employe.$selected}">
 					<td data-title="'Employees'" data-sortable="'nom'">
 						<a data-ui-sref="company.employees.view.quick.overview({ id: employe.id })">
-							{{employe.nom}} {{employe.prenom}}
+							{{employe.lastName}} {{employe.firstName}}
 						</a>
 					</td>
 				</tr>
@@ -18,7 +18,7 @@
 		</div>
 	</div>
 	<div class="col-md-10">
-		<div class="panel panel-default">
+		<div class="panel panel-default sub-panel">
 			<div class="panel-body"><div data-ui-view class=""></div></div>
 		</div>
 	</div>

@@ -53,13 +53,13 @@ public class UserRestController implements RestCrudController<EmployeDto> {
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public @ResponseBody
-	EmployeDto read(@PathVariable("id") Long id) {
+		ResponseEntity<EmployeDto> read(@PathVariable("id") Long id) {
 
 		Employe findOne = employeRepository.findOne(id);
 		if (findOne != null) {
-			return DtoMapper.map(findOne);
+			return new ResponseEntity<EmployeDto>(DtoMapper.map(findOne), HttpStatus.OK) ;
 		}
-		return null;
+		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
@@ -67,12 +67,15 @@ public class UserRestController implements RestCrudController<EmployeDto> {
 	public void update(@PathVariable("id") Long id,
 			@RequestBody EmployeDto employeDto) {
 		Employe employe = employeRepository.findOne(id.longValue());
-		employe.setPrenom(employeDto.getPrenom());
-		employe.setNom(employeDto.getNom());
-		employe.setUsername(employeDto.getUsername());
-		employe.setCivilite(employeDto.getCivilite());
-		employe.setDateNaissance(employeDto.getDateNaissance());
+		employe.setFirstName(employeDto.getFirstName());
+		employe.setLastName(employeDto.getLastName());
+		employe.setUsername(employeDto. getUsername());
+		employe.setGender(employeDto.getGender());
+		employe.setBirthDay(employeDto.getBirthDay());
 		employe.getContact().setEmail(employeDto.getEmail());
+		employe.getContact().setNumeroTelephone(employeDto.getNumeroTelephone());
+		employe.getContact().getAdresse().setCodePostal(employeDto.getCodePostal());
+		employe.getContact().getAdresse().setRue(employeDto.getRue());
 		employeService.save(employe);
 	}
 
@@ -80,7 +83,7 @@ public class UserRestController implements RestCrudController<EmployeDto> {
 	public ResponseEntity<String> create(@RequestBody EmployeDto employeDto) {
 		
 		employeService.createNewEmployee(employeDto, employeDto.getCompanyId(), employeDto.getManagerId());
-		return new ResponseEntity<String>(employeDto.getNom() + " created",
+		return new ResponseEntity<String>(employeDto.getLastName() + " created",
 				HttpStatus.CREATED);
 	}
 

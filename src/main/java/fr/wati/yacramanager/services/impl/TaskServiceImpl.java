@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -27,6 +28,7 @@ public class TaskServiceImpl implements TaskService,SpecificationFactory<Task> {
 	private TaskRepository taskRepository;
 	@Autowired
 	private ProjectRepository  projectRepository;
+	private ApplicationEventPublisher applicationEventPublisher;
 	
 	@Override
 	public <S extends Task> S save(S entity) {
@@ -121,4 +123,9 @@ public class TaskServiceImpl implements TaskService,SpecificationFactory<Task> {
 		return null;
 	}
 
+	@Override
+	public void setApplicationEventPublisher(
+			ApplicationEventPublisher applicationEventPublisher) {
+		this.applicationEventPublisher=applicationEventPublisher;
+	}
 }

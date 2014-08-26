@@ -2,15 +2,15 @@ package fr.wati.yacramanager.dao.repository;
 
 import org.joda.time.DateTime;
 
-import fr.wati.yacramanager.beans.Civilite;
+import fr.wati.yacramanager.beans.Gender;
 
 @SuppressWarnings("serial")
 public class EmployeDto extends UserDto {
 
-	private String nom;
-	private String prenom;
-	private DateTime dateNaissance;
-	private Civilite civilite;
+	private String lastName;
+	private String firstName;
+	private DateTime birthDay;
+	private Gender gender;
 	private String email;
 	private String numeroTelephone;
 	private String rue;
@@ -20,29 +20,29 @@ public class EmployeDto extends UserDto {
 	
 	public EmployeDto() {
 	}
-	public String getNom() {
-		return nom;
+	public String getLastName() {
+		return lastName;
 	}
-	public void setNom(String nom) {
-		this.nom = nom;
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
 	}
-	public String getPrenom() {
-		return prenom;
+	public String getFirstName() {
+		return firstName;
 	}
-	public void setPrenom(String prenom) {
-		this.prenom = prenom;
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
 	}
-	public DateTime getDateNaissance() {
-		return dateNaissance;
+	public DateTime getBirthDay() {
+		return birthDay;
 	}
-	public void setDateNaissance(DateTime dateNaissance) {
-		this.dateNaissance = dateNaissance;
+	public void setBirthDay(DateTime birthDay) {
+		this.birthDay = birthDay;
 	}
-	public Civilite getCivilite() {
-		return civilite;
+	public Gender getGender() {
+		return gender;
 	}
-	public void setCivilite(Civilite civilite) {
-		this.civilite = civilite;
+	public void setGender(Gender gender) {
+		this.gender = gender;
 	}
 	public String getEmail() {
 		return email;

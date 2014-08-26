@@ -114,8 +114,8 @@ public class ProjectServiceTest extends
 		Company saveCompany = companyService.createCompany(company);
 		
 		Employe managedEmploye1 = new Employe();
-		managedEmploye1.setNom("managedEmploye1");
-		managedEmploye1.setPrenom("managedEmploye1");
+		managedEmploye1.setLastName("managedEmploye1");
+		managedEmploye1.setFirstName("managedEmploye1");
 		employeService.save(managedEmploye1);
 		saveCompany.getClients().get(0).getProjects().get(0).getAssignedEmployees().add(managedEmploye1);
 		List<Project> findByAssignedEmployeesIn = projectRepository.findByAssignedEmployeesIn(managedEmploye1);

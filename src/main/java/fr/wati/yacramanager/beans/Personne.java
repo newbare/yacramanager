@@ -21,64 +21,64 @@ import org.joda.time.DateTime;
 public class Personne extends Users {
 
 
-	private String nom;
-	private String prenom;
+	private String lastName;
+	private String firstName;
 	@Past
 	@Type(type="org.joda.time.contrib.hibernate.PersistentDateTime")
-	private DateTime dateNaissance;
-	@Enumerated(EnumType.ORDINAL)
-	private Civilite civilite;
+	private DateTime birthDay;
+	@Enumerated(EnumType.STRING)
+	private Gender gender;
 	@Embedded
 	private Contact contact;
 	
 	
 	/**
-	 * @return the nom
+	 * @return the lastName
 	 */
-	public String getNom() {
-		return nom;
+	public String getLastName() {
+		return lastName;
 	}
 	/**
-	 * @param nom the nom to set
+	 * @param lastName the lastName to set
 	 */
-	public void setNom(String nom) {
-		this.nom = nom;
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
 	}
 	/**
-	 * @return the prenom
+	 * @return the firstName
 	 */
-	public String getPrenom() {
-		return prenom;
+	public String getFirstName() {
+		return firstName;
 	}
 	/**
-	 * @param prenom the prenom to set
+	 * @param firstName the firstName to set
 	 */
-	public void setPrenom(String prenom) {
-		this.prenom = prenom;
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
 	}
 	/**
-	 * @return the dateNaissance
+	 * @return the birthDay
 	 */
-	public DateTime getDateNaissance() {
-		return dateNaissance;
+	public DateTime getBirthDay() {
+		return birthDay;
 	}
 	/**
-	 * @param dateNaissance the dateNaissance to set
+	 * @param dateNaissance the birthDay to set
 	 */
-	public void setDateNaissance(DateTime dateNaissance) {
-		this.dateNaissance = dateNaissance;
+	public void setBirthDay(DateTime birthDay) {
+		this.birthDay = birthDay;
 	}
 	/**
-	 * @return the civilite
+	 * @return the gender
 	 */
-	public Civilite getCivilite() {
-		return civilite;
+	public Gender getGender() {
+		return gender;
 	}
 	/**
-	 * @param civilite the civilite to set
+	 * @param gender the gender to set
 	 */
-	public void setCivilite(Civilite civilite) {
-		this.civilite = civilite;
+	public void setGender(Gender gender) {
+		this.gender = gender;
 	}
 	/**
 	 * @return the contact
@@ -97,7 +97,7 @@ public class Personne extends Users {
 	}
 	
 	public String getFullName(){
-		return String.format("%s %s",prenom,nom);
+		return String.format("%s %s",firstName,lastName);
 	}
 	
 }

@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -48,6 +49,7 @@ public class ProjectServiceImpl implements ProjectService{
 	
 	@Autowired
 	private TaskService taskService;
+	private ApplicationEventPublisher applicationEventPublisher;
 
 	public Project createProject(Long clientId,Project project){
 		Client client=clientRepository.findOne(clientId);
@@ -202,5 +204,9 @@ public class ProjectServiceImpl implements ProjectService{
 	public List<Project> findByAssignedEmployeesIn(Employe employe) {
 		return projectRepository.findByAssignedEmployeesIn(employe);
 	}
-
+	@Override
+	public void setApplicationEventPublisher(
+			ApplicationEventPublisher applicationEventPublisher) {
+		this.applicationEventPublisher=applicationEventPublisher;
+	}
 }

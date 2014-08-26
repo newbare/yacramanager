@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -38,6 +39,8 @@ public class AbsenceServiceImpl implements AbsenceService {
 	
 	@Autowired
 	private EmployeService employeService;
+
+	private ApplicationEventPublisher applicationEventPublisher;
 
 	@Override
 	public Page<Absence> findByStartDateBetween(DateTime dateDebut, DateTime dateFin,
@@ -216,6 +219,12 @@ public class AbsenceServiceImpl implements AbsenceService {
 			absencesToApproved.addAll(absenceRepository.findAll(specifications));
 		}
 		return absencesToApproved;
+	}
+
+	@Override
+	public void setApplicationEventPublisher(
+			ApplicationEventPublisher applicationEventPublisher) {
+		this.applicationEventPublisher=applicationEventPublisher;
 	}
 
 }

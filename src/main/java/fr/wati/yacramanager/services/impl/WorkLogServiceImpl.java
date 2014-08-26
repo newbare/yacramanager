@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -29,6 +30,8 @@ public class WorkLogServiceImpl implements WorkLogService,SpecificationFactory<W
 	
 	@Autowired
 	private EmployeService employeService;
+
+	private ApplicationEventPublisher applicationEventPublisher;
 	
 	@Override
 	public <S extends WorkLog> S save(S entity) {
@@ -149,4 +152,9 @@ public class WorkLogServiceImpl implements WorkLogService,SpecificationFactory<W
 		return null;
 	}
 
+	@Override
+	public void setApplicationEventPublisher(
+			ApplicationEventPublisher applicationEventPublisher) {
+		this.applicationEventPublisher=applicationEventPublisher;
+	}
 }

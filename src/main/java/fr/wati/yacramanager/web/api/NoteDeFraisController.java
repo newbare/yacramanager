@@ -72,8 +72,11 @@ public class NoteDeFraisController extends
 	@Override
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public @ResponseBody
-	NoteDeFraisDTO read(@PathVariable("id") Long id) {
-		return noteDeFraisService.map(noteDeFraisService.findOne(id));
+	ResponseEntity<NoteDeFraisDTO> read(@PathVariable("id") Long id) {
+		if(noteDeFraisService.exists(id)){
+			return new ResponseEntity<NoteDeFraisDTO>(noteDeFraisService.map(noteDeFraisService.findOne(id)), HttpStatus.OK);
+		}
+		return new ResponseEntity<NoteDeFraisDTO>(HttpStatus.NOT_FOUND);
 	}
 
 	@Override
@@ -210,8 +213,8 @@ public class NoteDeFraisController extends
 		for(Entry<Employe, List<NoteDeFrais>> entry:employeAbsencesMap.entrySet()){
 			ApprovalDTO<NoteDeFraisDTO> approvalDTO=new ApprovalDTO<>();
 			approvalDTO.setEmployeId(entry.getKey().getId());
-			approvalDTO.setEmployeFirstName(entry.getKey().getPrenom());
-			approvalDTO.setEmployeLastName(entry.getKey().getNom());
+			approvalDTO.setEmployeFirstName(entry.getKey().getFirstName());
+			approvalDTO.setEmployeLastName(entry.getKey().getLastName());
 			approvalDTO.setApprovalEntities(noteDeFraisService.mapNoteDeFrais(entry.getValue()));
 			approvalDTOs.add(approvalDTO);
 		}

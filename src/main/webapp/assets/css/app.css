@@ -18,10 +18,40 @@
 .tasks .project-list-group-item{
 	border: none;
 }
-table.table .tool-btn{
+
+table.table>tr>td,
+table.table>tbody>tr>td{
+	/* max-width:50px; */
+	width:auto;
+	min-width:10px;
 }
 
+table.editable-form-table tr td:first-child{
+	background-color: #e8e8e8;
+	width: 25%;
+}
 
+@media only screen {
+	table.table>tr>td .tool-btn,table.table>tbody>tr>td .tool-btn {
+		display: none;
+	}
+	table.table>tr:HOVER>td .tool-btn,table.table>tbody>tr:HOVER>td .tool-btn
+		{
+		display: inherit;
+	}
+}
+
+table.table>tr,
+table.table>tbody>tr{
+	vertical-align: middle;
+	height: 40px;
+	text-align: left;
+}
+
+table.table>tr>td.tool-btn-col,
+table.table>tbody>tr>td.tool-btn-col{
+	width: 60px;
+}
 #loading-bar .bar{
 	top: 50px !important;
 	height: 3px !important;
@@ -110,6 +140,10 @@ timer>span {
 .panel {
 	border: 1px solid #e5e5e5 !important;
 	background-color: #fff !important;
+}
+
+.panel.sub-panel{
+	border: none !important;
 }
 
 /* feat: before angular is ready, display loading animation */
@@ -736,28 +770,28 @@ a .badge {
 	text-align: left !important;
 }
 
-input[type="radio"]+span:before,input[type="checkbox"]+span:before {
+/* input[type="radio"]+span:before,input[type="checkbox"]+span:before {
 	font-family: 'FontAwesome';
 	padding-right: 1px;
 	font-size: 15px;
-}
+} */
 
-input[type="radio"]+span:before {
-	content: "\f10c"; /* circle-blank */
+/* input[type="radio"]+span:before {
+	content: "\f10c"; circle-blank
 }
 
 input[type="radio"]:checked+span:before {
-	content: "\f111"; /* circle */
+	content: "\f111"; circle
 }
 
 input[type="checkbox"]+span:before {
-	content: "\f096"; /* check-empty */
+	content: "\f096"; check-empty
 }
 
 input[type="checkbox"]:checked+span:before {
-	content: "\f046"; /* check */
+	content: "\f046"; check
 	color: green;
-}
+} */
 
 span.icon {
 	font-family: FontAwesome;

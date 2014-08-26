@@ -7,6 +7,6 @@ package fr.wati.yacramanager.beans;
  * @author Rachid Ouattara
  *
  */
-public enum Civilite {
+public enum Gender {
 	HOMME,FEMME;
 }

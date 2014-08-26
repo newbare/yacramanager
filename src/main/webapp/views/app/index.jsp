@@ -179,7 +179,7 @@
 					<li
 						data-ng-class="navClass('user-settings') + navClass('user-profile')"
 						class="dropdown"><a href="" class="dropdown-toggle"
-						data-toggle="dropdown"><i class="fa fa-user"></i>{{userInfo.prenom}} {{userInfo.nom}}<span
+						data-toggle="dropdown"><i class="fa fa-user"></i>{{userInfo.firstName}} {{userInfo.lastName}}<span
 							class="caret"></span></a>
 						<ul class="user-menu dropdown-menu inverse-dropdown" role="menu">
 							<li data-ng-class="navClass('messages')" >

@@ -75,7 +75,7 @@ public class TaskRestController extends RestCrudControllerAdapter<TaskDTO> {
 	 * @see fr.wati.yacramanager.web.api.RestCrudControllerAdapter#read(java.lang.Long)
 	 */
 	@Override
-	public TaskDTO read(Long id) {
+	public ResponseEntity<TaskDTO> read(Long id) {
 		return super.read(id);
 	}
 

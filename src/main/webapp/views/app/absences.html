@@ -49,11 +49,11 @@
 							<td data-title="'Type'" data-sortable="'typeAbsence'" >{{ absence.typeAbsence}}</td>
 							<td data-title="'From'" data-sortable="'startDate'">{{ absence.startDate | date : dateFormat }}</td>
 							<td data-title="'To'" data-sortable="'endDate'">{{ absence.endDate | date : dateFormat }}</td>
-							<td data-title="'Description'" data-sortable="'description'">{{ absence.description }}</td>
+							<td data-title="'Description'" data-sortable="'description'" class="hidden-xs">{{ absence.description }}</td>
 							<td data-title="'Validation'" data-sortable="'validationStatus'" align="right"><span class="label" data-ng-class="{'label-success' : isValidated(absence) , 'label-warning' : isWaiting(absence), 'label-danger' : isRejected(absence)}">{{absence.validationStatus}}</span></td>
-							<td style="width:20px;">
+							<td class="tool-btn-col">
 								<div class="btn-group ">
-								 <button type="button" class="btn btn-link dropdown-toggle" style="color: grey;" data-toggle="dropdown">
+								 <button type="button" class="btn btn-link dropdown-toggle tool-btn" style="color: grey;" data-toggle="dropdown">
 								    <i class="fa fa-cog"></i><span class="caret"></span>
 								  </button>
 								  <ul class="dropdown-menu table-action" role="menu">
@@ -79,39 +79,41 @@
 				<!-- Iterate over Employe -->
 				<li class="list-group-item" data-ng-repeat="approvement in approvements" style="border: none;">
 					<h4><span class="text-muted"><i class="fa fa-user"></i><strong> {{approvement.employeFirstName}} {{approvement.employeLastName}}</strong></span></h4>
-					<table class="table table-hover">
-						<tr>
-							<th style="width:20px;">
-								<label class="checkbox-inline">
-								  <input type="checkbox"  data-ng-model="checkboxes.items[absence.id]">
-								</label>
-							</th>
-							<th>Submit date</th>
-							<th>Type</th>
-							<th>From</th>
-							<th>To</th>
-							<th>Description</th>
-							<th>Status</th>
-							<th></th>
-						</tr>
-						<tr data-ng-repeat="absence in approvement.approvalEntities">
-							<td>
-								<label class="checkbox-inline">
-								  <input type="checkbox"  data-ng-model="checkboxes.items[absence.id]">
-								</label>
-							</td>
-							<td>{{ absence.date | date : 'short'}}</td>
-							<td>{{ absence.typeAbsence}}</td>
-							<td>{{absence.startDate | date : dateFormat}}</td>
-							<td>{{absence.endDate | date : dateFormat}}</td>
-							<td>{{absence.description}}</td>
-							<td><span class="label" data-ng-class="{'label-success' : isValidated(absence) , 'label-warning' : isWaiting(absence), 'label-danger' : isRejected(absence)}">{{absence.validationStatus}}</span></td>
-							<td>
-								<button type="button" class="btn btn-success btn-xs" data-ng-click="approve(absence.id)">Approve</button>
-								<button type="button" class="btn btn-danger btn-xs" data-ng-click="reject(absence.id)">Reject</button>
-							</td>
-						</tr>
-					</table>
+					<div class="table-responsive">
+						<table class="table table-hover">
+							<tr>
+								<th style="width:20px;">
+									<label class="checkbox-inline">
+									  <input type="checkbox"  data-ng-model="checkboxes.items[absence.id]">
+									</label>
+								</th>
+								<th>Submit date</th>
+								<th>Type</th>
+								<th>From</th>
+								<th>To</th>
+								<th class="hidden-xs">Description</th>
+								<th>Status</th>
+								<th></th>
+							</tr>
+							<tr data-ng-repeat="absence in approvement.approvalEntities">
+								<td>
+									<label class="checkbox-inline">
+									  <input type="checkbox"  data-ng-model="checkboxes.items[absence.id]">
+									</label>
+								</td>
+								<td>{{ absence.date | date : 'short'}}</td>
+								<td>{{ absence.typeAbsence}}</td>
+								<td>{{absence.startDate | date : dateFormat}}</td>
+								<td>{{absence.endDate | date : dateFormat}}</td>
+								<td class="hidden-xs">{{absence.description}}</td>
+								<td><span class="label" data-ng-class="{'label-success' : isValidated(absence) , 'label-warning' : isWaiting(absence), 'label-danger' : isRejected(absence)}">{{absence.validationStatus}}</span></td>
+								<td>
+									<button type="button" class="btn btn-success btn-xs" data-ng-click="approve(absence.id)">Approve</button>
+									<button type="button" class="btn btn-danger btn-xs" data-ng-click="reject(absence.id)">Reject</button>
+								</td>
+							</tr>
+						</table>
+					</div>
 				</li>
 			</ul>
 		  </div>

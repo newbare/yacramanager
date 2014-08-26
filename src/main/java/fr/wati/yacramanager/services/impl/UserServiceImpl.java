@@ -4,13 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import fr.wati.yacramanager.beans.Civilite;
+import fr.wati.yacramanager.beans.Gender;
 import fr.wati.yacramanager.beans.Company;
 import fr.wati.yacramanager.beans.Employe;
 import fr.wati.yacramanager.beans.Users;
@@ -34,6 +35,8 @@ public class UserServiceImpl implements UserService{
 	
 	@Autowired
 	private CompanyService companyService;
+
+	private ApplicationEventPublisher applicationEventPublisher;
 	
 	public UserServiceImpl() {
 	}
@@ -125,11 +128,11 @@ public class UserServiceImpl implements UserService{
 					return EmployeSpecifications.forCompanies(companies);
 				}
 				if("civilite".equals(filter.getField())){
-					List<Civilite> civilities=new ArrayList<>();
+					List<Gender> civilities=new ArrayList<>();
 					for(FilterArrayValue filterArrayValue: filterArray.getValue()){
-						civilities.add(Civilite.valueOf(filterArrayValue.getName()));
+						civilities.add(Gender.valueOf(filterArrayValue.getName()));
 					}
-					return EmployeSpecifications.withCivilities(civilities);
+					return EmployeSpecifications.withGenders(civilities);
 				}
 				break;
 			case TEXT:
@@ -155,6 +158,11 @@ public class UserServiceImpl implements UserService{
 		return null;
 	}
 	
+	@Override
+	public void setApplicationEventPublisher(
+			ApplicationEventPublisher applicationEventPublisher) {
+		this.applicationEventPublisher=applicationEventPublisher;
+	}
 	
 }
 

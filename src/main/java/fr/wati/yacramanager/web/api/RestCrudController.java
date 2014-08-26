@@ -9,7 +9,7 @@ import fr.wati.yacramanager.web.dto.ResponseWrapper;
 
 public interface RestCrudController<DTO> {
 
-	DTO read(Long id) throws RestServiceException;
+	ResponseEntity<DTO> read(Long id) throws RestServiceException;
 
 	void update(Long id, DTO dto) throws RestServiceException;
 	

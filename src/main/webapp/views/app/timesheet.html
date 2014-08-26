@@ -63,9 +63,9 @@
 							<td data-title="'To'" data-sortable="'endDate'">{{ worklog.end | date : 'short' }}</td>
 							<td data-title="'Duration'" data-sortable="'duration'">{{ worklog.duration }}</td>
 							<td data-title="'Validation'" data-sortable="'validationStatus'" align="right"><span class="label" data-ng-class="{'label-success' : isValidated(worklog) , 'label-warning' : isWaiting(worklog), 'label-danger' : isRejected(worklog)}">{{worklog.validationStatus}}</span></td>
-							<td style="width:20px;">
+							<td class="tool-btn-col">
 								<div class="btn-group">
-								 <button type="button" class="btn btn-link dropdown-toggle" style="color: grey;" data-toggle="dropdown">
+								 <button type="button" class="btn btn-link dropdown-toggle tool-btn" style="color: grey;" data-toggle="dropdown">
 								    <i class="fa fa-cog"></i><span class="caret"></span>
 								  </button>
 								  <ul class="dropdown-menu table-action" role="menu">

@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -40,6 +41,7 @@ public class NoteDeFraisServiceImpl implements NoteDeFraisService {
 	private NoteDeFraisRepository noteDeFraisRepository;
 	@Autowired
 	private EmployeService employeService;
+	private ApplicationEventPublisher applicationEventPublisher;
 	
 	/* (non-Javadoc)
 	 * @see fr.wati.yacramanager.services.CrudService#save(java.lang.Object)
@@ -299,6 +301,10 @@ public class NoteDeFraisServiceImpl implements NoteDeFraisService {
 		return noteDeFraisToApproved;
 	}
 	
-	
+	@Override
+	public void setApplicationEventPublisher(
+			ApplicationEventPublisher applicationEventPublisher) {
+		this.applicationEventPublisher=applicationEventPublisher;
+	}
 
 }
