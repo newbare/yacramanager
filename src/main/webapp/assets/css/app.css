@@ -300,7 +300,7 @@ body {
 	background-image: linear-gradient(to bottom, #f8f8f8 0, #ececec 100%);
 	background-repeat: repeat-x;
 	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fff8f8f8',
-		endColorstr='#ffececec', GradientType=0); */
+		endColorstr='#ffececec', GradientType=0); ljlj*/
 }
 
 .table.table-bordered>thead>tr>th:first-child {
