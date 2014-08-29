@@ -167,8 +167,12 @@ public class ProjectController {
 		List<Project> projects = projectService
 				.findByAssignedEmployeesIn(employe);
 		if(projects!=null && !projects.isEmpty()){
+			List<ProjectDTO> projectDTOs=new ArrayList<>();
+			for (Project project : projects) {
+				projectDTOs.add(projectService.toProjectDTO(project));
+			}
 			ResponseWrapper<List<ProjectDTO>> responseWrapper = new ResponseWrapper<>(
-					DtoMapper.mapProjects(projects), projects.size());
+					projectDTOs, projectDTOs.size());
 			return responseWrapper;
 		}
 		return new ResponseWrapper<List<ProjectDTO>>(null);

@@ -12,6 +12,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import fr.wati.yacramanager.beans.Activities.ActivityOperation;
 import fr.wati.yacramanager.beans.Client;
 import fr.wati.yacramanager.beans.Employe;
 import fr.wati.yacramanager.beans.Project;
@@ -21,10 +22,12 @@ import fr.wati.yacramanager.dao.repository.ClientRepository;
 import fr.wati.yacramanager.dao.repository.ProjectRepository;
 import fr.wati.yacramanager.dao.specifications.CommonSpecifications;
 import fr.wati.yacramanager.dao.specifications.ProjectSpecification;
+import fr.wati.yacramanager.listeners.ActivityEvent;
 import fr.wati.yacramanager.services.ClientService;
 import fr.wati.yacramanager.services.CompanyService;
 import fr.wati.yacramanager.services.ProjectService;
 import fr.wati.yacramanager.services.TaskService;
+import fr.wati.yacramanager.utils.DtoMapper;
 import fr.wati.yacramanager.utils.Filter;
 import fr.wati.yacramanager.utils.Filter.FilterArray;
 import fr.wati.yacramanager.utils.Filter.FilterArrayValue;
@@ -76,7 +79,12 @@ public class ProjectServiceImpl implements ProjectService{
 	
 	@Override
 	public <S extends Project> S save(S entity) {
-		return projectRepository.save(entity);
+		S save = projectRepository.save(entity);
+		applicationEventPublisher.publishEvent(ActivityEvent
+				.createWithSource(this).user()
+				.operation(ActivityOperation.CREATE)
+				.onEntity(Project.class, save.getId()));
+		return save;
 	}
 
 	@Override
@@ -183,12 +191,16 @@ public class ProjectServiceImpl implements ProjectService{
 	 * @see fr.wati.yacramanager.services.ProjectService#toProjectDTO(fr.wati.yacramanager.beans.Project)
 	 */
 	@Override
+	@Transactional
 	public ProjectDTO toProjectDTO(Project project) {
 		ProjectDTO dto=new ProjectDTO();
+		project=findOne(project.getId());
 		dto.setId(project.getId());
 		dto.setCreatedDate(project.getCreatedDate());
 		dto.setName(project.getName());
 		dto.setDescription(project.getDescription());
+		dto.setTasks(DtoMapper.mapTasks(project.getTasks()));
+		dto.setClient(DtoMapper.map(project.getClient()));
 		return dto;
 	}
 

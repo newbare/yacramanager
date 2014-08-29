@@ -18,15 +18,17 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import fr.wati.yacramanager.beans.Gender;
+import fr.wati.yacramanager.beans.Activities.ActivityOperation;
 import fr.wati.yacramanager.beans.Company;
 import fr.wati.yacramanager.beans.Contact;
 import fr.wati.yacramanager.beans.Employe;
+import fr.wati.yacramanager.beans.Gender;
 import fr.wati.yacramanager.beans.Role;
 import fr.wati.yacramanager.dao.repository.EmployeDto;
 import fr.wati.yacramanager.dao.repository.EmployeRepository;
 import fr.wati.yacramanager.dao.repository.RoleRepository;
 import fr.wati.yacramanager.dao.specifications.EmployeSpecifications;
+import fr.wati.yacramanager.listeners.ActivityEvent;
 import fr.wati.yacramanager.services.CompanyService;
 import fr.wati.yacramanager.services.EmployeService;
 import fr.wati.yacramanager.utils.Filter;
@@ -64,7 +66,12 @@ public class EmployeServiceImpl implements EmployeService {
 
 	@Override
 	public <S extends Employe> S save(S entity) {
-		return employeRepository.save(entity);
+		S save = employeRepository.save(entity);
+		applicationEventPublisher.publishEvent(ActivityEvent
+				.createWithSource(this).user()
+				.operation(ActivityOperation.CREATE)
+				.onEntity(Employe.class, save.getId()));
+		return save;
 	}
 
 	@Override

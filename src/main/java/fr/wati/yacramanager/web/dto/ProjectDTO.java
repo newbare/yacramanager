@@ -3,6 +3,8 @@
  */
 package fr.wati.yacramanager.web.dto;
 
+import java.util.List;
+
 import org.joda.time.DateTime;
 
 import fr.wati.yacramanager.beans.Project;
@@ -19,6 +21,7 @@ public class ProjectDTO {
 	private DateTime createdDate;
 	private String color;
 	private ClientDTO client;
+	private List<TaskDTO> tasks;
 	/**
 	 * @return the id
 	 */
@@ -92,6 +95,15 @@ public class ProjectDTO {
 	 */
 	public void setColor(String color) {
 		this.color = color;
+	}
+	
+	
+	
+	public List<TaskDTO> getTasks() {
+		return tasks;
+	}
+	public void setTasks(List<TaskDTO> tasks) {
+		this.tasks = tasks;
 	}
 	/**
 	 * @param project

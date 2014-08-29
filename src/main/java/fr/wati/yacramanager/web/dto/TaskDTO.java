@@ -5,6 +5,7 @@ package fr.wati.yacramanager.web.dto;
 
 import org.joda.time.DateTime;
 
+import fr.wati.yacramanager.beans.Task;
 import fr.wati.yacramanager.beans.TaskStatus;
 
 /**
@@ -105,5 +106,13 @@ public class TaskDTO {
 		this.employeId = employeId;
 	}
 	
-	
+	public Task toTask(Task task) {
+		task.setCreatedDate(getCreatedDate()!=null?getCreatedDate():new DateTime());
+		task.setDescription(getDescription());
+		if(task.getColor()==null && task.getProject()!=null){
+			task.setColor(task.getProject().getColor());
+		}
+		task.setName(getName());
+		return task;
+	}
 }

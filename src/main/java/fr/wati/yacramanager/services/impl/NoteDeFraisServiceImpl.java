@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.collect.Lists;
 
+import fr.wati.yacramanager.beans.Activities.ActivityOperation;
 import fr.wati.yacramanager.beans.Attachement;
 import fr.wati.yacramanager.beans.Employe;
 import fr.wati.yacramanager.beans.NoteDeFrais;
@@ -22,6 +23,7 @@ import fr.wati.yacramanager.beans.NoteDeFrais_;
 import fr.wati.yacramanager.beans.ValidationStatus;
 import fr.wati.yacramanager.dao.repository.NoteDeFraisRepository;
 import fr.wati.yacramanager.dao.specifications.CommonSpecifications;
+import fr.wati.yacramanager.listeners.ActivityEvent;
 import fr.wati.yacramanager.services.EmployeService;
 import fr.wati.yacramanager.services.NoteDeFraisService;
 import fr.wati.yacramanager.services.ServiceException;
@@ -269,7 +271,11 @@ public class NoteDeFraisServiceImpl implements NoteDeFraisService {
 		NoteDeFrais findOne = noteDeFraisRepository.findOne(noteDeFrais.getId());
 		if(employeService.isManager(validator.getId(), findOne.getEmploye().getId())){
 			findOne.setValidationStatus(ValidationStatus.APPROVED);
-			save(findOne);
+			NoteDeFrais save = save(findOne);
+			applicationEventPublisher.publishEvent(ActivityEvent
+					.createWithSource(this).user(validator)
+					.operation(ActivityOperation.VALIDATE)
+					.onEntity(NoteDeFrais.class, save.getId()));
 		}else {
 			throw new ServiceException(validator.getFullName()+ " is not the manager of "+findOne.getEmploye().getFullName());
 		}
@@ -280,7 +286,11 @@ public class NoteDeFraisServiceImpl implements NoteDeFraisService {
 		NoteDeFrais findOne = noteDeFraisRepository.findOne(noteDeFrais.getId());
 		if(employeService.isManager(validator.getId(), findOne.getEmploye().getId())){
 			findOne.setValidationStatus(ValidationStatus.REJECTED);
-			save(findOne);
+			NoteDeFrais save = save(findOne);
+			applicationEventPublisher.publishEvent(ActivityEvent
+					.createWithSource(this).user(validator)
+					.operation(ActivityOperation.REJECT)
+					.onEntity(NoteDeFrais.class, save.getId()));
 		}else {
 			throw new ServiceException(validator.getFullName()+ " is not the manager of "+findOne.getEmploye().getFullName());
 		}

@@ -18,8 +18,10 @@ import fr.wati.yacramanager.beans.Absence;
 import fr.wati.yacramanager.beans.Absence_;
 import fr.wati.yacramanager.beans.Employe;
 import fr.wati.yacramanager.beans.ValidationStatus;
+import fr.wati.yacramanager.beans.Activities.ActivityOperation;
 import fr.wati.yacramanager.dao.repository.AbsenceRepository;
 import fr.wati.yacramanager.dao.specifications.CommonSpecifications;
+import fr.wati.yacramanager.listeners.ActivityEvent;
 import fr.wati.yacramanager.services.AbsenceService;
 import fr.wati.yacramanager.services.EmployeService;
 import fr.wati.yacramanager.services.ServiceException;
@@ -50,7 +52,12 @@ public class AbsenceServiceImpl implements AbsenceService {
 
 	@Override
 	public <S extends Absence> S save(S entity) {
-		return absenceRepository.save(entity);
+		S save = absenceRepository.save(entity);
+		applicationEventPublisher.publishEvent(ActivityEvent
+				.createWithSource(this).user()
+				.operation(ActivityOperation.CREATE)
+				.onEntity(Absence.class, save.getId()));
+		return save;
 	}
 
 
@@ -192,7 +199,11 @@ public class AbsenceServiceImpl implements AbsenceService {
 		Absence findOne = absenceRepository.findOne(absence.getId());
 		if(employeService.isManager(validator.getId(), findOne.getEmploye().getId())){
 			findOne.setValidationStatus(ValidationStatus.APPROVED);
-			absenceRepository.save(findOne);
+			Absence save = absenceRepository.save(findOne);
+			applicationEventPublisher.publishEvent(ActivityEvent
+					.createWithSource(this).user(validator)
+					.operation(ActivityOperation.REJECT)
+					.onEntity(Absence.class, save.getId()));
 		}else {
 			throw new ServiceException(validator.getFullName()+ " is not the manager of "+findOne.getEmploye().getFullName());
 		}
@@ -204,7 +215,11 @@ public class AbsenceServiceImpl implements AbsenceService {
 		Absence findOne = absenceRepository.findOne(absence.getId());
 		if(employeService.isManager(validator.getId(), findOne.getEmploye().getId())){
 			findOne.setValidationStatus(ValidationStatus.REJECTED);
-			absenceRepository.save(findOne);
+			Absence save = absenceRepository.save(findOne);
+			applicationEventPublisher.publishEvent(ActivityEvent
+					.createWithSource(this).user(validator)
+					.operation(ActivityOperation.REJECT)
+					.onEntity(Absence.class, save.getId()));
 		}else {
 			throw new ServiceException(validator.getFullName()+ " is not the manager of "+findOne.getEmploye().getFullName());
 		}

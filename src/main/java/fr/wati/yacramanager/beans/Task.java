@@ -34,7 +34,7 @@ public class Task extends AuditableEntity  {
 	private String description;
 	@ManyToOne
 	private Project project;
-	@Enumerated(EnumType.ORDINAL)
+	@Enumerated(EnumType.STRING)
 	private TaskStatus taskStatus;
 	@OneToMany(mappedBy="task")
 	private List<WorkLog> workLogs;

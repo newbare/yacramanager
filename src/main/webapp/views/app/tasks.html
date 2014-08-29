@@ -3,14 +3,47 @@
 		<div data-ng-criteria-bar data-criteria-bar-config="criteriaBarConfig" data-do-filter="doFilter(criteriaBarConfig.filters)"></div>
 		<ul class="list-group">
 			<!-- Iterate over project -->
-			<li class="list-group-item project-list-group-item">
-				<ul class="list-group">
-					<!-- Iterate over Tasks -->
-					<li class="list-group-item task-list-group-item">
-					
-					</li>
-				</ul>
-				<button type="button" class="btn btn-link btn-sm">Add task</button>
+			<li class="list-group-item project-list-group-item" data-ng-repeat="project in projects">
+				<div class="row"><h4><span class="label label-primary">{{project.client.name}} - {{project.name}}</span></h4></div>
+				<div class="row">
+						<div class="input-group">
+						 <div class="input-group-addon">Name</div>
+					      <input type="text" data-ng-model="taskToAdd.taskName" class="form-control"  placeholder="Enter task name">
+					      <span class="input-group-addon">Description</span>
+					      <input type="text" data-ng-model="taskToAdd.taskDescription" class="form-control"  placeholder="Enter task description">
+					      <span class="input-group-btn">
+					        <button class="btn btn-success" type="button" data-ng-disabled="!canAddTask()" data-ng-click="addTask(project)">Add task</button>
+					      </span>
+					    </div><!-- /input-group -->
+				</div>
+				<hr>
+				<div class="table-responsive">
+					<table class="table table-hover"  data-ng-show="project.tasks.length>0">
+							<tr>
+								<th>Created date</th>
+								<th>Name</th>
+								<th>Description</th>
+								<th style="width:20px;"></th>
+							</tr>
+							<tr align="left" data-ng-repeat="task in project.tasks" class="">
+								<td>{{ task.createdDate | date : 'short'}}</td>
+								<td >{{ task.name}}</td>
+								<td >{{ task.description}}</td>
+								<td style="width:20px;">
+									<div class="btn-group">
+									 <button type="button" class="btn btn-link dropdown-toggle" style="color: grey;" data-toggle="dropdown">
+									    <i class="fa fa-cog"></i><span class="caret"></span>
+									  </button>
+									  <ul class="dropdown-menu" role="menu">
+									    <li><a href="" data-ng-click="editTask(task.id)"><i class="fa fa-pencil-square-o"></i>Edit</a></li>
+									    <li class="divider"></li>
+									    <li><a href="" data-ng-click="deleteTask(task.id)"><i class="fa fa-trash-o" style="color: red;"></i>Delete</a></li>
+									  </ul>
+									</div>
+								</td>
+							</tr>
+					</table>
+				</div>
 			</li>
 		</ul>
 	</div>

@@ -11,28 +11,38 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import fr.wati.yacramanager.beans.Activities.ActivityOperation;
 import fr.wati.yacramanager.beans.Employe;
 import fr.wati.yacramanager.beans.Project;
 import fr.wati.yacramanager.beans.Task;
 import fr.wati.yacramanager.dao.repository.ProjectRepository;
 import fr.wati.yacramanager.dao.repository.TaskRepository;
-import fr.wati.yacramanager.services.SpecificationFactory;
+import fr.wati.yacramanager.listeners.ActivityEvent;
+import fr.wati.yacramanager.services.EmployeService;
 import fr.wati.yacramanager.services.TaskService;
 import fr.wati.yacramanager.utils.Filter;
 
 @Transactional
 @Service
-public class TaskServiceImpl implements TaskService,SpecificationFactory<Task> {
+public class TaskServiceImpl implements TaskService {
 
 	@Autowired
 	private TaskRepository taskRepository;
 	@Autowired
 	private ProjectRepository  projectRepository;
+	@Autowired
+	private EmployeService employeService;
+	
 	private ApplicationEventPublisher applicationEventPublisher;
 	
 	@Override
 	public <S extends Task> S save(S entity) {
-		return taskRepository.save(entity);
+		S save = taskRepository.save(entity);
+		applicationEventPublisher.publishEvent(ActivityEvent
+				.createWithSource(this).user()
+				.operation(ActivityOperation.REJECT)
+				.onEntity(Task.class, save.getId()));
+		return save;
 	}
 
 	@Override
@@ -127,5 +137,14 @@ public class TaskServiceImpl implements TaskService,SpecificationFactory<Task> {
 	public void setApplicationEventPublisher(
 			ApplicationEventPublisher applicationEventPublisher) {
 		this.applicationEventPublisher=applicationEventPublisher;
+	}
+
+	@Override
+	@Transactional
+	public void assignEmployeToTask(Long employeId, Long taskId) {
+		Employe employe = employeService.findOne(employeId);
+		Task task=findOne(taskId);
+		task.getAssignedEmployees().add(employe);
+		employe.getTasks().add(task);
 	}
 }

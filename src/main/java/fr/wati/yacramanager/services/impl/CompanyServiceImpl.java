@@ -8,11 +8,13 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import fr.wati.yacramanager.beans.Activities.ActivityOperation;
 import fr.wati.yacramanager.beans.Client;
 import fr.wati.yacramanager.beans.Company;
 import fr.wati.yacramanager.beans.Company_;
 import fr.wati.yacramanager.dao.repository.CompanyRepository;
 import fr.wati.yacramanager.dao.specifications.CommonSpecifications;
+import fr.wati.yacramanager.listeners.ActivityEvent;
 import fr.wati.yacramanager.services.ClientService;
 import fr.wati.yacramanager.services.CompanyService;
 import fr.wati.yacramanager.utils.Filter;
@@ -33,7 +35,12 @@ public class CompanyServiceImpl implements CompanyService {
 
 	@Override
 	public <S extends Company> S save(S entity) {
-		return companyRepository.save(entity);
+		S save = companyRepository.save(entity);
+		applicationEventPublisher.publishEvent(ActivityEvent
+				.createWithSource(this).user()
+				.operation(ActivityOperation.CREATE)
+				.onEntity(Company.class, save.getId()));
+		return save;
 	}
 
 	@Override
