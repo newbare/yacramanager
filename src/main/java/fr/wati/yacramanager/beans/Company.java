@@ -3,10 +3,7 @@ package fr.wati.yacramanager.beans;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.CollectionTable;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -33,11 +30,8 @@ public class Company extends AuditableEntity {
 	private DateTime registeredDate;
 	@Type(type="org.joda.time.contrib.hibernate.PersistentDateTime")
 	private DateTime licenseEndDate;
-	@ElementCollection(fetch=FetchType.EAGER)
-	@CollectionTable(
-	        name="CONTACT",
-	        joinColumns=@JoinColumn(name="OWNER_ID")
-	  )
+	@OneToMany
+	@JoinColumn(name="companyId")
 	private List<Contact> contacts=new ArrayList<>();
 	
 	@OneToMany

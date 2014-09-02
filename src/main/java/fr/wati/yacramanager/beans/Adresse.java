@@ -16,33 +16,37 @@ import javax.persistence.Embeddable;
 public class Adresse implements Serializable {
 
 	
-	private String rue;
-	private String codePostal;
+	private String adress;
+	private String postCode;
+	private String city;
+	private String country;
+	public String getAdress() {
+		return adress;
+	}
+	public void setAdress(String adress) {
+		this.adress = adress;
+	}
+	public String getPostCode() {
+		return postCode;
+	}
+	public void setPostCode(String postCode) {
+		this.postCode = postCode;
+	}
+	public String getCity() {
+		return city;
+	}
+	public void setCity(String city) {
+		this.city = city;
+	}
+	public String getCountry() {
+		return country;
+	}
+	public void setCountry(String country) {
+		this.country = country;
+	}
 	
-	/**
-	 * @return the rue
-	 */
-	public String getRue() {
-		return rue;
-	}
-	/**
-	 * @param rue the rue to set
-	 */
-	public void setRue(String rue) {
-		this.rue = rue;
-	}
-	/**
-	 * @return the codePostal
-	 */
-	public String getCodePostal() {
-		return codePostal;
-	}
-	/**
-	 * @param codePostal the codePostal to set
-	 */
-	public void setCodePostal(String codePostal) {
-		this.codePostal = codePostal;
-	}
+	
+	
 	
 	
 }

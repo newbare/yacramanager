@@ -204,10 +204,10 @@ function AbsencesController($scope, $rootScope, AbsenceCRUDREST,
 			id : id
 		}).$promise.then(function(result) {
 			$scope.tableParams.reload();
-			notifService.notify('info','Confirmation', 'Absence supprimé');
+			alertService.show('success','Confirmation', 'Absence supprimé');
 		}, function(error) {
 			console.log(error);
-			notifService.notify('error','' + error.status, error.data);
+			alertService.show('error','' + error.status, error.data);
 		});
 
 	};
@@ -223,26 +223,27 @@ function AbsencesController($scope, $rootScope, AbsenceCRUDREST,
 	}, {
 		total : 0, // length of data
 		getData : function($defer, params) {
-			
-			AbsenceCRUDREST.get(
-					{
-						page:params.$params.page-1,
-						size:params.$params.count,
-						sort:params.$params.sorting,
-						filter:$scope.tableFilter
-					},function(data) {
-				params.total(data.totalCount);
-				$scope.startIndex=data.startIndex;
-				$scope.endIndex=data.endIndex;
-				if(data.totalCount>=1){
-					$scope.hasDatas=true;
-				}else {
-					$scope.hasDatas=false;
-				}
-				allAbsence=data.result;
-				// set new data
-				$defer.resolve(data.result);
-			});
+			if($scope.tableFilter!=undefined && $scope.tableFilter!=''){
+				AbsenceCRUDREST.get(
+						{
+							page:params.$params.page-1,
+							size:params.$params.count,
+							sort:params.$params.sorting,
+							filter:$scope.tableFilter
+						},function(data) {
+					params.total(data.totalCount);
+					$scope.startIndex=data.startIndex;
+					$scope.endIndex=data.endIndex;
+					if(data.totalCount>=1){
+						$scope.hasDatas=true;
+					}else {
+						$scope.hasDatas=false;
+					}
+					allAbsence=data.result;
+					// set new data
+					$defer.resolve(data.result);
+				});
+			}
 		}});
 	
 	

@@ -189,11 +189,11 @@ public class DtoMapper {
 		dto.setLastName(employe.getLastName());
 		dto.setFirstName(employe.getFirstName());
 		dto.setGender(employe.getGender());
-		dto.setCodePostal(employe.getContact().getAdresse().getCodePostal());
+		dto.setPostCode(employe.getContact().getAdresse().getPostCode());
 		dto.setEmail(employe.getContact().getEmail());
-		dto.setRue(employe.getContact().getAdresse().getRue());
+		dto.setAdress(employe.getContact().getAdresse().getAdress());
 		dto.setBirthDay(employe.getBirthDay());
-		dto.setNumeroTelephone(employe.getContact().getNumeroTelephone());
+		dto.setPhoneNumbers(employe.getContact().getPhoneNumbers());
 		return dto;
 	}
 

@@ -235,6 +235,7 @@ function TimeSheetController($scope,$rootScope,$http,$sce,WorkLogCRUDREST,alertS
     		 hideFn();
     		 alertService.show('success','Confirmation', 'Donn� sauvegard�');
     		 $scope.resetWorklogForm();
+    		 $scope.tableParams.reload();
 		});
     	
     };

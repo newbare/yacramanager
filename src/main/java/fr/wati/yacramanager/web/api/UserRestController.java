@@ -73,9 +73,9 @@ public class UserRestController implements RestCrudController<EmployeDto> {
 		employe.setGender(employeDto.getGender());
 		employe.setBirthDay(employeDto.getBirthDay());
 		employe.getContact().setEmail(employeDto.getEmail());
-		employe.getContact().setNumeroTelephone(employeDto.getNumeroTelephone());
-		employe.getContact().getAdresse().setCodePostal(employeDto.getCodePostal());
-		employe.getContact().getAdresse().setRue(employeDto.getRue());
+		employe.getContact().setPhoneNumbers(employeDto.getPhoneNumbers());
+		employe.getContact().getAdresse().setPostCode(employeDto.getPostCode());
+		employe.getContact().getAdresse().setAdress(employeDto.getAdress());
 		employeService.save(employe);
 	}
 

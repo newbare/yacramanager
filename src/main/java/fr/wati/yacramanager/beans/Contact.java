@@ -4,9 +4,19 @@
 package fr.wati.yacramanager.beans;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
-import javax.persistence.Embeddable;
+import javax.persistence.CollectionTable;
+import javax.persistence.ElementCollection;
 import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 import org.hibernate.validator.constraints.Email;
 
@@ -15,15 +25,37 @@ import org.hibernate.validator.constraints.Email;
  * 
  */
 @SuppressWarnings("serial")
-@Embeddable
+@Entity
 public class Contact implements Serializable {
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
+	
+	private String name;
 	@Email
 	private String email;
 
-	private String numeroTelephone;
+	@ElementCollection(fetch = FetchType.EAGER)
+	@CollectionTable(name = "Phones", joinColumns = @JoinColumn(name = "ownerId"))
+	private List<String> phoneNumbers=new ArrayList<>();
 	@Embedded
 	private Adresse adresse;
+	
+	@ManyToOne
+	private Company company;
+
+	@ManyToOne
+	private Client client;
+	
+	
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
 
 	/**
 	 * @return the email
@@ -40,12 +72,14 @@ public class Contact implements Serializable {
 		this.email = email;
 	}
 
-	public String getNumeroTelephone() {
-		return numeroTelephone;
+	
+
+	public List<String> getPhoneNumbers() {
+		return phoneNumbers;
 	}
 
-	public void setNumeroTelephone(String numeroTelephone) {
-		this.numeroTelephone = numeroTelephone;
+	public void setPhoneNumbers(List<String> phoneNumbers) {
+		this.phoneNumbers = phoneNumbers;
 	}
 
 	public Adresse getAdresse() {
@@ -57,6 +91,30 @@ public class Contact implements Serializable {
 
 	public void setAdresse(Adresse adresse) {
 		this.adresse = adresse;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Company getCompany() {
+		return company;
+	}
+
+	public void setCompany(Company company) {
+		this.company = company;
+	}
+
+	public Client getClient() {
+		return client;
+	}
+
+	public void setClient(Client client) {
+		this.client = client;
 	}
 
 }

@@ -205,12 +205,50 @@ App.directive('connectionLostSupport', function($modal) {
 					title : 'Network error',
 					content : 'Connection lost with server :(',
 					show : true,
+					placement : 'center',
 					backdrop : 'static'
 				});
 			});
 			
 		}
 	}
+});
+
+App.directive('ngConfirm',function($modal) {
+	return {
+		priority : -1,
+						link : function(scope, element, attr) {
+							var msg = attr.ngConfirm || "Are you sure?";
+							var clickAction = attr.ngClick;
+							// scope.$on('application-loaded', function() {
+							var confirmModal = $modal({
+								scope : scope,
+								template : _contextPath
+										+ '/views/app/templates/partials/confirm-dialog.tpl.html',
+								placement : 'center',
+								backdrop : 'static',
+								show : false
+							});
+							// Show when some event occurs (use $promise
+							// property to ensure the template has been loaded)
+							scope.showModal = function() {
+								confirmModal.$promise.then(confirmModal.show);
+							};
+							scope.confirmationMessage = msg;
+							scope.yes = function(hide) {
+								scope.$eval(clickAction);
+								hide();
+							};
+							scope.no = function(hide) {
+								hide();
+							}
+							element.bind('click', function(event) {
+								scope.showModal();
+								event.stopImmediatePropagation();
+								event.preventDefault();
+							});
+						}
+	};
 });
 
 

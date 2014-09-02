@@ -11,6 +11,27 @@
 	margin-top: 60px;
 }
 
+.modal-dialog.confirm-modal{
+	width: auto !important;
+}
+
+.modal-dialog.confirm-modal .modal-header{
+	padding: 10px;
+	text-align: center;
+}
+
+.modal-dialog.confirm-modal .modal-body{
+	padding: 10px;
+}
+.modal-dialog.confirm-modal .modal-body .well{
+	margin-bottom: 0px;
+}
+
+.modal-dialog.confirm-modal .modal-footer{
+	padding: 10px;
+	margin-top: 5px;
+}
+
 .popover-content .form-group{
 	margin-bottom: auto !important;
 }

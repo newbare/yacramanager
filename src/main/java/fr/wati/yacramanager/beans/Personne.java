@@ -3,10 +3,12 @@
  */
 package fr.wati.yacramanager.beans;
 
-import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.validation.constraints.Past;
 
 import org.hibernate.annotations.Type;
@@ -28,7 +30,8 @@ public class Personne extends Users {
 	private DateTime birthDay;
 	@Enumerated(EnumType.STRING)
 	private Gender gender;
-	@Embedded
+	@OneToOne(fetch=FetchType.EAGER)
+	@JoinColumn(name="contactId")
 	private Contact contact;
 	
 	

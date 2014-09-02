@@ -24,6 +24,7 @@ import fr.wati.yacramanager.beans.Contact;
 import fr.wati.yacramanager.beans.Employe;
 import fr.wati.yacramanager.beans.Gender;
 import fr.wati.yacramanager.beans.Role;
+import fr.wati.yacramanager.dao.repository.ContactRepository;
 import fr.wati.yacramanager.dao.repository.EmployeDto;
 import fr.wati.yacramanager.dao.repository.EmployeRepository;
 import fr.wati.yacramanager.dao.repository.RoleRepository;
@@ -46,6 +47,9 @@ public class EmployeServiceImpl implements EmployeService {
 
 	@Autowired
 	private EmployeRepository employeRepository;
+	
+	@Autowired
+	private ContactRepository contactRepository;
 
 	@Autowired
 	private DozerBeanMapperFactoryBean dozerBeanMapper;
@@ -66,6 +70,7 @@ public class EmployeServiceImpl implements EmployeService {
 
 	@Override
 	public <S extends Employe> S save(S entity) {
+		contactRepository.save(entity.getContact());
 		S save = employeRepository.save(entity);
 		applicationEventPublisher.publishEvent(ActivityEvent
 				.createWithSource(this).user()
@@ -151,6 +156,7 @@ public class EmployeServiceImpl implements EmployeService {
 		employe.setFirstName(registrationDTO.getFirstName());
 		Contact contact=new Contact();
 		contact.setEmail(registrationDTO.getEmail());
+		contactRepository.save(contact);
 		employe.setContact(contact);
 		Company company=new Company();
 		company.setName(registrationDTO.getCompanyName());

@@ -11,7 +11,7 @@
 		</div>
 		<ul class="nav nav-pills sub-menu" role="tablist" id="tabs">
 		  <li class="active"><a href="" role="tab" data-toggle="tab" data-ng-click="activateTab('myExpenses')">My expenses</a></li>
-		  <li><a href="" role="tab" data-toggle="tab" data-ng-click="activateTab('toBeApprouved')">To be aproved <span class="badge" data-ng-show="approvementTotal>0">{{approvementTotal}}</span></a></li>
+		  <li data-ng-show="approvementTotal>0"><a href="" role="tab" data-toggle="tab" data-ng-click="activateTab('toBeApprouved')">To be aproved <span class="badge" data-ng-show="approvementTotal>0">{{approvementTotal}}</span></a></li>
 		</ul>
 		<div class="tab-content">
 		  <div class="tab-pane" data-ng-class="{'active' : isActiveTab('myExpenses') }">

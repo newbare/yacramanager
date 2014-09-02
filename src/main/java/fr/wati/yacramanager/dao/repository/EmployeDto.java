@@ -1,5 +1,7 @@
 package fr.wati.yacramanager.dao.repository;
 
+import java.util.List;
+
 import org.joda.time.DateTime;
 
 import fr.wati.yacramanager.beans.Gender;
@@ -12,9 +14,9 @@ public class EmployeDto extends UserDto {
 	private DateTime birthDay;
 	private Gender gender;
 	private String email;
-	private String numeroTelephone;
-	private String rue;
-	private String codePostal;
+	private List<String> phoneNumbers;
+	private String adress;
+	private String postCode;
 	private Long companyId;
 	private Long managerId;
 	
@@ -50,23 +52,23 @@ public class EmployeDto extends UserDto {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public String getNumeroTelephone() {
-		return numeroTelephone;
+	public List<String> getPhoneNumbers() {
+		return phoneNumbers;
 	}
-	public void setNumeroTelephone(String numeroTelephone) {
-		this.numeroTelephone = numeroTelephone;
+	public void setPhoneNumbers(List<String> phoneNumbers) {
+		this.phoneNumbers = phoneNumbers;
 	}
-	public String getRue() {
-		return rue;
+	public String getAdress() {
+		return adress;
 	}
-	public void setRue(String rue) {
-		this.rue = rue;
+	public void setAdress(String adress) {
+		this.adress = adress;
 	}
-	public String getCodePostal() {
-		return codePostal;
+	public String getPostCode() {
+		return postCode;
 	}
-	public void setCodePostal(String codePostal) {
-		this.codePostal = codePostal;
+	public void setPostCode(String postCode) {
+		this.postCode = postCode;
 	}
 	public Long getCompanyId() {
 		return companyId;

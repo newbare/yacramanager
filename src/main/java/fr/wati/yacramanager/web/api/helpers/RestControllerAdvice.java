@@ -63,6 +63,7 @@ public class RestControllerAdvice {
 			throws IOException {
 		// messagingTemplate.convertAndSendToUser(SecurityUtils.getConnectedUser().getUsername(),
 		// "/queue/errors", ex.getMessage());
+		ex.printStackTrace();
 		return ex.getMessage();
 
 	}
