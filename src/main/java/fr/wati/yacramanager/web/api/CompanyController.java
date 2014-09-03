@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import fr.wati.yacramanager.beans.Company;
 import fr.wati.yacramanager.services.CompanyService;
-import fr.wati.yacramanager.utils.DtoMapper;
+import fr.wati.yacramanager.services.impl.DtoMapper;
 import fr.wati.yacramanager.utils.Filter.FilterBuilder;
 import fr.wati.yacramanager.utils.SpecificationBuilder;
 import fr.wati.yacramanager.web.dto.CompanyDTO;
@@ -41,6 +41,8 @@ public class CompanyController implements RestCrudController<CompanyDTO> {
 	private static final Log LOG=LogFactory.getLog(CompanyController.class); 
 	@Autowired
 	private CompanyService companyService;
+	@Autowired
+	private DtoMapper dtoMapper;
 	
 	
 	@Override
@@ -102,7 +104,7 @@ public class CompanyController implements RestCrudController<CompanyDTO> {
 		
 		Page<Company> findBySpecificationAndOrder =companyService.findAll(specifications, pageable);
 		ResponseWrapper<List<CompanyDTO>> responseWrapper = new ResponseWrapper<>(
-				DtoMapper.mapCompanies(findBySpecificationAndOrder),
+				dtoMapper.mapCompanies(findBySpecificationAndOrder),
 				findBySpecificationAndOrder.getTotalElements());
 		long startIndex=findBySpecificationAndOrder.getNumber()*size+1;
 		long endIndex=startIndex+findBySpecificationAndOrder.getNumberOfElements()-1;

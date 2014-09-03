@@ -28,7 +28,6 @@ import fr.wati.yacramanager.beans.Client;
 import fr.wati.yacramanager.beans.Company;
 import fr.wati.yacramanager.services.ClientService;
 import fr.wati.yacramanager.services.CompanyService;
-import fr.wati.yacramanager.utils.DtoMapper;
 import fr.wati.yacramanager.utils.Filter.FilterBuilder;
 import fr.wati.yacramanager.utils.SpecificationBuilder;
 import fr.wati.yacramanager.web.dto.ClientDTO;
@@ -120,7 +119,7 @@ public class ClientController {
 		Page<Client> findBySpecificationAndOrder = clientService.findAll(
 				specifications, pageable);
 		ResponseWrapper<List<ClientDTO>> responseWrapper = new ResponseWrapper<>(
-				DtoMapper.mapClients(findBySpecificationAndOrder),
+				clientService.toClientDTOs(findBySpecificationAndOrder),
 				findBySpecificationAndOrder.getTotalElements());
 		long startIndex = findBySpecificationAndOrder.getNumber() * size + 1;
 		long endIndex = startIndex

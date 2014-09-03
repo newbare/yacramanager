@@ -35,7 +35,7 @@ import fr.wati.yacramanager.services.AbsenceService;
 import fr.wati.yacramanager.services.CompanyService;
 import fr.wati.yacramanager.services.EmployeService;
 import fr.wati.yacramanager.services.ServiceException;
-import fr.wati.yacramanager.utils.DtoMapper;
+import fr.wati.yacramanager.services.impl.DtoMapper;
 import fr.wati.yacramanager.utils.Filter.FilterBuilder;
 import fr.wati.yacramanager.utils.SecurityUtils;
 import fr.wati.yacramanager.utils.SpecificationBuilder;
@@ -54,6 +54,9 @@ public class AbsenceController implements RestCrudController<AbsenceDTO>,Approva
 	private AbsenceService absenceService;
 	
 	@Autowired
+	private DtoMapper dtoMapper;
+	
+	@Autowired
 	private EmployeService employeService;
 
 	@Autowired
@@ -64,7 +67,7 @@ public class AbsenceController implements RestCrudController<AbsenceDTO>,Approva
 	public @ResponseBody
 	ResponseEntity<AbsenceDTO> read(@PathVariable("id") Long id) {
 		if(absenceService.exists(id)){
-			return new ResponseEntity<AbsenceDTO>(DtoMapper.map(absenceService.findOne(id)),HttpStatus.OK);
+			return new ResponseEntity<AbsenceDTO>(dtoMapper.map(absenceService.findOne(id)),HttpStatus.OK);
 		}
 		return new ResponseEntity<AbsenceDTO>(HttpStatus.NOT_FOUND);
 	}
@@ -123,7 +126,7 @@ public class AbsenceController implements RestCrudController<AbsenceDTO>,Approva
 		
 		Page<Absence> findByPersonne =absenceService.findAll(specifications, pageable);
 		ResponseWrapper<List<AbsenceDTO>> responseWrapper = new ResponseWrapper<List<AbsenceDTO>>(
-				DtoMapper.mapAbsences(findByPersonne),
+				dtoMapper.mapAbsences(findByPersonne),
 				findByPersonne.getTotalElements());
 		long startIndex=findByPersonne.getNumber()*size+1;
 		long endIndex=startIndex+findByPersonne.getNumberOfElements()-1;
@@ -181,7 +184,7 @@ public class AbsenceController implements RestCrudController<AbsenceDTO>,Approva
 			approvalDTO.setEmployeId(entry.getKey().getId());
 			approvalDTO.setEmployeFirstName(entry.getKey().getFirstName());
 			approvalDTO.setEmployeLastName(entry.getKey().getLastName());
-			approvalDTO.setApprovalEntities(DtoMapper.mapAbsences(entry.getValue()));
+			approvalDTO.setApprovalEntities(dtoMapper.mapAbsences(entry.getValue()));
 			approvalDTOs.add(approvalDTO);
 		}
 		ResponseWrapper<List<ApprovalDTO<AbsenceDTO>>> response=new ResponseWrapper<List<ApprovalDTO<AbsenceDTO>>>(approvalDTOs,approvalDTOs.size());

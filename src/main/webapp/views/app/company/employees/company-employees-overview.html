@@ -47,15 +47,25 @@
 					</tr>
 					<tr>
 						<td>Tel</td>
-						<td><a href="#" onaftersave="updateEmploye()" editable-tel="employe.numeroTelephone">{{ employe.numeroTelephone || 'empty' }}</a></td>
+						<td>
+							<ul class="list-inline">
+								<li data-ng-repeat="phoneNumber in employe.phoneNumbers">
+									<i class="fa fa-phone"></i>
+									<a href="#"  onaftersave="updateEmploye()" editable-tel="employe.phoneNumbers[$index]">{{ employe.phoneNumbers[$index] || 'empty' }}</a>
+								</li>
+								<li>
+									<button class="btn btn-primary btn-xs" data-ng-click="addPhoneNumbers(employe)">Add</button>
+								</li>
+							</ul>
+						</td>
 					</tr>
 					<tr>
 						<td>Street</td>
-						<td><a href="#" onaftersave="updateEmploye()" editable-text="employe.rue" >{{ employe.rue || 'empty' }}</a></td>
+						<td><a href="#" onaftersave="updateEmploye()" editable-text="employe.adress" >{{ employe.adress || 'empty' }}</a></td>
 					</tr>
 					<tr>
 						<td>Code</td>
-						<td><a href="#" onaftersave="updateEmploye()" editable-number="employe.codePostal">{{ employe.codePostal || 'empty' }}</a></td>
+						<td><a href="#" onaftersave="updateEmploye()" editable-number="employe.postCode">{{ employe.postCode || 'empty' }}</a></td>
 					</tr>
 				</table>
 			  </div>

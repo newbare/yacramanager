@@ -27,7 +27,6 @@ import fr.wati.yacramanager.services.ClientService;
 import fr.wati.yacramanager.services.CompanyService;
 import fr.wati.yacramanager.services.ProjectService;
 import fr.wati.yacramanager.services.TaskService;
-import fr.wati.yacramanager.utils.DtoMapper;
 import fr.wati.yacramanager.utils.Filter;
 import fr.wati.yacramanager.utils.Filter.FilterArray;
 import fr.wati.yacramanager.utils.Filter.FilterArrayValue;
@@ -46,6 +45,9 @@ public class ProjectServiceImpl implements ProjectService{
 	private ClientRepository clientRepository;
 	@Autowired
 	private ClientService  clientService;
+	
+	@Autowired
+	private DtoMapper dtoMapper;
 	
 	@Autowired
 	private CompanyService companyService;
@@ -199,8 +201,8 @@ public class ProjectServiceImpl implements ProjectService{
 		dto.setCreatedDate(project.getCreatedDate());
 		dto.setName(project.getName());
 		dto.setDescription(project.getDescription());
-		dto.setTasks(DtoMapper.mapTasks(project.getTasks()));
-		dto.setClient(DtoMapper.map(project.getClient()));
+		dto.setTasks(dtoMapper.mapTasks(project.getTasks()));
+		dto.setClient(clientService.toClientDTO(project.getClient()));
 		return dto;
 	}
 

@@ -1,5 +1,7 @@
 package fr.wati.yacramanager.services;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -13,5 +15,6 @@ public interface ClientService extends CrudService<Client, Long>,SpecificationFa
 	void deleteClient(Long companyId,Long clientId);
 	Client findByCompanyAndId(Company company, Long id);
 	ClientDTO toClientDTO(Client client);
+	List<ClientDTO> toClientDTOs(Iterable<Client> clients);
 	Page<Client> findByCompany(Company company, Pageable pageable);
 }

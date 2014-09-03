@@ -34,7 +34,7 @@ import fr.wati.yacramanager.beans.WorkLog;
 import fr.wati.yacramanager.services.EmployeService;
 import fr.wati.yacramanager.services.TaskService;
 import fr.wati.yacramanager.services.WorkLogService;
-import fr.wati.yacramanager.utils.DtoMapper;
+import fr.wati.yacramanager.services.impl.DtoMapper;
 import fr.wati.yacramanager.utils.Filter.FilterBuilder;
 import fr.wati.yacramanager.utils.SecurityUtils;
 import fr.wati.yacramanager.utils.SpecificationBuilder;
@@ -49,6 +49,10 @@ public class WorkLogRestController implements RestCrudController<WorkLogDTO>{
 	
 	@Autowired
 	private WorkLogService workLogService;
+	
+	@Autowired
+	private DtoMapper dtoMapper;
+	
 	@Autowired
 	private EmployeService employeService;
 	@Autowired
@@ -64,7 +68,7 @@ public class WorkLogRestController implements RestCrudController<WorkLogDTO>{
 		DateTime endDate = new DateTime(end * 1000);
 		List<WorkLog> workLogs = workLogService.findByEmployeAndStartDateBetween(SecurityUtils.getConnectedUser(), startDate, endDate);
 		if(workLogs!=null && !workLogs.isEmpty()){
-			List<WorkLogDTO> dtos = DtoMapper.mapWorkLogs(workLogs);
+			List<WorkLogDTO> dtos = dtoMapper.mapWorkLogs(workLogs);
 			return new ResponseEntity<List<WorkLogDTO>>(dtos, HttpStatus.OK);
 		}
 		return new ResponseEntity<List<WorkLogDTO>>(HttpStatus.OK);
@@ -75,7 +79,7 @@ public class WorkLogRestController implements RestCrudController<WorkLogDTO>{
 	public ResponseEntity<WorkLogDTO> getEventDetails(@PathVariable("id") Long id){
 		WorkLog workLog = workLogService.findOne(id);
 		if(workLog!=null){
-			WorkLogDTO workLogDTO=DtoMapper.mapForDetails(workLog);
+			WorkLogDTO workLogDTO=dtoMapper.mapForDetails(workLog);
 			return new ResponseEntity<WorkLogDTO>(workLogDTO, HttpStatus.OK);
 		}else {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -88,7 +92,7 @@ public class WorkLogRestController implements RestCrudController<WorkLogDTO>{
 	public @ResponseBody
 	ResponseEntity<WorkLogDTO> read(@PathVariable("id") Long id) {
 		if(workLogService.exists(id)){
-			return new ResponseEntity<WorkLogDTO>(DtoMapper.map(workLogService.findOne(id)), HttpStatus.OK);
+			return new ResponseEntity<WorkLogDTO>(dtoMapper.map(workLogService.findOne(id)), HttpStatus.OK);
 		}
 		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
@@ -150,7 +154,7 @@ public class WorkLogRestController implements RestCrudController<WorkLogDTO>{
 		
 		Page<WorkLog> findBySpecification =workLogService.findAll(specifications, pageable);
 		ResponseWrapper<List<WorkLogDTO>> responseWrapper = new ResponseWrapper<List<WorkLogDTO>>(
-				DtoMapper.mapWorkLogs(findBySpecification),
+				dtoMapper.mapWorkLogs(findBySpecification),
 				findBySpecification.getTotalElements());
 		long startIndex=findBySpecification.getNumber()*size+1;
 		long endIndex=startIndex+findBySpecification.getNumberOfElements()-1;

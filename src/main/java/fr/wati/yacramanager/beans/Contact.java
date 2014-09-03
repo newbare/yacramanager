@@ -20,13 +20,15 @@ import javax.persistence.ManyToOne;
 
 import org.hibernate.validator.constraints.Email;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /**
  * @author Rachid Ouattara
  * 
  */
 @SuppressWarnings("serial")
 @Entity
-public class Contact implements Serializable {
+public class Contact extends AuditableEntity implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -42,9 +44,11 @@ public class Contact implements Serializable {
 	@Embedded
 	private Adresse adresse;
 	
+	@JsonIgnore
 	@ManyToOne
 	private Company company;
 
+	@JsonIgnore
 	@ManyToOne
 	private Client client;
 	

@@ -19,6 +19,8 @@ import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /**
  * @author Rachid Ouattara
  *
@@ -38,12 +40,14 @@ public abstract class AuditableEntity implements Serializable {
     @Type(type="org.joda.time.contrib.hibernate.PersistentDateTime")
     private DateTime lastModifiedDate = DateTime.now();
 
+    @JsonIgnore
     @CreatedBy
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
 //    @NotNull
     private Users createdBy;
 
+    @JsonIgnore
     @LastModifiedBy
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn

@@ -35,7 +35,7 @@ import fr.wati.yacramanager.services.CompanyService;
 import fr.wati.yacramanager.services.EmployeService;
 import fr.wati.yacramanager.services.ProjectService;
 import fr.wati.yacramanager.services.TaskService;
-import fr.wati.yacramanager.utils.DtoMapper;
+import fr.wati.yacramanager.services.impl.DtoMapper;
 import fr.wati.yacramanager.utils.Filter.FilterBuilder;
 import fr.wati.yacramanager.utils.SpecificationBuilder;
 import fr.wati.yacramanager.web.dto.ResponseWrapper;
@@ -53,6 +53,10 @@ public class TaskRestController {
 	
 	@Autowired
 	private CompanyService companyService;
+	
+	@Autowired
+	private DtoMapper dtoMapper;
+	
 	@Autowired
 	private TaskService taskService;
 	@Autowired
@@ -84,7 +88,7 @@ public class TaskRestController {
 		List<Task> tasks = taskService.findByProjectAndAssignedEmployeesIn(project, employe);
 		if(tasks!=null && !tasks.isEmpty()){
 			ResponseWrapper<List<TaskDTO>> responseWrapper = new ResponseWrapper<>(
-					DtoMapper.mapTasks(tasks), tasks.size());
+					dtoMapper.mapTasks(tasks), tasks.size());
 			return responseWrapper;
 		}
 		return new ResponseWrapper<List<TaskDTO>>(null);
@@ -141,7 +145,7 @@ public class TaskRestController {
 
 		Page<Task> findBySpecificationAndOrder = taskService.findAll(specifications, pageable);
 		ResponseWrapper<List<TaskDTO>> responseWrapper = new ResponseWrapper<>(
-				DtoMapper.mapTasks(findBySpecificationAndOrder),
+				dtoMapper.mapTasks(findBySpecificationAndOrder),
 				findBySpecificationAndOrder.getTotalElements());
 		long startIndex = findBySpecificationAndOrder.getNumber() * size + 1;
 		long endIndex = startIndex
@@ -153,7 +157,7 @@ public class TaskRestController {
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<TaskDTO> read(@PathVariable("companyId") Long companyId,@PathVariable("id") Long id) {
-		return new ResponseEntity<TaskDTO>(DtoMapper.map(taskService.findOne(id)),HttpStatus.OK);
+		return new ResponseEntity<TaskDTO>(dtoMapper.map(taskService.findOne(id)),HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)

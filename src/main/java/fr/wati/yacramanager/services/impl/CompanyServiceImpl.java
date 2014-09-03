@@ -31,6 +31,8 @@ public class CompanyServiceImpl implements CompanyService {
 	private CompanyRepository companyRepository;
 	@Autowired
 	private ClientService clientService;
+	@Autowired
+	private DtoMapper dtoMapper;
 	private ApplicationEventPublisher applicationEventPublisher;
 
 	@Override
@@ -112,7 +114,7 @@ public class CompanyServiceImpl implements CompanyService {
 		companyDTO.setId(company.getId());
 		companyDTO.setName(company.getName());
 		companyDTO.setRegisteredDate(company.getRegisteredDate());
-		companyDTO.setContacts(company.getContacts());
+		companyDTO.setContacts(dtoMapper.mapContacts(company));
 		companyDTO.setLicenseEndDate(company.getLicenseEndDate());
 		return companyDTO;
 	}

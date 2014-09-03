@@ -221,7 +221,10 @@ function CompanyEmployeesOverviewController($scope,EmployeesCRUDREST, $statePara
 	
 	$scope.updateEmploye = function() {
 		return EmployeesCRUDREST.update($scope.employe);
-		
+	};
+	
+	$scope.addPhoneNumbers=function(employe){
+		employe.phoneNumbers.push('');
 	};
 }
 /*COMPANY-EMPLOYEE End of section*/
@@ -363,6 +366,10 @@ function CompanyClientsOverviewController($scope,ClientsCRUDREST, $stateParams){
 			{companyId : _userCompanyId,id:$scope.clientId},function(data) {
 				$scope.client=data;
 			});
+	$scope.addContact=function(client){
+		var newContact={name:'sdsdfsdf',email:'fsdfsdf'};
+		client.contacts.push(newContact);
+	}
 }
 /*COMPANY-CLIENT End of section*/
 

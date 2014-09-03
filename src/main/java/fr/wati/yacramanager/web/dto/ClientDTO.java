@@ -1,11 +1,15 @@
 package fr.wati.yacramanager.web.dto;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import fr.wati.yacramanager.beans.Client;
 
 public class ClientDTO {
 	private Long id;
 	private String name;
 	private Long companyId;
+	private List<ContactDTO> contacts = new ArrayList<>();
 	
 	public Long getId() {
 		return id;
@@ -33,6 +37,12 @@ public class ClientDTO {
 	}
 	public void setCompanyId(Long companyId) {
 		this.companyId = companyId;
+	}
+	public List<ContactDTO> getContacts() {
+		return contacts;
+	}
+	public void setContacts(List<ContactDTO> contacts) {
+		this.contacts = contacts;
 	}
 	
 }

@@ -1,14 +1,18 @@
-package fr.wati.yacramanager.utils;
+package fr.wati.yacramanager.services.impl;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import fr.wati.yacramanager.beans.Absence;
 import fr.wati.yacramanager.beans.Attachement;
 import fr.wati.yacramanager.beans.Client;
 import fr.wati.yacramanager.beans.Company;
+import fr.wati.yacramanager.beans.Contact;
 import fr.wati.yacramanager.beans.Employe;
 import fr.wati.yacramanager.beans.NoteDeFrais;
 import fr.wati.yacramanager.beans.Project;
@@ -18,9 +22,12 @@ import fr.wati.yacramanager.beans.Users;
 import fr.wati.yacramanager.beans.WorkLog;
 import fr.wati.yacramanager.dao.repository.EmployeDto;
 import fr.wati.yacramanager.dao.repository.UserDto;
+import fr.wati.yacramanager.services.ClientService;
+import fr.wati.yacramanager.services.CompanyService;
 import fr.wati.yacramanager.web.dto.AbsenceDTO;
 import fr.wati.yacramanager.web.dto.ClientDTO;
 import fr.wati.yacramanager.web.dto.CompanyDTO;
+import fr.wati.yacramanager.web.dto.ContactDTO;
 import fr.wati.yacramanager.web.dto.NoteDeFraisDTO;
 import fr.wati.yacramanager.web.dto.ProjectDTO;
 import fr.wati.yacramanager.web.dto.SettingsDTO;
@@ -28,16 +35,24 @@ import fr.wati.yacramanager.web.dto.TaskDTO;
 import fr.wati.yacramanager.web.dto.UserInfoDTO.ManagedEmployeInfoDTO;
 import fr.wati.yacramanager.web.dto.WorkLogDTO;
 
+
+@Transactional
+@Service
 public class DtoMapper {
 
-	public static UserDto map(Users user) {
+	@Autowired
+	private ClientService clientService;
+	@Autowired
+	private CompanyService companyService;
+	
+	public  UserDto map(Users user) {
 		UserDto dto = new UserDto();
 		dto.setId(Integer.valueOf(user.getId().toString()));
 		dto.setUsername(user.getUsername());
 		return dto;
 	}
 
-	public static List<UserDto> mapUsers(Page<Users> users) {
+	public  List<UserDto> mapUsers(Page<Users> users) {
 		List<UserDto> dtos = new ArrayList<UserDto>();
 		for (Users user : users) {
 			dtos.add(map(user));
@@ -46,14 +61,53 @@ public class DtoMapper {
 	}
 	
 	
-	public static ClientDTO map(Client client) {
+	public  ClientDTO map(Client client) {
 		ClientDTO dto = new ClientDTO();
 		dto.setId(client.getId());
 		dto.setName(client.getName());
+		dto.setContacts(mapContacts(client));
 		return dto;
 	}
+	
+	public  ContactDTO map(Contact contact) {
+		ContactDTO dto = new ContactDTO();
+		dto.setId(contact.getId());
+		dto.setName(contact.getName());
+		dto.setAdresse(contact.getAdresse());
+		dto.setEmail(contact.getEmail());
+		dto.setPhoneNumbers(contact.getPhoneNumbers());
+		return dto;
+	}
+	@Transactional(readOnly=true)
+	public  List<ContactDTO> mapContacts(Iterable<Contact> contacts) {
+		List<ContactDTO> dtos = new ArrayList<>();
+		for (Contact contact : contacts) {
+			dtos.add(map(contact));
+		}
+		return dtos;
+	}
+	
+	@Transactional(readOnly=true)
+	public  List<ContactDTO> mapContacts(Client client) {
+		Client findOne = clientService.findOne(client.getId());
+		List<ContactDTO> dtos = new ArrayList<>();
+		for (Contact contact : findOne.getContacts()) {
+			dtos.add(map(contact));
+		}
+		return dtos;
+	}
+	
+	@Transactional(readOnly=true)
+	public  List<ContactDTO> mapContacts(Company company) {
+		Company findOne = companyService.findOne(company.getId());
+		List<ContactDTO> dtos = new ArrayList<>();
+		for (Contact contact : findOne.getContacts()) {
+			dtos.add(map(contact));
+		}
+		return dtos;
+	}
 
-	public static List<ClientDTO> mapClients(Page<Client> clients) {
+	public  List<ClientDTO> mapClients(Page<Client> clients) {
 		List<ClientDTO> dtos = new ArrayList<ClientDTO>();
 		for (Client client : clients) {
 			dtos.add(map(client));
@@ -61,21 +115,21 @@ public class DtoMapper {
 		return dtos;
 	}
 	
-	public static ProjectDTO map(Project project) {
+	public  ProjectDTO map(Project project) {
 		ProjectDTO dto = new ProjectDTO();
 		dto.setId(project.getId());
 		dto.setName(project.getName());
 		dto.setCreatedDate(project.getCreatedDate());
 		dto.setDescription(project.getDescription());
 		dto.setColor(project.getColor());
-		if(project.getClient()!=null){
-			ClientDTO clientDTO=map(project.getClient());
-			dto.setClient(clientDTO);
-		}
+//		if(project.getClient()!=null){
+//			ClientDTO clientDTO=map(project.getClient());
+//			dto.setClient(clientDTO);
+//		}
 		return dto;
 	}
 
-	public static List<ProjectDTO> mapProjects(Iterable<Project> projects) {
+	public  List<ProjectDTO> mapProjects(Iterable<Project> projects) {
 		List<ProjectDTO> dtos = new ArrayList<>();
 		for (Project project : projects) {
 			dtos.add(map(project));
@@ -83,7 +137,7 @@ public class DtoMapper {
 		return dtos;
 	}
 	
-	public static SettingsDTO map(Settings settings) {
+	public  SettingsDTO map(Settings settings) {
 		SettingsDTO dto = new SettingsDTO();
 		dto.setId(settings.getId());
 		dto.setKey(settings.getKey());
@@ -92,7 +146,7 @@ public class DtoMapper {
 		return dto;
 	}
 	
-	public static List<SettingsDTO> mapSettings(Iterable<Settings> settings) {
+	public  List<SettingsDTO> mapSettings(Iterable<Settings> settings) {
 		List<SettingsDTO> dtos = new ArrayList<>();
 		for (Settings setting : settings) {
 			dtos.add(map(setting));
@@ -101,7 +155,7 @@ public class DtoMapper {
 	}
 	
 
-	public static AbsenceDTO map(Absence absence) {
+	public  AbsenceDTO map(Absence absence) {
 		AbsenceDTO dto = new AbsenceDTO();
 		dto.setDescription(absence.getDescription());
 		dto.setStartDate(absence.getStartDate());
@@ -115,18 +169,17 @@ public class DtoMapper {
 		return dto;
 	}
 	
-	public static CompanyDTO map(Company company) {
+	public  CompanyDTO map(Company company) {
 		CompanyDTO dto = new CompanyDTO();
 		dto.setId(company.getId());
 		dto.setName(company.getName());
 		dto.setLicenseEndDate(company.getLicenseEndDate());
-		dto.setContacts(company.getContacts());
+		dto.setContacts(mapContacts(company));
 		dto.setRegisteredDate(company.getRegisteredDate());
-		dto.setContacts(company.getContacts());
 		return dto;
 	}
 	
-	public static ManagedEmployeInfoDTO mapManagedEmployeInfoDTO(Employe employe) {
+	public  ManagedEmployeInfoDTO mapManagedEmployeInfoDTO(Employe employe) {
 		ManagedEmployeInfoDTO dto = new ManagedEmployeInfoDTO();
 		dto.setName(String.valueOf(employe.getId()));
 		dto.setLabel(employe.getFullName());
@@ -134,7 +187,7 @@ public class DtoMapper {
 	}
 	
 	
-	public static NoteDeFraisDTO map(NoteDeFrais noteDeFrais) {
+	public  NoteDeFraisDTO map(NoteDeFrais noteDeFrais) {
 		NoteDeFraisDTO dto = new NoteDeFraisDTO();
 		dto.setDate(noteDeFrais.getDate());
 		dto.setDescription(noteDeFrais.getDescription());
@@ -150,7 +203,7 @@ public class DtoMapper {
 		return dto;
 	}
 	
-	public static List<AbsenceDTO> mapAbsences(Iterable<Absence> absences) {
+	public  List<AbsenceDTO> mapAbsences(Iterable<Absence> absences) {
 		List<AbsenceDTO> dtos = new ArrayList<AbsenceDTO>();
 		for (Absence absence : absences) {
 			dtos.add(map(absence));
@@ -158,7 +211,7 @@ public class DtoMapper {
 		return dtos;
 	}
 	
-	public static List<CompanyDTO> mapCompanies(Iterable<Company> companies) {
+	public  List<CompanyDTO> mapCompanies(Iterable<Company> companies) {
 		List<CompanyDTO> dtos = new ArrayList<CompanyDTO>();
 		for (Company company : companies) {
 			dtos.add(map(company));
@@ -166,7 +219,7 @@ public class DtoMapper {
 		return dtos;
 	}
 	
-	public static List<ManagedEmployeInfoDTO> mapManagedEmployeInfoDTOs(Iterable<Employe> employees) {
+	public  List<ManagedEmployeInfoDTO> mapManagedEmployeInfoDTOs(Iterable<Employe> employees) {
 		List<ManagedEmployeInfoDTO> dtos = new ArrayList<>();
 		for (Employe employe : employees) {
 			dtos.add(mapManagedEmployeInfoDTO(employe));
@@ -174,7 +227,7 @@ public class DtoMapper {
 		return dtos;
 	}
 	
-	public static List<NoteDeFraisDTO> mapNoteDeFrais(Iterable<NoteDeFrais> noteDeFrais) {
+	public  List<NoteDeFraisDTO> mapNoteDeFrais(Iterable<NoteDeFrais> noteDeFrais) {
 		List<NoteDeFraisDTO> dtos = new ArrayList<NoteDeFraisDTO>();
 		for (NoteDeFrais noteDeFrai : noteDeFrais) {
 			dtos.add(map(noteDeFrai));
@@ -182,7 +235,7 @@ public class DtoMapper {
 		return dtos;
 	}
 	
-	public static EmployeDto map(Employe employe) {
+	public  EmployeDto map(Employe employe) {
 		EmployeDto dto = new EmployeDto();
 		dto.setId(Long.valueOf(employe.getId().toString()));
 		dto.setUsername(employe.getUsername());
@@ -197,7 +250,7 @@ public class DtoMapper {
 		return dto;
 	}
 
-	public static List<EmployeDto> mapEmployees(Page<Employe> employees) {
+	public  List<EmployeDto> mapEmployees(Page<Employe> employees) {
 		List<EmployeDto> dtos = new ArrayList<EmployeDto>();
 		for (Employe employe : employees) {
 			dtos.add(map(employe));
@@ -205,7 +258,7 @@ public class DtoMapper {
 		return dtos;
 	}
 
-	public static List<WorkLogDTO> mapWorkLogs(Iterable<WorkLog> workLogs) {
+	public  List<WorkLogDTO> mapWorkLogs(Iterable<WorkLog> workLogs) {
 		List<WorkLogDTO> dtos=new ArrayList<>();
 		for (WorkLog workLog : workLogs) {
 			dtos.add(map(workLog));
@@ -213,11 +266,11 @@ public class DtoMapper {
 		return dtos;
 	}
 
-	public static WorkLogDTO mapForDetails(WorkLog workLog) {
+	public  WorkLogDTO mapForDetails(WorkLog workLog) {
 		return map(workLog);
 	}
 
-	public static WorkLogDTO map(WorkLog workLog) {
+	public  WorkLogDTO map(WorkLog workLog) {
 		WorkLogDTO workLogDTO=new WorkLogDTO();
 		workLogDTO.setStart(workLog.getStartDate());
 		workLogDTO.setEnd(workLog.getEndDate());
@@ -252,7 +305,7 @@ public class DtoMapper {
 	 * @param tasks
 	 * @return
 	 */
-	public static List<TaskDTO> mapTasks(Iterable<Task> tasks) {
+	public  List<TaskDTO> mapTasks(Iterable<Task> tasks) {
 		List<TaskDTO> dtos = new ArrayList<>();
 		for (Task task : tasks) {
 			dtos.add(map(task));
@@ -264,7 +317,7 @@ public class DtoMapper {
 	 * @param task
 	 * @return
 	 */
-	public static TaskDTO map(Task task) {
+	public  TaskDTO map(Task task) {
 		TaskDTO dto=new TaskDTO();
 		dto.setCreatedDate(task.getCreatedDate());
 		dto.setDescription(task.getDescription());

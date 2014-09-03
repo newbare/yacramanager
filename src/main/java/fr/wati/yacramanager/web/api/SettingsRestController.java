@@ -18,7 +18,7 @@ import fr.wati.yacramanager.beans.Settings;
 import fr.wati.yacramanager.services.CompanyService;
 import fr.wati.yacramanager.services.SettingsService;
 import fr.wati.yacramanager.services.UserService;
-import fr.wati.yacramanager.utils.DtoMapper;
+import fr.wati.yacramanager.services.impl.DtoMapper;
 import fr.wati.yacramanager.web.dto.ResponseWrapper;
 import fr.wati.yacramanager.web.dto.SettingsDTO;
 
@@ -32,6 +32,9 @@ public class SettingsRestController {
 	private SettingsService settingsService;
 	
 	@Autowired
+	private DtoMapper dtoMapper;
+	
+	@Autowired
 	private UserService userService;
 	
 	@Autowired
@@ -39,12 +42,12 @@ public class SettingsRestController {
 	
 	@RequestMapping(value = "/company/{companyId}/{settingsId}", method = RequestMethod.GET)
 	public SettingsDTO readCompanySettings(@PathVariable("settingsId") Long settingsId,@PathVariable("companyId") Long companyId) {
-		return  DtoMapper.map(settingsService.findOne(settingsId));
+		return  dtoMapper.map(settingsService.findOne(settingsId));
 	}
 	
 	@RequestMapping(value = "/user/{userId}/{settingsId}", method = RequestMethod.GET)
 	public SettingsDTO readUserSettings(@PathVariable("settingsId") Long settingsId,@PathVariable("userId") Long userId) {
-		return  DtoMapper.map(settingsService.findOne(settingsId));
+		return  dtoMapper.map(settingsService.findOne(settingsId));
 	}
 
 	@RequestMapping(value = "/user/{userId}", method = RequestMethod.PUT)
@@ -63,14 +66,14 @@ public class SettingsRestController {
 	public ResponseWrapper<List<SettingsDTO>> getAllUserSettings(@PathVariable("userId") Long userId)
 			throws RestServiceException {
 		List<Settings> settings = settingsService.findByUser(userService.findOne(userId));
-		return new ResponseWrapper<List<SettingsDTO>>(DtoMapper.mapSettings(settings), Long.valueOf(settings.size()));
+		return new ResponseWrapper<List<SettingsDTO>>(dtoMapper.mapSettings(settings), Long.valueOf(settings.size()));
 	}
 	
 	@RequestMapping(value = "/company/{companyId}", method = RequestMethod.GET)
 	public ResponseWrapper<List<SettingsDTO>> getAllCompanySettings(@PathVariable("companyId") Long companyId)
 			throws RestServiceException {
 		List<Settings> settings = settingsService.findByCompany(companyService.findOne(companyId));
-		return new ResponseWrapper<List<SettingsDTO>>(DtoMapper.mapSettings(settings), Long.valueOf(settings.size()));
+		return new ResponseWrapper<List<SettingsDTO>>(dtoMapper.mapSettings(settings), Long.valueOf(settings.size()));
 	}
 
 	@RequestMapping(value = "/company/{companyId}", method = RequestMethod.POST)

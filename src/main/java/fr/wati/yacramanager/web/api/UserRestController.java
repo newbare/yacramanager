@@ -32,7 +32,7 @@ import fr.wati.yacramanager.beans.Employe;
 import fr.wati.yacramanager.dao.repository.EmployeDto;
 import fr.wati.yacramanager.dao.repository.EmployeRepository;
 import fr.wati.yacramanager.services.EmployeService;
-import fr.wati.yacramanager.utils.DtoMapper;
+import fr.wati.yacramanager.services.impl.DtoMapper;
 import fr.wati.yacramanager.utils.Filter.FilterBuilder;
 import fr.wati.yacramanager.utils.SecurityUtils;
 import fr.wati.yacramanager.utils.SpecificationBuilder;
@@ -48,6 +48,10 @@ public class UserRestController implements RestCrudController<EmployeDto> {
 	private static final Log LOG = LogFactory.getLog(UserRestController.class);
 	@Autowired
 	private EmployeService employeService;
+	
+	@Autowired
+	private DtoMapper dtoMapper;
+	
 	@Autowired
 	private EmployeRepository employeRepository;
 
@@ -57,7 +61,7 @@ public class UserRestController implements RestCrudController<EmployeDto> {
 
 		Employe findOne = employeRepository.findOne(id);
 		if (findOne != null) {
-			return new ResponseEntity<EmployeDto>(DtoMapper.map(findOne), HttpStatus.OK) ;
+			return new ResponseEntity<EmployeDto>(dtoMapper.map(findOne), HttpStatus.OK) ;
 		}
 		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
@@ -142,7 +146,7 @@ public class UserRestController implements RestCrudController<EmployeDto> {
 		
 		Page<Employe> findBySpecificationAndOrder =employeService.findAll(specifications, pageable);
 		ResponseWrapper<List<EmployeDto>> responseWrapper = new ResponseWrapper<List<EmployeDto>>(
-				DtoMapper.mapEmployees(findBySpecificationAndOrder),
+				dtoMapper.mapEmployees(findBySpecificationAndOrder),
 				findBySpecificationAndOrder.getTotalElements());
 		long startIndex=findBySpecificationAndOrder.getNumber()*size+1;
 		long endIndex=startIndex+findBySpecificationAndOrder.getNumberOfElements()-1;
@@ -176,7 +180,7 @@ public class UserRestController implements RestCrudController<EmployeDto> {
 		if(addMe){
 			managedEmployes.add(0, SecurityUtils.getConnectedUser());
 		}
-		return DtoMapper.mapManagedEmployeInfoDTOs(managedEmployes);
+		return dtoMapper.mapManagedEmployeInfoDTOs(managedEmployes);
 	}
 
 }

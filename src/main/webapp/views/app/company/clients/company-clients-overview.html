@@ -1,18 +1,20 @@
- {{client.name}}
-
 <div class="row">
-	<div class="btn-group pull-right">
-		<button type="button" class=" active btn btn-default btn-xs">
-			<span>10</span>
-		</button>
-		<button type="button" class=" active btn btn-default btn-xs">
-			<span>50</span>
-		</button>
+	<h4><strong><span class="text-muted">{{client.name}}</span></strong></h4>
+</div> 
+<h5><strong>Contacs</strong></h5>
+<hr>
+<ul class="list-inline">
+	<li><input type="text" data-ng-model="contactFilter" class="form-control" placeholder="Filter text"></li>
+	<li><button class="btn btn-link" data-ng-click="addContact(client)">Add</button></li>
+</ul>
+<div class="row">
+	<div class="col-md-3 business-card" data-ng-repeat="contact in client.contacts">
+		<p><strong><a href="#" onaftersave="updateContact(contact)" editable-text="contact.name">{{ contact.name || 'empty' }}</a></strong></p>
+		<p><a href="#" onaftersave="updateContact(contact)" editable-email="contact.email">{{ contact.email || 'empty' }}</a></p>
+		<ul class="list-inline">
+			<li></li>
+		</ul>
 	</div>
-	<ul>
-		<li>terterter</li>
-		<li>terterter</li>
-	</ul>
 </div>
 
 <div class="row ng-cloak ng-table-pager">

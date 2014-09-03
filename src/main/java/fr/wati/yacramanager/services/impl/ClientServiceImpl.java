@@ -29,6 +29,7 @@ import fr.wati.yacramanager.utils.Filter.FilterArrayValue;
 import fr.wati.yacramanager.utils.Filter.FilterText;
 import fr.wati.yacramanager.utils.Filter.FilterType;
 import fr.wati.yacramanager.web.dto.ClientDTO;
+import fr.wati.yacramanager.web.dto.ContactDTO;
 
 @Transactional
 @Service
@@ -36,6 +37,9 @@ public class ClientServiceImpl implements ClientService {
 
 	@Autowired
 	private ClientRepository clientRepository;
+	
+	@Autowired
+	private DtoMapper dtoMapper;
 	
 	@Autowired
 	private CompanyRepository companyRepository;
@@ -138,6 +142,7 @@ public class ClientServiceImpl implements ClientService {
 		ClientDTO clientDTO=new ClientDTO();
 		clientDTO.setName(client.getName());
 		clientDTO.setId(client.getId());
+		clientDTO.setContacts(dtoMapper.mapContacts(client));
 		return clientDTO;
 	}
 
@@ -182,5 +187,14 @@ public class ClientServiceImpl implements ClientService {
 	public void setApplicationEventPublisher(
 			ApplicationEventPublisher applicationEventPublisher) {
 		this.applicationEventPublisher=applicationEventPublisher;
+	}
+
+	@Override
+	public List<ClientDTO> toClientDTOs(Iterable<Client> clients) {
+		List<ClientDTO> clientDTOs=new ArrayList<>();
+		for (Client client : clients) {
+			clientDTOs.add(toClientDTO(client));
+		}
+		return clientDTOs;
 	}
 }

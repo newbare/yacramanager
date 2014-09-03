@@ -14,7 +14,7 @@ public class CompanyDTO {
 	private String name;
 	private DateTime licenseEndDate;
 	private DateTime registeredDate;
-	private List<Contact> contacts=new ArrayList<>();
+	private List<ContactDTO> contacts=new ArrayList<>();
 	public Long getId() {
 		return id;
 	}
@@ -31,7 +31,7 @@ public class CompanyDTO {
 		company.setName(getName());
 		company.setLicenseEndDate(getLicenseEndDate());
 		company.setRegisteredDate(getRegisteredDate());
-		company.setContacts(getContacts());
+		//company.setContacts(getContacts());
 		return company;
 	}
 	/**
@@ -49,13 +49,13 @@ public class CompanyDTO {
 	/**
 	 * @return the contacts
 	 */
-	public List<Contact> getContacts() {
+	public List<ContactDTO> getContacts() {
 		return contacts;
 	}
 	/**
 	 * @param contacts the contacts to set
 	 */
-	public void setContacts(List<Contact> contacts) {
+	public void setContacts(List<ContactDTO> contacts) {
 		this.contacts = contacts;
 	}
 	/**

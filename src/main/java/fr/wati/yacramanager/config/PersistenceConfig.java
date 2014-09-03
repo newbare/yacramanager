@@ -4,10 +4,10 @@ import javax.sql.DataSource;
 
 import org.apache.commons.dbcp.BasicDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.instrument.classloading.InstrumentationLoadTimeWeaver;
@@ -27,8 +27,6 @@ public class PersistenceConfig
 {
 	@Autowired
 	private Environment env;
-	@Value("${init-db:false}")
-	private String initDatabase;
 	
 	@Bean
 	public PlatformTransactionManager transactionManager()
@@ -99,9 +97,11 @@ public class PersistenceConfig
 		DataSourceInitializer dataSourceInitializer = new DataSourceInitializer();
 		dataSourceInitializer.setDataSource(dataSource);
 		ResourceDatabasePopulator databasePopulator = new ResourceDatabasePopulator();
-		//databasePopulator.addScript(new ClassPathResource("db.sql"));
+		databasePopulator.setContinueOnError(true);
+		databasePopulator.addScript(new ClassPathResource("sql/spring-security-persistent-login.sql"));
+		databasePopulator.addScript(new ClassPathResource("sql/roles-initialization.sql"));
 		dataSourceInitializer.setDatabasePopulator(databasePopulator);
-		dataSourceInitializer.setEnabled(Boolean.parseBoolean(initDatabase));
+		dataSourceInitializer.setEnabled(env.getProperty("init-db",Boolean.class));
 		return dataSourceInitializer;
 	}	
 }

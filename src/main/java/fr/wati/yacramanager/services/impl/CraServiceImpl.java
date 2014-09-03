@@ -22,11 +22,11 @@ import fr.wati.yacramanager.beans.Employe;
 import fr.wati.yacramanager.beans.ValidationStatus;
 import fr.wati.yacramanager.beans.WorkLog;
 import fr.wati.yacramanager.services.AbsenceService;
+import fr.wati.yacramanager.services.ClientService;
 import fr.wati.yacramanager.services.CraService;
 import fr.wati.yacramanager.services.EmployeService;
 import fr.wati.yacramanager.services.WorkLogService;
 import fr.wati.yacramanager.utils.CalendarUtil;
-import fr.wati.yacramanager.utils.DtoMapper;
 import fr.wati.yacramanager.web.dto.AbsenceDTO;
 import fr.wati.yacramanager.web.dto.CraDTO;
 import fr.wati.yacramanager.web.dto.CraDTO.Day;
@@ -36,6 +36,7 @@ import fr.wati.yacramanager.web.dto.CraDetailsDTO.CraAbsenceDetail;
 import fr.wati.yacramanager.web.dto.CraDetailsDTO.CraDetailDay;
 import fr.wati.yacramanager.web.dto.CraDetailsDTO.CraTaskRow;
 import fr.wati.yacramanager.web.dto.CraDetailsDTO.EmployeCraDetailsDTO;
+import fr.wati.yacramanager.web.dto.ProjectDTO;
 
 @Service
 public class CraServiceImpl implements CraService {
@@ -45,7 +46,13 @@ public class CraServiceImpl implements CraService {
 
 	@Autowired
 	private WorkLogService workLogService;
+	
+	@Autowired
+	private ClientService clientService;
 
+	@Autowired
+	private DtoMapper dtoMapper;
+	
 	@Autowired
 	private EmployeService employeService;
 
@@ -176,9 +183,10 @@ public class CraServiceImpl implements CraService {
 					craTaskRow=craTaskMap.get(workLog.getTask().getId());
 				}else {
 					craTaskRow=new CraTaskRow();
-					craTaskRow.setProject(DtoMapper.map(workLog.getTask()
-							.getProject()));
-					craTaskRow.setTask(DtoMapper.map(workLog.getTask()));
+					ProjectDTO projectDTO = dtoMapper.map(workLog.getTask().getProject());
+					projectDTO.setClient(clientService.toClientDTO(workLog.getTask().getProject().getClient()));
+					craTaskRow.setProject(projectDTO);
+					craTaskRow.setTask(dtoMapper.map(workLog.getTask()));
 					craTaskMap.put(workLog.getTask().getId(), craTaskRow);
 					employeCraDetailsDTO.getTaskRows().add(craTaskRow);
 				}

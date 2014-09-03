@@ -1,3 +1,15 @@
+.business-card {
+	border: 1px solid;
+	border-color: #ccc;
+	border-radius: 7px;
+	margin: 3px;
+	padding-top: 10px;
+}
+
+.business-card:HOVER{
+	border-color: #999;
+}
+
 .auth-form {
 	padding: 19px 29px 29px;
 	background-color: #fff;
