@@ -18,6 +18,7 @@ import fr.wati.yacramanager.beans.Company;
 import fr.wati.yacramanager.beans.Project;
 import fr.wati.yacramanager.dao.repository.ClientRepository;
 import fr.wati.yacramanager.dao.repository.CompanyRepository;
+import fr.wati.yacramanager.dao.repository.ContactRepository;
 import fr.wati.yacramanager.dao.specifications.CommonSpecifications;
 import fr.wati.yacramanager.listeners.ActivityEvent;
 import fr.wati.yacramanager.services.ClientService;
@@ -29,7 +30,6 @@ import fr.wati.yacramanager.utils.Filter.FilterArrayValue;
 import fr.wati.yacramanager.utils.Filter.FilterText;
 import fr.wati.yacramanager.utils.Filter.FilterType;
 import fr.wati.yacramanager.web.dto.ClientDTO;
-import fr.wati.yacramanager.web.dto.ContactDTO;
 
 @Transactional
 @Service
@@ -37,6 +37,9 @@ public class ClientServiceImpl implements ClientService {
 
 	@Autowired
 	private ClientRepository clientRepository;
+	
+	@Autowired
+	private ContactRepository contactRepository;
 	
 	@Autowired
 	private DtoMapper dtoMapper;
@@ -54,6 +57,7 @@ public class ClientServiceImpl implements ClientService {
 	
 	@Override
 	public <S extends Client> S save(S entity) {
+		//contactRepository.save(entity.getContacts());
 		S save = clientRepository.save(entity);
 		applicationEventPublisher.publishEvent(ActivityEvent
 				.createWithSource(this).user()

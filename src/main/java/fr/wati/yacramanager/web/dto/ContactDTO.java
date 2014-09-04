@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fr.wati.yacramanager.beans.Adresse;
+import fr.wati.yacramanager.beans.Contact;
 
 public class ContactDTO {
 
@@ -45,4 +46,17 @@ public class ContactDTO {
 		this.adresse = adresse;
 	}
 
+	public Contact toContact(Contact contact){
+		if(null==contact.getId()){
+			contact.setId(getId());
+		}
+		contact.setName(getName());
+		contact.setEmail(getEmail());
+		contact.setAdresse(getAdresse());
+		contact.setPhoneNumbers(getPhoneNumbers());
+		return contact;
+	}
+	public Contact toContact(){
+		return toContact(new Contact());
+	}
 }

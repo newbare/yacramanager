@@ -1,12 +1,21 @@
-.business-card {
+.vcard {
 	border: 1px solid;
 	border-color: #ccc;
 	border-radius: 7px;
 	margin: 3px;
-	padding-top: 10px;
+	padding: 10px 3px;
 }
 
-.business-card:HOVER{
+.vcard a.editable-click{
+	border-bottom: 1px solid;
+	border-color: transparent;
+}
+
+.vcard a.editable-click:HOVER{
+	border-color: inherit;
+}
+
+.vcard:HOVER{
 	border-color: #999;
 }
 

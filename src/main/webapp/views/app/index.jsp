@@ -264,6 +264,8 @@
 		src="${contextPath}/assets/bower_components/ng-table/ng-table.min.js"></script>
 	<script
 		src="${contextPath}/assets/bower_components/angular-strap/dist/modules/alert.min.js"></script>
+		<script
+		src="${contextPath}/assets/bower_components/angular-filter/dist/angular-filter.min.js"></script>
 	<script
 		src="${contextPath}/assets/bower_components/angular-daterangepicker/js/angular-daterangepicker.js"></script>
 	<script

@@ -8,12 +8,24 @@
 	<li><button class="btn btn-link" data-ng-click="addContact(client)">Add</button></li>
 </ul>
 <div class="row">
-	<div class="col-md-3 business-card" data-ng-repeat="contact in client.contacts">
-		<p><strong><a href="#" onaftersave="updateContact(contact)" editable-text="contact.name">{{ contact.name || 'empty' }}</a></strong></p>
-		<p><a href="#" onaftersave="updateContact(contact)" editable-email="contact.email">{{ contact.email || 'empty' }}</a></p>
+	<div class="col-md-4 vcard" data-ng-repeat="contact in client.contacts | searchField: 'name': 'email' | filter: contactFilter">
+		<strong><a href="#" onaftersave="updateClient()" buttons="no" editable-text="contact.name">{{ contact.name || 'Name' }}</a></strong><br>
+		<a href="#" onaftersave="updateClient()" buttons="no" editable-email="contact.email">{{ contact.email || 'Email' }}</a><br>
+		<br>
 		<ul class="list-inline">
-			<li></li>
+			<li data-ng-repeat="phoneNumber in contact.phoneNumbers">
+				<i class="fa fa-phone"></i>
+				<a href="#"  buttons="no" onaftersave="updateClient()" editable-tel="contact.phoneNumbers[$index]">{{ contact.phoneNumbers[$index] || 'Tel' }}</a>
+				<button href="" class="btn btn-link btn-xs" data-ng-click="removePhoneNumbers(contact,$index)"><i class="fa fa-minus-circle text-danger"></i></button>
+			</li>
+			<li>
+				<a href="" class="btn btn-link btn-xs" data-ng-click="addPhoneNumbers(contact)"><i class="fa fa-plus-circle"></i></a>
+			</li>
 		</ul>
+		<a href="#" onaftersave="updateClient()" buttons="no" editable-text="contact.adresse.adress">{{ contact.adresse.adress || 'Address' }}</a><br>
+		<a href="#" onaftersave="updateClient()" buttons="no" editable-text="contact.adresse.postCode">{{ contact.adresse.postCode || 'Post Code' }}</a><br>
+		<a href="#" onaftersave="updateClient()" buttons="no" editable-text="contact.adresse.city">{{ contact.adresse.city || 'City' }}</a><br>
+		<a href="#" onaftersave="updateClient()" buttons="no" editable-text="contact.adresse.country">{{ contact.adresse.country || 'Country' }}</a>
 	</div>
 </div>
 

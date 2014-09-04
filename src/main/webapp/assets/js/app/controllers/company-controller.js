@@ -366,10 +366,24 @@ function CompanyClientsOverviewController($scope,ClientsCRUDREST, $stateParams){
 			{companyId : _userCompanyId,id:$scope.clientId},function(data) {
 				$scope.client=data;
 			});
+	$scope.contactFilter='';
 	$scope.addContact=function(client){
-		var newContact={name:'sdsdfsdf',email:'fsdfsdf'};
+		var newContact={name:undefined,email:undefined,phoneNumbers:[],adresse:{adress:undefined,postCode:undefined,city:undefined,country:undefined}};
 		client.contacts.push(newContact);
-	}
+	};
+	$scope.addPhoneNumbers=function(contact){
+		contact.phoneNumbers.push('');
+	};
+	$scope.removePhoneNumbers=function(contact,index){
+		contact.phoneNumbers.splice(index,1);
+	};
+	$scope.updateClient = function() {
+		var clientToUpdate={id:$scope.client.id,name:$scope.client.name,email:$scope.client.email,contacts:$scope.client.contacts};
+		angular.forEach(clientToUpdate.contacts,function(contact){
+			delete contact.searchField;
+		});
+		return ClientsCRUDREST.update({companyId :_userCompanyId},clientToUpdate);
+	};
 }
 /*COMPANY-CLIENT End of section*/
 

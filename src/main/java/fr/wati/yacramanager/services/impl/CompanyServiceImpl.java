@@ -13,6 +13,7 @@ import fr.wati.yacramanager.beans.Client;
 import fr.wati.yacramanager.beans.Company;
 import fr.wati.yacramanager.beans.Company_;
 import fr.wati.yacramanager.dao.repository.CompanyRepository;
+import fr.wati.yacramanager.dao.repository.ContactRepository;
 import fr.wati.yacramanager.dao.specifications.CommonSpecifications;
 import fr.wati.yacramanager.listeners.ActivityEvent;
 import fr.wati.yacramanager.services.ClientService;
@@ -30,6 +31,8 @@ public class CompanyServiceImpl implements CompanyService {
 	@Autowired
 	private CompanyRepository companyRepository;
 	@Autowired
+	private ContactRepository contactRepository;
+	@Autowired
 	private ClientService clientService;
 	@Autowired
 	private DtoMapper dtoMapper;
@@ -37,7 +40,9 @@ public class CompanyServiceImpl implements CompanyService {
 
 	@Override
 	public <S extends Company> S save(S entity) {
-		S save = companyRepository.save(entity);
+		S entityFound=(S) findOne(entity.getId());
+		//contactRepository.save(entity.getContacts());
+		S save = companyRepository.save(entityFound);
 		applicationEventPublisher.publishEvent(ActivityEvent
 				.createWithSource(this).user()
 				.operation(ActivityOperation.CREATE)

@@ -26,11 +26,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import fr.wati.yacramanager.beans.Client;
 import fr.wati.yacramanager.beans.Company;
+import fr.wati.yacramanager.beans.Contact;
 import fr.wati.yacramanager.services.ClientService;
 import fr.wati.yacramanager.services.CompanyService;
+import fr.wati.yacramanager.services.impl.DtoMapper;
 import fr.wati.yacramanager.utils.Filter.FilterBuilder;
 import fr.wati.yacramanager.utils.SpecificationBuilder;
 import fr.wati.yacramanager.web.dto.ClientDTO;
+import fr.wati.yacramanager.web.dto.ContactDTO;
 import fr.wati.yacramanager.web.dto.ResponseWrapper;
 
 @RestController
@@ -43,6 +46,8 @@ public class ClientController {
 	private ClientService clientService;
 	@Autowired
 	private CompanyService companyService;
+	@Autowired
+	private DtoMapper dtoMapper;
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ClientDTO read(@PathVariable("companyId") Long companyId,
@@ -55,11 +60,16 @@ public class ClientController {
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<String> update(
 			@PathVariable("companyId") Long companyId,
-			@PathVariable("id") Long id, ClientDTO dto) {
+			@PathVariable("id") Long id, @RequestBody ClientDTO dto) {
 		Company company = companyService.findOne(companyId);
 		Client client = clientService.findByCompanyAndId(company, id);
 		if (client != null) {
 			dto.toClient(client);
+			List<Contact> contacts=new ArrayList<>();
+			for (ContactDTO contactDTO : dto.getContacts()) {
+				contacts.add(contactDTO.toContact());
+			}
+			client.setContacts(contacts);
 			clientService.save(client);
 			return new ResponseEntity<String>(HttpStatus.OK);
 		}
