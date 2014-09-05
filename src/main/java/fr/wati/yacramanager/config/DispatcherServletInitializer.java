@@ -16,24 +16,42 @@
 
 package fr.wati.yacramanager.config;
 
+import java.util.EnumSet;
+
+import javax.servlet.DispatcherType;
+import javax.servlet.FilterRegistration;
 import javax.servlet.MultipartConfigElement;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRegistration;
 import javax.servlet.ServletRegistration.Dynamic;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
+import com.codahale.metrics.MetricRegistry;
+import com.codahale.metrics.servlet.InstrumentedFilter;
+import com.codahale.metrics.servlets.MetricsServlet;
+
 public class DispatcherServletInitializer extends
 		AbstractAnnotationConfigDispatcherServletInitializer {
 
+	 private final Logger log = LoggerFactory.getLogger(DispatcherServletInitializer.class);
+	
 	@Autowired
 	private Environment environment;
+	
+	@Autowired
+	private MetricRegistry metricRegistry;
 	
 	private int maxUploadSizeInMb = 5 * 1024 * 1024; // 5 MB
 
 	@Override
 	protected Class<?>[] getRootConfigClasses() {
-		return new Class<?>[] { RootConfig.class };
+		return new Class<?>[] { RootConfig.class};
 	}
 
 	@Override
@@ -54,5 +72,41 @@ public class DispatcherServletInitializer extends
 				maxUploadSizeInMb * 2, maxUploadSizeInMb / 2);
 		registration.setMultipartConfig(multipartConfigElement);
 	}
+	
+	
+	
+	 @Override
+	public void onStartup(ServletContext servletContext)
+			throws ServletException {
+		super.onStartup(servletContext);
+		 EnumSet<DispatcherType> disps = EnumSet.of(DispatcherType.REQUEST, DispatcherType.FORWARD, DispatcherType.ASYNC);
+	     initMetrics(servletContext, disps);
+	}
+
+	/**
+     * Initializes Metrics.
+     */
+    private void initMetrics(ServletContext servletContext, EnumSet<DispatcherType> disps) {
+        log.debug("Initializing Metrics registries");
+        servletContext.setAttribute(InstrumentedFilter.REGISTRY_ATTRIBUTE,
+        		MetricsConfiguration.METRIC_REGISTRY);
+        servletContext.setAttribute(MetricsServlet.METRICS_REGISTRY,
+        		MetricsConfiguration.METRIC_REGISTRY);
+
+        log.debug("Registering Metrics Filter");
+        FilterRegistration.Dynamic metricsFilter = servletContext.addFilter("webappMetricsFilter",
+                new InstrumentedFilter());
+
+        metricsFilter.addMappingForUrlPatterns(disps, true, "/*");
+        metricsFilter.setAsyncSupported(true);
+
+        log.debug("Registering Metrics Servlet");
+        ServletRegistration.Dynamic metricsAdminServlet =
+                servletContext.addServlet("metricsServlet", new MetricsServlet(MetricsConfiguration.METRIC_REGISTRY));
+
+        metricsAdminServlet.addMapping("/app/admin/metrics/*");
+        metricsAdminServlet.setAsyncSupported(true);
+        metricsAdminServlet.setLoadOnStartup(2);
+    }
 	
 }
