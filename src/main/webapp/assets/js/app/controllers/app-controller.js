@@ -448,9 +448,24 @@ App.config([ '$stateProvider', '$urlRouterProvider','$locationProvider',
 				templateUrl : _contextPath+'/views/app/admin/company/admin-company-overview.html',
 				controller : AdminCompanyOverviewController
 			})
+			.state('admin.logs', {
+				url : "/logs",
+				templateUrl : _contextPath+'/views/app/admin/admin-logs.html',
+				controller : LogsController,
+				 resolve: {
+                     resolvedLogs:['LogsService', function (LogsService) {
+                         return LogsService.findAll();
+                     }]
+                 }
+			})
+			.state('admin.metrics', {
+				url : "/metrics",
+				templateUrl : _contextPath+'/views/app/admin/admin-metrics.html',
+				controller : MetricsController
+			})
 			.state('admin.messages', {
 				url : "/messages",
-				templateUrl : _contextPath+'/views/app/admin/admin-messages.html',
+				templateUrl : _contextPath+'/views/app/admin/admin-messages.html'
 				//controller : AdminController
 			}).state('admin.settings', {
 				url : "/settings",

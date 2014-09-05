@@ -19,6 +19,11 @@
 	border-color: #999;
 }
 
+.vcard .close {
+	position: relative;
+	top: -2px;
+	color: inherit;
+}
 .auth-form {
 	padding: 19px 29px 29px;
 	background-color: #fff;

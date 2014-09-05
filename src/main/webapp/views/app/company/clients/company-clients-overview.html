@@ -8,7 +8,11 @@
 	<li><button class="btn btn-link" data-ng-click="addContact(client)">Add</button></li>
 </ul>
 <div class="row">
-	<div class="col-md-4 vcard" data-ng-repeat="contact in client.contacts | searchField: 'name': 'email' | filter: contactFilter">
+	<div class="col-md-4 vcard am-fade" data-ng-repeat="contact in client.contacts | searchField: 'name': 'email' | filter: contactFilter">
+		 <button type="button" class="close" data-ng-click="deleteContact(client,$index)" data-ng-confirm="Do you want to delete contact {{contact.name}} ?">
+		 <span aria-hidden="true"><i class="fa fa-times text-danger"></i></span><span class="sr-only">Close</span>
+		 
+		 </button>
 		<strong><a href="#" onaftersave="updateClient()" buttons="no" editable-text="contact.name">{{ contact.name || 'Name' }}</a></strong><br>
 		<a href="#" onaftersave="updateClient()" buttons="no" editable-email="contact.email">{{ contact.email || 'Email' }}</a><br>
 		<br>

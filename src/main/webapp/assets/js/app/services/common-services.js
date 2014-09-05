@@ -30,6 +30,7 @@ App.service('notifService', function() {
 	};
 });
 	
+
 App.service('WebSocketService', function($timeout,notifService) {
 	var stompClient = null;	
 	
@@ -63,6 +64,5 @@ App.service('WebSocketService', function($timeout,notifService) {
 				subscribeToInfoQueue();
 				});
 	};
-	
 });
 	

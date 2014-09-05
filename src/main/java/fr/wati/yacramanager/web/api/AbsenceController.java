@@ -7,9 +7,9 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.joda.time.DateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -49,7 +49,7 @@ import fr.wati.yacramanager.web.dto.ResponseWrapper;
 @RequestMapping("/app/api/absences")
 public class AbsenceController implements RestCrudController<AbsenceDTO>,ApprovalRestService<ApprovalDTO<AbsenceDTO>> {
 
-	private static final Log LOG=LogFactory.getLog(AbsenceController.class); 
+	private final Logger log = LoggerFactory.getLogger(AbsenceController.class);
 	@Autowired
 	private AbsenceService absenceService;
 	
@@ -99,13 +99,13 @@ public class AbsenceController implements RestCrudController<AbsenceDTO>,Approva
 			try {
 				filters=FilterBuilder.parse(filter);
 			} catch (Exception e) {
-				LOG.error(e.getMessage(), e);
+				log.error(e.getMessage(), e);
 				throw new RestServiceException(e);
 			}
 		}
 		Specifications<Absence> specifications=null;
 		if(!filters.isEmpty()){
-			LOG.debug("Building Absence specification");
+			log.debug("Building Absence specification");
 			specifications=Specifications.where(SpecificationBuilder.buildSpecification(filters, absenceService));
 		}
 		PageRequest pageable=null;
@@ -206,7 +206,7 @@ public class AbsenceController implements RestCrudController<AbsenceDTO>,Approva
 		try {
 			absenceService.validate(employe, absence);
 		} catch (ServiceException e) {
-			LOG.error(e.getMessage(), e);
+			log.error(e.getMessage(), e);
 			throw new RestServiceException(e.getMessage(), e);
 		}
 	}
@@ -225,7 +225,7 @@ public class AbsenceController implements RestCrudController<AbsenceDTO>,Approva
 		try {
 			absenceService.reject(employe, absence);
 		} catch (ServiceException e) {
-			LOG.error(e.getMessage(), e);
+			log.error(e.getMessage(), e);
 			throw new RestServiceException(e.getMessage(), e);
 		}
 	}
