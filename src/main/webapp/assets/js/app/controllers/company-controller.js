@@ -377,6 +377,9 @@ function CompanyClientsOverviewController($scope,ClientsCRUDREST, $stateParams){
 	$scope.removePhoneNumbers=function(contact,index){
 		contact.phoneNumbers.splice(index,1);
 	};
+	$scope.deleteContact=function(client,index){
+		client.contacts.splice(index,1);
+	};
 	$scope.updateClient = function() {
 		var clientToUpdate={id:$scope.client.id,name:$scope.client.name,email:$scope.client.email,contacts:$scope.client.contacts};
 		angular.forEach(clientToUpdate.contacts,function(contact){

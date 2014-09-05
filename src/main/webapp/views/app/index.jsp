@@ -131,38 +131,39 @@
 				</ul>
 				<ul class="nav navtop navbar-nav navbar-right">
 					<li data-ng-class="navClass('home')"><a data-ui-sref="home"><i class="fa fa-home"></i></a></li>
-					<li>
-						<div class="timer-widget dropdown" data-ng-controller="WorkLogCtrl" data-ng-class="{running: timerRunning}">
-							<a data-toggle="dropdown" href=""><i class="fa fa-clock-o" ></i><span data-ng-show="timerRunning && task!==undefined">[{{task.name}}]</span></a>
+					<li class="dropdown timer-widget" data-ng-controller="WorkLogCtrl">
+						<a data-toggle="dropdown" class="dropdown-toggle" href="">
+							<i class="fa fa-clock-o" ></i>
+							<span data-ng-show="timerRunning && task!==undefined">[{{task.name}}]</span>
 							<timer autostart="false" interval="1000" data-ng-show="timerRunning">{{hhours}}:{{mminutes}}:{{sseconds}}</timer>
-							<button type="button" class="btn btn-danger btn-xs"  data-ng-click="stopTimer()" data-ng-show="timerRunning">Stop</button>
-							<div class="timer-widget-content dropdown-menu">
-									<form role="form">
-										<div class="form-group">
-    										<!-- <label for="project">{{'app.navbar.timer.project' | translate}}</label> -->
-											<select id="project" class="form-control"  data-chosen data-ng-change="selectProject(project)"
-									          data-placeholder="Select a project"
-									          data-ng-model="project"
-									          data-ng-options="p.name for p in projects">
+							<button type="button" class="btn btn-danger btn-xs"  data-ng-click="stopTimer(); " data-ng-show="timerRunning">Stop</button>
+						</a>					
+						<div class="timer-widget-content dropdown-menu">
+								<form role="form">
+									<div class="form-group">
+   										<!-- <label for="project">{{'app.navbar.timer.project' | translate}}</label> -->
+										<select id="project" class="form-control"  data-chosen data-ng-change="selectProject(project)"
+								          data-placeholder="Select a project"
+								          data-ng-model="project"
+								          data-ng-options="p.name for p in projects">
+						           		<option value=""></option>
+							  			</select>
+							  		</div>
+							  		<div class="form-group">
+   										<!-- <label for="task">Task</label> -->
+							  			<select id="task" class="form-control"  data-chosen data-ng-change="selectTask(task)"
+									          data-placeholder="Select a task"
+									          data-ng-model="task"
+									          data-ng-options="t.name for t in tasks">
 							           		<option value=""></option>
-								  			</select>
-								  		</div>
-								  		<div class="form-group">
-    										<!-- <label for="task">Task</label> -->
-								  			<select id="task" class="form-control"  data-chosen data-ng-change="selectTask(task)"
-										          data-placeholder="Select a task"
-										          data-ng-model="task"
-										          data-ng-options="t.name for t in tasks">
-								           		<option value=""></option>
-								  			</select>
-								  		</div>
-							  			 <div class="form-group">
-										    <label for="description">Note</label>
-										    <textarea id="description" data-ng-model="description" class="form-control" data-placeholder="Enter a note"></textarea>
-										  </div>
-										<button type="button" class="btn btn-success btn-xs btn-block" data-ng-click="startTimer()" data-ng-disabled="!startable">Start</button>
-									</form>
-							</div>
+							  			</select>
+							  		</div>
+						  			 <div class="form-group">
+									    <label for="description">Note</label>
+									    <textarea id="description" data-ng-model="description" class="form-control" data-placeholder="Enter a note"></textarea>
+									  </div>
+									<button type="button" class="btn btn-success btn-xs btn-block" data-ng-click="startTimer()" data-ng-disabled="!startable">Start</button>
+								</form>
 						</div>
 					</li>
 					<li data-ng-class="navClass('messages')" data-ng-show="userInfo.hasNewMessages"><a

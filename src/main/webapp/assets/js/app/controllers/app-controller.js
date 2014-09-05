@@ -117,20 +117,26 @@ App.controller('WorkLogCtrl',['$scope','$http','WorkLogCRUDREST','alertService',
      $scope.$on('timer-stopped', function (event, data){
     	 $scope.updateStartable();
     	 console.log('Timer Stopped - data = ', data);
-    	 $scope.worklog.title="";
-    	 $scope.worklog.type="TIME";
-    	 $scope.worklog.start=start;
-    	 $scope.worklog.end=start.clone().add('minutes', data.minutes);
-    	 //duration in minutes
-    	 $scope.worklog.duration=0;//Math.round((data.millis/1000)/60);
-    	 $scope.worklog.taskId= $scope.task.id;
-    	 $scope.worklog.taskName=$scope.task.name;
-    	 $scope.worklog.description=$scope.description;
-    	 $scope.worklog.employeId=_userId;
-    	 WorkLogCRUDREST.save($scope.worklog).$promise.then(function(result) {
+    	 if(data.minutes>=1){
+    		 $scope.worklog.title="";
+        	 $scope.worklog.type="TIME";
+        	 $scope.worklog.start=start;
+        	 $scope.worklog.end=start.clone().add('minutes',data.minutes );
+        	 //duration in minutes
+        	 $scope.worklog.duration=0;//Math.round((data.millis/1000)/60);
+        	 $scope.worklog.taskId= $scope.task.id;
+        	 $scope.worklog.taskName=$scope.task.name;
+        	 $scope.worklog.description=$scope.description;
+        	 $scope.worklog.employeId=_userId;
+        	 WorkLogCRUDREST.save($scope.worklog).$promise.then(function(result) {
+        		 $scope.resetWorkLog();
+        		 alertService.show('success','Confirmation', 'Donn� sauvegard�');
+    		});
+    	 }else {
     		 $scope.resetWorkLog();
-    		 alertService.show('success','Confirmation', 'Donn� sauvegard�');
-		});
+    		 alertService.show('danger','Error', 'Can not save worklog less than 1 minute');
+		}
+    	 
      });
      
      var fetchProjects = function(queryParams) {
@@ -170,6 +176,9 @@ App.controller('WorkLogCtrl',['$scope','$http','WorkLogCRUDREST','alertService',
  	
  	$scope.resetWorkLog=function(){
  		$scope.worklog={};
+ 		$scope.project=undefined;
+		$scope.task=undefined;
+		$scope.description=undefined;
  	};
  	$scope.resetWorkLog();
 }]);
@@ -448,9 +457,24 @@ App.config([ '$stateProvider', '$urlRouterProvider','$locationProvider',
 				templateUrl : _contextPath+'/views/app/admin/company/admin-company-overview.html',
 				controller : AdminCompanyOverviewController
 			})
+			.state('admin.logs', {
+				url : "/logs",
+				templateUrl : _contextPath+'/views/app/admin/admin-logs.html',
+				controller : LogsController,
+				 resolve: {
+                     resolvedLogs:['LogsService', function (LogsService) {
+                         return LogsService.findAll();
+                     }]
+                 }
+			})
+			.state('admin.metrics', {
+				url : "/metrics",
+				templateUrl : _contextPath+'/views/app/admin/admin-metrics.html',
+				controller : MetricsController
+			})
 			.state('admin.messages', {
 				url : "/messages",
-				templateUrl : _contextPath+'/views/app/admin/admin-messages.html',
+				templateUrl : _contextPath+'/views/app/admin/admin-messages.html'
 				//controller : AdminController
 			}).state('admin.settings', {
 				url : "/settings",
