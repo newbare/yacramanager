@@ -334,7 +334,10 @@ App.config([ '$stateProvider', '$urlRouterProvider','$locationProvider',
 			.state('company.employees.view', {
 				url : "/view",
 				templateUrl : _contextPath+'/views/app/company/employees/company-employees-view.html',
-				controller : CompanyEmployeesViewController
+				controller : CompanyEmployeesViewController,
+				data: {
+			        pageTitle: 'Employe view'
+			      }
 			})
 			.state('company.employees.view.list', {
 				url : "/list",

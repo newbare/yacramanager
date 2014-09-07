@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javax.annotation.security.RolesAllowed;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -26,7 +28,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.codahale.metrics.annotation.Timed;
+
 import fr.wati.yacramanager.beans.Company;
+import fr.wati.yacramanager.beans.Role;
 import fr.wati.yacramanager.services.CompanyService;
 import fr.wati.yacramanager.services.impl.DtoMapper;
 import fr.wati.yacramanager.utils.Filter.FilterBuilder;
@@ -47,6 +52,7 @@ public class CompanyController implements RestCrudController<CompanyDTO> {
 	
 	@Override
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
+	@Timed
 	public @ResponseBody ResponseEntity<CompanyDTO> read(@PathVariable("id") Long id) {
 		if(companyService.exists(id)){
 			return new ResponseEntity<CompanyDTO>(companyService.toCompanyDTO(companyService.findOne(id)), HttpStatus.OK);
@@ -57,6 +63,7 @@ public class CompanyController implements RestCrudController<CompanyDTO> {
 	@Override
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
+	@Timed
 	public void update(@PathVariable("id")Long id, @RequestBody CompanyDTO dto) {
 		Company findOne = companyService.findOne(id);
 		companyService.save(dto.toCompany(findOne));
@@ -65,6 +72,7 @@ public class CompanyController implements RestCrudController<CompanyDTO> {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	@RequestMapping(method = RequestMethod.GET)
+	@Timed
 	public ResponseWrapper<List<CompanyDTO>> getAll(@RequestParam(required=false) Integer page,@RequestParam(required=false) Integer size,@RequestParam(value="sort", required=false) Map<String, String> sort,@RequestParam(value="filter", required=false) String filter) throws RestServiceException {
 		if (page == null) {
 			page = 0;
@@ -115,13 +123,16 @@ public class CompanyController implements RestCrudController<CompanyDTO> {
 
 	@Override
 	@RequestMapping(method = RequestMethod.POST)
+	@Timed
 	public ResponseEntity<String> create(@RequestBody CompanyDTO dto) {
 		companyService.createCompany(dto.toCompany(new Company()));
 		return new ResponseEntity<String>(HttpStatus.CREATED);
 	}
 
 	@Override
+	@RolesAllowed({Role.ROLE_ADMIN})
 	@RequestMapping(value = "/{id}",method=RequestMethod.DELETE)
+	@Timed
 	public void delete(@PathVariable("id") Long id) {
 		companyService.delete(id);
 	}

@@ -19,7 +19,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 @ComponentScan(basePackages = {"fr.wati.yacramanager.services"})
 @PropertySource(value = { "classpath:database-yacra-test.properties" })
-@Import(value={PersistenceConfig.class})
+@Import(value={PersistenceConfig.class,MailConfiguration.class})
 public class TestServicesConfig {
 
 	@Autowired

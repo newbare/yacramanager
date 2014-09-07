@@ -38,7 +38,6 @@ function AdminCompaniesController($scope,$rootScope,CompanyCRUDREST,ngTableParam
 			alertService.show('info','Confirmation', 'Company supprimé');
 		}, function(error) {
 			console.log(error);
-			alertService.show('danger','' + error.status, error.data);
 		});
 	};
 	$scope.putCompany = function() {
@@ -200,7 +199,7 @@ function MetricsController($scope, MetricsService) {
             $scope.servicesStats = {};
             $scope.cachesStats = {};
             angular.forEach(items.timers, function(value, key) {
-                if (key.indexOf("web.rest") != -1 || key.indexOf("service") != -1) {
+                if (key.indexOf("web.api") != -1 || key.indexOf("service") != -1) {
                     $scope.servicesStats[key] = value;
                 }
 

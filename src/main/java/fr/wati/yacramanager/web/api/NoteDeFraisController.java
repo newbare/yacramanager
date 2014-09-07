@@ -31,6 +31,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.codahale.metrics.annotation.Timed;
+
 import fr.wati.yacramanager.beans.Attachement;
 import fr.wati.yacramanager.beans.Employe;
 import fr.wati.yacramanager.beans.NoteDeFrais;
@@ -71,6 +73,7 @@ public class NoteDeFraisController extends
 
 	@Override
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
+	@Timed
 	public @ResponseBody
 	ResponseEntity<NoteDeFraisDTO> read(@PathVariable("id") Long id) {
 		if(noteDeFraisService.exists(id)){
@@ -82,6 +85,7 @@ public class NoteDeFraisController extends
 	@Override
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
+	@Timed
 	public void update(@PathVariable("id") Long id,
 			@RequestBody NoteDeFraisDTO dto) {
 		NoteDeFrais findOne = noteDeFraisService.findOne(id);
@@ -91,6 +95,7 @@ public class NoteDeFraisController extends
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	@RequestMapping(method = RequestMethod.GET)
+	@Timed
 	public ResponseWrapper<List<NoteDeFraisDTO>> getAll(
 			@RequestParam(required = false) Integer page,
 			@RequestParam(required = false) Integer size,
@@ -149,6 +154,7 @@ public class NoteDeFraisController extends
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
+	@Timed
 	public ResponseEntity<String> create(@RequestBody NoteDeFraisDTO dto) {
 		try {
 			dto.setValidationStatus(ValidationStatus.WAIT_FOR_APPROVEMENT);
@@ -182,11 +188,13 @@ public class NoteDeFraisController extends
 
 	@Override
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+	@Timed
 	public void delete(@PathVariable("id") Long id) {
 		noteDeFraisService.delete(id);
 	}
 
 	@RequestMapping(value = "/types", method = RequestMethod.GET)
+	@Timed
 	public @ResponseBody
 	List<TypeAbsenceDTO> getTypeAbsences() {
 		List<TypeAbsenceDTO> absenceDTOs = new ArrayList<>();
@@ -198,6 +206,7 @@ public class NoteDeFraisController extends
 
 	@Override
 	@RequestMapping(value = "/approval", method = RequestMethod.GET)
+	@Timed
 	public @ResponseBody ResponseWrapper<List<ApprovalDTO<NoteDeFraisDTO>>> getApproval(
 			@RequestParam(value="requesterId") Long requesterId) {
 		List<ApprovalDTO<NoteDeFraisDTO>> approvalDTOs=new ArrayList<ApprovalDTO<NoteDeFraisDTO>>();
@@ -225,6 +234,7 @@ public class NoteDeFraisController extends
 	@Override
 	@RequestMapping(value = "/approval/approve/{requesterId}/{entityId}", method = RequestMethod.PUT)
 	@ResponseStatus(value=HttpStatus.OK)
+	@Timed
 	public void approve(@PathVariable(value="requesterId") Long requesterId, @PathVariable(value="entityId") Long entityId) throws RestServiceException{
 		Employe employe = employeService.findOne(requesterId);
 		if(employe==null){
@@ -244,6 +254,7 @@ public class NoteDeFraisController extends
 
 	@Override
 	@RequestMapping(value = "/approval/reject/{requesterId}/{entityId}", method = RequestMethod.PUT)
+	@Timed
 	public void reject(@PathVariable(value="requesterId") Long requesterId, @PathVariable(value="entityId") Long entityId) throws RestServiceException {
 		Employe employe = employeService.findOne(requesterId);
 		if(employe==null){

@@ -1,22 +1,19 @@
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html lang="en">
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="">
-<meta name="author" content="">
-<c:set var="contextPath" value="${pageContext.request.contextPath}" />
-<link rel="icon" href="../../favicon.ico">
+<meta charset="utf-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<meta name="description" content=""/>
+<meta name="author" content=""/>
+<link rel="icon" href="../../favicon.ico"/>
 
 <title>Yacra Manager</title>
 
 <link rel="stylesheet"
-	href="${contextPath}/assets/bower_components/bootstrap/dist/css/bootstrap.min.css">
+	th:href="@{/assets/bower_components/bootstrap/dist/css/bootstrap.min.css}"/>
 <link rel="stylesheet"
-	href="${contextPath}/assets/bower_components/fontawesome/css/font-awesome.min.css">
+	th:href="@{/assets/bower_components/fontawesome/css/font-awesome.min.css}"/>
 <!-- Custom styles for this template -->
 
 <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -47,22 +44,7 @@
 						href="app/"><i
 							class="fa fa-user"></i>{{userInfo.prenom}} </a></li>
 				</ul>
-				<%-- <form class="navbar-form navbar-right" role="form" action="auth/login/" method="post">
-					<div class="form-group">
-						<label class="sr-only" for="username">Username</label> <input type="text" class="form-control"
-							id="username" placeholder="Username" name="username" required>
-					</div>
-					<div class="form-group">
-						<label class="sr-only" for="password">Password</label>
-						<input type="password" class="form-control"
-							id="password" placeholder="Password" name="password">
-					</div>
-					<div class="checkbox">
-						<label> <input type="checkbox" name="remember-me"> Remember me
-						</label>
-					</div>
-					<button type="submit" class="btn btn-success">Sign in</button>
-				</form> --%>
+				
 			</div>
 			<!--/.navbar-collapse -->
 		</div>
@@ -121,7 +103,7 @@
 			</div>
 		</div>
 
-		<hr>
+		<hr/>
 
 		<footer>
 		<p>&copy; Wati 2014</p>
@@ -136,6 +118,6 @@
 	<script
 		src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 	<script
-		src="${contextPath}/assets/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+		th:src="@{/assets/bower_components/bootstrap/dist/js/bootstrap.min.js}"></script>
 </body>
 </html>

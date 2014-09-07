@@ -46,6 +46,7 @@ public class PersistenceConfig
 		factory.setJpaVendorAdapter(vendorAdapter);
 		factory.setPackagesToScan("fr.wati.yacramanager.beans");
 		factory.getJpaPropertyMap().put("jadira.usertype.autoRegisterUserTypes", "true");
+		//factory.getJpaPropertyMap().put("hibernate.ejb.naming_strategy",CustomNamingStrategy.class.getName());
 //		Properties jpaProperties = new Properties();
 //		jpaProperties.put("hibernate.hbm2ddl.auto", env.getProperty("hibernate.hbm2ddl.auto"));
 //		factory.setJpaProperties(jpaProperties);
@@ -101,7 +102,7 @@ public class PersistenceConfig
 		databasePopulator.addScript(new ClassPathResource("sql/spring-security-persistent-login.sql"));
 		databasePopulator.addScript(new ClassPathResource("sql/roles-initialization.sql"));
 		dataSourceInitializer.setDatabasePopulator(databasePopulator);
-		dataSourceInitializer.setEnabled(env.getProperty("init-db",Boolean.class));
+		dataSourceInitializer.setEnabled(env.getProperty("init-db",Boolean.class,false));
 		return dataSourceInitializer;
 	}	
 }

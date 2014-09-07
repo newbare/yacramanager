@@ -27,6 +27,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.codahale.metrics.annotation.Timed;
+
 import fr.wati.yacramanager.beans.Company;
 import fr.wati.yacramanager.beans.Employe;
 import fr.wati.yacramanager.beans.Project;
@@ -65,6 +67,7 @@ public class TaskRestController {
 	private ProjectService  projectService;
 	
 	@RequestMapping(value = "/{projectId}/{employeId}", method = RequestMethod.GET)
+	@Timed
 	public ResponseWrapper<List<TaskDTO>> getTasks(
 			@PathVariable("companyId") Long companyId,
 			@PathVariable("projectId") Long projectId,
@@ -97,6 +100,7 @@ public class TaskRestController {
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="/{projectId}/{employeId}/all", method = RequestMethod.GET)
+	@Timed
 	public ResponseWrapper<List<TaskDTO>> getAll(
 			@PathVariable("companyId") Long companyId,@PathVariable("projectId") Long projectId,@PathVariable("employeId") Long employeId,
 			@RequestParam(required = false) Integer page,
@@ -156,6 +160,7 @@ public class TaskRestController {
 	}
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
+	@Timed
 	public ResponseEntity<TaskDTO> read(@PathVariable("companyId") Long companyId,@PathVariable("id") Long id) {
 		return new ResponseEntity<TaskDTO>(dtoMapper.map(taskService.findOne(id)),HttpStatus.OK);
 	}
@@ -173,6 +178,7 @@ public class TaskRestController {
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
+	@Timed
 	public ResponseEntity<String> create(@RequestBody TaskDTO dto) {
 		Task createTask = taskService.createTask(dto.getProjectId(), dto.toTask(new Task()));
 		taskService.assignEmployeToTask(dto.getEmployeId(), createTask.getId());
@@ -180,6 +186,7 @@ public class TaskRestController {
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+	@Timed
 	public void delete(@PathVariable("id") Long id) {
 		taskService.delete(id);;
 	}

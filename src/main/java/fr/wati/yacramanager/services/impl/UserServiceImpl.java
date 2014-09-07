@@ -3,21 +3,25 @@ package fr.wati.yacramanager.services.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import fr.wati.yacramanager.beans.Gender;
 import fr.wati.yacramanager.beans.Company;
 import fr.wati.yacramanager.beans.Employe;
+import fr.wati.yacramanager.beans.Gender;
 import fr.wati.yacramanager.beans.Users;
-import fr.wati.yacramanager.dao.repository.UsersRepository;
+import fr.wati.yacramanager.dao.repository.UserRepository;
 import fr.wati.yacramanager.dao.specifications.EmployeSpecifications;
 import fr.wati.yacramanager.services.CompanyService;
+import fr.wati.yacramanager.services.ServiceException;
 import fr.wati.yacramanager.services.UserService;
 import fr.wati.yacramanager.utils.Filter;
 import fr.wati.yacramanager.utils.Filter.FilterArray;
@@ -30,8 +34,13 @@ import fr.wati.yacramanager.utils.Filter.FilterType;
 @Service
 public class UserServiceImpl implements UserService{
 
+	private Logger logger=LoggerFactory.getLogger(UserServiceImpl.class);
+	
 	@Autowired
-	private UsersRepository usersRepository;
+	private UserRepository userRepository;
+	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 	
 	@Autowired
 	private CompanyService companyService;
@@ -43,71 +52,71 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public <S extends Users> S save(S entity) {
-		return usersRepository.save(entity);
+		return userRepository.save(entity);
 	}
 
 	@Override
 	public <S extends Users> Iterable<S> save(Iterable<S> entities) {
-		return usersRepository.save(entities);
+		return userRepository.save(entities);
 	}
 
 	@Override
 	@Transactional(readOnly=true)
 	public Users findOne(Long id) {
-		return usersRepository.findOne(id);
+		return userRepository.findOne(id);
 	}
 
 	@Override
 	@Transactional(readOnly=true)
 	public boolean exists(Long id) {
-		return usersRepository.exists(id);
+		return userRepository.exists(id);
 	}
 
 	@Override
 	@Transactional(readOnly=true)
 	public Iterable<Users> findAll() {
-		return usersRepository.findAll();
+		return userRepository.findAll();
 	}
 
 	@Override
 	@Transactional(readOnly=true)
 	public Iterable<Users> findAll(Iterable<Long> ids) {
-		return usersRepository.findAll(ids);
+		return userRepository.findAll(ids);
 	}
 
 	@Override
 	@Transactional(readOnly=true)
 	public long count() {
-		return usersRepository.count();
+		return userRepository.count();
 	}
 
 	@Override
 	public void delete(Long id) {
-		usersRepository.delete(id);
+		userRepository.delete(id);
 	}
 
 	@Override
 	public void delete(Users entity) {
-		usersRepository.delete(entity);
+		userRepository.delete(entity);
 	}
 
 	@Override
 	public void delete(Iterable<? extends Users> entities) {
-		usersRepository.delete(entities);
+		userRepository.delete(entities);
 	}
 
 	@Override
 	public void deleteAll() {
-		usersRepository.deleteAll();
+		userRepository.deleteAll();
 	}
 
 	public Users findByUsername(String username){
-		return usersRepository.findByUsername(username);
+		return userRepository.findByUsername(username);
 	}
 
 	@Override
 	public Page<Users> findAll(Specification<Users> spec, Pageable pageable) {
-		return usersRepository.findAll(spec, pageable);
+		return userRepository.findAll(spec, pageable);
 	}
 
 	/* (non-Javadoc)
@@ -158,10 +167,39 @@ public class UserServiceImpl implements UserService{
 		return null;
 	}
 	
+	public void changePassword(Long userId,String password) {
+        Users currentUser = userRepository.findOne(userId);
+        String encryptedPassword = passwordEncoder.encode(password);
+        currentUser.setPassword(encryptedPassword);
+        userRepository.save(currentUser);
+        logger.debug("Changed password for User: {}", currentUser.getUsername());
+    }
+	
+	public Users activateRegistration(String key) {
+        logger.debug("Activating user for activation key {}", key);
+        Users user = userRepository.getUserByActivationKey(key);
+
+        // activate given user for the registration key.
+        if (user != null) {
+            user.setEnabled(true);
+            user.setActivationKey(null);
+            userRepository.save(user);
+            logger.debug("Activated user: {}", user);
+        }
+        return user;
+    }
+	
 	@Override
 	public void setApplicationEventPublisher(
 			ApplicationEventPublisher applicationEventPublisher) {
 		this.applicationEventPublisher=applicationEventPublisher;
+	}
+
+	/* (non-Javadoc)
+	 * @see fr.wati.yacramanager.services.UserService#sendActivationMail(java.lang.Long)
+	 */
+	@Override
+	public void sendActivationMail(Long userId) throws ServiceException {
 	}
 	
 }

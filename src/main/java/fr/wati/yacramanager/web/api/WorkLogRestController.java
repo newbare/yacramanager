@@ -27,6 +27,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.codahale.metrics.annotation.Timed;
+
 import fr.wati.yacramanager.beans.Employe;
 import fr.wati.yacramanager.beans.Task;
 import fr.wati.yacramanager.beans.ValidationStatus;
@@ -59,6 +61,7 @@ public class WorkLogRestController implements RestCrudController<WorkLogDTO>{
 	private TaskService taskService;
 
 	@RequestMapping(value="/calendar",method = RequestMethod.GET)
+	@Timed
 	public @ResponseBody
 	ResponseEntity<List<WorkLogDTO>> getEvents(
 			@RequestParam(value = "start", required = true) long start,
@@ -76,6 +79,7 @@ public class WorkLogRestController implements RestCrudController<WorkLogDTO>{
 
 
 	@RequestMapping(value = "/details/{id}", method = RequestMethod.GET)
+	@Timed
 	public ResponseEntity<WorkLogDTO> getEventDetails(@PathVariable("id") Long id){
 		WorkLog workLog = workLogService.findOne(id);
 		if(workLog!=null){
@@ -89,6 +93,7 @@ public class WorkLogRestController implements RestCrudController<WorkLogDTO>{
 
 	@Override
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
+	@Timed
 	public @ResponseBody
 	ResponseEntity<WorkLogDTO> read(@PathVariable("id") Long id) {
 		if(workLogService.exists(id)){
@@ -101,6 +106,7 @@ public class WorkLogRestController implements RestCrudController<WorkLogDTO>{
 	@Override
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
+	@Timed
 	public void update(@PathVariable("id") Long id, @RequestBody WorkLogDTO dto) {
 		WorkLog findOne = workLogService.findOne(id);
 		workLogService.save(dto.toWorkLog(findOne));
@@ -110,6 +116,7 @@ public class WorkLogRestController implements RestCrudController<WorkLogDTO>{
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	@RequestMapping(method = RequestMethod.GET)
+	@Timed
 	public @ResponseBody ResponseWrapper<List<WorkLogDTO>> getAll(
 			@RequestParam(required = false) Integer page,
 			@RequestParam(required = false) Integer size,
@@ -166,6 +173,7 @@ public class WorkLogRestController implements RestCrudController<WorkLogDTO>{
 
 	@Override
 	@RequestMapping(method = RequestMethod.POST)
+	@Timed
 	public ResponseEntity<String> create(@RequestBody WorkLogDTO dto) throws RestServiceException{
 		if(dto.getTaskId()==null){
 			throw new RestServiceException("No given task ID error");
@@ -188,6 +196,7 @@ public class WorkLogRestController implements RestCrudController<WorkLogDTO>{
 
 	@Override
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+	@Timed
 	public void delete(@PathVariable("id") Long id) {
 		workLogService.delete(id);
 	}

@@ -24,6 +24,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.codahale.metrics.annotation.Timed;
+
 import fr.wati.yacramanager.beans.Client;
 import fr.wati.yacramanager.beans.Company;
 import fr.wati.yacramanager.beans.Contact;
@@ -50,6 +52,7 @@ public class ClientController {
 	private DtoMapper dtoMapper;
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
+	@Timed
 	public ClientDTO read(@PathVariable("companyId") Long companyId,
 			@PathVariable("id") Long id) {
 		Company company = companyService.findOne(companyId);
@@ -58,6 +61,7 @@ public class ClientController {
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+	@Timed
 	public ResponseEntity<String> update(
 			@PathVariable("companyId") Long companyId,
 			@PathVariable("id") Long id, @RequestBody ClientDTO dto) {
@@ -80,6 +84,7 @@ public class ClientController {
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(method = RequestMethod.GET)
+	@Timed
 	public ResponseWrapper<List<ClientDTO>> getAll(
 			@PathVariable("companyId") Long companyId,
 			@RequestParam(required = false) Integer page,
@@ -140,6 +145,7 @@ public class ClientController {
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
+	@Timed
 	public ResponseEntity<String> create(
 			@PathVariable("companyId") Long companyId, @RequestBody ClientDTO dto) {
 		Company company = companyService.findOne(companyId);
@@ -148,6 +154,7 @@ public class ClientController {
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+	@Timed
 	public void delete(@PathVariable("companyId") Long companyId,
 			@PathVariable("id") Long id) {
 		Company company = companyService.findOne(companyId);

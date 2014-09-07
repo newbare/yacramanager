@@ -3,7 +3,7 @@ App.factory("CompanyCRUDREST", function($resource) {
 });
 
 App.factory('LogsService', function ($resource) {
-    return $resource(_contextPath+"/app/api/logs", {}, {
+    return $resource(_contextPath+"/app/admin/logs", {}, {
         'findAll': { method: 'GET', isArray: true},
         'changeLevel':  { method: 'PUT'}
     });

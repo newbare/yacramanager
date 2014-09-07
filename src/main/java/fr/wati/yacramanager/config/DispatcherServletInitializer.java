@@ -81,6 +81,7 @@ public class DispatcherServletInitializer extends
 		super.onStartup(servletContext);
 		 EnumSet<DispatcherType> disps = EnumSet.of(DispatcherType.REQUEST, DispatcherType.FORWARD, DispatcherType.ASYNC);
 	     initMetrics(servletContext, disps);
+	     log.info("Web application fully configured");
 	}
 
 	/**

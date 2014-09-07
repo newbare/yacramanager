@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en" data-ng-app="yaCRAApp">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Sign in &middot; Yacra Manager</title>
+<link th:href="@{/assets/css/site.css}" rel="stylesheet"/>
+<link th:href="@{/assets/bower_components/bootstrap/dist/css/bootstrap.min.css}"
+	rel="stylesheet"/>
+<link th:href="@{/assets/css/signin.css}" rel="stylesheet"/>
+<link rel="stylesheet"
+	th:href="@{/assets/bower_components/angular-motion/dist/angular-motion.css}"/>
+<link rel="stylesheet"
+	th:href="@{/assets/bower_components/fontawesome/css/font-awesome.min.css}"/>
+</head>
+<script th:inline="javascript" type="text/javascript">
+    var _contextPath = [[@{/}]] ;
+</script>
+<script th:if=" ${error} !=null" th:inline="javascript" type="text/javascript">
+			var error = [[${error}]];
+			var errorMessage = [[${errorMessage}]];
+</script>
+<script th:if=" ${activation-failed} !=null" th:inline="javascript" type="text/javascript">
+			var activationFailed = [[${activation-failed}]];
+			var errorMessage = [[${activationMessage}]];
+</script>
+<script th:if=" ${activation-success} !=null" th:inline="javascript" type="text/javascript">
+			var activationSuccess = [[${activation-success}]];
+			var activationMessage = [[${activationMessage}]];
+</script>
+<body>
+	<div class="container">
+		<div id="alerts-container"></div>
+		<div data-ng-view="" class="am-fade"></div>
+	</div>
+	<script
+		th:src="@{/assets/bower_components/jquery/dist/jquery.min.js}"></script>
+	<script
+		th:src="@{/assets/bower_components/bootstrap/dist/js/bootstrap.min.js}"></script>
+	<script th:src="@{/assets/bower_components/angular/angular.js}"></script>
+	<script
+		th:src="@{/assets/bower_components/angular-resource/angular-resource.min.js}"></script>
+	<script
+		th:src="@{/assets/bower_components/angular-route/angular-route.min.js}"></script>
+	<script
+		th:src="@{/assets/bower_components/angular-animate/angular-animate.min.js}"></script>
+	<script
+		th:src="@{/assets/bower_components/angular-strap/dist/angular-strap.min.js}"></script>
+	<script
+		th:src="@{/assets/bower_components/angular-strap/dist/modules/modal.js}"></script>
+	<script
+		th:src="@{/assets/bower_components/angular-strap/dist/modules/alert.min.js}"></script>
+	<script th:src="@{/assets/js/app/login.js}"></script>
+</body>
+</html>

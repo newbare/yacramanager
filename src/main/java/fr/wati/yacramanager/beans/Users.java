@@ -37,6 +37,7 @@ public class Users extends AuditableEntity  {
 	private String username;
 	private String password;
 	private boolean enabled;
+	private String activationKey;
 	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(name = "users_roles", joinColumns = { @JoinColumn(name = "userId") }, inverseJoinColumns = { @JoinColumn(name = "roleId") })
 	private Set<Role> roles = new HashSet<>();
@@ -123,6 +124,20 @@ public class Users extends AuditableEntity  {
 	 */
 	public void setSettings(List<Settings> settings) {
 		this.settings = settings;
+	}
+
+	/**
+	 * @return the activationKey
+	 */
+	public String getActivationKey() {
+		return activationKey;
+	}
+
+	/**
+	 * @param activationKey the activationKey to set
+	 */
+	public void setActivationKey(String activationKey) {
+		this.activationKey = activationKey;
 	}
 
 }

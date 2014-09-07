@@ -40,11 +40,23 @@ function LoginController($scope, $location) {
 	
 	$scope.error=false;
 	$scope.errorMessage="";
+	$scope.activationFailed=false;
+	$scope.activationSuccess=false;
+	$scope.activationMessage="";
 	if(typeof error !== 'undefined'){
 		$scope.error=error;
 	}
 	if (typeof errorMessage !== 'undefined'){
 		$scope.errorMessage=errorMessage;
+	}
+	if(typeof activationFailed !== 'undefined'){
+		$scope.activationFailed=activationFailed;
+	}
+	if(typeof activationSuccess !== 'undefined'){
+		$scope.activationSuccess=activationSuccess;
+	}
+	if (typeof activationMessage !== 'undefined'){
+		$scope.activationMessage=activationMessage;
 	}
 };
 

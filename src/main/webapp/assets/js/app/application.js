@@ -86,14 +86,18 @@ App.config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
     cfpLoadingBarProvider.parentSelector = '.main';
   }])
 
-App.run(function($rootScope,$templateCache,UsersREST) {
+App.run(function($rootScope, $templateCache, UsersREST) {
 	$rootScope.page = '';
-//	$templateCache.removeAll();
+	// $templateCache.removeAll();
 	$rootScope.$on('$stateChangeStart', function(event, toState, toParams,
 			fromState, fromParams) {
-		$rootScope.pageTitle=event;
+		if (toState.data && toState.data.roles) {
+			// User isn’t authenticated
+//			$state.transitionTo("login");
+			event.preventDefault();
+		}
 	});
-	
+
 	var loadUserInfo = function() {
 		UsersREST.get({
 			service : 'user-info'

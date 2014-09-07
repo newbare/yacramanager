@@ -4,7 +4,8 @@
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <charset>utf-8</charset>
-            <Pattern>[%p] %c - %m%n</Pattern>
+            <!-- <Pattern>[%p] %c - %m%n</Pattern> -->
+            <Pattern>%date{HH:mm:ss.SSS} [%thread] %-5level  %logger{25}: %msg%n</Pattern>
         </encoder>
     </appender>
 
@@ -49,6 +50,7 @@
     <logger name="com.wordnik.swagger" level="warn"/>
     <logger name="liquibase" level="warn"/>
     <logger name="org.dozer" level="warn"/>
+    <logger name="reactor" level="warn"/>
     
 
     <contextListener class="ch.qos.logback.classic.jul.LevelChangePropagator">

@@ -15,7 +15,7 @@ import fr.wati.yacramanager.beans.Settings;
 import fr.wati.yacramanager.beans.Users;
 import fr.wati.yacramanager.dao.repository.CompanyRepository;
 import fr.wati.yacramanager.dao.repository.SettingsRepository;
-import fr.wati.yacramanager.dao.repository.UsersRepository;
+import fr.wati.yacramanager.dao.repository.UserRepository;
 import fr.wati.yacramanager.services.SettingsService;
 
 @Service
@@ -26,7 +26,7 @@ public class SettingsServiceImpl implements SettingsService {
 	private SettingsRepository settingsRepository;
 	
 	@Autowired
-	private UsersRepository usersRepository;
+	private UserRepository usersRepository;
 	
 	@Autowired
 	private CompanyRepository companyRepository;

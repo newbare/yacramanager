@@ -28,6 +28,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.codahale.metrics.annotation.Timed;
+
 import fr.wati.yacramanager.beans.Absence;
 import fr.wati.yacramanager.beans.Employe;
 import fr.wati.yacramanager.beans.ValidationStatus;
@@ -65,6 +67,7 @@ public class AbsenceController implements RestCrudController<AbsenceDTO>,Approva
 	@Override
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public @ResponseBody
+	@Timed
 	ResponseEntity<AbsenceDTO> read(@PathVariable("id") Long id) {
 		if(absenceService.exists(id)){
 			return new ResponseEntity<AbsenceDTO>(dtoMapper.map(absenceService.findOne(id)),HttpStatus.OK);
@@ -75,6 +78,7 @@ public class AbsenceController implements RestCrudController<AbsenceDTO>,Approva
 	@Override
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
+	@Timed
 	public void update(@PathVariable("id") Long id, @RequestBody AbsenceDTO dto) {
 		Absence findOne = absenceService.findOne(id);
 		absenceService.save(dto.toAbsence(findOne));
@@ -83,6 +87,7 @@ public class AbsenceController implements RestCrudController<AbsenceDTO>,Approva
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	@RequestMapping(method = RequestMethod.GET)
+	@Timed
 	public ResponseWrapper<List<AbsenceDTO>> getAll(
 			@RequestParam(required = false) Integer page,
 			@RequestParam(required = false) Integer size,
@@ -137,6 +142,7 @@ public class AbsenceController implements RestCrudController<AbsenceDTO>,Approva
 
 	@Override
 	@RequestMapping(method = RequestMethod.POST)
+	@Timed
 	public ResponseEntity<String> create(@RequestBody AbsenceDTO dto) {
 		Absence absence = dto.toAbsence();
 		absence.setDate(new DateTime());
@@ -148,11 +154,13 @@ public class AbsenceController implements RestCrudController<AbsenceDTO>,Approva
 
 	@Override
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+	@Timed
 	public void delete(@PathVariable("id") Long id) {
 		absenceService.delete(id);
 	}
 
 	@RequestMapping(value = "/types", method = RequestMethod.GET)
+	@Timed
 	public @ResponseBody
 	List<TypeAbsenceDTO> getTypeAbsences() {
 		List<TypeAbsenceDTO> absenceDTOs = new ArrayList<>();
@@ -167,6 +175,7 @@ public class AbsenceController implements RestCrudController<AbsenceDTO>,Approva
 	 */
 	@Override
 	@RequestMapping(value = "/approval", method = RequestMethod.GET)
+	@Timed
 	public @ResponseBody ResponseWrapper<List<ApprovalDTO<AbsenceDTO>>> getApproval(
 			@RequestParam(value="requesterId") Long requesterId) {
 		List<ApprovalDTO<AbsenceDTO>> approvalDTOs=new ArrayList<ApprovalDTO<AbsenceDTO>>();
@@ -194,6 +203,7 @@ public class AbsenceController implements RestCrudController<AbsenceDTO>,Approva
 	@Override
 	@RequestMapping(value = "/approval/approve/{requesterId}/{entityId}", method = RequestMethod.PUT)
 	@ResponseStatus(value=HttpStatus.OK)
+	@Timed
 	public void approve(@PathVariable(value="requesterId") Long requesterId, @PathVariable(value="entityId") Long entityId) throws RestServiceException{
 		Employe employe = employeService.findOne(requesterId);
 		if(employe==null){
@@ -213,6 +223,7 @@ public class AbsenceController implements RestCrudController<AbsenceDTO>,Approva
 
 	@Override
 	@RequestMapping(value = "/approval/reject/{requesterId}/{entityId}", method = RequestMethod.PUT)
+	@Timed
 	public void reject(@PathVariable(value="requesterId") Long requesterId, @PathVariable(value="entityId") Long entityId) throws RestServiceException {
 		Employe employe = employeService.findOne(requesterId);
 		if(employe==null){

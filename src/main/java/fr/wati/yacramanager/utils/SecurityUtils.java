@@ -41,12 +41,18 @@ public class SecurityUtils implements ApplicationContextAware{
 	}
 	
 	public static User getUser(){
+		if(SecurityContextHolder.getContext().getAuthentication()==null){
+			return null;
+		}
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		return user;
 	}
 	
 	public static Employe getConnectedUser(){
-		return applicationContext.getBean(EmployeServiceImpl.class).findByUsername(getUser().getUsername());
+		if(getUser()==null){
+			return null;
+		}
+		return applicationContext.getBean(EmployeServiceImpl.class).findByUsername(getUser()!=null ? getUser().getUsername():null);
 	}
 
 	/* (non-Javadoc)

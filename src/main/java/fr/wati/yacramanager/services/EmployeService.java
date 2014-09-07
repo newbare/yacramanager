@@ -15,6 +15,10 @@ public interface EmployeService extends CrudService<Employe, Long>,Specification
 
 	List<Employe> getManagedEmployees(Long requesterId);
 	
+	Employe findByContact_Email(String email);
+	
+	String resetPassword(Employe employe);
+	
 	/**
 	 * 
 	 * @param requester the manager

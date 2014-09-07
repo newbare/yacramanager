@@ -10,6 +10,8 @@ import fr.wati.yacramanager.beans.Employe;
 public interface EmployeRepository extends JpaRepository<Employe, Long> ,JpaSpecificationExecutor<Employe>{
 
 	Employe findByUsername(String username);
+	
+	Employe findByContact_Email(String email);
 
 	Page<Employe> findByLastNameLike(String string, Pageable pageRequest);
 

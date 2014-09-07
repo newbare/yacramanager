@@ -28,6 +28,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import com.codahale.metrics.annotation.Timed;
+
 import fr.wati.yacramanager.beans.Employe;
 import fr.wati.yacramanager.dao.repository.EmployeDto;
 import fr.wati.yacramanager.dao.repository.EmployeRepository;
@@ -56,6 +58,7 @@ public class UserRestController implements RestCrudController<EmployeDto> {
 	private EmployeRepository employeRepository;
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
+	@Timed
 	public @ResponseBody
 		ResponseEntity<EmployeDto> read(@PathVariable("id") Long id) {
 
@@ -68,6 +71,7 @@ public class UserRestController implements RestCrudController<EmployeDto> {
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
+	@Timed
 	public void update(@PathVariable("id") Long id,
 			@RequestBody EmployeDto employeDto) {
 		Employe employe = employeRepository.findOne(id.longValue());
@@ -84,6 +88,7 @@ public class UserRestController implements RestCrudController<EmployeDto> {
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
+	@Timed
 	public ResponseEntity<String> create(@RequestBody EmployeDto employeDto) {
 		
 		employeService.createNewEmployee(employeDto, employeDto.getCompanyId(), employeDto.getManagerId());
@@ -93,6 +98,7 @@ public class UserRestController implements RestCrudController<EmployeDto> {
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
+	@Timed
 	public void delete(@PathVariable("id") Long id) {
 		employeService.delete(id.longValue());
 	}
@@ -100,6 +106,7 @@ public class UserRestController implements RestCrudController<EmployeDto> {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	@RequestMapping(method = RequestMethod.GET)
+	@Timed
 	public @ResponseBody
 	ResponseWrapper<List<EmployeDto>> getAll(
 			@RequestParam(required = false) Integer page,
@@ -156,6 +163,7 @@ public class UserRestController implements RestCrudController<EmployeDto> {
 	}
 
 	@RequestMapping(value = "/user-info", method = RequestMethod.GET)
+	@Timed
 	public @ResponseBody
 	UserInfoDTO getConnectedUserInfo(HttpServletRequest request)
 			throws Exception {
@@ -174,6 +182,7 @@ public class UserRestController implements RestCrudController<EmployeDto> {
 	}
 
 	@RequestMapping(value = "/managed/{id}", method = RequestMethod.GET)
+	@Timed
 	public @ResponseBody
 	List<ManagedEmployeInfoDTO> getManagesEmploye(@PathVariable("id") Long requesterId,@RequestParam(value="me",required=false,defaultValue="false") boolean addMe) {
 		List<Employe> managedEmployes= employeService.getManagedEmployees(requesterId);

@@ -21,8 +21,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.method.configuration.GlobalMethodSecurityConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -52,7 +55,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	private DataSource dataSource;
 	@Autowired
 	private PasswordEncoder passwordEncoder;
-	
+
 	@Autowired
 	private CustomUserDetailsService customUserDetailsService;
 
@@ -110,22 +113,33 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 								Integer.class))
 				.and()
 				.sessionManagement()
-//				.invalidSessionUrl("/auth/login/?invalid-session=true")
+				// .invalidSessionUrl("/auth/login/?invalid-session=true")
 				.maximumSessions(
 						env.getProperty("max.sessions", Integer.class, 5))
-				.expiredUrl("/auth/login/?expired-session=true").and().and()
-				.addFilterAfter(ajaxTimeoutRedirectFilter(), ExceptionTranslationFilter.class);
+				.expiredUrl("/auth/login/?expired-session=true")
+				.and()
+				.and()
+				.addFilterAfter(ajaxTimeoutRedirectFilter(),
+						ExceptionTranslationFilter.class);
+	}
+
+	@Bean
+	@Override
+	public AuthenticationManager authenticationManagerBean() {
+		try {
+			return super.authenticationManagerBean();
+		} catch (Exception e) {
+			throw new IllegalStateException(e);
+		}
 	}
 
 	
-    @Override
-    public void configure(WebSecurity web) throws Exception {
-        web.ignoring()
-            .antMatchers("/assets/bower_components/**")
-            .antMatchers("/assets/css/**")
-            .antMatchers("/assets/js/**");
-    }
-	
+	@Override
+	public void configure(WebSecurity web) throws Exception {
+		web.ignoring().antMatchers("/assets/bower_components/**")
+				.antMatchers("/assets/css/**").antMatchers("/assets/js/**");
+	}
+
 	@Bean
 	public PersistentTokenRepository persistentTokenRepository() {
 		JdbcTokenRepositoryImpl jdbcTokenRepositoryImpl = new JdbcTokenRepositoryImpl();
@@ -151,18 +165,23 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(AuthenticationManagerBuilder auth)
 			throws Exception {
 		auth.authenticationProvider(authenticationProvider());
-//		auth.jdbcAuthentication()
-//				.dataSource(dataSource)
-//				.authoritiesByUsernameQuery(
-//						"SELECT u.USERNAME, r.ROLE FROM USERs u, USERs_ROLEs ur,ROLE r WHERE u.ID = ur.userId and r.id=ur.roleId AND u.USERNAME=?;")
-//				.usersByUsernameQuery(
-//						"SELECT USERNAME, PASSWORD, ENABLED FROM USERs WHERE USERNAME=?;")
-//				.passwordEncoder(passwordEncoder);
+		// auth.jdbcAuthentication()
+		// .dataSource(dataSource)
+		// .authoritiesByUsernameQuery(
+		// "SELECT u.USERNAME, r.ROLE FROM USERs u, USERs_ROLEs ur,ROLE r WHERE u.ID = ur.userId and r.id=ur.roleId AND u.USERNAME=?;")
+		// .usersByUsernameQuery(
+		// "SELECT USERNAME, PASSWORD, ENABLED FROM USERs WHERE USERNAME=?;")
+		// .passwordEncoder(passwordEncoder);
 
 	}
-	
-	public DaoAuthenticationProvider authenticationProvider(){
-		DaoAuthenticationProvider authenticationProvider=new DaoAuthenticationProvider();
+
+	@EnableGlobalMethodSecurity(prePostEnabled = true, jsr250Enabled = true)
+	private static class GlobalSecurityConfiguration extends
+			GlobalMethodSecurityConfiguration {
+	}
+
+	public DaoAuthenticationProvider authenticationProvider() {
+		DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
 		authenticationProvider.setPasswordEncoder(passwordEncoder);
 		authenticationProvider.setUserDetailsService(customUserDetailsService);
 		return authenticationProvider;

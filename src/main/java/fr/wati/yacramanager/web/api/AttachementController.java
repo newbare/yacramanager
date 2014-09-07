@@ -24,6 +24,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.codahale.metrics.annotation.Timed;
+
 import fr.wati.yacramanager.beans.Attachement;
 import fr.wati.yacramanager.services.AttachementService;
 
@@ -41,6 +43,7 @@ public class AttachementController {
 	private AttachementService attachementService;
 
 	@RequestMapping(method = RequestMethod.POST)
+	@Timed
 	public ResponseEntity<Long> upload(@RequestParam("file") MultipartFile file) {
 		try {
 			if (file != null) {
@@ -64,6 +67,7 @@ public class AttachementController {
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
+	@Timed
 	public ResponseEntity<String> getFile(@PathVariable("id") Long id,HttpServletResponse response) throws RestServiceException {
 		
 		try {

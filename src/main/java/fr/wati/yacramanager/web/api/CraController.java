@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.codahale.metrics.annotation.Timed;
+
 import fr.wati.yacramanager.services.CraService;
 import fr.wati.yacramanager.services.EmployeService;
 import fr.wati.yacramanager.utils.SecurityUtils;
@@ -37,12 +39,14 @@ public class CraController {
     }
 	
 	@RequestMapping(method=RequestMethod.GET)
+	@Timed
 	public @ResponseBody CraDTO getCra(@RequestParam(value="start", required=true) @DateTimeFormat(iso=ISO.DATE_TIME) DateTime startDate, @RequestParam(value="end", required=true) @DateTimeFormat(iso=ISO.DATE_TIME) DateTime endDate){
 		CraDTO craDTO=craService.generateCra(SecurityUtils.getConnectedUser(), startDate, endDate);
 		return craDTO;
 	}
 	
 	@RequestMapping(value="/details", method=RequestMethod.GET)
+	@Timed
 	public @ResponseBody CraDetailsDTO getCraDetails(@RequestParam(value="employeIds", required=true) List<Long> employeIds, @RequestParam(value="start", required=true) @DateTimeFormat(iso=ISO.DATE_TIME) DateTime startDate, @RequestParam(value="end", required=true) @DateTimeFormat(iso=ISO.DATE_TIME) DateTime endDate){
 		CraDetailsDTO craDetailsDTO=craService.generateCraDetail(employeService.findAll(employeIds), startDate, endDate);
 		return craDetailsDTO;

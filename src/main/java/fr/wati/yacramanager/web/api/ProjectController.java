@@ -24,6 +24,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.codahale.metrics.annotation.Timed;
+
 import fr.wati.yacramanager.beans.Company;
 import fr.wati.yacramanager.beans.Employe;
 import fr.wati.yacramanager.beans.Project;
@@ -137,6 +139,7 @@ public class ProjectController {
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
+	@Timed
 	public ResponseEntity<String> create(
 			@PathVariable("companyId") Long companyId,@RequestParam("clientId") Long clientId,@RequestBody ProjectDTO dto) {
 		projectService.createProject(clientId, dto.toProject(new Project()));
@@ -144,6 +147,7 @@ public class ProjectController {
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+	@Timed
 	public void delete(@PathVariable("companyId") Long companyId,@PathVariable("id") Long id) {
 		Project project = projectService.findOne(id);
 		if (project != null) {
@@ -152,6 +156,7 @@ public class ProjectController {
 	}
 	
 	@RequestMapping(value = "/employe/{employeId}", method = RequestMethod.GET)
+	@Timed
 	public ResponseWrapper<List<ProjectDTO>> getProjects(
 			@PathVariable("companyId") Long companyId,
 			@PathVariable("employeId") Long employeId) throws RestServiceException{

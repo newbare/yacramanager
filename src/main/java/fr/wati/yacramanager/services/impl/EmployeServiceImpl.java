@@ -38,6 +38,7 @@ import fr.wati.yacramanager.utils.Filter.FilterArrayValue;
 import fr.wati.yacramanager.utils.Filter.FilterDate;
 import fr.wati.yacramanager.utils.Filter.FilterText;
 import fr.wati.yacramanager.utils.Filter.FilterType;
+import fr.wati.yacramanager.utils.RandomUtil;
 import fr.wati.yacramanager.web.dto.RegistrationDTO;
 import fr.wati.yacramanager.web.dto.UserInfoDTO;
 
@@ -151,7 +152,7 @@ public class EmployeServiceImpl implements EmployeService {
 		Employe employe=new Employe();
 		employe.setUsername(registrationDTO.getUsername());
 		employe.setPassword(passwordEncoder.encode(registrationDTO.getPassword()));
-		employe.setEnabled(true);
+		employe.setEnabled(false);
 		employe.setLastName(registrationDTO.getLastName());
 		employe.setFirstName(registrationDTO.getFirstName());
 		Contact contact=new Contact();
@@ -167,13 +168,11 @@ public class EmployeServiceImpl implements EmployeService {
 		roles.add(roleRepository.findByRole(Role.ROLE_SSII_ADMIN));
 		roles.add(roleRepository.findByRole(Role.ROLE_INDEP));
 		employe.setRoles(roles);
-		
 		createCompany.getClients().get(0).getProjects().get(0).getAssignedEmployees().add(employe);
 		employe.getProjects().add(createCompany.getClients().get(0).getProjects().get(0));
-		
 		createCompany.getClients().get(0).getProjects().get(0).getTasks().get(0).getAssignedEmployees().add(employe);
 		employe.getTasks().add(createCompany.getClients().get(0).getProjects().get(0).getTasks().get(0));
-		
+		employe.setActivationKey(RandomUtil.generateActivationKey());
 		Employe saveEmploye = employeRepository.save(employe);
 		return saveEmploye;
 	}
@@ -295,5 +294,24 @@ public class EmployeServiceImpl implements EmployeService {
 	public void setApplicationEventPublisher(
 			ApplicationEventPublisher applicationEventPublisher) {
 		this.applicationEventPublisher=applicationEventPublisher;
+	}
+
+	/* (non-Javadoc)
+	 * @see fr.wati.yacramanager.services.EmployeService#findByContact_Email(java.lang.String)
+	 */
+	@Override
+	public Employe findByContact_Email(String email) {
+		return employeRepository.findByContact_Email(email);
+	}
+
+	/* (non-Javadoc)
+	 * @see fr.wati.yacramanager.services.EmployeService#resetPassword(fr.wati.yacramanager.beans.Employe)
+	 */
+	@Override
+	public String resetPassword(Employe employe) {
+		String generatedPassword=RandomUtil.generatePassword();
+		employe.setPassword(passwordEncoder.encode(generatedPassword));
+		save(employe);
+		return generatedPassword;
 	}
 }

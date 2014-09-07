@@ -16,6 +16,7 @@ import org.springframework.test.context.junit4.AbstractTransactionalJUnit4Spring
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import fr.wati.yacramanager.beans.Company;
+import fr.wati.yacramanager.beans.Contact;
 import fr.wati.yacramanager.beans.Employe;
 import fr.wati.yacramanager.config.TestServicesConfig;
 import fr.wati.yacramanager.web.dto.UserInfoDTO;
@@ -75,6 +76,21 @@ public class EmployeServiceTest extends
 		employeService.addManagedEmploye(manager.getId(), managedEmploye2.getId());
 		List<Employe> managedEmployes=employeService.getManagedEmployees(manager.getId());
 		Assert.assertTrue(managedEmployes.size()==2);
-		
 	}
+	
+	
+	@Test
+	public void testFindByEmail() {
+		Employe manager = new Employe();
+		manager.setLastName("Manager");
+		Contact contact=new Contact();
+		contact.setEmail("blabla@blabla.com");
+		manager.setContact(contact);;
+		manager.setFirstName("Manager");
+		employeService.save(manager);
+		Employe findByContact_Email = employeService.findByContact_Email("blabla@blabla.com");
+		Assert.assertTrue(findByContact_Email!=null);
+	}
+	
+	
 }

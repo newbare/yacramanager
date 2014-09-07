@@ -10,7 +10,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -18,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import fr.wati.yacramanager.beans.Role;
 import fr.wati.yacramanager.beans.Users;
-import fr.wati.yacramanager.dao.repository.UsersRepository;
+import fr.wati.yacramanager.dao.repository.UserRepository;
 
 /**
  * @author Rachid Ouattara
@@ -29,7 +28,7 @@ import fr.wati.yacramanager.dao.repository.UsersRepository;
 public class CustomUserDetailsService implements UserDetailsService {
 
 	@Autowired
-	private UsersRepository usersRepository;
+	private UserRepository usersRepository;
 	
 	/* (non-Javadoc)
 	 * @see org.springframework.security.core.userdetails.UserDetailsService#loadUserByUsername(java.lang.String)
@@ -46,7 +45,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 	}
 
 	@SuppressWarnings("serial")
-	public static class CustomUserDetails extends User{
+	public static class CustomUserDetails extends org.springframework.security.core.userdetails.User{
 
 		private Users domainUser;
 		
