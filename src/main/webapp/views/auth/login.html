@@ -20,12 +20,12 @@
 			var error = [[${error}]];
 			var errorMessage = [[${errorMessage}]];
 </script>
-<script th:if=" ${activation-failed} !=null" th:inline="javascript" type="text/javascript">
-			var activationFailed = [[${activation-failed}]];
+<script th:if=" ${activationFailed} !=null" th:inline="javascript" type="text/javascript">
+			var activationFailed = [[${activationFailed}]];
 			var errorMessage = [[${activationMessage}]];
 </script>
-<script th:if=" ${activation-success} !=null" th:inline="javascript" type="text/javascript">
-			var activationSuccess = [[${activation-success}]];
+<script th:if=" ${activationSuccess} !=null" th:inline="javascript" type="text/javascript">
+			var activationSuccess = [[${activationSuccess}]];
 			var activationMessage = [[${activationMessage}]];
 </script>
 <body>

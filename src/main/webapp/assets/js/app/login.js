@@ -74,10 +74,32 @@ function RegisterController($scope, $location,RegistrationRest,alertService) {
 	}
 }
 
-function PasswordRecoveryController($scope, $location) {
+function PasswordRecoveryController($scope, $location,$resource,$http) {
 	$scope.loadLogin = function() {
 		$location.url('/');
 	};
+	$scope.email="";
+	$scope.recoverPassword=function(){
+		if($scope.email!=undefined && $scope.email!=""){
+			console.log($scope.email);
+			//$http.post(_contextPath+"auth/api/password-recovery",$scope.email.toString())
+			
+			$resource(_contextPath+"auth/api/password-recovery").save($scope.email.toString());
+//                    function (value, responseHeaders) {
+//                $scope.error = null;
+//                $scope.success = 'OK';
+//            },
+//            function (httpResponse) {
+//                $scope.success = null;
+//                $scope.error = "ERROR";
+//            });
+	        
+//			$http.post(_contextPath+"auth/api/password-recovery",{email:$scope.email})
+//			.success(function(data, status) {
+//				consonle.log(status);
+//			});
+		}
+	}
 }
 App.config([ '$routeProvider', function($routeProvider) {
 	$routeProvider.when('/', {

@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -77,18 +78,18 @@ public class AuthenticationController {
 		
 		Users user = userService.activateRegistration(key);
 		if (user == null) {
-			modelAndView.addObject("activation-failed", true);
+			modelAndView.addObject("activationFailed", true);
 			modelAndView.addObject("activationMessage", "No account found for given activation key");
 		}else {
-			modelAndView.addObject("activation-success", true);
+			modelAndView.addObject("activationSuccess", true);
 			modelAndView.addObject("activationMessage", "The account has been activated !");
 		}
 		return modelAndView;
 	}
 
-	@RequestMapping(value = "/password-recovery", method = RequestMethod.POST)
+	@RequestMapping(value = "/password-recovery", method = RequestMethod.POST,produces={MediaType.APPLICATION_JSON_VALUE})
 	@Timed
-	public ResponseEntity<String> recoverPassword(@RequestParam(value="email") String email,HttpServletRequest request, HttpServletResponse response,
+	public ResponseEntity<String> recoverPassword(@RequestBody String email,HttpServletRequest request, HttpServletResponse response,
 			Locale locale) {
 		Employe employe = employeService.findByContact_Email(email);
 		if(employe!=null){
