@@ -1,6 +1,6 @@
 'use strict';
 
-function TasksController($scope, $rootScope,ngTableParams, alertService,ProjectsCRUDREST,TasksCRUDREST, $http) {
+function TasksController($scope, $rootScope,ngTableParams, alertService,ProjectsREST,TasksREST, $http) {
 	$rootScope.page = {
 		"title" : "Tasks",
 		"description" : "My tasks"
@@ -84,7 +84,7 @@ function TasksController($scope, $rootScope,ngTableParams, alertService,Projects
 	$scope.addTask=function(project){
 		$scope.taskToAdd !=undefined;
 		var newtask={name:$scope.taskToAdd.taskName,description:$scope.taskToAdd.taskDescription,projectId:project.id,employeId:_userId};
-		TasksCRUDREST.save({companyId :_userCompanyId},newtask).$promise.then(function(result){
+		TasksREST.save({companyId :_userCompanyId},newtask).$promise.then(function(result){
 			alertService.show('success','Confirmation', 'New task created');
 			$scope.resetTaskToAdd();
 			$scope.refreshProjects();
@@ -111,7 +111,7 @@ function TasksController($scope, $rootScope,ngTableParams, alertService,Projects
 //		total : 0, // length of data
 //		getData : function($defer, params) {
 //			if($scope.tableFilter!==""){
-//				TasksCRUDREST.get(
+//				TasksREST.get(
 //						{
 //							companyId : _userCompanyId,
 //							page:params.$params.page-1,

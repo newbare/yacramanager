@@ -3,6 +3,7 @@ package fr.wati.yacramanager.utils;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
@@ -41,7 +42,7 @@ public class SecurityUtils implements ApplicationContextAware{
 	}
 	
 	public static User getUser(){
-		if(SecurityContextHolder.getContext().getAuthentication()==null){
+		if(SecurityContextHolder.getContext().getAuthentication()==null || SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken){
 			return null;
 		}
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();

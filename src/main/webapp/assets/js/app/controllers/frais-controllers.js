@@ -1,4 +1,4 @@
-function FraisController($scope, $rootScope, NoteCRUDREST, alertService,
+function FraisController($scope, $rootScope, NoteREST, alertService,
 		ngTableParams, notifService, $upload,$modal,$http) {
 	$rootScope.page = {
 		"title" : "Frais",
@@ -175,7 +175,7 @@ function FraisController($scope, $rootScope, NoteCRUDREST, alertService,
 	}
 	
 	$scope.postNote=function(note,hideFn){
-		 NoteCRUDREST.save(note).$promise.then(function(result) {
+		 NoteREST.save(note).$promise.then(function(result) {
 			alertService.show('success', 'Created', 'Nouvelle note sauvegarde');
 			hideFn();
 			$scope.reset();
@@ -215,7 +215,7 @@ function FraisController($scope, $rootScope, NoteCRUDREST, alertService,
 		}
 	};
 	$scope.putNote = function() {
-		NoteCRUDREST.update(clone(note)).$promise.then(function(result) {
+		NoteREST.update(clone(note)).$promise.then(function(result) {
 			notifService.notify('info', 'Created', 'Modification effectu���');
 			$scope.reset();
 			$scope.tableParams.reload();
@@ -228,7 +228,7 @@ function FraisController($scope, $rootScope, NoteCRUDREST, alertService,
 	
 	$scope.editNote = function(id) {
 		$scope.edition = true;
-		NoteCRUDREST.get({
+		NoteREST.get({
 			id : id
 		}, function(data) {
 			note.id = data.id;
@@ -243,7 +243,7 @@ function FraisController($scope, $rootScope, NoteCRUDREST, alertService,
 	};
 
 	$scope.deleteNote = function(id) {
-		NoteCRUDREST.remove({
+		NoteREST.remove({
 			id : id
 		}).$promise.then(function(result) {
 			$scope.tableParams.reload();
@@ -267,7 +267,7 @@ function FraisController($scope, $rootScope, NoteCRUDREST, alertService,
 		total : 0, // length of data
 		getData : function($defer, params) {
 			if($scope.tableFilter!=="" && $scope.tableFilter!==undefined){
-				NoteCRUDREST.get({
+				NoteREST.get({
 					page:params.$params.page-1,
 					size:params.$params.count,
 					sort:params.$params.sorting,

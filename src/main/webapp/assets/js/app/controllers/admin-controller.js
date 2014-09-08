@@ -6,7 +6,7 @@ function AdminHomeController($scope,$rootScope) {
 	$scope.page={"title":"Admin board","description":"Home page"}
 }
 
-function AdminCompaniesController($scope,$rootScope,CompanyCRUDREST,ngTableParams,alertService,notifService) {
+function AdminCompaniesController($scope,$rootScope,CompanyREST,ngTableParams,alertService,notifService) {
 	$scope.page={"title":"Companies management","description":"Home page"};
 	var allCompany=[];
 	$scope.hasDatas=false;
@@ -23,7 +23,7 @@ function AdminCompaniesController($scope,$rootScope,CompanyCRUDREST,ngTableParam
 	};
 	
 	$scope.postCompany = function(hideFn) {
-		CompanyCRUDREST.save($scope.company).$promise.then(function(result) {
+		CompanyREST.save($scope.company).$promise.then(function(result) {
 			alertService.show('info','Confirmation', 'Donn� sauvegard�');
 			$scope.reset();
 			$scope.tableParams.reload();
@@ -31,7 +31,7 @@ function AdminCompaniesController($scope,$rootScope,CompanyCRUDREST,ngTableParam
 		});
 	};
 	$scope.deleteCompany = function(id) {
-		CompanyCRUDREST.remove({
+		CompanyREST.remove({
 			id : id
 		}).$promise.then(function(result) {
 			$scope.tableParams.reload();
@@ -41,7 +41,7 @@ function AdminCompaniesController($scope,$rootScope,CompanyCRUDREST,ngTableParam
 		});
 	};
 	$scope.putCompany = function() {
-		CompanyCRUDREST.update($scope.company).$promise.then(function(result) {
+		CompanyREST.update($scope.company).$promise.then(function(result) {
 			alertService.show('info','Created','Mise � jour effectu�');
 			$scope.reset();
 			$scope.tableParams.reload();
@@ -53,7 +53,7 @@ function AdminCompaniesController($scope,$rootScope,CompanyCRUDREST,ngTableParam
 }
 
 
-function AdminCompanyViewController($scope, $rootScope,$http,CompanyCRUDREST,ngTableParams,$state){
+function AdminCompanyViewController($scope, $rootScope,$http,CompanyREST,ngTableParams,$state){
 	
 	$scope.$state=$state;
 	$scope.tableFilter="";
@@ -111,7 +111,7 @@ function AdminCompanyViewController($scope, $rootScope,$http,CompanyCRUDREST,ngT
 		total : 0, // length of data
 		getData : function($defer, params) {
 			
-			CompanyCRUDREST.get(
+			CompanyREST.get(
 					{
 						page:params.$params.page-1,
 						size:params.$params.count,
@@ -160,10 +160,10 @@ function AdminCompanyListController($scope, $rootScope,$http,$state){
 	 $scope.tableParams.settings().counts=[10, 25, 50, 100];
 };
 
-function AdminCompanyOverviewController($scope,CompanyCRUDREST, $stateParams){
+function AdminCompanyOverviewController($scope,CompanyREST, $stateParams){
 	$scope.companyId=$stateParams.id;
 	$scope.company=undefined;
-	CompanyCRUDREST.get(
+	CompanyREST.get(
 			{companyId : _userCompanyId,id:$scope.companyId},function(data) {
 				$scope.company=data;
 			});

@@ -18,6 +18,7 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.domain.Sort.Order;
 import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -34,6 +35,7 @@ import fr.wati.yacramanager.beans.Employe;
 import fr.wati.yacramanager.dao.repository.EmployeDto;
 import fr.wati.yacramanager.dao.repository.EmployeRepository;
 import fr.wati.yacramanager.services.EmployeService;
+import fr.wati.yacramanager.services.UserService;
 import fr.wati.yacramanager.services.impl.DtoMapper;
 import fr.wati.yacramanager.utils.Filter.FilterBuilder;
 import fr.wati.yacramanager.utils.SecurityUtils;
@@ -50,6 +52,9 @@ public class UserRestController implements RestCrudController<EmployeDto> {
 	private static final Log LOG = LogFactory.getLog(UserRestController.class);
 	@Autowired
 	private EmployeService employeService;
+	
+	@Autowired
+	private UserService userService;
 	
 	@Autowired
 	private DtoMapper dtoMapper;
@@ -96,6 +101,21 @@ public class UserRestController implements RestCrudController<EmployeDto> {
 				HttpStatus.CREATED);
 	}
 
+	/**
+     * POST  /rest/change_password -> changes the current user's password
+     */
+    @RequestMapping(value = "/change-password",
+            method = RequestMethod.POST,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity<?> changePassword(@RequestBody String password) {
+    	if (StringUtils.isEmpty(password)) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+        userService.changePassword(SecurityUtils.getConnectedUser().getId(),password);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+	
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@Timed

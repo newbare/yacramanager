@@ -1,7 +1,6 @@
 'use strict';
 
-function AbsencesController($scope, $rootScope, AbsenceCRUDREST,
-		AbsenceTypeREST, alertService,ngTableParams,notifService,$http) {
+function AbsencesController($scope, $rootScope, AbsenceREST, alertService,ngTableParams,notifService,$http) {
 	$rootScope.page = {
 		"title" : "Absences",
 		"description" : "Declarez vos absences"
@@ -124,7 +123,7 @@ function AbsencesController($scope, $rootScope, AbsenceCRUDREST,
 	var allAbsence=[];
 	$scope.selectedAction={};
 	
-	AbsenceTypeREST.query(function(data) {
+	AbsenceREST.getTypes(function(data) {
 		$scope.absencesType = data;
 	});
 	var absence = $scope.currentAbsence = {};
@@ -167,15 +166,15 @@ function AbsencesController($scope, $rootScope, AbsenceCRUDREST,
 	
 	$scope.postAbsence = function(hideFn) {
 		absence.typeAbsence=absence.typeAbsence.name;
-		AbsenceCRUDREST.save(clone(absence)).$promise.then(function(result) {
-			alertService.show('info','Confirmation', 'Donn� sauvegard�');
+		AbsenceREST.save(clone(absence)).$promise.then(function(result) {
+			alertService.show('success','Confirmation', 'Donn� sauvegard�');
 			$scope.reset();
 			$scope.tableParams.reload();
 			hideFn();
 		});
 	};
 	$scope.putAbsence = function() {
-		AbsenceCRUDREST.update(clone(absence)).$promise.then(function(result) {
+		AbsenceREST.update(clone(absence)).$promise.then(function(result) {
 			notifService.notify('info','Created','Nouvelle absence enregistr�');
 			$scope.reset();
 			$scope.tableParams.reload();
@@ -184,7 +183,7 @@ function AbsencesController($scope, $rootScope, AbsenceCRUDREST,
 	};
 	$scope.editAbsence=function(id){
 		$scope.edition=true;
-		AbsenceCRUDREST.get(
+		AbsenceREST.get(
 				{id:id},function(data) {
 					absence.id=data.id;
 					absence.typeAbsence = data.typeAbsence;
@@ -200,7 +199,7 @@ function AbsencesController($scope, $rootScope, AbsenceCRUDREST,
 	};
 	
 	$scope.deleteAbsence = function(id) {
-		AbsenceCRUDREST.remove({
+		AbsenceREST.remove({
 			id : id
 		}).$promise.then(function(result) {
 			$scope.tableParams.reload();
@@ -224,7 +223,7 @@ function AbsencesController($scope, $rootScope, AbsenceCRUDREST,
 		total : 0, // length of data
 		getData : function($defer, params) {
 			if($scope.tableFilter!=undefined && $scope.tableFilter!=''){
-				AbsenceCRUDREST.get(
+				AbsenceREST.get(
 						{
 							page:params.$params.page-1,
 							size:params.$params.count,

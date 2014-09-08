@@ -93,7 +93,7 @@ App.controller('AppCtrl', [ '$scope', '$location', 'UsersREST','$rootScope','$tr
 			}
 		} ]);
 
-App.controller('WorkLogCtrl',['$scope','$http','WorkLogCRUDREST','alertService',function($scope,$http,WorkLogCRUDREST,alertService){
+App.controller('WorkLogCtrl',['$scope','$http','WorkLogREST','alertService',function($scope,$http,WorkLogREST,alertService){
 	 $scope.timerRunning = false;
 	 $scope.open=false
 	 $scope.project=undefined;
@@ -128,7 +128,7 @@ App.controller('WorkLogCtrl',['$scope','$http','WorkLogCRUDREST','alertService',
         	 $scope.worklog.taskName=$scope.task.name;
         	 $scope.worklog.description=$scope.description;
         	 $scope.worklog.employeId=_userId;
-        	 WorkLogCRUDREST.save($scope.worklog).$promise.then(function(result) {
+        	 WorkLogREST.save($scope.worklog).$promise.then(function(result) {
         		 $scope.resetWorkLog();
         		 alertService.show('success','Confirmation', 'Donn� sauvegard�');
     		});

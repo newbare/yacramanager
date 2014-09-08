@@ -210,7 +210,13 @@
 				</h4>
 			</div>
 			<div id="alerts-container"></div>
-			<div data-ui-view="" class="" data-ng-cloak=""></div>
+			<div id="main-view" >
+				<div class="panel panel-default">
+					<div class="panel-body">
+					<div id="main-view" data-ui-view="" class="" data-ng-cloak=""></div>
+					</div>
+				</div>
+			</div>
 			<div class="footer">
 				<p class="text-muted">@ wati 2014</p>
 			</div>
@@ -305,9 +311,6 @@
 	<script th:src="@{/assets/bower_components/angular-chosen-localytics/chosen.js}"></script>
 	<script th:src="@{/assets/bower_components/chosen/chosen.jquery.js}"></script>
 	<script th:src="@{/assets/js/app/filters/commons-filters.js}"></script>
-	<script th:src="@{/assets/js/app/factories/users-factories.js}"></script>
-	<script
-		th:src="@{/assets/js/app/factories/companies-factories.js}"></script>
 	<script
 		th:src="@{/assets/js/app/controllers/home-controller.js}"></script>
 	<script
@@ -320,13 +323,7 @@
 		th:src="@{/assets/js/app/controllers/messages-controller.js}"></script>
 	<script
 		th:src="@{/assets/js/app/controllers/company-controller.js}"></script>
-
-	<script th:src="@{/assets/js/app/factories/cra-factories.js}"></script>
-	<script th:src="@{/assets/js/app/factories/notes-factories.js}"></script>
-	<script th:src="@{/assets/js/app/factories/admin-factories.js}"></script>
-	<script th:src="@{/assets/js/app/factories/worklog-factories.js}"></script>
-	<script
-		th:src="@{/assets/js/app/factories/absences-factories.js}"></script>
+	<script th:src="@{/assets/js/app/factories/common-factories.js}"></script>
 	<script th:src="@{/assets/js/app/services/common-services.js}"></script>
 	<script
 		th:src="@{/assets/js/app/directives/commons-directives.js}"></script>

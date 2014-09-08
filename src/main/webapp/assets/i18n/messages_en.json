@@ -1,131 +1,205 @@
 {
-	
-	"home.page.header.title": "Home",
-	"home.page.header.description": "Dashboard",
-	
-	"app.navbar.menu.admin": "Admin",
-	"app.navbar.menu.absences" : "Absences",
-	"app.navbar.menu.timesheet" : "Timesheet",
-	"app.navbar.menu.workspace" : "Workspace",
-	"app.navbar.menu.frais" : "Frais",
-	"app.navbar.menu.cra" : "CRA",
-	"app.navbar.menu.tasks" : "Tasks",
-	"app.navbar.timer.project" :"Project",
-	"app.navbar.menu.settings" :"Settings",
-	"app.navbar.menu.profile" : "Profile",
-	"app.navbar.menu.logout" : "Logout",
-	
-	"app.timesheet.toolbar.agendaDay" : "Day view",
-	"app.timesheet.toolbar.agendaWeek" : "Week view",
-	"app.timesheet.toolbar.agendaMonth" : "Month view",
-	"app.timesheet.toolbar.agendaTable" : "Table view",
-	"app.timesheet.toolbar.next" : "Next",
-	"app.timesheet.toolbar.previous" : "Previous",
-	"app.timesheet.toolbar.today" : "Today",
-	
-	"form.edit.employe.firstname" : "First name",
-	"form.edit.employe.lastname" : "Last name",
-	"form.edit.employe.email" : "Email",
-	"form.edit.employe.manager" : "Manager",
-	
-	"form.edit.client.name" : "Client name",
-	
-	"form.edit.project.name" : "Project name",
-	"form.edit.project.description" : "Project description",
-	"form.edit.project.color" : "Project color",
-	"logs": {
-        "title": "Logs",
-        "nbloggers": "There are {{ total }} loggers.",
-        "filter": "Filter",
-        "table": {
-            "name": "Name",
-            "level": "Level"
-        }
-    },
-     "metrics": {
-        "title": "Application Metrics",
-        "refresh.button": "Refresh",
-        "health": {
-            "title": "Health checks",
-            "database": "Database: ",
-            "email": "Email: ",
-            "stacktrace": "Stacktrace"
-        },
-        "jvm": {
-            "title": "JVM Metrics",
-            "memory": {
-                "title": "Memory",
-                "total": "Total Memory",
-                "heap": "Heap Memory",
-                "nonheap": "Non-Heap Memory"
-            },
-            "threads": {
-                "title": "Threads",
-                "all": "All",
-                "runnable": "Runnable",
-                "timedwaiting": "Timed waiting",
-                "waiting": "Waiting",
-                "blocked": "Blocked",
-                "dump": {
-                    "title": "Threads dump",
-                    "id": "Id: ",
-                    "blockedtime": "Blocked Time",
-                    "blockedcount": "Blocked Count",
-                    "waitedtime": "Waited Time",
-                    "waitedcount": "Waited Count",
-                    "lockname": "Lock name",
-                    "stacktrace": "Stacktrace",
-                    "show": "Show",
-                    "hide": "Hide"
-                }
-            },
-            "gc": {
-                "title": "Garbage collections",
-                "marksweepcount": "Mark Sweep count",
-                "marksweeptime": "Mark Sweep time",
-                "scavengecount": "Scavenge count",
-                "scavengetime": "Scavenge time"
-            },
-            "http": {
-                "title": "HTTP requests (events per second)",
-                "active": "Active requests:",
-                "total": "Total requests:",
-                "table": {
-                    "code": "Code",
-                    "count": "Count",
-                    "mean": "Mean",
-                    "average": "Average"
-                },
-                "code": {
-                    "ok": "Ok",
-                    "notfound": "Not found",
-                    "servererror": "Server Error"
-                }
-            }
-        },
-        "servicesstats": {
-            "title": "Services statistics (time in millisecond)",
-            "table": {
-                "name": "Service name",
-                "count": "Count",
-                "mean": "Mean",
-                "min": "Min",
-                "max": "Max",
-                "p50": "p50",
-                "p75": "p75",
-                "p95": "p95",
-                "p99": "p99"
-            }
-        },
-        "ehcache": {
-            "title": "Ehcache statistics",
-            "cachename": "Cache name",
-            "objects": "Objects",
-            "hits": "Hits",
-            "misses": "Misses",
-            "evictioncount": "Eviction count",
-            "mean": "Mean get time (ms)"
-        }
-    }
-	
+	"home.page.header.title":"Home",
+	"home.page.header.description":"Dashboard",
+	"app.navbar.menu.admin":"Admin",
+	"app.navbar.menu.absences":"Absences",
+	"app.navbar.menu.timesheet":"Timesheet",
+	"app.navbar.menu.workspace":"Workspace",
+	"app.navbar.menu.frais":"Frais",
+	"app.navbar.menu.cra":"CRA",
+	"app.navbar.menu.tasks":"Tasks",
+	"app.navbar.timer.project":"Project",
+	"app.navbar.menu.settings":"Settings",
+	"app.navbar.menu.profile":"Profile",
+	"app.navbar.menu.logout":"Logout",
+	"app.timesheet.toolbar.agendaDay":"Day view",
+	"app.timesheet.toolbar.agendaWeek":"Week view",
+	"app.timesheet.toolbar.agendaMonth":"Month view",
+	"app.timesheet.toolbar.agendaTable":"Table view",
+	"app.timesheet.toolbar.next":"Next",
+	"app.timesheet.toolbar.previous":"Previous",
+	"app.timesheet.toolbar.today":"Today",
+	"global":{
+		"title":"jhipster",
+		"browsehappy":"You are using an <strong>outdated</strong> browser. Please <a href=\"http://browsehappy.com/?locale=en\">upgrade your browser</a> to improve your experience.",
+		"menu":{
+			"home":"Home",
+			"account":{
+				"main":"Account",
+				"settings":"Settings",
+				"password":"Password",
+				"sessions":"Sessions",
+				"tracker":"User tracker",
+				"metrics":"Metrics",
+				"logs":"Logs",
+				"audits":"Audits",
+				"login":"Authenticate",
+				"logout":"Log out",
+				"apidocs":"API",
+				"register":"Register"
+			},
+			"admin":"Administration",
+			"language":"Language"
+		},
+		"form":{
+			"user":{
+				"username":"Login",
+				"username.placeholder":"Your login",
+				"newpassword":"New password",
+				"newpassword.placeholder":"New password",
+				"confirmpassword":"New password confirmation",
+				"confirmpassword.placeholder":"Confirm the new password",
+				"email":"E-mail",
+				"email.placeholder":"Your e-mail"
+			},
+			"employe":{
+				"firstname":"First name",
+				"lastname":"Last name",
+				"email":"Email",
+				"manager":"Manager"
+			},
+			"project":{
+				"name":"Project name",
+				"description":"Project description",
+				"color":"Project color"
+			}
+		},
+		"timesheet":{
+			"toolbar":{
+				"agendaDay":"Day view",
+				"agendaWeek":"Week view",
+				"agendaMonth":"Month view",
+				"agendaTable":"Table view",
+				"next":"Next",
+				"previous":"Previous",
+				"today":"Today"
+			}
+		},
+		"messages":{
+			"info":{
+				"authenticated":"If you want to <a href=\"#/login\">authenticate</a>, you can try the default accounts:<br/>- Administrator (login=\"admin\" and password=\"admin\") <br/>- User (login=\"user\" and password=\"user\").",
+				"register":"You don't have an account yet? <a href=\"#/register\">Register a new account</a>"
+			},
+			"error":{
+				"dontmatch":"The password and its confirmation do not match!"
+			},
+			"validate":{
+				"newpassword":{
+					"required":"Your password is required.",
+					"minlength":"Your password is required to be at least 5 characters",
+					"maxlength":"Your password cannot be longer than 50 characters",
+					"strength":"Password strength:"
+				},
+				"confirmpassword":{
+					"required":"Your confirmation password is required.",
+					"minlength":"Your confirmation password is required to be at least 5 characters",
+					"maxlength":"Your confirmation password cannot be longer than 50 characters"
+				},
+				"email":{
+					"required":"Your e-mail is required.",
+					"invalid":"Your e-mail is invalid.",
+					"minlength":"Your e-mail is required to be at least 5 characters",
+					"maxlength":"Your e-mail cannot be longer than 50 characters"
+				}
+			}
+		}
+	},
+	"logs":{
+		"title":"Logs",
+		"nbloggers":"There are {{ total }} loggers.",
+		"filter":"Filter",
+		"table":{
+			"name":"Name",
+			"level":"Level"
+		}
+	},
+	"metrics":{
+		"title":"Application Metrics",
+		"refresh.button":"Refresh",
+		"health":{
+			"title":"Health checks",
+			"database":"Database: ",
+			"email":"Email: ",
+			"stacktrace":"Stacktrace"
+		},
+		"jvm":{
+			"title":"JVM Metrics",
+			"memory":{
+				"title":"Memory",
+				"total":"Total Memory",
+				"heap":"Heap Memory",
+				"nonheap":"Non-Heap Memory"
+			},
+			"threads":{
+				"title":"Threads",
+				"all":"All",
+				"runnable":"Runnable",
+				"timedwaiting":"Timed waiting",
+				"waiting":"Waiting",
+				"blocked":"Blocked",
+				"dump":{
+					"title":"Threads dump",
+					"id":"Id: ",
+					"blockedtime":"Blocked Time",
+					"blockedcount":"Blocked Count",
+					"waitedtime":"Waited Time",
+					"waitedcount":"Waited Count",
+					"lockname":"Lock name",
+					"stacktrace":"Stacktrace",
+					"show":"Show",
+					"hide":"Hide"
+				}
+				
+			},
+			"gc":{
+				"title":"Garbage collections",
+				"marksweepcount":"Mark Sweep count",
+				"marksweeptime":"Mark Sweep time",
+				"scavengecount":"Scavenge count",
+				"scavengetime":"Scavenge time"
+			},
+			"http":{
+				"title":"HTTP requests (events per second)",
+				"active":"Active requests:",
+				"total":"Total requests:",
+				"table":{
+					"code":"Code",
+					"count":"Count",
+					"mean":"Mean",
+					"average":"Average"
+				},
+				"code":{
+					"ok":"Ok",
+					"notfound":"Not found",
+					"servererror":"Server Error"
+				}
+				
+			}
+			
+		},
+		"servicesstats":{
+			"title":"Services statistics (time in millisecond)",
+			"table":{
+				"name":"Service name",
+				"count":"Count",
+				"mean":"Mean",
+				"min":"Min",
+				"max":"Max",
+				"p50":"p50",
+				"p75":"p75",
+				"p95":"p95",
+				"p99":"p99"
+			}
+			
+		},
+		"ehcache":{
+			"title":"Ehcache statistics",
+			"cachename":"Cache name",
+			"objects":"Objects",
+			"hits":"Hits",
+			"misses":"Misses",
+			"evictioncount":"Eviction count",
+			"mean":"Mean get time (ms)"
+		}
+	}
 }

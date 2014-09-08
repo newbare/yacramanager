@@ -1,4 +1,4 @@
-function TimeSheetController($scope,$rootScope,$http,$sce,WorkLogCRUDREST,alertService,$popover,$compile,$modal,ngTableParams) {
+function TimeSheetController($scope,$rootScope,$http,$sce,WorkLogREST,alertService,$popover,$compile,$modal,ngTableParams) {
 	$rootScope.page={"title":"Timesheet","description":"View and manage timesheet"}
 	$scope.timeType="duration";
 	$scope.timesheetCalendarTitle=undefined;
@@ -230,7 +230,7 @@ function TimeSheetController($scope,$rootScope,$http,$sce,WorkLogCRUDREST,alertS
     	 worklog.description=$scope.worklog.description;
     	 worklog.employeId=_userId;
     	 
-    	 WorkLogCRUDREST.save(worklog).$promise.then(function(result) {
+    	 WorkLogREST.save(worklog).$promise.then(function(result) {
     		 $scope.currentView.calendar.refetchEvents();
     		 hideFn();
     		 alertService.show('success','Confirmation', 'Donn� sauvegard�');
@@ -251,7 +251,7 @@ function TimeSheetController($scope,$rootScope,$http,$sce,WorkLogCRUDREST,alertS
 		total : 0, // length of data
 		getData : function($defer, params) {
 			
-			WorkLogCRUDREST.get(
+			WorkLogREST.get(
 					{
 						page:params.$params.page-1,
 						size:params.$params.count,

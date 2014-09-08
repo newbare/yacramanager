@@ -1,6 +1,6 @@
 'use strict';
 
-function CraController($scope,$rootScope,CraREST,$filter,$http,WorkLogCRUDREST,alertService) {
+function CraController($scope,$rootScope,CraREST,$filter,$http,WorkLogREST,alertService) {
 	$rootScope.page={"title":"CRA","description":"View and manage you CRA"};
 	$scope.dateFormat="dd MMMM yyyy";
 	$scope.craDateFormat="EEE dd/MM";
@@ -174,7 +174,7 @@ function CraController($scope,$rootScope,CraREST,$filter,$http,WorkLogCRUDREST,a
 		worklog.taskName = taskRow.task.name;
 		worklog.description = 'Created from Cra view';
 		worklog.employeId = _userId;
-		return WorkLogCRUDREST.save(worklog).$promise.then(function(result) {
+		return WorkLogREST.save(worklog).$promise.then(function(result) {
 			alertService.show('info', 'Confirmation', 'Donn� sauvegard�');
 		});
 	};

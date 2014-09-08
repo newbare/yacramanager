@@ -6,6 +6,22 @@ App.factory("RegistrationRest", function($resource) {
 	return $resource(_contextPath+"/auth/api/register" , {}, {});
 });
 
+App.factory("AuthenticationREST", function($resource) {
+	return $resource(_contextPath + "/app/api/company/:id", {}, {
+		activateAccount : {
+			url : _contextPath + "/auth/api/activate:key",
+			method : 'GET',
+			params : {
+				key : '@key'
+			}
+		},
+		recoverPassword : {
+			url : _contextPath + "auth/api/password-recovery",
+			method : 'POST'
+		}
+	});
+});
+
 App.service('alertService', function($alert) {
 	this.show = function(type,title, content) {
 		// Service usage
@@ -74,7 +90,7 @@ function RegisterController($scope, $location,RegistrationRest,alertService) {
 	}
 }
 
-function PasswordRecoveryController($scope, $location,$resource,$http) {
+function PasswordRecoveryController($scope, $location,AuthenticationREST) {
 	$scope.loadLogin = function() {
 		$location.url('/');
 	};
@@ -82,22 +98,7 @@ function PasswordRecoveryController($scope, $location,$resource,$http) {
 	$scope.recoverPassword=function(){
 		if($scope.email!=undefined && $scope.email!=""){
 			console.log($scope.email);
-			//$http.post(_contextPath+"auth/api/password-recovery",$scope.email.toString())
-			
-			$resource(_contextPath+"auth/api/password-recovery").save($scope.email.toString());
-//                    function (value, responseHeaders) {
-//                $scope.error = null;
-//                $scope.success = 'OK';
-//            },
-//            function (httpResponse) {
-//                $scope.success = null;
-//                $scope.error = "ERROR";
-//            });
-	        
-//			$http.post(_contextPath+"auth/api/password-recovery",{email:$scope.email})
-//			.success(function(data, status) {
-//				consonle.log(status);
-//			});
+			AuthenticationREST.recoverPassword(JSON.stringify($scope.email));
 		}
 	}
 }

@@ -32,7 +32,7 @@ function CompanyEmployeesController($scope) {
 	$scope.birthDay=new Date();
 }
 
-function CompanyEmployeesViewController($scope, $rootScope,$http,EmployeesCRUDREST,ngTableParams,$state,alertService){
+function CompanyEmployeesViewController($scope, $rootScope,$http,EmployeesREST,ngTableParams,$state,alertService){
 	$scope.$state=$state;
 	$scope.hasDatas=false;
 	$scope.viewStyle=undefined;
@@ -151,7 +151,7 @@ function CompanyEmployeesViewController($scope, $rootScope,$http,EmployeesCRUDRE
 		total : 0, // length of data
 		getData : function($defer, params) {
 			if($scope.tableFilter!=="" && $scope.tableFilter!==undefined){
-				EmployeesCRUDREST.get(
+				EmployeesREST.get(
 						{
 							page:params.$params.page-1,
 							size:params.$params.count,
@@ -175,14 +175,14 @@ function CompanyEmployeesViewController($scope, $rootScope,$http,EmployeesCRUDRE
 	
 	$scope.postEmploye=function(hideFn){
 		$scope.employe.companyId=_userCompanyId;
-		EmployeesCRUDREST.save($scope.employe).$promise.then(function(result) {
+		EmployeesREST.save($scope.employe).$promise.then(function(result) {
    		 hideFn();
    		 alertService.show('info','Confirmation', 'Employe created');
 		});
 	}
 }
 
-function CompanyEmployeesQuickViewController($scope,$http,EmployeesCRUDREST,ngTableParams,$state){
+function CompanyEmployeesQuickViewController($scope,$http,EmployeesREST,ngTableParams,$state){
 	$scope.employees=[];
 	$scope.employeesListFilter="";
 	$scope.doFilterList=function(data){
@@ -195,7 +195,7 @@ function CompanyEmployeesQuickViewController($scope,$http,EmployeesCRUDREST,ngTa
 	});
 }
 
-function CompanyEmployeesListController($scope, $rootScope,$http,EmployeesCRUDREST,ngTableParams,$state){
+function CompanyEmployeesListController($scope, $rootScope,$http,EmployeesREST,ngTableParams,$state){
 	
 	 $scope.changeSelection = function(user) {
 	        //console.info(user);
@@ -205,11 +205,11 @@ function CompanyEmployeesListController($scope, $rootScope,$http,EmployeesCRUDRE
 	 
 };
 
-function CompanyEmployeesOverviewController($scope,EmployeesCRUDREST, $stateParams){
+function CompanyEmployeesOverviewController($scope,EmployeesREST, $stateParams){
 	$scope.employeId=$stateParams.id;
 	$scope.employe=undefined;
 	$scope.refresh=function(){
-		EmployeesCRUDREST.get(
+		EmployeesREST.get(
 				{id:$scope.employeId},function(data) {
 					$scope.employe=data;
 				},function(error){
@@ -220,7 +220,7 @@ function CompanyEmployeesOverviewController($scope,EmployeesCRUDREST, $statePara
 	$scope.refresh();
 	
 	$scope.updateEmploye = function() {
-		return EmployeesCRUDREST.update($scope.employe);
+		return EmployeesREST.update($scope.employe);
 	};
 	
 	$scope.addPhoneNumbers=function(employe){
@@ -231,7 +231,7 @@ function CompanyEmployeesOverviewController($scope,EmployeesCRUDREST, $statePara
 
 
 /*COMPANY-CLIENT section*/
-function CompanyClientsViewController($scope, $rootScope,$http,ClientsCRUDREST,ngTableParams,$state,alertService){
+function CompanyClientsViewController($scope, $rootScope,$http,ClientsREST,ngTableParams,$state,alertService){
 	$scope.tableFilter="";
 	$scope.$state=$state;
 	$scope.client={};
@@ -308,7 +308,7 @@ function CompanyClientsViewController($scope, $rootScope,$http,ClientsCRUDREST,n
 		total : 0, // length of data
 		getData : function($defer, params) {
 			if($scope.tableFilter!=="" && $scope.tableFilter!==undefined){
-				ClientsCRUDREST.get(
+				ClientsREST.get(
 						{
 							companyId : _userCompanyId,
 							page:params.$params.page-1,
@@ -332,14 +332,14 @@ function CompanyClientsViewController($scope, $rootScope,$http,ClientsCRUDREST,n
 		}});
 	$scope.postClient=function(hideFn){
 		$scope.client.companyId=parseInt(_userCompanyId);
-		ClientsCRUDREST.save({companyId :_userCompanyId},$scope.client).$promise.then(function(result) {
+		ClientsREST.save({companyId :_userCompanyId},$scope.client).$promise.then(function(result) {
    		 hideFn();
    		 alertService.show('info','Confirmation', 'Client created');
 		});
 	}
 }
 
-function CompanyClientsQuickViewController($scope,$http,ClientsCRUDREST,ngTableParams,$state){
+function CompanyClientsQuickViewController($scope,$http,ClientsREST,ngTableParams,$state){
 	$scope.clients=[];
 	$scope.clientsListFilter="";
 	$scope.tableParams.settings().counts=[];
@@ -352,17 +352,17 @@ function CompanyClientsQuickViewController($scope,$http,ClientsCRUDREST,ngTableP
 	});
 }
 
-function CompanyClientsListController($scope, $rootScope,$http,ClientsCRUDREST,ngTableParams,$state){
+function CompanyClientsListController($scope, $rootScope,$http,ClientsREST,ngTableParams,$state){
 	 $scope.changeSelection = function(client) {
 	      $state.go('company.clients.details',{ id:client.id });
 	 };
 	 $scope.tableParams.settings().counts=[10, 25, 50, 100];
 };
 
-function CompanyClientsOverviewController($scope,ClientsCRUDREST, $stateParams){
+function CompanyClientsOverviewController($scope,ClientsREST, $stateParams){
 	$scope.clientId=$stateParams.id;
 	$scope.client=undefined;
-	ClientsCRUDREST.get(
+	ClientsREST.get(
 			{companyId : _userCompanyId,id:$scope.clientId},function(data) {
 				$scope.client=data;
 			});
@@ -386,14 +386,14 @@ function CompanyClientsOverviewController($scope,ClientsCRUDREST, $stateParams){
 		angular.forEach(clientToUpdate.contacts,function(contact){
 			delete contact.searchField;
 		});
-		return ClientsCRUDREST.update({companyId :_userCompanyId},clientToUpdate);
+		return ClientsREST.update({companyId :_userCompanyId},clientToUpdate);
 	};
 }
 /*COMPANY-CLIENT End of section*/
 
 
 /*COMPANY-PROJECT section*/
-function CompanyProjectsViewController($scope, $rootScope,$http,ProjectsCRUDREST,ngTableParams,$state,alertService){
+function CompanyProjectsViewController($scope, $rootScope,$http,ProjectsREST,ngTableParams,$state,alertService){
 	$scope.tableFilter="";
 	$scope.$state=$state;
 	$scope.project={};
@@ -525,7 +525,7 @@ function CompanyProjectsViewController($scope, $rootScope,$http,ProjectsCRUDREST
 		total : 0, // length of data
 		getData : function($defer, params) {
 			if($scope.tableFilter!=="" && $scope.tableFilter!==undefined){
-				ProjectsCRUDREST.get(
+				ProjectsREST.get(
 						{
 							companyId : _userCompanyId,
 							page:params.$params.page-1,
@@ -552,14 +552,14 @@ function CompanyProjectsViewController($scope, $rootScope,$http,ProjectsCRUDREST
 		$scope.doFilterList(args);
 	});
 	$scope.postProject=function(hideFn){
-		ProjectsCRUDREST.save({companyId :_userCompanyId,clientId :12},$scope.project).$promise.then(function(result) {
+		ProjectsREST.save({companyId :_userCompanyId,clientId :12},$scope.project).$promise.then(function(result) {
    		 hideFn();
    		 alertService.show('info','Confirmation', 'Project created');
 		});
 	}
 }
 
-function CompanyProjectsQuickViewController($scope,$http,ProjectsCRUDREST,ngTableParams,$state){
+function CompanyProjectsQuickViewController($scope,$http,ProjectsREST,ngTableParams,$state){
 	$scope.projects=[];
 	$scope.projectsListFilter="";
 	$scope.tableParams.settings().counts=[];
@@ -572,7 +572,7 @@ function CompanyProjectsQuickViewController($scope,$http,ProjectsCRUDREST,ngTabl
 	});
 }
 
-function CompanyProjectsListController($scope, $rootScope,$http,ProjectsCRUDREST,ngTableParams,$state){
+function CompanyProjectsListController($scope, $rootScope,$http,ProjectsREST,ngTableParams,$state){
 	 $scope.tableParams.settings().counts=[10, 25, 50, 100];
 	 $scope.changeSelection = function(project) {
 	        //console.info(user);
@@ -581,17 +581,17 @@ function CompanyProjectsListController($scope, $rootScope,$http,ProjectsCRUDREST
 	
 };
 
-function CompanyProjectsOverviewController($scope,ProjectsCRUDREST, $stateParams){
+function CompanyProjectsOverviewController($scope,ProjectsREST, $stateParams){
 	$scope.projectId=$stateParams.id;
 	$scope.project=undefined;
-	ProjectsCRUDREST.get(
+	ProjectsREST.get(
 			{companyId : _userCompanyId,id:$scope.projectId},function(data) {
 				$scope.project=data;
 			});
 }
 /*COMPANY-PROJECT End of section*/
 
-function CompanyProjectsController($scope, $rootScope,$http,ngTableParams,ProjectsCRUDREST){
+function CompanyProjectsController($scope, $rootScope,$http,ngTableParams,ProjectsREST){
 	
 	$scope.$on('userInfo', function(event, userInfo) {
 		//do afteruserInfo is retrieved 
@@ -723,7 +723,7 @@ function CompanyProjectsController($scope, $rootScope,$http,ngTableParams,Projec
 		total : 0, // length of data
 		getData : function($defer, params) {
 			if($scope.tableFilter!==""){
-				ProjectsCRUDREST.get(
+				ProjectsREST.get(
 						{
 							companyId : _userCompanyId,
 							page:params.$params.page-1,
