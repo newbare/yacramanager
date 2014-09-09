@@ -122,7 +122,7 @@ function TimeSheetController($scope,$rootScope,$http,$sce,WorkLogREST,alertServi
     };
     /* alert on Drop */
      $scope.onEventDrop = function(event, dayDelta, minuteDelta, allDay, revertFunc, jsEvent, ui, view){
-       $scope.alertMessage = ('Event Droped to make dayDelta ' + dayDelta);
+       console.log('Event Droped to make dayDelta ' + dayDelta);
     };
     /* alert on Resize */
     $scope.onEventResize = function(event, dayDelta, minuteDelta, revertFunc, jsEvent, ui, view ){
@@ -164,6 +164,8 @@ function TimeSheetController($scope,$rootScope,$http,$sce,WorkLogREST,alertServi
         editable: true,
         selectable:true,
         firstDay:1,
+        minTime:"06:00:00",
+        maxTime:"22:00:00",
         header:{
           left: '',
           center: '',

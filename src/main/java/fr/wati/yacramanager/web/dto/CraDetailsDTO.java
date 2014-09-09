@@ -156,6 +156,7 @@ public class CraDetailsDTO {
 
 	public static class CraAbsenceDetail {
 		private Map<DateTime, Long> duration = new HashMap<>();
+		private Map<DateTime, ValidationStatus> validationStatus =new HashMap<>();
 
 		public Map<DateTime, Long> getDuration() {
 			return duration;
@@ -163,6 +164,20 @@ public class CraDetailsDTO {
 
 		public void setDuration(Map<DateTime, Long> duration) {
 			this.duration = duration;
+		}
+
+		/**
+		 * @return the validationStatus
+		 */
+		public Map<DateTime, ValidationStatus> getValidationStatus() {
+			return validationStatus;
+		}
+
+		/**
+		 * @param validationStatus the validationStatus to set
+		 */
+		public void setValidationStatus(Map<DateTime, ValidationStatus> validationStatus) {
+			this.validationStatus = validationStatus;
 		}
 
 	}

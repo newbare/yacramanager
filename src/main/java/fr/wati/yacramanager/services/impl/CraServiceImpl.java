@@ -250,8 +250,7 @@ public class CraServiceImpl implements CraService {
 				for (Absence currentAbsence : absences) {
 					if (isDayBetween(currentDate,
 							currentAbsence.getStartDate(),
-							currentAbsence.getEndDate())
-							&& ValidationStatus.APPROVED.equals(currentAbsence.getValidationStatus())) {
+							currentAbsence.getEndDate())) {
 						if ((currentAbsence.isStartAfternoon() && currentAbsence
 								.getStartDate().toDateMidnight()
 								.isEqual(currentDate.toDateMidnight()))
@@ -263,6 +262,21 @@ public class CraServiceImpl implements CraService {
 						} else {
 							craAbsenceDetail.getDuration().put(currentDate,
 									8 * 60L);
+						}
+						if(DateTimeComparator
+								.getDateOnlyInstance().compare(currentDate, currentAbsence.getStartDate())==0){
+							if (!craAbsenceDetail.getValidationStatus().containsKey(
+									currentDate)) {
+								craAbsenceDetail.getValidationStatus().put(currentDate,
+										currentAbsence.getValidationStatus());
+							} else {
+								craAbsenceDetail.getValidationStatus().put(
+										currentDate,
+										ValidationStatus.isApprovedAndOperator(
+												craAbsenceDetail.getValidationStatus().get(
+														currentDate),
+														currentAbsence.getValidationStatus()));
+							}
 						}
 					}
 				}

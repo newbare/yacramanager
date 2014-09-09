@@ -19,6 +19,7 @@ import fr.wati.yacramanager.beans.Project;
 import fr.wati.yacramanager.beans.Settings;
 import fr.wati.yacramanager.beans.Task;
 import fr.wati.yacramanager.beans.Users;
+import fr.wati.yacramanager.beans.ValidationStatus;
 import fr.wati.yacramanager.beans.WorkLog;
 import fr.wati.yacramanager.dao.repository.EmployeDto;
 import fr.wati.yacramanager.dao.repository.UserDto;
@@ -275,7 +276,7 @@ public class DtoMapper {
 		workLogDTO.setStart(workLog.getStartDate());
 		workLogDTO.setEnd(workLog.getEndDate());
 		workLogDTO.setId(workLog.getId());
-		workLogDTO.setEditable(true);
+		workLogDTO.setEditable(ValidationStatus.APPROVED!= workLog.getValidationStatus());
 		workLogDTO.setValidationStatus(workLog.getValidationStatus());
 		if(workLog.getTask()!=null){
 			workLogDTO.setTaskName(workLog.getTask().getName());

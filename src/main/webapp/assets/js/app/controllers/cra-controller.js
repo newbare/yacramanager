@@ -201,7 +201,24 @@ function CraController($scope,$rootScope,CraREST,$filter,$http,WorkLogREST,alert
 		});
 		return rowTotal;
 	};
-
+	
+	$scope.dayColumnTotal=function(employeCraDetail,day){
+		var columnTotal=0;
+		angular.forEach(employeCraDetail.taskRows,function(taskRow){
+			columnTotal+=taskRow.duration[day.date]
+		});
+		columnTotal+=employeCraDetail.craAbsenceDetail.duration[day.date];
+		return columnTotal;
+	}
+	
+	$scope.craTotal=function(employeCraDetail){
+		var craTotal=0;
+		angular.forEach(employeCraDetail.days,function(day){
+			craTotal+=$scope.dayColumnTotal(employeCraDetail,day);
+		});
+		return craTotal;
+	};
+	
 	$scope.updateCraValue = function(newValue, taskRow, day,days) {
 		newValue=parseInt(newValue);
 		var diff = newValue - taskRow.duration[day.date];
@@ -219,7 +236,7 @@ function CraController($scope,$rootScope,CraREST,$filter,$http,WorkLogREST,alert
 		worklog.description = 'Created from Cra view';
 		worklog.employeId = _userId;
 		return WorkLogREST.save(worklog).$promise.then(function(result) {
-			alertService.show('info', 'Confirmation', 'Donn� sauvegard�');
+			alertService.show('success', 'Confirmation', 'Donn� sauvegard�');
 		});
 	};
 	
