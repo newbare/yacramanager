@@ -231,7 +231,9 @@ App.config([ '$stateProvider', '$urlRouterProvider','$locationProvider',
 			.when('/company/employees', '/company/employees/view/quickview')
 			.when('/company/employees/view', '/company/employees/view/quickview')
 			.when('/company/clients', '/company/clients/view/quickview')
+			.when('/company/clients/view', '/company/clients/view/quickview')
 			.when('/company/projects', '/company/projects/view/quickview')
+			.when('/company/projects/view', '/company/projects/view/quickview')
 			.when('/admin', '/admin/home')
 			
 
@@ -351,7 +353,16 @@ App.config([ '$stateProvider', '$urlRouterProvider','$locationProvider',
 			}).state('company.employees.details', {
 				url : "/details/:id",
 				templateUrl : _contextPath+'/views/app/company/employees/company-employees-overview.html',
-				controller : CompanyEmployeesOverviewController
+				controller : CompanyEmployeesOverviewController,
+				resolve : {
+					employe :function(EmployeesREST,$stateParams) {
+						return EmployeesREST.get({id:$stateParams.id});
+					}
+				},
+				data : {
+					ncyBreadcrumbLabel : '{{employe.firstName}} {{employe.lastName}}',
+					 ncyBreadcrumbParent: 'company.employees.view'
+				}
 			})
 			.state('company.employees.view', {
 				url : "/view",
@@ -380,12 +391,21 @@ App.config([ '$stateProvider', '$urlRouterProvider','$locationProvider',
 			.state('company.employees.view.quick.overview', {
 				url : "/:id",
 				templateUrl : _contextPath+'/views/app/company/employees/company-employees-overview.html',
-				controller : CompanyEmployeesOverviewController
+				controller : CompanyEmployeesOverviewController,
+				resolve : {
+					employe :function(EmployeesREST,$stateParams) {
+						return EmployeesREST.get({id:$stateParams.id});
+					}
+				},
+				data : {
+					ncyBreadcrumbLabel : '{{employe.firstName}} {{employe.lastName}}'
+				}
 			})
 			.state('company.clients', {
 				url : "/clients",
-				templateUrl : _contextPath+'/views/app/templates/partials/panel-view.html'
+				templateUrl : _contextPath+'/views/app/templates/partials/panel-view.html',
 				//controller : CompanyEmployeesController
+				data: {ncyBreadcrumbSkip: true}
 			}).state('company.clients.details', {
 				url : "/details/:id",
 				templateUrl : _contextPath+'/views/app/company/clients/company-clients-overview.html',
@@ -396,30 +416,43 @@ App.config([ '$stateProvider', '$urlRouterProvider','$locationProvider',
 				templateUrl : _contextPath+'/views/app/company/clients/company-clients-view.html',
 				controller : CompanyClientsViewController,
 				data: {
-				    ncyBreadcrumbSkip: true 
+					ncyBreadcrumbLabel : 'Clients'
 				  }
 			})
 			.state('company.clients.view.list', {
 				url : "/list",
 				templateUrl : _contextPath+'/views/app/company/clients/company-clients-list.html',
-				controller : CompanyClientsListController
+				controller : CompanyClientsListController,
+				data : {
+					ncyBreadcrumbLabel : 'List View'
+				}
 			}).state('company.clients.view.quick', {
 				url : "/quickview",
 				templateUrl : _contextPath+'/views/app/company/clients/company-clients-quickview.html',
 				controller : CompanyClientsQuickViewController,
-				data: {
-				    ncyBreadcrumbSkip: true 
-				  }
+				data : {
+					ncyBreadcrumbLabel : 'QuickView'
+				}
 			})
 			.state('company.clients.view.quick.overview', {
 				url : "/:id",
 				templateUrl : _contextPath+'/views/app/company/clients/company-clients-overview.html',
-				controller : CompanyClientsOverviewController
+				controller : CompanyClientsOverviewController,
+				resolve : {
+					client :function(ClientsREST,$stateParams) {
+						return ClientsREST.get(
+								{companyId : _userCompanyId,id:$stateParams.id});
+					}
+				},
+				data : {
+					ncyBreadcrumbLabel : '{{client.name}}'
+				}
 			})
 			.state('company.projects', {
 				url : "/projects",
-				templateUrl : _contextPath+'/views/app/templates/partials/panel-view.html'
+				templateUrl : _contextPath+'/views/app/templates/partials/panel-view.html',
 				//controller : CompanyEmployeesController
+				data: {ncyBreadcrumbSkip: true}
 			}).state('company.projects.details', {
 				url : "/details/:id",
 				templateUrl : _contextPath+'/views/app/company/projects/company-projects-overview.html',
@@ -430,25 +463,37 @@ App.config([ '$stateProvider', '$urlRouterProvider','$locationProvider',
 				templateUrl : _contextPath+'/views/app/company/projects/company-projects-view.html',
 				controller : CompanyProjectsViewController,
 				data: {
-				    ncyBreadcrumbSkip: true 
+					ncyBreadcrumbLabel : 'Projects'
 				  }
 			})
 			.state('company.projects.view.list', {
 				url : "/list",
 				templateUrl : _contextPath+'/views/app/company/projects/company-projects-list.html',
-				controller : CompanyProjectsListController
+				controller : CompanyProjectsListController,
+				data : {
+					ncyBreadcrumbLabel : 'List View'
+				}
 			}).state('company.projects.view.quick', {
 				url : "/quickview",
 				templateUrl : _contextPath+'/views/app/company/projects/company-projects-quickview.html',
 				controller : CompanyProjectsQuickViewController,
-				data: {
-				    ncyBreadcrumbSkip: true 
-				  }
+				data : {
+					ncyBreadcrumbLabel : 'QuickView'
+				}
 			})
 			.state('company.projects.view.quick.overview', {
 				url : "/:id",
 				templateUrl : _contextPath+'/views/app/company/projects/company-projects-overview.html',
-				controller : CompanyProjectsOverviewController
+				controller : CompanyProjectsOverviewController,
+				resolve : {
+					project :function(ProjectsREST,$stateParams) {
+						return ProjectsREST.get(
+								{companyId : _userCompanyId,id:$stateParams.id});
+					}
+				},
+				data : {
+					ncyBreadcrumbLabel : '{{project.name}}'
+				}
 			})
 			.state('company.organigram', {
 				url : "/organigram",
@@ -467,19 +512,25 @@ App.config([ '$stateProvider', '$urlRouterProvider','$locationProvider',
 			}).state('admin', {
 				url : "/admin",
 				templateUrl : _contextPath+'/views/app/admin.html',
-				controller : AdminController
+				controller : AdminController,
+				data: {
+					ncyBreadcrumbLabel : 'Admin'
+				  }
 			}).state('admin.home', {
 				url : "/home",
 				templateUrl : _contextPath+'/views/app/admin/admin-home.html',
 				controller : AdminHomeController,
 				data: {
-				    ncyBreadcrumbSkip: true 
+					ncyBreadcrumbSkip: true
 				  }
 			})
 			.state('admin.company', {
 				url : "/company",
 				templateUrl : _contextPath+'/views/app/templates/partials/panel-view.html',
-				controller : AdminCompaniesController
+				controller : AdminCompaniesController,
+				data: {
+					ncyBreadcrumbLabel : 'Company'
+				  }
 			}).state('admin.company.details', {
 				url : "/details/:id",
 				templateUrl : _contextPath+'/views/app/admin/company/admin-company-overview.html',
@@ -496,16 +547,34 @@ App.config([ '$stateProvider', '$urlRouterProvider','$locationProvider',
 			.state('admin.company.view.list', {
 				url : "/list",
 				templateUrl : _contextPath+'/views/app/admin/company/admin-company-list.html',
-				controller : AdminCompanyListController
+				controller : AdminCompanyListController,
+				data: {
+					ncyBreadcrumbLabel : 'List view'
+				  }
 			}).state('admin.company.view.quick', {
 				url : "/quickview",
 				templateUrl : _contextPath+'/views/app/admin/company/admin-company-quickview.html',
-				controller : AdminCompanyQuickViewController
+				controller : AdminCompanyQuickViewController,
+				data: {
+					ncyBreadcrumbLabel : 'Quick view'
+				  }
+				
 			})
 			.state('admin.company.view.quick.overview', {
 				url : "/:id",
 				templateUrl : _contextPath+'/views/app/admin/company/admin-company-overview.html',
-				controller : AdminCompanyOverviewController
+				controller : AdminCompanyOverviewController,
+				resolve : {
+					company :function(CompanyREST,$stateParams) {
+						return CompanyREST.get({
+							companyId : _userCompanyId,
+							id : $stateParams.id
+						});
+					}
+				},
+				data: {
+					 ncyBreadcrumbLabel: '{{company.name}}'
+				  }
 			})
 			.state('admin.logs', {
 				url : "/logs",
@@ -515,17 +584,26 @@ App.config([ '$stateProvider', '$urlRouterProvider','$locationProvider',
                      resolvedLogs:['LogsService', function (LogsService) {
                          return LogsService.findAll();
                      }]
-                 }
+                 },
+                 data: {
+ 					ncyBreadcrumbLabel: 'Logs'
+ 				  }
 			})
 			.state('admin.metrics', {
 				url : "/metrics",
 				templateUrl : _contextPath+'/views/app/admin/admin-metrics.html',
-				controller : MetricsController
+				controller : MetricsController,
+				data: {
+					ncyBreadcrumbLabel: 'Metrics'
+				  }
 			})
 			.state('admin.messages', {
 				url : "/messages",
-				templateUrl : _contextPath+'/views/app/admin/admin-messages.html'
+				templateUrl : _contextPath+'/views/app/admin/admin-messages.html',
 				//controller : AdminController
+				data: {
+					ncyBreadcrumbLabel: 'Messages'
+				  }
 			}).state('admin.settings', {
 				url : "/settings",
 				templateUrl : _contextPath+'/views/app/admin/admin-settings.html',

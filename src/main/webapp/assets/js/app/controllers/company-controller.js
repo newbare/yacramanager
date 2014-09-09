@@ -205,19 +205,18 @@ function CompanyEmployeesListController($scope, $rootScope,$http,EmployeesREST,n
 	 
 };
 
-function CompanyEmployeesOverviewController($scope,EmployeesREST, $stateParams){
-	$scope.employeId=$stateParams.id;
-	$scope.employe=undefined;
-	$scope.refresh=function(){
-		EmployeesREST.get(
-				{id:$scope.employeId},function(data) {
-					$scope.employe=data;
-				},function(error){
-					$scope.employe=undefined;
-				});
-	};
-	
-	$scope.refresh();
+function CompanyEmployeesOverviewController($scope,employe,EmployeesREST){
+	$scope.employe=employe;
+//	$scope.refresh=function(){
+//		EmployeesREST.get(
+//				{id:$scope.employeId},function(data) {
+//					$scope.employe=data;
+//				},function(error){
+//					$scope.employe=undefined;
+//				});
+//	};
+//	
+//	$scope.refresh();
 	
 	$scope.updateEmploye = function() {
 		return EmployeesREST.update($scope.employe);
@@ -359,13 +358,8 @@ function CompanyClientsListController($scope, $rootScope,$http,ClientsREST,ngTab
 	 $scope.tableParams.settings().counts=[10, 25, 50, 100];
 };
 
-function CompanyClientsOverviewController($scope,ClientsREST, $stateParams){
-	$scope.clientId=$stateParams.id;
-	$scope.client=undefined;
-	ClientsREST.get(
-			{companyId : _userCompanyId,id:$scope.clientId},function(data) {
-				$scope.client=data;
-			});
+function CompanyClientsOverviewController($scope,ClientsREST,client){
+	$scope.client=client;
 	$scope.contactFilter='';
 	$scope.addContact=function(client){
 		var newContact={name:undefined,email:undefined,phoneNumbers:[],adresse:{adress:undefined,postCode:undefined,city:undefined,country:undefined}};
@@ -581,13 +575,8 @@ function CompanyProjectsListController($scope, $rootScope,$http,ProjectsREST,ngT
 	
 };
 
-function CompanyProjectsOverviewController($scope,ProjectsREST, $stateParams){
-	$scope.projectId=$stateParams.id;
-	$scope.project=undefined;
-	ProjectsREST.get(
-			{companyId : _userCompanyId,id:$scope.projectId},function(data) {
-				$scope.project=data;
-			});
+function CompanyProjectsOverviewController($scope,ProjectsREST, project){
+	$scope.project=project;
 }
 /*COMPANY-PROJECT End of section*/
 

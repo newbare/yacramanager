@@ -110,7 +110,6 @@ public class AbsenceController implements RestCrudController<AbsenceDTO>,Approva
 		}
 		Specifications<Absence> specifications=null;
 		if(!filters.isEmpty()){
-			log.debug("Building Absence specification");
 			specifications=Specifications.where(SpecificationBuilder.buildSpecification(filters, absenceService));
 		}
 		PageRequest pageable=null;
@@ -180,6 +179,7 @@ public class AbsenceController implements RestCrudController<AbsenceDTO>,Approva
 			@RequestParam(value="requesterId") Long requesterId) {
 		List<ApprovalDTO<AbsenceDTO>> approvalDTOs=new ArrayList<ApprovalDTO<AbsenceDTO>>();
 		List<Absence> entitiesToApproved = absenceService.getEntitiesToApproved(requesterId);
+		int totalCount=0;
 		Map<Employe, List<Absence>> employeAbsencesMap=new HashMap<>();
 		for (Absence absence : entitiesToApproved) {
 			Employe currentEmploye=absence.getEmploye();
@@ -193,10 +193,11 @@ public class AbsenceController implements RestCrudController<AbsenceDTO>,Approva
 			approvalDTO.setEmployeId(entry.getKey().getId());
 			approvalDTO.setEmployeFirstName(entry.getKey().getFirstName());
 			approvalDTO.setEmployeLastName(entry.getKey().getLastName());
+			totalCount+=entry.getValue().size();
 			approvalDTO.setApprovalEntities(dtoMapper.mapAbsences(entry.getValue()));
 			approvalDTOs.add(approvalDTO);
 		}
-		ResponseWrapper<List<ApprovalDTO<AbsenceDTO>>> response=new ResponseWrapper<List<ApprovalDTO<AbsenceDTO>>>(approvalDTOs,approvalDTOs.size());
+		ResponseWrapper<List<ApprovalDTO<AbsenceDTO>>> response=new ResponseWrapper<List<ApprovalDTO<AbsenceDTO>>>(approvalDTOs,totalCount);
 		return response;
 	}
 

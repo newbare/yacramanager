@@ -211,6 +211,7 @@ public class NoteDeFraisController extends
 			@RequestParam(value="requesterId") Long requesterId) {
 		List<ApprovalDTO<NoteDeFraisDTO>> approvalDTOs=new ArrayList<ApprovalDTO<NoteDeFraisDTO>>();
 		List<NoteDeFrais> entitiesToApproved = noteDeFraisService.getEntitiesToApproved(requesterId);
+		int totalCount=0;
 		Map<Employe, List<NoteDeFrais>> employeAbsencesMap=new HashMap<>();
 		for (NoteDeFrais noteDeFrais : entitiesToApproved) {
 			Employe currentEmploye=noteDeFrais.getEmploye();
@@ -224,10 +225,11 @@ public class NoteDeFraisController extends
 			approvalDTO.setEmployeId(entry.getKey().getId());
 			approvalDTO.setEmployeFirstName(entry.getKey().getFirstName());
 			approvalDTO.setEmployeLastName(entry.getKey().getLastName());
+			totalCount+=entry.getValue().size();
 			approvalDTO.setApprovalEntities(noteDeFraisService.mapNoteDeFrais(entry.getValue()));
 			approvalDTOs.add(approvalDTO);
 		}
-		ResponseWrapper<List<ApprovalDTO<NoteDeFraisDTO>>> response=new ResponseWrapper<List<ApprovalDTO<NoteDeFraisDTO>>>(approvalDTOs,approvalDTOs.size());
+		ResponseWrapper<List<ApprovalDTO<NoteDeFraisDTO>>> response=new ResponseWrapper<List<ApprovalDTO<NoteDeFraisDTO>>>(approvalDTOs,totalCount);
 		return response;
 	}
 	

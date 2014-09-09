@@ -57,7 +57,7 @@
 		<thead>
 			<tr>
 			     <th class="cra-table-task">Task</th>
-			     <th style="width: 80px;" data-ng-repeat="day in employeCraDetail.days" data-ng-class="{'cra-we' : day.dayOff}">
+			     <th style="width: 80px;" data-ng-repeat="day in employeCraDetail.days" data-ng-class="{'cra-we' : day.dayOff , 'cra-today' : isToday(day.date)}">
 			     	<small>{{day.date | date : craDateFormat}}</small>
 			     </th>
 			     <th style="width: 80px;">Total</th>
@@ -66,7 +66,7 @@
 		<tbody>
 			<tr data-ng-repeat="taskRow in employeCraDetail.taskRows">
 				<td class="cra-table-task"><h6><span><strong>{{taskRow.task.name}}</strong></span></h6><h6><span class="text-muted">{{taskRow.project.client.name}} - {{taskRow.project.name}}</span></h6></td>
-				<td data-ng-repeat="day in employeCraDetail.days" data-ng-class="{'cra-we' : day.dayOff}" style="width: 40px;vertical-align: middle;text-align: center;">
+				<td data-ng-repeat="day in employeCraDetail.days" data-ng-class="{'cra-we' : day.dayOff, 'cra-today' : isToday(day.date)}" style="width: 40px;vertical-align: middle;text-align: center;">
 					<a href="#" data-ng-disabled="day.dayOff" data-editable-number="taskRow.duration[day.date]" data-buttons="no" data-e-style="width: 50px;" data-e-required data-onbeforesave="updateCraValue($data,taskRow,day,employeCraDetail.days)">{{ taskRow.duration[day.date] || 0 | duration  }}</a>
 					<span class="text-warning" data-title="Some entries are not approuved yet" data-bs-tooltip="" data-ng-show="taskRow.validationStatus[day.date]!=undefined && taskRow.validationStatus[day.date]!='APPROVED'"><i class="fa fa-exclamation-triangle"></i></span>
 				</td>
@@ -76,8 +76,8 @@
 			</tr>
 			<tr data-ng-show="employeCraDetail.craAbsenceDetail">
 				<td><h6><span><strong>Time off</strong></span></h6></td>
-				<td data-ng-repeat="day in employeCraDetail.days" data-ng-class="{'cra-we' : day.dayOff}" style="width: 40px;vertical-align: middle;text-align: center;">
-					<a href="#" data-ng-disabled="day.dayOff" data-editable-number="employeCraDetail.craAbsenceDetail.duration[day.date]" data-buttons="no" data-e-style="width: 50px;" data-e-required>{{ employeCraDetail.craAbsenceDetail.duration[day.date]  || 0 | duration }}</a>
+				<td data-ng-repeat="day in employeCraDetail.days" data-ng-class="{'cra-we' : day.dayOff , 'cra-today' : isToday(day.date)}" style="width: 40px;vertical-align: middle;text-align: center;">
+					<a href="" data-ng-disabled="day.dayOff"  data-title="{{day.date}}" data-content-template="cra/timeoff/edit-timeoff-popover.html" data-bs-popover="">{{ employeCraDetail.craAbsenceDetail.duration[day.date]  || 0 | duration }}</a>
 				</td>
 				<td style="vertical-align: middle;text-align: center;">
 					<span class="text-muted">{{taskRowTotal(employeCraDetail.craAbsenceDetail,employeCraDetail.days) | durationHours}}</span> 
@@ -102,6 +102,52 @@
 			</tr>
 		</tfoot>
 	</table>
+	<script type="text/ng-template" id="cra/timeoff/edit-timeoff-popover.html">
+<form editable-form name="editableForm" class="timeoff-popover-form" role="form" onaftersave="saveTimeOff(day.date,$hide)">
+<table class="table">
+	<tr>
+    	<td>Type: </td>
+    	<td>
+			<span editable-select="newAbsence.typeAbsence" e-class="form-control" e-name="typeAbsence" onshow="loadAbsenceTypes()"  e-ng-options="a.name as a.label for a in absencesTypes">
+				{{ newAbsence.typeAbsence.label || 'Type' }}
+			</span>
+		</td>
+  	</tr>
+	<tr>
+    	<td>Description: </td>
+    	<td>
+			<span editable-text="newAbsence.description" e-class="form-control" e-name="description">
+				{{ newAbsence.description || 'Description' }}
+			</span>
+		</td>
+  	</tr>
+	<tr>
+    	<td>Period: </td>
+    	<td>
+			<span editable-select="newAbsence.period" e-class="form-control" e-name="period"  e-ng-options="p.name as p.label for p in absencePeriods">
+				{{ newAbsence.period || 'Period' }}
+			</span>
+		</td>
+  	</tr>
+</table>
+ <!-- button to show form -->
+<button type="button" class="btn btn-default" ng-click="editableForm.$show()" ng-show="!editableForm.$visible">
+   Edit
+</button>
+<button type="button" class="btn btn-danger pull-right" ng-click="$hide()">
+       Close
+</button>
+     <!-- buttons to submit / cancel form -->
+	<span ng-show="editableForm.$visible">
+    	<button type="submit" class="btn btn-success" ng-disabled="editableForm.$waiting">
+        	 Save
+       	</button>
+       	<button type="button" class="btn btn-default" ng-disabled="editableForm.$waiting" ng-click="editableForm.$cancel()">
+        	Cancel
+       	</button>
+    </span>
+</form>
+</script>
 </div>
 </div>
 </div>

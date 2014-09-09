@@ -129,43 +129,44 @@
 						<a data-ui-sref="tasks"><i class="fa fa-tasks"></i>{{'app.navbar.menu.tasks' | translate}}</a>
 					</li>
 				</ul>
-				<ul class="nav navtop navbar-nav navbar-right">
-					<li class="dropdown timer-widget" data-ng-controller="WorkLogCtrl">
-						<a data-toggle="dropdown" class="dropdown-toggle" href="">
-							<i class="fa fa-clock-o" ></i>
-							<span  data-ng-class="{'visible-lg-inline visible-md-inline' : timerRunning}" data-ng-show="timerRunning">[{{task.name}}]</span>
-							<timer autostart="false" interval="1000" data-ng-show="timerRunning">{{hhours}}:{{mminutes}}:{{sseconds}}</timer>
-							<button type="button" class="btn btn-danger btn-xs"  data-ng-click="stopTimer(); " data-ng-show="timerRunning">Stop</button>
-						</a>					
-						<div class="timer-widget-content dropdown-menu">
-								<form role="form">
-									<div class="form-group">
-   										<!-- <label for="project">{{'app.navbar.timer.project' | translate}}</label> -->
-										<select id="project" class="form-control"  data-chosen="" data-ng-change="selectProject(project)"
-								          data-placeholder="Select a project"
-								          data-ng-model="project"
-								          data-ng-options="p.name for p in projects">
-						           		<option value=""></option>
-							  			</select>
-							  		</div>
-							  		<div class="form-group">
-   										<!-- <label for="task">Task</label> -->
-							  			<select id="task" class="form-control"  data-chosen="" data-ng-change="selectTask(task)"
-									          data-placeholder="Select a task"
-									          data-ng-model="task"
-									          data-ng-options="t.name for t in tasks">
+				<div data-ng-controller="WorkLogCtrl">
+					<ul class="nav navtop navbar-nav navbar-right">
+						<li class="dropdown timer-widget" >
+							<a data-toggle="dropdown" class="dropdown-toggle" href="">
+								<i class="fa fa-clock-o" ></i>
+								<span  data-ng-class="{'visible-lg-inline visible-md-inline' : timerRunning}" data-ng-show="timerRunning">[{{task.name}}]</span>
+								<timer autostart="false" interval="1000" data-ng-show="timerRunning">{{hhours}}:{{mminutes}}:{{sseconds}}</timer>
+							</a>
+							<div class="timer-widget-content dropdown-menu">
+									<form role="form">
+										<div class="form-group">
+	   										<!-- <label for="project">{{'app.navbar.timer.project' | translate}}</label> -->
+											<select id="project" class="form-control"  data-chosen="" data-ng-change="selectProject(project)"
+									          data-placeholder="Select a project"
+									          data-ng-model="project"
+									          data-ng-options="p.name for p in projects">
 							           		<option value=""></option>
-							  			</select>
-							  		</div>
-						  			 <div class="form-group">
-									    <label for="description">Note</label>
-									    <textarea id="description" data-ng-model="description" class="form-control" data-placeholder="Enter a note"></textarea>
-									  </div>
-									<button type="button" class="btn btn-success btn-xs btn-block" data-ng-click="startTimer()" data-ng-disabled="!startable">Start</button>
-								</form>
-						</div>
-					</li>
-					<li data-ng-class="navClass('messages')" data-ng-show="userInfo.hasNewMessages"><a
+								  			</select>
+								  		</div>
+								  		<div class="form-group">
+	   										<!-- <label for="task">Task</label> -->
+								  			<select id="task" class="form-control"  data-chosen="" data-ng-change="selectTask(task)"
+										          data-placeholder="Select a task"
+										          data-ng-model="task"
+										          data-ng-options="t.name for t in tasks">
+								           		<option value=""></option>
+								  			</select>
+								  		</div>
+							  			 <div class="form-group">
+										    <label for="description">Note</label>
+										    <textarea id="description" data-ng-model="description" class="form-control" data-placeholder="Enter a note"></textarea>
+										  </div>
+										<button type="button" class="btn btn-success btn-xs btn-block" data-ng-click="startTimer()" data-ng-disabled="!startable">Start</button>
+									</form>
+							</div>
+						</li>
+						<li><button type="button" class="btn btn-danger btn-xs navbar-btn"  data-ng-click="stopTimer();" data-ng-show="timerRunning" >Stop</button></li>
+						<li data-ng-class="navClass('messages')" data-ng-show="userInfo.hasNewMessages"><a
 						data-ui-sref="messages"><i class="fa fa-envelope"></i></a></li>
 					<!-- <li data-ng-class="navClass('notifications')"><a
 						data-ui-sref="notifications"><i class="fa fa-bell"></i></a></li> -->
@@ -193,7 +194,8 @@
 							<li><a th:href="@{/auth/logout}"><i
 									class="fa fa-power-off"></i>{{'app.navbar.menu.logout' | translate}}</a></li>
 						</ul></li>
-				</ul>
+					</ul>
+				</div>
 			</div>
 			<!--/.nav-collapse -->
 		</div>

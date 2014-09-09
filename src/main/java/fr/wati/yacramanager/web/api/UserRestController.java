@@ -152,7 +152,6 @@ public class UserRestController implements RestCrudController<EmployeDto> {
 		}
 		Specifications<Employe> specifications=null;
 		if(!filters.isEmpty()){
-			LOG.debug("Building Absence specification");
 			specifications=Specifications.where(SpecificationBuilder.buildSpecification(filters, employeService));
 		}
 		PageRequest pageable=null;

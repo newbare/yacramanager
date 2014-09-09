@@ -1,12 +1,26 @@
 'use strict';
 
-function CraController($scope,$rootScope,CraREST,$filter,$http,WorkLogREST,alertService) {
+function CraController($scope,$rootScope,CraREST,$filter,$http,WorkLogREST,alertService,AbsenceREST) {
 	$rootScope.page={"title":"CRA","description":"View and manage you CRA"};
 	$scope.dateFormat="dd MMMM yyyy";
 	$scope.craDateFormat="EEE dd/MM";
+	$scope.resetNewAbsence=function(){
+		$scope.newAbsence={};
+	};
+	$scope.resetNewAbsence();
 	var formatDate=function(date){
 		return $filter('date')(date, 'yyyy-MM-dd');
 	};
+	$scope.absencePeriods = [ {
+		name : 'ALL',
+		label : 'All day'
+	}, {
+		name : 'MORNING',
+		label : 'Only morning'
+	}, {
+		name : 'AFTERNOON',
+		label : 'Only afternoon'
+	} ];
 	
 	$scope.currentFilter=undefined;
 	
@@ -19,8 +33,8 @@ function CraController($scope,$rootScope,CraREST,$filter,$http,WorkLogREST,alert
 		$scope.currentView=view;
 		if('week'===$scope.currentView){
 			$scope.dateRange={
-					startDate:$scope.currentDate.clone().startOf('week'),
-					endDate: $scope.currentDate.clone().endOf('week')
+					startDate:$scope.currentDate.clone().startOf('isoWeek'),
+					endDate: $scope.currentDate.clone().endOf('isoWeek')
 			}
 		}else if ('month'===$scope.currentView) {
 			$scope.dateRange={
@@ -61,6 +75,36 @@ function CraController($scope,$rootScope,CraREST,$filter,$http,WorkLogREST,alert
 		var range = moment().range($scope.dateRange.startDate, $scope.dateRange.endDate);
 		return range.contains(moment());
 	}
+	
+	$scope.isToday=function(date){
+		return moment().isSame(date, 'day');;
+	}
+	$scope.loadAbsenceTypes=function(){
+		AbsenceREST.getTypes(function(data) {
+			$scope.absencesTypes = data;
+		});
+	};
+	
+	$scope.saveTimeOff=function(selectedDate,hideFn){
+		console.log('Saving ...'+$scope.newAbsence);
+		var toCreate={
+				employeId:_userId,
+				date: moment(),
+				startDate: selectedDate,
+				endDate: selectedDate,
+				description:$scope.newAbsence.description,
+				startAfternoon:$scope.newAbsence.period=='AFTERNOON' ? true:false,
+				endMorning:$scope.newAbsence.period=='MORNING' ? true:false,
+				typeAbsence:$scope.newAbsence.typeAbsence
+		};
+		AbsenceREST.save(toCreate).$promise.then(function(result) {
+			alertService.show('success','Confirmation', 'Donn� sauvegard�');
+			$scope.resetNewAbsence();
+			hideFn();
+			$scope.retrieveCraDetails($scope.currentFilter);
+		});
+	}
+	
 	
 	$scope.employeCriteriaConfig={
 			name:"employe",

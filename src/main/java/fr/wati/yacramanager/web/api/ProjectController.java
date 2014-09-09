@@ -104,7 +104,6 @@ public class ProjectController {
 		}
 		Specifications<Project> specifications = null;
 		if (!filters.isEmpty()) {
-			LOG.debug("Building Absence specification");
 			specifications = Specifications.where(SpecificationBuilder
 					.buildSpecification(filters, projectService));
 		}

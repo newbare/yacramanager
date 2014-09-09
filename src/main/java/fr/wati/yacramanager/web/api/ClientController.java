@@ -109,7 +109,6 @@ public class ClientController {
 		}
 		Specifications<Client> specifications = null;
 		if (!filters.isEmpty()) {
-			LOG.debug("Building Absence specification");
 			specifications = Specifications.where(SpecificationBuilder
 					.buildSpecification(filters, clientService));
 		}

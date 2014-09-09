@@ -160,13 +160,9 @@ function AdminCompanyListController($scope, $rootScope,$http,$state){
 	 $scope.tableParams.settings().counts=[10, 25, 50, 100];
 };
 
-function AdminCompanyOverviewController($scope,CompanyREST, $stateParams){
-	$scope.companyId=$stateParams.id;
-	$scope.company=undefined;
-	CompanyREST.get(
-			{companyId : _userCompanyId,id:$scope.companyId},function(data) {
-				$scope.company=data;
-			});
+function AdminCompanyOverviewController($scope,company){
+	$scope.companyId=company.id;
+	$scope.company=company;
 }
 
 function AdminSettingsController($scope,$rootScope) {

@@ -163,6 +163,7 @@ function TimeSheetController($scope,$rootScope,$http,$sce,WorkLogREST,alertServi
         height: 450,
         editable: true,
         selectable:true,
+        firstDay:1,
         header:{
           left: '',
           center: '',
