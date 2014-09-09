@@ -8,14 +8,14 @@ App.service('alertService', function($alert) {
 			title : title,
 			content : content,
 			type : type,
-			placement: 'top',
+			//placement: 'top',
 			keyboard : true,
 			show : false,
 			duration: 10,
 			template:  _contextPath+'/assets/others/alert/alert.tpl.html',
-			//container: '#alerts-container'
+			container: '#alerts-container'
 			//container: 'body'
-			container: '#main-view'
+			//container: '#main-view'
 		});
 		myAlert.$promise.then(myAlert.show);
 	};

@@ -1,3 +1,17 @@
+.breadcrumb>li+li:before {
+	font-family: FontAwesome;
+	font-size: 14px;
+	content: "\f105" !important;
+	color: #b2b6bf !important;
+	position: relative;
+	top: 1px;
+	font-weight: bold;
+}
+
+.table .checkbox-inline input[type=checkbox]{
+	position: inherit !important;	
+}
+
 .alert.top{
 	z-index: 1002 !important;
 }
@@ -267,8 +281,15 @@ body.waiting-for-angular div#initializing-panel {
 	border: none !important;
 }
 
+#main-breadcrumb{
+	background-color: #fff;
+	margin: 30px 0 5px !important;
+	border: 1px solid #e5e5e5 !important;
+}
+
+
 .sub-menu {
-	padding-bottom: 5px;
+	padding-bottom: 10px;
 }
 
 .sub-menu.nav>li>a {

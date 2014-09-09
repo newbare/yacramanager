@@ -130,7 +130,6 @@
 					</li>
 				</ul>
 				<ul class="nav navtop navbar-nav navbar-right">
-					<li data-ng-class="navClass('home')"><a data-ui-sref="home"><i class="fa fa-home"></i></a></li>
 					<li class="dropdown timer-widget" data-ng-controller="WorkLogCtrl">
 						<a data-toggle="dropdown" class="dropdown-toggle" href="">
 							<i class="fa fa-clock-o" ></i>
@@ -203,16 +202,18 @@
 	<div data-ng-class="containerClass()" data-ng-cloak="" data-http-request-error=""><!-- class="global-container" --> 
 		<!-- <div class="sidebar sidebar-fixed">hey i'am a side bar</div> -->
 		<div class="main"><!-- <div class="main-content"> -->
-			<div class="page-header">
+			<!-- <div class="page-header">
 				<h4>
 					{{page.title | translate}} <i class="fa fa-angle-double-right"
 						style="font-size: 80%"></i><small> {{page.description | translate}}</small>
 				</h4>
-			</div>
-			<div id="alerts-container"></div>
+			</div> -->
+			<div data-ncy-breadcrumb=""></div>
+			
 			<div id="main-view" >
 				<div class="panel panel-default">
 					<div class="panel-body">
+					<div id="alerts-container"></div>
 					<div id="main-view" data-ui-view="" class="" data-ng-cloak=""></div>
 					</div>
 				</div>
@@ -292,6 +293,8 @@
 		th:src="@{/assets/bower_components/angular-bootstrap-colorpicker/js/bootstrap-colorpicker-module.js}"></script>
 	<script
 		th:src="@{/assets/bower_components/ngQuickDate/dist/ng-quick-date.min.js}"></script>
+	<script
+		th:src="@{/assets/bower_components/angular-breadcrumb/dist/angular-breadcrumb.min.js}"></script>
 	<script
 		th:src="@{/assets/bower_components/angular-strap/dist/angular-strap.tpl.min.js}"></script>
 	<script
