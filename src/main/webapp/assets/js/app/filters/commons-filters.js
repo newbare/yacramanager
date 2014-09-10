@@ -9,8 +9,10 @@
 App.filter("duration", function() {
 	return function(input) {
 		var millis = input * 60 * 1000
-		return moment.duration(millis).hours() + 'h'
-				+ moment.duration(millis).minutes();
+		return  (Math.floor(moment.duration(millis).asHours()) + 'h')
+				+ ((moment.duration(millis).minutes() < 10) ? '0'
+				+ moment.duration(millis).minutes()  : moment.duration(
+				millis).minutes());
 	}
 });
 

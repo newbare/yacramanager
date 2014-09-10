@@ -99,6 +99,13 @@ App.run(function($rootScope, $templateCache, UsersREST) {
 			event.preventDefault();
 		}
 	});
+	$rootScope.$on('$viewContentLoading', function(event, viewConfig) {
+		console.log(viewConfig);
+	});
+	
+	$rootScope.$on('$viewContentLoaded', function(event) {
+//		console.log(event);
+	});
 
 	var loadUserInfo = function() {
 		UsersREST.get({
@@ -115,6 +122,7 @@ App.run(function(editableOptions,editableThemes) {
 	editableThemes.bs3.inputClass = 'input-sm';
 	editableThemes.bs3.buttonsClass = 'btn-sm';
 	editableOptions.theme = 'bs3';
+	editableOptions.activate= 'select';
 });
 
 App.factory('httpRequestServerErrorInterceptor',function ($q,$rootScope) {

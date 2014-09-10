@@ -19,6 +19,15 @@ public class ResponseWrapper<DATA> implements Serializable{
 		this.result = result;
 		this.totalCount=totalCount;
 	}
+	
+	
+	public ResponseWrapper(DATA result,long totalCount, long startIndex, long endIndex) {
+		super();
+		this.totalCount = totalCount;
+		this.startIndex = startIndex;
+		this.endIndex = endIndex;
+		this.result = result;
+	}
 	public long getTotalCount() {
 		return totalCount;
 	}

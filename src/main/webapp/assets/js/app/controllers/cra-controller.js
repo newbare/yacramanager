@@ -172,12 +172,19 @@ function CraController($scope,$rootScope,CraREST,$filter,$http,WorkLogREST,alert
 				
 			}
 		});
-		$http.get(
-				_contextPath + "/app/api/cra/details?employeIds="+userIds.join()+"&start=" +$scope.dateRange.startDate.toISOString()+"&end="+$scope.dateRange.endDate.toISOString(), {
-					params : {}
-				}).then(function(response) {
-					$scope.craDetails = response.data;
-				});
+		CraREST.getDetails({
+			employeIds : userIds.join(),
+			start : $scope.dateRange.startDate.toISOString(),
+			end : $scope.dateRange.endDate.toISOString()
+		}).$promise.then(function(result) {
+			$scope.craDetails=result;
+		});
+//		$http.get(
+//				_contextPath + "/app/api/cra/details?employeIds="+userIds.join()+"&start=" +$scope.dateRange.startDate.toISOString()+"&end="+$scope.dateRange.endDate.toISOString(), {
+//					params : {}
+//				}).then(function(response) {
+//					$scope.craDetails = response.data;
+//				});
 	};
 	$scope.formatCraDetailDuration=function(duration){
 		return $filter('date')(duration*1000, 'shortTime');

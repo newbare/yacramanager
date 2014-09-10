@@ -73,13 +73,13 @@ public class AjaxTimeoutRedirectFilter extends GenericFilterBean
                         }
                         if ("XMLHttpRequest".equals(ajaxHeader) && !rapidLogin)
                         {
-                            logger.info("Ajax call detected, send "+this.customSessionExpiredErrorCode+" error code");
+                            logger.debug("Ajax call detected, send "+this.customSessionExpiredErrorCode+" error code");
                             HttpServletResponse resp = (HttpServletResponse) response;
                             resp.sendError(this.customSessionExpiredErrorCode);
                         }
                         else
                         {
-                            logger.info("Redirect to login page");
+                            logger.debug("Redirect to login page");
                             throw ase;
                         }
                     }

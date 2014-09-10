@@ -47,7 +47,7 @@ App.factory('LogsService', function($resource) {
 	return $resource(_contextPath + "/app/admin/logs", {}, {
 		'findAll' : {
 			method : 'GET',
-			isArray : true
+			isArray : false
 		},
 		'changeLevel' : {
 			method : 'PUT'
@@ -145,7 +145,14 @@ App.factory("CompanySettingsREST", function($resource) {
 });
 
 App.factory("CraREST", function($resource) {
-	return $resource(_contextPath + "/app/api/cra");
+	return $resource(_contextPath + "/app/api/cra",{},{
+		getDetails : {
+			url : _contextPath + "/app/api/cra/details",
+			method : 'GET',
+			isArray : false
+
+		}
+	});
 });
 
 App.factory("NoteREST", function($resource) {

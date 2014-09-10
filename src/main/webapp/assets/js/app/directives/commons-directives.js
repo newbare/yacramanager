@@ -65,6 +65,28 @@ App.directive('colResizable',function($compile) {
 		}
 	});
 
+App.directive('fixedTableColumn', function($compile) {
+	return {
+		restrict : 'A',
+		link : function($scope, elem, attrs) {
+			$scope.$watch('$last', function(v) {
+				if (v) {
+					var $fixedColumn = elem.clone().insertBefore(elem)
+							.addClass('fixed-column');
+					$fixedColumn.find(
+							'th:not(:first-child),td:not(:first-child)')
+							.remove();
+
+					$fixedColumn.find('tr').each(function(i, element) {
+						$(this).height(elem.find('tr:eq(' + i + ')').height());
+					});
+				}
+				;
+			});
+		}
+	}
+});
+
 App.directive('organigram',function($compile) {
 	return {
 		restrict : 'A',

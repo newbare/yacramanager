@@ -1,3 +1,15 @@
+.table-responsive>.fixed-column {
+    position: absolute;
+    display: inline-block;
+    width: auto;
+    border-right: 1px solid #ddd;
+}
+@media(min-width:768px) {
+    .table-responsive>.fixed-column {
+        display: none;
+    }
+}
+
 .margin-bottom {
 	margin-bottom: 10px !important;
 }
@@ -878,7 +890,7 @@ a .badge {
 }
 
 .cra-table-task{
-	min-width: 50%;
+	min-width: 20%;
 }
 
 .scrollable-x {
