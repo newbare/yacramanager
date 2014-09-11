@@ -13,6 +13,8 @@ import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
+import fr.wati.yacramanager.async.ExceptionHandlingAsyncTaskExecutor;
+
 @Configuration
 @EnableAsync
 @EnableScheduling
@@ -33,6 +35,6 @@ public class AsyncConfiguration implements AsyncConfigurer {
         executor.setMaxPoolSize(environment.getProperty("spring.async.maxPoolSize", Integer.class, 50));
         executor.setQueueCapacity(environment.getProperty("spring.async.queueCapacity", Integer.class, 10000));
         executor.setThreadNamePrefix("yacra-executor-");
-        return executor;
+        return new ExceptionHandlingAsyncTaskExecutor(executor);
     }
 }

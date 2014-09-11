@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import com.google.common.collect.Lists;
 
 import fr.wati.yacramanager.beans.Absence;
+import fr.wati.yacramanager.beans.AbsencePortfolio;
 import fr.wati.yacramanager.beans.Absence_;
 import fr.wati.yacramanager.beans.Employe;
 import fr.wati.yacramanager.beans.ValidationStatus;
@@ -22,6 +23,7 @@ import fr.wati.yacramanager.beans.Activities.ActivityOperation;
 import fr.wati.yacramanager.dao.repository.AbsenceRepository;
 import fr.wati.yacramanager.dao.specifications.CommonSpecifications;
 import fr.wati.yacramanager.listeners.ActivityEvent;
+import fr.wati.yacramanager.services.AbsencePortfolioService;
 import fr.wati.yacramanager.services.AbsenceService;
 import fr.wati.yacramanager.services.EmployeService;
 import fr.wati.yacramanager.services.ServiceException;
@@ -41,6 +43,9 @@ public class AbsenceServiceImpl implements AbsenceService {
 	
 	@Autowired
 	private EmployeService employeService;
+	
+	@Autowired
+	private AbsencePortfolioService absencePortfolioService;
 
 	private ApplicationEventPublisher applicationEventPublisher;
 
@@ -51,7 +56,16 @@ public class AbsenceServiceImpl implements AbsenceService {
 	}
 
 	@Override
-	public <S extends Absence> S save(S entity) {
+	public <S extends Absence> S save(S entity){
+		TypeAbsence typeAbsence = entity.getTypeAbsence();
+		Employe employe = entity.getEmploye();
+		AbsencePortfolio absencePortfolio = absencePortfolioService.findByUserAndType(employe.getId(), typeAbsence);
+//		if(absencePortfolio==null){
+//			throw new ServiceException("No absence portfolio found for user "+employe.getId());
+//		}
+//		if(entity.gets){
+//			
+//		}
 		S save = absenceRepository.save(entity);
 		applicationEventPublisher.publishEvent(ActivityEvent
 				.createWithSource(this).user()
