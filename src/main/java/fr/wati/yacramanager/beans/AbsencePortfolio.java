@@ -10,11 +10,10 @@ import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-
-import org.hibernate.annotations.Type;
-import org.joda.time.DateTime;
+import javax.persistence.Transient;
 
 import fr.wati.yacramanager.web.dto.AbsenceDTO.TypeAbsence;
+import fr.wati.yacramanager.web.dto.AbsenceDTO.TypeAbsenceDTO;
 
 /**
  * @author Rachid Ouattara
@@ -22,16 +21,19 @@ import fr.wati.yacramanager.web.dto.AbsenceDTO.TypeAbsence;
  */
 @SuppressWarnings("serial")
 @Entity
-public class AbsencePortfolio implements Serializable {
+public class AbsencePortfolio extends AuditableEntity implements Serializable {
 
 	@EmbeddedId
 	private AbsencePortfolioPK absencePortfolioPK;
 
-	private Long remaining;
-	private Long consumed;
-	@Type(type = "org.joda.time.contrib.hibernate.PersistentDateTime")
-	private DateTime lastModifiedDate = DateTime.now();
+	private Double remaining=0.0;
+	private Double consumed=0.0;
+	private Double waiting=0.0;
+	
 
+	@Transient
+	private TypeAbsenceDTO typeAbsenceDTO;
+	
 	/**
 	 * @return the absencePortfolioPK
 	 */
@@ -47,10 +49,21 @@ public class AbsencePortfolio implements Serializable {
 		this.absencePortfolioPK = absencePortfolioPK;
 	}
 
+	
+	
+
+	public TypeAbsenceDTO getTypeAbsenceDTO() {
+		return typeAbsenceDTO;
+	}
+
+	public void setTypeAbsenceDTO(TypeAbsenceDTO typeAbsenceDTO) {
+		this.typeAbsenceDTO = typeAbsenceDTO;
+	}
+
 	/**
 	 * @return the remaining
 	 */
-	public Long getRemaining() {
+	public Double getRemaining() {
 		return remaining;
 	}
 
@@ -58,14 +71,14 @@ public class AbsencePortfolio implements Serializable {
 	 * @param remaining
 	 *            the remaining to set
 	 */
-	public void setRemaining(Long remaining) {
+	public void setRemaining(Double remaining) {
 		this.remaining = remaining;
 	}
 
 	/**
 	 * @return the consumed
 	 */
-	public Long getConsumed() {
+	public Double getConsumed() {
 		return consumed;
 	}
 
@@ -73,28 +86,32 @@ public class AbsencePortfolio implements Serializable {
 	 * @param consumed
 	 *            the consumed to set
 	 */
-	public void setConsumed(Long consumed) {
+	public void setConsumed(Double consumed) {
 		this.consumed = consumed;
 	}
 	
 	
-
-	/**
-	 * @return the lastModifiedDate
-	 */
-	public DateTime getLastModifiedDate() {
-		return lastModifiedDate;
+	
+	public Double getWaiting() {
+		return waiting;
 	}
 
-	/**
-	 * @param lastModifiedDate the lastModifiedDate to set
-	 */
-	public void setLastModifiedDate(DateTime lastModifiedDate) {
-		this.lastModifiedDate = lastModifiedDate;
+	public void setWaiting(Double waiting) {
+		this.waiting = waiting;
 	}
 
-
-
+	public void incrementRemaining(double step){
+		this.remaining+=step;
+	}
+	
+	public void incrementWaiting(double step){
+		this.waiting+=step;
+	}
+	
+	public void incrementConsumed(double step){
+		this.consumed+=step;
+	}
+	
 	@Embeddable
 	public static class AbsencePortfolioPK implements Serializable {
 		private Long userId;
@@ -115,6 +132,24 @@ public class AbsencePortfolio implements Serializable {
 		public AbsencePortfolioPK(Long userId, TypeAbsence typeAbsence) {
 			super();
 			this.userId = userId;
+			this.typeAbsence = typeAbsence;
+		}
+
+		
+		
+		public Long getUserId() {
+			return userId;
+		}
+
+		public void setUserId(Long userId) {
+			this.userId = userId;
+		}
+
+		public TypeAbsence getTypeAbsence() {
+			return typeAbsence;
+		}
+
+		public void setTypeAbsence(TypeAbsence typeAbsence) {
 			this.typeAbsence = typeAbsence;
 		}
 

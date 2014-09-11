@@ -31,8 +31,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.codahale.metrics.annotation.Timed;
 
 import fr.wati.yacramanager.beans.Absence;
+import fr.wati.yacramanager.beans.AbsencePortfolio;
 import fr.wati.yacramanager.beans.Employe;
 import fr.wati.yacramanager.beans.ValidationStatus;
+import fr.wati.yacramanager.services.AbsencePortfolioService;
 import fr.wati.yacramanager.services.AbsenceService;
 import fr.wati.yacramanager.services.CompanyService;
 import fr.wati.yacramanager.services.EmployeService;
@@ -49,28 +51,33 @@ import fr.wati.yacramanager.web.dto.ResponseWrapper;
 
 @RestController()
 @RequestMapping("/app/api/absences")
-public class AbsenceController implements RestCrudController<AbsenceDTO>,ApprovalRestService<ApprovalDTO<AbsenceDTO>> {
+public class AbsenceController implements RestCrudController<AbsenceDTO>,
+		ApprovalRestService<ApprovalDTO<AbsenceDTO>> {
 
 	private final Logger log = LoggerFactory.getLogger(AbsenceController.class);
 	@Autowired
 	private AbsenceService absenceService;
-	
+
+	@Autowired
+	private AbsencePortfolioService absencePortfolioService;
+
 	@Autowired
 	private DtoMapper dtoMapper;
-	
+
 	@Autowired
 	private EmployeService employeService;
 
 	@Autowired
 	private CompanyService companyService;
-	
+
 	@Override
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public @ResponseBody
 	@Timed
 	ResponseEntity<AbsenceDTO> read(@PathVariable("id") Long id) {
-		if(absenceService.exists(id)){
-			return new ResponseEntity<AbsenceDTO>(dtoMapper.map(absenceService.findOne(id)),HttpStatus.OK);
+		if (absenceService.exists(id)) {
+			return new ResponseEntity<AbsenceDTO>(dtoMapper.map(absenceService
+					.findOne(id)), HttpStatus.OK);
 		}
 		return new ResponseEntity<AbsenceDTO>(HttpStatus.NOT_FOUND);
 	}
@@ -79,9 +86,16 @@ public class AbsenceController implements RestCrudController<AbsenceDTO>,Approva
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@Timed
-	public void update(@PathVariable("id") Long id, @RequestBody AbsenceDTO dto) {
+	public void update(@PathVariable("id") Long id, @RequestBody AbsenceDTO dto)
+			throws RestServiceException {
 		Absence findOne = absenceService.findOne(id);
-		absenceService.save(dto.toAbsence(findOne));
+		try {
+			absenceService.postAbsence(findOne.getEmploye().getId(),
+					dto.toAbsence(findOne));
+		} catch (ServiceException e) {
+			log.error(e.getMessage(), e);
+			throw new RestServiceException(e);
+		}
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -92,48 +106,53 @@ public class AbsenceController implements RestCrudController<AbsenceDTO>,Approva
 			@RequestParam(required = false) Integer page,
 			@RequestParam(required = false) Integer size,
 			@RequestParam(value = "sort", required = false) Map<String, String> sort,
-			@RequestParam(value = "filter", required = false) String filter) throws RestServiceException {
+			@RequestParam(value = "filter", required = false) String filter)
+			throws RestServiceException {
 		if (page == null) {
 			page = 0;
 		}
 		if (size == null) {
 			size = 100;
 		}
-		List filters=new ArrayList<>();
-		if(StringUtils.isNotEmpty(filter)){
+		List filters = new ArrayList<>();
+		if (StringUtils.isNotEmpty(filter)) {
 			try {
-				filters=FilterBuilder.parse(filter);
+				filters = FilterBuilder.parse(filter);
 			} catch (Exception e) {
 				log.error(e.getMessage(), e);
 				throw new RestServiceException(e);
 			}
 		}
-		Specifications<Absence> specifications=null;
-		if(!filters.isEmpty()){
-			specifications=Specifications.where(SpecificationBuilder.buildSpecification(filters, absenceService));
+		Specifications<Absence> specifications = null;
+		if (!filters.isEmpty()) {
+			specifications = Specifications.where(SpecificationBuilder
+					.buildSpecification(filters, absenceService));
 		}
-		PageRequest pageable=null;
-		if(sort!=null){
-			List<Order> orders=new ArrayList<>();
-			for(Entry<String, String> entry:sort.entrySet()){
-				Order order=new Order("asc".equals(entry.getValue())?Direction.ASC:Direction.DESC, entry.getKey());
+		PageRequest pageable = null;
+		if (sort != null) {
+			List<Order> orders = new ArrayList<>();
+			for (Entry<String, String> entry : sort.entrySet()) {
+				Order order = new Order(
+						"asc".equals(entry.getValue()) ? Direction.ASC
+								: Direction.DESC, entry.getKey());
 				orders.add(order);
 			}
-			if(!orders.isEmpty()){
-				pageable=new PageRequest(page, size, new Sort(orders));
-			}else {
-				pageable=new PageRequest(page, size);
+			if (!orders.isEmpty()) {
+				pageable = new PageRequest(page, size, new Sort(orders));
+			} else {
+				pageable = new PageRequest(page, size);
 			}
-		}else {
-			pageable=new PageRequest(page, size);
+		} else {
+			pageable = new PageRequest(page, size);
 		}
-		
-		Page<Absence> findByPersonne =absenceService.findAll(specifications, pageable);
+
+		Page<Absence> findByPersonne = absenceService.findAll(specifications,
+				pageable);
 		ResponseWrapper<List<AbsenceDTO>> responseWrapper = new ResponseWrapper<List<AbsenceDTO>>(
 				dtoMapper.mapAbsences(findByPersonne),
 				findByPersonne.getTotalElements());
-		long startIndex=findByPersonne.getNumber()*size+1;
-		long endIndex=startIndex+findByPersonne.getNumberOfElements()-1;
+		long startIndex = findByPersonne.getNumber() * size + 1;
+		long endIndex = startIndex + findByPersonne.getNumberOfElements() - 1;
 		responseWrapper.setStartIndex(startIndex);
 		responseWrapper.setEndIndex(endIndex);
 		return responseWrapper;
@@ -142,12 +161,19 @@ public class AbsenceController implements RestCrudController<AbsenceDTO>,Approva
 	@Override
 	@RequestMapping(method = RequestMethod.POST)
 	@Timed
-	public ResponseEntity<String> create(@RequestBody AbsenceDTO dto) {
+	public ResponseEntity<String> create(@RequestBody AbsenceDTO dto)
+			throws RestServiceException {
 		Absence absence = dto.toAbsence();
 		absence.setDate(new DateTime());
 		absence.setEmploye(SecurityUtils.getConnectedUser());
 		absence.setValidationStatus(ValidationStatus.WAIT_FOR_APPROVEMENT);
-		absenceService.save(absence);
+		try {
+			absenceService.postAbsence(
+					SecurityUtils.getConnectedUser().getId(), absence);
+		} catch (ServiceException e) {
+			log.error(e.getMessage(), e);
+			throw new RestServiceException(e);
+		}
 		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
 
@@ -169,50 +195,63 @@ public class AbsenceController implements RestCrudController<AbsenceDTO>,Approva
 		return absenceDTOs;
 	}
 
-	/* (non-Javadoc)
-	 * @see fr.wati.yacramanager.web.api.ApprovalRestService#getApproval(java.lang.Long)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * fr.wati.yacramanager.web.api.ApprovalRestService#getApproval(java.lang
+	 * .Long)
 	 */
 	@Override
 	@RequestMapping(value = "/approval", method = RequestMethod.GET)
 	@Timed
-	public @ResponseBody ResponseWrapper<List<ApprovalDTO<AbsenceDTO>>> getApproval(
-			@RequestParam(value="requesterId") Long requesterId) {
-		List<ApprovalDTO<AbsenceDTO>> approvalDTOs=new ArrayList<ApprovalDTO<AbsenceDTO>>();
-		List<Absence> entitiesToApproved = absenceService.getEntitiesToApproved(requesterId);
-		int totalCount=0;
-		Map<Employe, List<Absence>> employeAbsencesMap=new HashMap<>();
+	public @ResponseBody
+	ResponseWrapper<List<ApprovalDTO<AbsenceDTO>>> getApproval(
+			@RequestParam(value = "requesterId") Long requesterId) {
+		List<ApprovalDTO<AbsenceDTO>> approvalDTOs = new ArrayList<ApprovalDTO<AbsenceDTO>>();
+		List<Absence> entitiesToApproved = absenceService
+				.getEntitiesToApproved(requesterId);
+		int totalCount = 0;
+		Map<Employe, List<Absence>> employeAbsencesMap = new HashMap<>();
 		for (Absence absence : entitiesToApproved) {
-			Employe currentEmploye=absence.getEmploye();
-			if(!employeAbsencesMap.containsKey(currentEmploye)){
-				employeAbsencesMap.put(currentEmploye, new ArrayList<Absence>());
+			Employe currentEmploye = absence.getEmploye();
+			if (!employeAbsencesMap.containsKey(currentEmploye)) {
+				employeAbsencesMap
+						.put(currentEmploye, new ArrayList<Absence>());
 			}
 			employeAbsencesMap.get(currentEmploye).add(absence);
 		}
-		for(Entry<Employe, List<Absence>> entry:employeAbsencesMap.entrySet()){
-			ApprovalDTO<AbsenceDTO> approvalDTO=new ApprovalDTO<>();
+		for (Entry<Employe, List<Absence>> entry : employeAbsencesMap
+				.entrySet()) {
+			ApprovalDTO<AbsenceDTO> approvalDTO = new ApprovalDTO<>();
 			approvalDTO.setEmployeId(entry.getKey().getId());
 			approvalDTO.setEmployeFirstName(entry.getKey().getFirstName());
 			approvalDTO.setEmployeLastName(entry.getKey().getLastName());
-			totalCount+=entry.getValue().size();
-			approvalDTO.setApprovalEntities(dtoMapper.mapAbsences(entry.getValue()));
+			totalCount += entry.getValue().size();
+			approvalDTO.setApprovalEntities(dtoMapper.mapAbsences(entry
+					.getValue()));
 			approvalDTOs.add(approvalDTO);
 		}
-		ResponseWrapper<List<ApprovalDTO<AbsenceDTO>>> response=new ResponseWrapper<List<ApprovalDTO<AbsenceDTO>>>(approvalDTOs,totalCount);
+		ResponseWrapper<List<ApprovalDTO<AbsenceDTO>>> response = new ResponseWrapper<List<ApprovalDTO<AbsenceDTO>>>(
+				approvalDTOs, totalCount);
 		return response;
 	}
 
 	@Override
 	@RequestMapping(value = "/approval/approve/{requesterId}/{entityId}", method = RequestMethod.PUT)
-	@ResponseStatus(value=HttpStatus.OK)
+	@ResponseStatus(value = HttpStatus.OK)
 	@Timed
-	public void approve(@PathVariable(value="requesterId") Long requesterId, @PathVariable(value="entityId") Long entityId) throws RestServiceException{
+	public void approve(@PathVariable(value = "requesterId") Long requesterId,
+			@PathVariable(value = "entityId") Long entityId)
+			throws RestServiceException {
 		Employe employe = employeService.findOne(requesterId);
-		if(employe==null){
+		if (employe == null) {
 			throw new RestServiceException("The given employe does not exist");
 		}
 		Absence absence = absenceService.findOne(entityId);
-		if(absence==null){
-			throw new RestServiceException("The given absence id does not exist");
+		if (absence == null) {
+			throw new RestServiceException(
+					"The given absence id does not exist");
 		}
 		try {
 			absenceService.validate(employe, absence);
@@ -225,14 +264,17 @@ public class AbsenceController implements RestCrudController<AbsenceDTO>,Approva
 	@Override
 	@RequestMapping(value = "/approval/reject/{requesterId}/{entityId}", method = RequestMethod.PUT)
 	@Timed
-	public void reject(@PathVariable(value="requesterId") Long requesterId, @PathVariable(value="entityId") Long entityId) throws RestServiceException {
+	public void reject(@PathVariable(value = "requesterId") Long requesterId,
+			@PathVariable(value = "entityId") Long entityId)
+			throws RestServiceException {
 		Employe employe = employeService.findOne(requesterId);
-		if(employe==null){
+		if (employe == null) {
 			throw new RestServiceException("The given employe does not exist");
 		}
 		Absence absence = absenceService.findOne(entityId);
-		if(absence==null){
-			throw new RestServiceException("The given absence id does not exist");
+		if (absence == null) {
+			throw new RestServiceException(
+					"The given absence id does not exist");
 		}
 		try {
 			absenceService.reject(employe, absence);
@@ -240,5 +282,18 @@ public class AbsenceController implements RestCrudController<AbsenceDTO>,Approva
 			log.error(e.getMessage(), e);
 			throw new RestServiceException(e.getMessage(), e);
 		}
+	}
+
+	@RequestMapping(value = "/portfolio", method = RequestMethod.GET)
+	@Timed
+	public @ResponseBody
+	ResponseWrapper<List<AbsencePortfolio>> getPortfolio(
+			@RequestParam(value = "requesterId") Long requesterId) {
+		List<AbsencePortfolio> absencePortfolios = absencePortfolioService.findByUser(requesterId);
+		for (AbsencePortfolio absencePortfolio : absencePortfolios) {
+			absencePortfolio.setTypeAbsenceDTO(TypeAbsenceDTO.fromEnum(absencePortfolio.getAbsencePortfolioPK().getTypeAbsence()));
+		}
+		return new ResponseWrapper<List<AbsencePortfolio>>(absencePortfolios, absencePortfolios.size());
+
 	}
 }

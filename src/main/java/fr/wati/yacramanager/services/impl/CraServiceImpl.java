@@ -6,11 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.Predicate;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeComparator;
-import org.joda.time.DateTimeConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
@@ -26,7 +23,7 @@ import fr.wati.yacramanager.services.ClientService;
 import fr.wati.yacramanager.services.CraService;
 import fr.wati.yacramanager.services.EmployeService;
 import fr.wati.yacramanager.services.WorkLogService;
-import fr.wati.yacramanager.utils.CalendarUtil;
+import fr.wati.yacramanager.utils.DateUtils;
 import fr.wati.yacramanager.web.dto.AbsenceDTO;
 import fr.wati.yacramanager.web.dto.CraDTO;
 import fr.wati.yacramanager.web.dto.CraDTO.Day;
@@ -69,16 +66,16 @@ public class CraServiceImpl implements CraService {
 				.plusDays(1)) {
 			day = new Day();
 			day.setDate(currentDate);
-			day.setDayOff(isDayOff(currentDate));
+			day.setDayOff(DateUtils.isDayOff(currentDate));
 			DayElement morningDayElement = new DayElement();
-			boolean worked = isDateInPast(currentDate)
-					&& !isDayOff(currentDate);
+			boolean worked = DateUtils.isDateInPast(currentDate)
+					&& !DateUtils.isDayOff(currentDate);
 			morningDayElement.setWorked(worked);
 			DayElement afternoonDayElement = new DayElement();
 			afternoonDayElement.setWorked(worked);
 			for (Absence absence : absences) {
 				// test current day is between absence start and end
-				if (isDayBetween(currentDate, absence.getStartDate(),
+				if (DateUtils.isDayBetween(currentDate, absence.getStartDate(),
 						absence.getEndDate())) {
 					if (absence.isStartAfternoon()
 							&& absence.getStartDate().toDateMidnight()
@@ -110,41 +107,9 @@ public class CraServiceImpl implements CraService {
 		return craDTO;
 	}
 
-	private boolean isDayBetween(DateTime dateToTest, DateTime startDate,
-			DateTime endDate) {
-		DateTimeComparator dateTimeComparator = DateTimeComparator
-				.getDateOnlyInstance();
-		return dateTimeComparator.compare(startDate, dateToTest) <= 0
-				&& dateTimeComparator.compare(dateToTest, endDate) <= 0;
-	}
 
-	private boolean isDayOff(DateTime date) {
-		return isWeekEnd(date) || jourFerie(date);
-	}
 
-	private boolean isDateInPast(DateTime date) {
-		return date.isBefore(new DateTime());
-	}
-
-	private boolean isWeekEnd(DateTime date) {
-		int dayOfWeek = date.getDayOfWeek();
-		return (DateTimeConstants.SUNDAY == dayOfWeek || DateTimeConstants.SATURDAY == dayOfWeek);
-	}
-
-	private boolean jourFerie(final DateTime date) {
-		List<DateTime> jourFeries = CalendarUtil.getJourFeries(date.getYear());
-		int countMatches = CollectionUtils.countMatches(jourFeries,
-				new Predicate() {
-
-					@Override
-					public boolean evaluate(Object object) {
-						DateTime predicateDate = (DateTime) object;
-						return predicateDate.toDateMidnight().isEqual(
-								date.toDateMidnight());
-					}
-				});
-		return countMatches >= 1;
-	}
+	
 
 	@Override
 	public CraDetailsDTO generateCraDetail(Iterable<Employe> employes,
@@ -202,7 +167,7 @@ public class CraServiceImpl implements CraService {
 						}
 						break;
 					case TIME:
-						if (isDayBetween(currentDate, workLog.getStartDate(),
+						if (DateUtils.isDayBetween(currentDate, workLog.getStartDate(),
 								workLog.getEndDate())) {
 							currentDuration = (workLog.getEndDate().getMillis() - workLog
 									.getStartDate().getMillis()) / 1000 / 60;
@@ -242,13 +207,13 @@ public class CraServiceImpl implements CraService {
 			for (DateTime currentDate = startDate; currentDate
 					.isBefore(endDate); currentDate = currentDate.plusDays(1)) {
 				employeCraDetailsDTO.getDays().add(
-						new CraDetailDay(currentDate, isDayOff(currentDate)));
+						new CraDetailDay(currentDate, DateUtils.isDayOff(currentDate)));
 				if(!craAbsenceDetail.getDuration().containsKey(currentDate)){
 					craAbsenceDetail.getDuration().put(currentDate, 0L);
 				}
 				// handle absence row
 				for (Absence currentAbsence : absences) {
-					if (isDayBetween(currentDate,
+					if (DateUtils.isDayBetween(currentDate,
 							currentAbsence.getStartDate(),
 							currentAbsence.getEndDate())) {
 						if ((currentAbsence.isStartAfternoon() && currentAbsence

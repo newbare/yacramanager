@@ -314,4 +314,5 @@ public class EmployeServiceImpl implements EmployeService {
 		save(employe);
 		return generatedPassword;
 	}
+
 }

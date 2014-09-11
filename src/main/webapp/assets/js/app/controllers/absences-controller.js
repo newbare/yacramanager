@@ -126,7 +126,6 @@ function AbsencesController($scope, $rootScope, AbsenceREST, alertService,ngTabl
 	AbsenceREST.getTypes(function(data) {
 		$scope.absencesType = data;
 	});
-	var absence = $scope.currentAbsence = {};
 	var today = new Date();
 	$scope.selectAbsence=function(absence){
 		var index = $scope.selectedAbsences.indexOf(absence);
@@ -146,17 +145,21 @@ function AbsencesController($scope, $rootScope, AbsenceREST, alertService,ngTabl
 	$scope.reset = function() {
 		$scope.initialSelectionChanged = false;
 		$scope.selectedActionLabel = $scope.initialActionLabel;
-		absence.id=undefined;
-		absence.typeAbsence = $scope.selectedActionName;
-		absence.startDate = today;
-		absence.endDate = today;
-		absence.description = '';
-		absence.startAfternoon = false;
-		absence.endMorning = false;
+		$scope.currentAbsence = {
+				id:undefined,
+				typeAbsence : $scope.selectedActionName,
+				startDate : today,
+				endDate : today,
+				description : '',
+				startAfternoon : false,
+				endMorning : false
+		};
+		
 		$scope.edition=false;
+		
 	};
 	$scope.changeActionSelection = function() {
-		absence.typeAbsence = $scope.selectedAction;
+		$scope.currentAbsence.typeAbsence = $scope.selectedAction;
 		$scope.initialSelectionChanged = true;
 	};
 
@@ -165,8 +168,8 @@ function AbsencesController($scope, $rootScope, AbsenceREST, alertService,ngTabl
 	}
 	
 	$scope.postAbsence = function(hideFn) {
-		absence.typeAbsence=absence.typeAbsence.name;
-		AbsenceREST.save(clone(absence)).$promise.then(function(result) {
+		$scope.currentAbsence.typeAbsence=$scope.currentAbsence.typeAbsence.name;
+		AbsenceREST.save($scope.currentAbsence).$promise.then(function(result) {
 			alertService.show('success','Confirmation', 'Donn� sauvegard�');
 			$scope.reset();
 			$scope.tableParams.reload();
@@ -185,13 +188,13 @@ function AbsencesController($scope, $rootScope, AbsenceREST, alertService,ngTabl
 		$scope.edition=true;
 		AbsenceREST.get(
 				{id:id},function(data) {
-					absence.id=data.id;
-					absence.typeAbsence = data.typeAbsence;
-					absence.startDate = data.startDate;
-					absence.endDate = data.endDate;
-					absence.description = data.description;
-					absence.startAfternoon = data.startAfternoon;
-					absence.endMorning = data.endMorning;
+					$scope.currentAbsence.id=data.id;
+					$scope.currentAbsence.typeAbsence = data.typeAbsence;
+					$scope.currentAbsence.startDate = data.startDate;
+					$scope.currentAbsence.endDate = data.endDate;
+					$scope.currentAbsence.description = data.description;
+					$scope.currentAbsence.startAfternoon = data.startAfternoon;
+					$scope.currentAbsence.endMorning = data.endMorning;
 				},function(error){
 					console.log(error);
 					$scope.reset();
@@ -248,11 +251,17 @@ function AbsencesController($scope, $rootScope, AbsenceREST, alertService,ngTabl
 	
 	
 	$scope.refreshApproval=function(){
-		$http.get(_contextPath+"/app/api/absences/approval",{params:{"requesterId":_userId} })
-		.success(function(data, status) {
-			$scope.approvementTotal=data.totalCount;
-			$scope.approvements=data.result;
+		AbsenceREST.getApprovals({
+			"requesterId" : _userId
+		}).$promise.then(function(result) {
+			$scope.approvementTotal=result.totalCount;
+			$scope.approvements=result.result;
 		});
+//		$http.get(_contextPath+"/app/api/absences/approval",{params:{"requesterId":_userId} })
+//		.success(function(data, status) {
+//			$scope.approvementTotal=data.totalCount;
+//			$scope.approvements=data.result;
+//		});
 	};
 	$scope.refreshApproval();
 	$scope.approve=function(id){

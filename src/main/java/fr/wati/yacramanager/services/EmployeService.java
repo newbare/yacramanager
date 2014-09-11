@@ -30,4 +30,5 @@ public interface EmployeService extends CrudService<Employe, Long>,Specification
 	void addManagedEmploye(Long managerId,Long employeId);
 	
 	void createNewEmployee(EmployeDto employeDto,Long companyId,Long managerId);
+	
 }

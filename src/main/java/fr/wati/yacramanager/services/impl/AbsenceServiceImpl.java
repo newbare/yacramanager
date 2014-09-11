@@ -10,12 +10,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.domain.Specifications;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import com.google.common.collect.Lists;
 
 import fr.wati.yacramanager.beans.Absence;
 import fr.wati.yacramanager.beans.AbsencePortfolio;
+import fr.wati.yacramanager.beans.AbsencePortfolio.AbsencePortfolioPK;
 import fr.wati.yacramanager.beans.Absence_;
 import fr.wati.yacramanager.beans.Employe;
 import fr.wati.yacramanager.beans.ValidationStatus;
@@ -57,15 +59,6 @@ public class AbsenceServiceImpl implements AbsenceService {
 
 	@Override
 	public <S extends Absence> S save(S entity){
-		TypeAbsence typeAbsence = entity.getTypeAbsence();
-		Employe employe = entity.getEmploye();
-		AbsencePortfolio absencePortfolio = absencePortfolioService.findByUserAndType(employe.getId(), typeAbsence);
-//		if(absencePortfolio==null){
-//			throw new ServiceException("No absence portfolio found for user "+employe.getId());
-//		}
-//		if(entity.gets){
-//			
-//		}
 		S save = absenceRepository.save(entity);
 		applicationEventPublisher.publishEvent(ActivityEvent
 				.createWithSource(this).user()
@@ -214,6 +207,11 @@ public class AbsenceServiceImpl implements AbsenceService {
 		if(employeService.isManager(validator.getId(), findOne.getEmploye().getId())){
 			findOne.setValidationStatus(ValidationStatus.APPROVED);
 			Absence save = absenceRepository.save(findOne);
+			AbsencePortfolio absencePortfolio = absencePortfolioService.findByUserAndType(save.getEmploye().getId(), save.getTypeAbsence());
+			absencePortfolio.incrementConsumed(absence.getDaysBetween());
+			absencePortfolio.incrementRemaining(-absence.getDaysBetween());
+			absencePortfolio.incrementWaiting(-absence.getDaysBetween());
+			absencePortfolioService.save(absencePortfolio);
 			applicationEventPublisher.publishEvent(ActivityEvent
 					.createWithSource(this).user(validator)
 					.operation(ActivityOperation.REJECT)
@@ -254,6 +252,41 @@ public class AbsenceServiceImpl implements AbsenceService {
 	public void setApplicationEventPublisher(
 			ApplicationEventPublisher applicationEventPublisher) {
 		this.applicationEventPublisher=applicationEventPublisher;
+	}
+
+	@Override
+	public Absence postAbsence(Long employeId, Absence absence)
+			throws ServiceException {
+		Employe employe = employeService.findOne(employeId);
+		TypeAbsence typeAbsence = absence.getTypeAbsence();
+		AbsencePortfolio absencePortfolio = absencePortfolioService.findByUserAndType(employe.getId(), typeAbsence);
+		if(absencePortfolio==null){
+			throw new ServiceException("No absence portfolio found for user "+employe.getId());
+		}
+		if((absence.getDaysBetween()+absencePortfolio.getWaiting())>absencePortfolio.getRemaining()){
+			throw new ServiceException("You do not have enought remainnig days for "+typeAbsence.getLabel()+" Remaining: "+absencePortfolio.getRemaining()+" Waiting: "+absencePortfolio.getWaiting());
+		}
+		absencePortfolio.incrementWaiting(absence.getDaysBetween());
+		absencePortfolioService.save(absencePortfolio);
+		return save(absence);
+	}
+	
+	@Scheduled(cron="0 0/15 * * * *")
+	@Override
+	public void periodicalyIncrementAbsence() {
+		Iterable<Employe> employes=employeService.findAll();
+		for (Employe employe : employes) {
+			for(TypeAbsence typeAbsence:TypeAbsence.values()){
+				AbsencePortfolio absencePortfolio = absencePortfolioService.findByUserAndType(employe.getId(), typeAbsence);
+				if(absencePortfolio==null){
+					absencePortfolio=new AbsencePortfolio();
+					absencePortfolio.setAbsencePortfolioPK(new AbsencePortfolioPK(employe.getId(), typeAbsence));
+					absencePortfolioService.save(absencePortfolio);
+				}
+				absencePortfolio.incrementRemaining(1);
+				absencePortfolioService.save(absencePortfolio);
+			}
+		}
 	}
 
 }

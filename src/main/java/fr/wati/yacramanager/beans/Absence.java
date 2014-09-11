@@ -9,10 +9,12 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
 
+import fr.wati.yacramanager.utils.DateUtils;
 import fr.wati.yacramanager.web.dto.AbsenceDTO.TypeAbsence;
 
 @Entity
@@ -22,13 +24,13 @@ public class Absence extends AuditableEntity implements Valideable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	@Type(type="org.joda.time.contrib.hibernate.PersistentDateTime")
+	@Type(type = "org.joda.time.contrib.hibernate.PersistentDateTime")
 	private DateTime date;
 	private boolean endMorning;
 	private boolean startAfternoon;
-	@Type(type="org.joda.time.contrib.hibernate.PersistentDateTime")
+	@Type(type = "org.joda.time.contrib.hibernate.PersistentDateTime")
 	private DateTime startDate;
-	@Type(type="org.joda.time.contrib.hibernate.PersistentDateTime")
+	@Type(type = "org.joda.time.contrib.hibernate.PersistentDateTime")
 	private DateTime endDate;
 	private String description;
 	@ManyToOne
@@ -37,16 +39,13 @@ public class Absence extends AuditableEntity implements Valideable {
 	private TypeAbsence typeAbsence;
 	@Enumerated(EnumType.STRING)
 	private ValidationStatus validationStatus;
-	
-	
-	
-	
+
 	public Absence() {
 		super();
 	}
-	
-	public Absence(boolean endMorning, boolean startAfternoon, DateTime startDate,
-			DateTime endDate, String description) {
+
+	public Absence(boolean endMorning, boolean startAfternoon,
+			DateTime startDate, DateTime endDate, String description) {
 		super();
 		this.endMorning = endMorning;
 		this.startAfternoon = startAfternoon;
@@ -58,13 +57,15 @@ public class Absence extends AuditableEntity implements Valideable {
 	public Long getId() {
 		return id;
 	}
+
 	public void setId(Long id) {
 		this.id = id;
 	}
-	
+
 	public String getDescription() {
 		return description;
 	}
+
 	public void setDescription(String description) {
 		this.description = description;
 	}
@@ -72,6 +73,7 @@ public class Absence extends AuditableEntity implements Valideable {
 	public DateTime getDate() {
 		return date;
 	}
+
 	public void setDate(DateTime date) {
 		this.date = date;
 	}
@@ -108,8 +110,6 @@ public class Absence extends AuditableEntity implements Valideable {
 		this.endDate = date2;
 	}
 
-	
-
 	/**
 	 * @return the employe
 	 */
@@ -118,7 +118,8 @@ public class Absence extends AuditableEntity implements Valideable {
 	}
 
 	/**
-	 * @param employe the employe to set
+	 * @param employe
+	 *            the employe to set
 	 */
 	public void setEmploye(Employe employe) {
 		this.employe = employe;
@@ -139,8 +140,15 @@ public class Absence extends AuditableEntity implements Valideable {
 
 	@Override
 	public void setValidationStatus(ValidationStatus validationStatus) {
-		this.validationStatus=validationStatus;
+		this.validationStatus = validationStatus;
 	}
-	
-	
+
+	@Transient
+	public double getDaysBetween() {
+		return Integer.valueOf(
+				DateUtils.getBusinessDaysBetween(getStartDate(), getEndDate()))
+				.doubleValue()
+				- (isStartAfternoon() ? 0.5 : 0.0)
+				- (isEndMorning() ? 0.5 : 0.0);
+	}
 }

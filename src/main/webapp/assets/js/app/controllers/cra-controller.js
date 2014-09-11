@@ -4,6 +4,7 @@ function CraController($scope,$rootScope,CraREST,$filter,$http,WorkLogREST,alert
 	$rootScope.page={"title":"CRA","description":"View and manage you CRA"};
 	$scope.dateFormat="dd MMMM yyyy";
 	$scope.craDateFormat="EEE dd/MM";
+	$scope.absencePortfolio={}
 	$scope.resetNewAbsence=function(){
 		$scope.newAbsence={};
 	};
@@ -11,6 +12,16 @@ function CraController($scope,$rootScope,CraREST,$filter,$http,WorkLogREST,alert
 	var formatDate=function(date){
 		return $filter('date')(date, 'yyyy-MM-dd');
 	};
+	
+	$scope.refreshPortfolio=function(){
+		AbsenceREST.getPortfolio({
+			"requesterId" : _userId
+		}).$promise.then(function(result) {
+			$scope.absencePortfolio=result.result;
+		});
+	}
+	$scope.refreshPortfolio();
+	
 	$scope.absencePeriods = [ {
 		name : 'ALL',
 		label : 'All day'
@@ -102,6 +113,7 @@ function CraController($scope,$rootScope,CraREST,$filter,$http,WorkLogREST,alert
 			$scope.resetNewAbsence();
 			hideFn();
 			$scope.retrieveCraDetails($scope.currentFilter);
+			$scope.refreshPortfolio();
 		});
 	}
 	

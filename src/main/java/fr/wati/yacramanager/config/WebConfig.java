@@ -16,6 +16,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Description;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.Resource;
@@ -41,6 +42,7 @@ import fr.wati.yacramanager.utils.CustomObjectMapper;
 @Configuration
 @EnableAspectJAutoProxy(proxyTargetClass = true)
 @ComponentScan(basePackages = { "fr.wati.yacramanager.web" })
+@PropertySource(value = { "classpath:database-yacra.properties" })
 @EnableWebMvc
 public class WebConfig extends WebMvcConfigurerAdapter {
 	private Logger logger = LoggerFactory.getLogger(WebConfig.class);

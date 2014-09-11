@@ -103,7 +103,7 @@ public class DispatcherServletInitializer extends
 
         log.debug("Registering Metrics Servlet");
         ServletRegistration.Dynamic metricsAdminServlet =
-                servletContext.addServlet("metricsServlet", new MetricsServlet(MetricsConfiguration.METRIC_REGISTRY));
+                servletContext.addServlet("metricsServlet", new MetricsServlet());
 
         metricsAdminServlet.addMapping("/app/admin/metrics/*");
         metricsAdminServlet.setAsyncSupported(true);

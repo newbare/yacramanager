@@ -18,4 +18,8 @@ public interface AbsenceService extends CrudService<Absence, Long>,Specification
 	List<Absence> findByEmployeAndStartDateBetween(Employe employe,DateTime DateTimeDebut,DateTime DateTimeFin);
 	
 	Page<Absence> findByEmploye(Employe employe,Pageable pageable);
+	
+	Absence postAbsence(Long employeId, Absence absence) throws ServiceException;
+	
+	void periodicalyIncrementAbsence();
 }

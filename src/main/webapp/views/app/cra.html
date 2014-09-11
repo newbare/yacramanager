@@ -45,9 +45,11 @@
 	</div>
 	<div class="row">
 		<fieldset data-collapsible-fieldset="Used on selected period">
-			<div>
-				<div class="row"><div class="col-md-3"><span>Conge paye: </span></div><div class="col-md-3"><span class="label label-info">12</span></div></div>
-				<div class="row"><div class="col-md-3"><span>RTT: </span></div><div class="col-md-3"><span class="label label-info">12</span></div></div>
+			<div class="row">
+				<div class="col-md-4" data-ng-repeat="portfolio in absencePortfolio">
+					<span>{{portfolio.typeAbsenceDTO.label}}: </span>
+					<span class="label label-info">{{portfolio.remaining}}</span>
+				</div>
 			</div>
 		</fieldset>
 </div>

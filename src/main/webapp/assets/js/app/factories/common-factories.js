@@ -28,6 +28,18 @@ App.factory("AbsenceREST", function($resource) {
 			method : 'GET',
 			isArray : true
 
+		},
+		getApprovals : {
+			url : _contextPath + "/app/api/absences/approval",
+			method : 'GET',
+			isArray : false
+
+		},
+		getPortfolio : {
+			url : _contextPath + "/app/api/absences/portfolio",
+			method : 'GET',
+			isArray : false
+
 		}
 	});
 });

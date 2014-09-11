@@ -46,8 +46,8 @@ public class AbsencePortfolioTest extends
 		employeService.save(manager);
 		
 		AbsencePortfolio absencePortfolio=new AbsencePortfolio();
-		absencePortfolio.setRemaining(14L);
-		absencePortfolio.setConsumed(3L);
+		absencePortfolio.setRemaining(14.0);
+		absencePortfolio.setConsumed(3.0);
 		AbsencePortfolioPK absencePortfolioPK=new AbsencePortfolioPK(manager.getId(), TypeAbsence.CP);
 		absencePortfolio.setAbsencePortfolioPK(absencePortfolioPK);
 		absencePortfolioRepository.save(absencePortfolio);
