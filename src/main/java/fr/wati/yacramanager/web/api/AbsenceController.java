@@ -51,8 +51,7 @@ import fr.wati.yacramanager.web.dto.ResponseWrapper;
 
 @RestController()
 @RequestMapping("/app/api/absences")
-public class AbsenceController implements RestCrudController<AbsenceDTO>,
-		ApprovalRestService<ApprovalDTO<AbsenceDTO>> {
+public class AbsenceController  {
 
 	private final Logger log = LoggerFactory.getLogger(AbsenceController.class);
 	@Autowired
@@ -70,7 +69,6 @@ public class AbsenceController implements RestCrudController<AbsenceDTO>,
 	@Autowired
 	private CompanyService companyService;
 
-	@Override
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public @ResponseBody
 	@Timed
@@ -82,7 +80,6 @@ public class AbsenceController implements RestCrudController<AbsenceDTO>,
 		return new ResponseEntity<AbsenceDTO>(HttpStatus.NOT_FOUND);
 	}
 
-	@Override
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@Timed
@@ -99,7 +96,6 @@ public class AbsenceController implements RestCrudController<AbsenceDTO>,
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	@Override
 	@RequestMapping(method = RequestMethod.GET)
 	@Timed
 	public ResponseWrapper<List<AbsenceDTO>> getAll(
@@ -158,7 +154,6 @@ public class AbsenceController implements RestCrudController<AbsenceDTO>,
 		return responseWrapper;
 	}
 
-	@Override
 	@RequestMapping(method = RequestMethod.POST)
 	@Timed
 	public ResponseEntity<String> create(@RequestBody AbsenceDTO dto)
@@ -177,7 +172,6 @@ public class AbsenceController implements RestCrudController<AbsenceDTO>,
 		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
 
-	@Override
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	@Timed
 	public void delete(@PathVariable("id") Long id) {
@@ -202,7 +196,6 @@ public class AbsenceController implements RestCrudController<AbsenceDTO>,
 	 * fr.wati.yacramanager.web.api.ApprovalRestService#getApproval(java.lang
 	 * .Long)
 	 */
-	@Override
 	@RequestMapping(value = "/approval", method = RequestMethod.GET)
 	@Timed
 	public @ResponseBody
@@ -237,7 +230,6 @@ public class AbsenceController implements RestCrudController<AbsenceDTO>,
 		return response;
 	}
 
-	@Override
 	@RequestMapping(value = "/approval/approve/{requesterId}/{entityId}", method = RequestMethod.PUT)
 	@ResponseStatus(value = HttpStatus.OK)
 	@Timed
@@ -261,7 +253,6 @@ public class AbsenceController implements RestCrudController<AbsenceDTO>,
 		}
 	}
 
-	@Override
 	@RequestMapping(value = "/approval/reject/{requesterId}/{entityId}", method = RequestMethod.PUT)
 	@Timed
 	public void reject(@PathVariable(value = "requesterId") Long requesterId,
