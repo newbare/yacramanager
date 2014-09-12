@@ -19,12 +19,16 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 /**
  * @author Rachid Ouattara
  *
  */
 @SuppressWarnings("serial")
 @Entity
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Task extends AuditableEntity  {
 
 	@Id

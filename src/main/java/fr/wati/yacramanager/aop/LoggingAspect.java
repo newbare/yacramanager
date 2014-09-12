@@ -16,7 +16,7 @@ import org.springframework.core.env.Environment;
 /**
  * Aspect for logging execution of service and repository Spring components.
  */
-//@Aspect
+@Aspect
 public class LoggingAspect {
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());

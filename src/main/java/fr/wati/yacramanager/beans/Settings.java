@@ -6,8 +6,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 @SuppressWarnings("serial")
 @Entity
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Settings extends AuditableEntity {
 
 	@Id

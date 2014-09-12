@@ -12,12 +12,16 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 /**
  * @author Rachid Ouattara
  *
  */
 @SuppressWarnings("serial")
 @Entity
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Employe extends Personne {
 
 	@ManyToOne

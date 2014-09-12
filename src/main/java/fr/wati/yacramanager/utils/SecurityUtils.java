@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 
 import fr.wati.yacramanager.beans.Employe;
+import fr.wati.yacramanager.services.CustomUserDetailsService.CustomUserDetails;
 import fr.wati.yacramanager.services.impl.EmployeServiceImpl;
 
 /**
@@ -50,10 +51,11 @@ public class SecurityUtils implements ApplicationContextAware{
 	}
 	
 	public static Employe getConnectedUser(){
-		if(getUser()==null){
+		User user = getUser();
+		if(user==null){
 			return null;
 		}
-		return applicationContext.getBean(EmployeServiceImpl.class).findByUsername(getUser()!=null ? getUser().getUsername():null);
+		return (user instanceof CustomUserDetails)?(Employe)((CustomUserDetails)user).getDomainUser():null;
 	}
 
 	/* (non-Javadoc)

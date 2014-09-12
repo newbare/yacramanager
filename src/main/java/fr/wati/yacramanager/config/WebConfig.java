@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.lang.CharEncoding;
-import org.dozer.spring.DozerBeanMapperFactoryBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +15,10 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Description;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.core.env.Environment;
-import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -37,13 +36,14 @@ import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 import org.thymeleaf.templateresolver.ITemplateResolver;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
-import fr.wati.yacramanager.utils.CustomObjectMapper;
+import fr.wati.yacramanager.services.CustomObjectMapper;
 
 @Configuration
 @EnableAspectJAutoProxy(proxyTargetClass = true)
 @ComponentScan(basePackages = { "fr.wati.yacramanager.web" })
 @PropertySource(value = { "classpath:database-yacra.properties" })
 @EnableWebMvc
+@Import(value={MetricsConfiguration.class,AspectConfiguration.class})
 public class WebConfig extends WebMvcConfigurerAdapter {
 	private Logger logger = LoggerFactory.getLogger(WebConfig.class);
 
@@ -128,17 +128,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         return messageSource;
     }
 	
-	@Bean
-	public DozerBeanMapperFactoryBean dozerBeanMapper(
-			ResourceLoader resourceLoader) {
-		DozerBeanMapperFactoryBean dozerBeanMapper = new DozerBeanMapperFactoryBean();
-		List<Resource> resources = new ArrayList<>();
-		resources
-				.add(resourceLoader.getResource("classpath:dozer-mapping.xml"));
-		dozerBeanMapper.setMappingFiles(resources
-				.toArray(new Resource[resources.size()]));
-		return dozerBeanMapper;
-	}
+	
 
 	@Bean
 	public StandardServletMultipartResolver multipartResolver() {

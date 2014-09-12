@@ -7,7 +7,7 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import fr.wati.yacramanager.aop.LoggingAspect;
 
 @Configuration
-//@EnableAspectJAutoProxy
+@EnableAspectJAutoProxy
 public class AspectConfiguration {
 
     @Bean

@@ -169,8 +169,8 @@ function AdminSettingsController($scope,$rootScope) {
 	$scope.page={"title":"Settings","description":"Home page"}
 };
 
-function LogsController($scope, resolvedLogsResponse, LogsService,ngTableParams) {
-    $scope.loggers = resolvedLogsResponse.result;
+function LogsController($scope, LogsService,ngTableParams) {
+    $scope.loggers = [];
     $scope.filter='';
     
     $scope.changeLevel = function (name, level) {
@@ -207,6 +207,7 @@ function LogsController($scope, resolvedLogsResponse, LogsService,ngTableParams)
 					}else {
 						$scope.hasDatas=false;
 					}
+					 $scope.loggers=data.result;
 					// set new data
 					$defer.resolve(data.result);
 				});
@@ -223,31 +224,55 @@ function MetricsController($scope, MetricsService) {
 //            $scope.healthCheck = promise.data;
 //        });
 
-        $scope.metrics = MetricsService.get();
+    	 $scope.metrics = MetricsService.get();
 
-        $scope.metrics.$get({}, function(items) {
+         $scope.metrics.$get({}, function(items) {
 
-            $scope.servicesStats = {};
-            $scope.cachesStats = {};
-            angular.forEach(items.timers, function(value, key) {
-                if (key.indexOf("web.api") != -1 || key.indexOf("service") != -1) {
-                    $scope.servicesStats[key] = value;
-                }
+	            $scope.servicesStats = {};
+	            $scope.cachesStats = {};
+	            angular.forEach(items.timers, function(value, key) {
+	                if (key.indexOf("web.api") != -1 || key.indexOf("service") != -1) {
+	                    $scope.servicesStats[key] = value;
+	                }
 
-                if (key.indexOf("net.sf.ehcache.Cache") != -1) {
-                    // remove gets or puts
-                    var index = key.lastIndexOf(".");
-                    var newKey = key.substr(0, index);
+	                if (key.indexOf("net.sf.ehcache.Cache") != -1) {
+	                    // remove gets or puts
+	                    var index = key.lastIndexOf(".");
+	                    var newKey = key.substr(0, index);
 
-                    // Keep the name of the domain
-                    index = newKey.lastIndexOf(".");
-                    $scope.cachesStats[newKey] = {
-                        'name': newKey.substr(index + 1),
-                        'value': value
-                    };
-                }
-            });
-        });
+	                    // Keep the name of the domain
+	                    index = newKey.lastIndexOf(".");
+	                    $scope.cachesStats[newKey] = {
+	                        'name': newKey.substr(index + 1),
+	                        'value': value
+	                    };
+	                }
+	            });
+	        });
+
+//        $scope.metrics.$get({}, function(items) {
+//
+//            $scope.servicesStats = {};
+//            $scope.cachesStats = {};
+//            angular.forEach(items.timers, function(value, key) {
+//                if (key.indexOf("web.api") != -1 || key.indexOf("service") != -1) {
+//                    $scope.servicesStats[key] = value;
+//                }
+//
+//                if (key.indexOf("net.sf.ehcache.Cache") != -1) {
+//                    // remove gets or puts
+//                    var index = key.lastIndexOf(".");
+//                    var newKey = key.substr(0, index);
+//
+//                    // Keep the name of the domain
+//                    index = newKey.lastIndexOf(".");
+//                    $scope.cachesStats[newKey] = {
+//                        'name': newKey.substr(index + 1),
+//                        'value': value
+//                    };
+//                }
+//            });
+//        });
     };
 
     $scope.refresh();

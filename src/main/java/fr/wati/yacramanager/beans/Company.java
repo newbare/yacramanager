@@ -12,11 +12,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.PreRemove;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
 
 @SuppressWarnings("serial")
 @Entity
+@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class Company extends AuditableEntity {
 
 	@Id
@@ -27,9 +30,9 @@ public class Company extends AuditableEntity {
 	private List<Employe> employes=new ArrayList<>();
 	@OneToMany(mappedBy="company")
 	private List<Client> clients=new ArrayList<>();
-	@Type(type="org.joda.time.contrib.hibernate.PersistentDateTime")
+	@Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
 	private DateTime registeredDate;
-	@Type(type="org.joda.time.contrib.hibernate.PersistentDateTime")
+	@Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
 	private DateTime licenseEndDate;
 	@OneToMany(cascade=CascadeType.ALL)
 	@JoinColumn(name="companyId")

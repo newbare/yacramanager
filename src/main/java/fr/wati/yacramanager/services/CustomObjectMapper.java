@@ -1,4 +1,4 @@
-package fr.wati.yacramanager.utils;
+package fr.wati.yacramanager.services;
 
 import javax.annotation.PostConstruct;
 
@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.databind.util.ISO8601DateFormat;
 import com.fasterxml.jackson.datatype.joda.JodaModule;
 
 @SuppressWarnings("serial")

@@ -30,14 +30,13 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.access.ExceptionTranslationFilter;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.security.web.header.writers.frameoptions.XFrameOptionsHeaderWriter;
 
-import fr.wati.yacramanager.services.CustomUserDetailsService;
 import fr.wati.yacramanager.web.filters.AjaxTimeoutRedirectFilter;
 
 /**
@@ -57,7 +56,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	private PasswordEncoder passwordEncoder;
 
 	@Autowired
-	private CustomUserDetailsService customUserDetailsService;
+	private UserDetailsService userDetailsService;
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
@@ -147,11 +146,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		return jdbcTokenRepositoryImpl;
 	}
 
-	@Bean
-	public PasswordEncoder getPasswordEncoder() {
-		return new BCryptPasswordEncoder(env.getProperty(
-				"bcrypt.encoder.strength", Integer.class));
-	}
+	
 
 	@Bean
 	public AjaxTimeoutRedirectFilter ajaxTimeoutRedirectFilter() {
@@ -183,7 +178,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	public DaoAuthenticationProvider authenticationProvider() {
 		DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
 		authenticationProvider.setPasswordEncoder(passwordEncoder);
-		authenticationProvider.setUserDetailsService(customUserDetailsService);
+		authenticationProvider.setUserDetailsService(userDetailsService);
 		return authenticationProvider;
 	}
 }

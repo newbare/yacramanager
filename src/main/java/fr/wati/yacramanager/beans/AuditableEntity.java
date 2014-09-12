@@ -32,12 +32,12 @@ public abstract class AuditableEntity implements Serializable {
 
 	@CreatedDate
 //    @NotNull
-    @Type(type="org.joda.time.contrib.hibernate.PersistentDateTime")
+    @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     private DateTime createdDate = DateTime.now();
 
     @LastModifiedDate
 //    @NotNull
-    @Type(type="org.joda.time.contrib.hibernate.PersistentDateTime")
+    @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     private DateTime lastModifiedDate = DateTime.now();
 
     @JsonIgnore

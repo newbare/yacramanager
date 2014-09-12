@@ -2,8 +2,10 @@ package fr.wati.yacramanager.config;
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
-import org.apache.commons.dbcp.BasicDataSource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContextException;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
@@ -19,12 +21,16 @@ import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories(basePackages="fr.wati.yacramanager.dao")
 @EnableJpaAuditing
 public class PersistenceConfig 
 {
+	private Logger log=LoggerFactory.getLogger(PersistenceConfig.class);
 	@Autowired
 	private Environment env;
 	
@@ -46,6 +52,11 @@ public class PersistenceConfig
 		factory.setJpaVendorAdapter(vendorAdapter);
 		factory.setPackagesToScan("fr.wati.yacramanager.beans");
 		factory.getJpaPropertyMap().put("jadira.usertype.autoRegisterUserTypes", "true");
+		factory.getJpaPropertyMap().put("hibernate.cache.use_second_level_cache", env.getProperty("hibernate.cache.use_second_level_cache"));
+		factory.getJpaPropertyMap().put("hibernate.cache.use_query_cache", env.getProperty("hibernate.cache.use_query_cache"));
+		factory.getJpaPropertyMap().put("hibernate.generate_statistics", env.getProperty("hibernate.generate_statistics"));
+		factory.getJpaPropertyMap().put("hibernate.cache.region.factory_class", env.getProperty("hibernate.cache.region.factory_class"));
+		
 		//factory.getJpaPropertyMap().put("hibernate.ejb.naming_strategy",CustomNamingStrategy.class.getName());
 //		Properties jpaProperties = new Properties();
 //		jpaProperties.put("hibernate.hbm2ddl.auto", env.getProperty("hibernate.hbm2ddl.auto"));
@@ -55,28 +66,7 @@ public class PersistenceConfig
 		return factory;
 	}
 	
-//	@Bean
-//	public HibernateTemplate hibernateTemplate(){
-//		HibernateTemplate hibernateTemplate=new HibernateTemplate(sessionFactory());
-//		hibernateTemplate.setSessionFactory(sessionFactory());
-//		return hibernateTemplate;
-//	}
-//	
-//	/**
-//	 * @return
-//	 */
-//	@Bean
-//	public SessionFactory sessionFactory() {
-//		AnnotationSessionFactoryBean annotationSessionFactoryBean=new AnnotationSessionFactoryBean();
-//		annotationSessionFactoryBean.setDataSource(dataSource());
-//		annotationSessionFactoryBean.setPackagesToScan(new String[]{"fr.wati.yacramanager"});
-//		Properties hibernateProperties=new Properties();
-//		hibernateProperties.put("hibernate.dialect", env.getProperty("hibernate.dialect"));
-//		hibernateProperties.put("hibernate.show_sql", env.getProperty("hibernate.show_sql"));
-//		hibernateProperties.put("hibernate.hbm2ddl.auto", env.getProperty("hibernate.hbm2ddl.auto"));
-//		annotationSessionFactoryBean.setHibernateProperties(hibernateProperties);
-//		return annotationSessionFactoryBean.getObject();
-//	}
+
 	@Bean
 	public HibernateExceptionTranslator hibernateExceptionTranslator()
 	{
@@ -85,12 +75,42 @@ public class PersistenceConfig
 	@Bean
 	public DataSource dataSource()
 	{
-		BasicDataSource dataSource = new BasicDataSource();
-		dataSource.setDriverClassName(env.getProperty("jdbc.driverClassName"));
-		dataSource.setUrl(env.getProperty("jdbc.url"));
-		dataSource.setUsername(env.getProperty("jdbc.username"));
-		dataSource.setPassword(env.getProperty("jdbc.password"));
-		return dataSource;
+		log.debug("Configuring Datasource");
+        if (env.getProperty("dataSource.url") == null && env.getProperty("dataSource.databaseName") == null) {
+            log.error("Your database connection pool configuration is incorrect! The application" +
+                    "cannot start.");
+
+            throw new ApplicationContextException("Database connection pool is not configured correctly");
+        }
+        HikariConfig config = new HikariConfig();
+        config.setDataSourceClassName(env.getProperty("dataSource.dataSourceClassName"));
+        if (env.getProperty("url") == null || "".equals(env.getProperty("dataSource.url"))) {
+            config.addDataSourceProperty("databaseName", env.getProperty("dataSource.databaseName"));
+            config.addDataSourceProperty("serverName", env.getProperty("dataSource.serverName"));
+        } else {
+            config.addDataSourceProperty("url", env.getProperty("dataSource.url"));
+        }
+        config.addDataSourceProperty("user", env.getProperty("dataSource.username"));
+        config.addDataSourceProperty("password", env.getProperty("dataSource.password"));
+
+        //MySQL optimizations, see https://github.com/brettwooldridge/HikariCP/wiki/MySQL-Configuration
+        if ("com.mysql.jdbc.jdbc2.optional.MysqlDataSource".equals(env.getProperty("dataSource.dataSourceClassName"))) {
+            config.addDataSourceProperty("cachePrepStmts", env.getProperty("dataSource.cachePrepStmts", "true"));
+            config.addDataSourceProperty("prepStmtCacheSize", env.getProperty("dataSource.prepStmtCacheSize", "250"));
+            config.addDataSourceProperty("prepStmtCacheSqlLimit", env.getProperty("dataSource.prepStmtCacheSqlLimit", "2048"));
+            config.addDataSourceProperty("useServerPrepStmts", env.getProperty("dataSource.useServerPrepStmts", "true"));
+        }
+        return new HikariDataSource(config);
+		
+		
+//		HikariConfig config = new HikariConfig("database-yacra.properties");
+//		HikariDataSource dataSource = new HikariDataSource(config);
+//		BasicDataSource dataSource = new BasicDataSource();
+//		dataSource.setDriverClassName(env.getProperty("jdbc.driverClassName"));
+//		dataSource.setUrl(env.getProperty("jdbc.url"));
+//		dataSource.setUsername(env.getProperty("jdbc.username"));
+//		dataSource.setPassword(env.getProperty("jdbc.password"));
+//		return dataSource;
 	}
 	@Bean
 	public DataSourceInitializer dataSourceInitializer(DataSource dataSource) 

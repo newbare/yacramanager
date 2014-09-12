@@ -18,11 +18,15 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 /**
  * @author Rachid Ouattara
  * 
  */
 @Entity
+@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 @SuppressWarnings("serial")
 public class Role implements Serializable {
 

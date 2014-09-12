@@ -23,7 +23,7 @@ import fr.wati.yacramanager.dao.repository.UserRepository;
  * @author Rachid Ouattara
  *
  */
-@Service
+@Service(value="userDetailsService")
 @Transactional(readOnly = true)
 public class CustomUserDetailsService implements UserDetailsService {
 

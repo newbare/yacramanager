@@ -580,13 +580,6 @@ App.config([ '$stateProvider', '$urlRouterProvider','$locationProvider',
 				url : "/logs",
 				templateUrl : _contextPath+'/views/app/admin/admin-logs.html',
 				controller : LogsController,
-				 resolve: {
-                     resolvedLogsResponse:function (LogsService) {
-                    	return LogsService.findAll({page:'0',size:'100'},function(result){
-                        	 return result;
-                         });
-                     }
-                 },
                  data: {
  					ncyBreadcrumbLabel: 'Logs'
  				  }
