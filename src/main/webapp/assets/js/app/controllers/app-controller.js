@@ -65,18 +65,10 @@ App.config(function($tooltipProvider) {
   });
 });
 
-App.controller('AppCtrl', [ '$scope', '$location', 'UsersREST','$rootScope','$translate','$locale',
-		function($scope, $location, UsersREST,$rootScope,$translate,$locale) {
+App.controller('AppCtrl', [ '$scope', '$location', 'UsersREST','$rootScope','$translate','$locale','LanguageService',
+		function($scope, $location, UsersREST,$rootScope,$translate,$locale,LanguageService) {
 			
 			$scope.eventsToWait=['userInfo'];
-			$scope.currentLanguage=$translate.preferredLanguage();
-			$scope.toggleLanguage = function (key) {
-				 if(key===$translate.use()){
-					 return;
-				 }   
-				 $translate.use(key);
-				 $scope.currentLanguage=key;
-			};
 			$scope.navClass = function(page) {
 				var currentRoute = $location.path().substring(1) || 'home';
 				return currentRoute.indexOf(page)==0 ? 'active' :'';
@@ -99,6 +91,23 @@ App.controller('AppCtrl', [ '$scope', '$location', 'UsersREST','$rootScope','$tr
 				return 'REJECTED'==data.validationStatus;
 			}
 		} ]);
+
+App.controller('LanguageController', function ($scope, $translate, LanguageService) {
+    $scope.changeLanguage = function (languageKey) {
+        $translate.use(languageKey);
+
+        LanguageService.getBy(languageKey).then(function(languages) {
+            $scope.languages = languages;
+        });
+        $scope.currentLanguage=languageKey;
+    };
+
+    LanguageService.getBy().then(function (languages) {
+        $scope.languages = languages;
+        $scope.currentLanguage=$translate.use();
+    });
+    
+});
 
 App.controller('WorkLogCtrl',['$scope','$http','WorkLogREST','alertService',function($scope,$http,WorkLogREST,alertService){
 	 $scope.timerRunning = false;
@@ -216,8 +225,8 @@ App.controller('LoginCtrl', [ '$scope','$http','authService',function($scope,$ht
 	    }
 }]);
 
-App.config([ '$stateProvider', '$urlRouterProvider','$locationProvider',
-		function($stateProvider, $urlRouterProvider,$locationProvider) {
+App.config([ '$stateProvider', '$urlRouterProvider','$locationProvider','$translateProvider','tmhDynamicLocaleProvider',
+		function($stateProvider, $urlRouterProvider,$locationProvider,$translateProvider,tmhDynamicLocaleProvider) {
 
 //	 		if(window.history && window.history.pushState){
 //	 			$locationProvider.html5Mode(true);
@@ -603,7 +612,21 @@ App.config([ '$stateProvider', '$urlRouterProvider','$locationProvider',
 				url : "/settings",
 				templateUrl : _contextPath+'/views/app/admin/admin-settings.html',
 				controller : AdminSettingsController
-			})
+			});
+			
+			$translateProvider.useStaticFilesLoader({
+			      prefix: _contextPath+'/assets/i18n/',
+			      suffix: '.json'
+			});
+			
+			$translateProvider.preferredLanguage('en');
+
+			$translateProvider.useCookieStorage();
+
+			tmhDynamicLocaleProvider
+					.localeLocationPattern(_contextPath+'/assets/bower_components/angular-i18n/angular-locale_{{locale}}.js')
+			tmhDynamicLocaleProvider
+					.useCookieStorage('NG_TRANSLATE_LANG_KEY');
 
 		} ]);
 

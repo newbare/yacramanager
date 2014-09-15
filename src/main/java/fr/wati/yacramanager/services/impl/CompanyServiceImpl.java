@@ -1,5 +1,7 @@
 package fr.wati.yacramanager.services.impl;
 
+import javax.annotation.security.RolesAllowed;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
@@ -12,6 +14,7 @@ import fr.wati.yacramanager.beans.Activities.ActivityOperation;
 import fr.wati.yacramanager.beans.Client;
 import fr.wati.yacramanager.beans.Company;
 import fr.wati.yacramanager.beans.Company_;
+import fr.wati.yacramanager.beans.Role;
 import fr.wati.yacramanager.dao.repository.CompanyRepository;
 import fr.wati.yacramanager.dao.repository.ContactRepository;
 import fr.wati.yacramanager.dao.specifications.CommonSpecifications;
@@ -101,6 +104,7 @@ public class CompanyServiceImpl implements CompanyService {
 	}
 
 	@Override
+	@RolesAllowed(Role.ROLE_ADMIN)
 	public Company createCompany(Company company) {
 		Company saveCompany = companyRepository.save(company);
 		/*

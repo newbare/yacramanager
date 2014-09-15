@@ -29,6 +29,25 @@ App.directive('updateTitle', function($rootScope) {
 	    }
 	  }
 	});
+App.directive('activeMenu', function($translate, $locale, tmhDynamicLocale) {
+    return {
+        restrict: 'A',
+        link: function(scope, element, attrs, controller) {
+            var language = attrs.activeMenu;
+
+            scope.$watch(function() {
+                return $translate.use();
+            }, function(selectedLanguage) {
+                if (language === selectedLanguage) {
+                    tmhDynamicLocale.set(language);
+                    element.addClass('active');
+                } else {
+                    element.removeClass('active');
+                }
+            });
+        }
+    };
+})
 App.directive('httpRequestError', [ '$rootScope', 'alertService', 'notifService',
                      		function($rootScope, alertService, notifService) {
                      			return {
@@ -36,7 +55,7 @@ App.directive('httpRequestError', [ '$rootScope', 'alertService', 'notifService'
                      				link : function(scope, elem, attrs, ctrl) {
                      					scope.$on('event:http-request-error', function(event, error) {
                      						//notifService.notify('error',error.title+': <strong>'+error.status+'</strong>',error.data);
-                     						alertService.show('danger',error.title+': '+error.status,error.data);
+                     						alertService.show('danger',error.title+': '+error.status,JSON.stringify(error.data));
                      					});
                      				}
                      			};

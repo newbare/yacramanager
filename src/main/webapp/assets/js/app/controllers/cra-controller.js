@@ -18,8 +18,16 @@ function CraController($scope,$rootScope,CraREST,$filter,$http,WorkLogREST,alert
 			"requesterId" : _userId
 		}).$promise.then(function(result) {
 			$scope.absencePortfolio=result.result;
+			$scope.totalPortfolioRemaining=$scope.countTotalPortfolio($scope.absencePortfolio);
 		});
 	}
+	$scope.countTotalPortfolio=function(absencePortfolios){
+		var total=0;
+		angular.forEach(absencePortfolios,function(item){
+			total+=item.remaining;
+		});
+		return total;
+	};
 	$scope.refreshPortfolio();
 	
 	$scope.absencePeriods = [ {

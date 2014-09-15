@@ -68,23 +68,20 @@ public class AttachementController {
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	@Timed
-	public ResponseEntity<String> getFile(@PathVariable("id") Long id,HttpServletResponse response) throws RestServiceException {
-		
+	public void getFile(@PathVariable("id") Long id,HttpServletResponse response) throws RestServiceException {
 		try {
-
 			List<Attachement> attachementsByIds = attachementService
 					.findAttachementsByIds(id);
 			if (!attachementsByIds.isEmpty()) {
 				InputStream inputStream = new ByteArrayInputStream(attachementService.getAttachementContent(id));
 				IOUtils.copy(inputStream, response.getOutputStream());
-				response.setContentType("text/html;charset=UTF-8");
 				response.setContentType(attachementsByIds.get(0).getContentType());
-				response.setHeader("Content-Disposition",
-	                       "attachment; filename=" + attachementsByIds.get(0).getName());
+				String fileName=attachementsByIds.get(0).getName();
+				if (fileName != null) {
+                    response.setHeader("Content-Disposition", String.format("attachment; filename=\"%s\"", fileName));
+                }
 				response.flushBuffer();
-				return new ResponseEntity<String>(HttpStatus.FOUND);
 			}
-			return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
 		} catch (IOException ex) {
 			LOG.info(ex.getMessage(),ex);
 			throw new RestServiceException("IOError writing file to output stream");

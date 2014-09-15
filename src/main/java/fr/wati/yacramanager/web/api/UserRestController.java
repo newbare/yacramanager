@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javax.annotation.security.RolesAllowed;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
@@ -32,6 +33,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import com.codahale.metrics.annotation.Timed;
 
 import fr.wati.yacramanager.beans.Employe;
+import fr.wati.yacramanager.beans.Role;
 import fr.wati.yacramanager.dao.repository.EmployeDto;
 import fr.wati.yacramanager.dao.repository.EmployeRepository;
 import fr.wati.yacramanager.services.EmployeService;
@@ -94,6 +96,7 @@ public class UserRestController implements RestCrudController<EmployeDto> {
 
 	@RequestMapping(method = RequestMethod.POST)
 	@Timed
+	@RolesAllowed(Role.ROLE_SSII_ADMIN)
 	public ResponseEntity<String> create(@RequestBody EmployeDto employeDto) {
 		
 		employeService.createNewEmployee(employeDto, employeDto.getCompanyId(), employeDto.getManagerId());

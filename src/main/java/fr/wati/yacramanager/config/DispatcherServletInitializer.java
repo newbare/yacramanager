@@ -34,7 +34,10 @@ import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatche
 
 import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.servlet.InstrumentedFilter;
+import com.codahale.metrics.servlets.HealthCheckServlet;
 import com.codahale.metrics.servlets.MetricsServlet;
+
+import fr.wati.yacramanager.config.metrics.HealthCheckCustomServlet;
 
 public class DispatcherServletInitializer extends
 		AbstractAnnotationConfigDispatcherServletInitializer {
@@ -93,7 +96,9 @@ public class DispatcherServletInitializer extends
         		MetricsConfiguration.METRIC_REGISTRY);
         servletContext.setAttribute(MetricsServlet.METRICS_REGISTRY,
         		MetricsConfiguration.METRIC_REGISTRY);
-
+        
+        servletContext.setAttribute(HealthCheckServlet.HEALTH_CHECK_REGISTRY, MetricsConfiguration.HEALTH_CHECK_REGISTRY);
+        
         log.debug("Registering Metrics Filter");
         FilterRegistration.Dynamic metricsFilter = servletContext.addFilter("webappMetricsFilter",
                 new InstrumentedFilter());
@@ -105,9 +110,17 @@ public class DispatcherServletInitializer extends
         ServletRegistration.Dynamic metricsAdminServlet =
                 servletContext.addServlet("metricsServlet", new MetricsServlet());
 
-        metricsAdminServlet.addMapping("/app/admin/metrics/*");
+        metricsAdminServlet.addMapping("/app/admin/metrics");
         metricsAdminServlet.setAsyncSupported(true);
         metricsAdminServlet.setLoadOnStartup(2);
+
+        log.debug("Registering HealthCheck Servlet");
+        ServletRegistration.Dynamic healthCheckAdminServlet =
+                servletContext.addServlet("healthCheckServlet", new HealthCheckCustomServlet());
+
+        healthCheckAdminServlet.addMapping("/app/admin/health");
+        healthCheckAdminServlet.setAsyncSupported(true);
+        healthCheckAdminServlet.setLoadOnStartup(3);
     }
 	
 }

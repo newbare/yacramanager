@@ -171,12 +171,18 @@
 						data-ui-sref="messages"><i class="fa fa-envelope"></i></a></li>
 					<!-- <li data-ng-class="navClass('notifications')"><a
 						data-ui-sref="notifications"><i class="fa fa-bell"></i></a></li> -->
-					<li class="dropdown">
-						<a class="dropdown-toggle"	data-toggle="dropdown" href=""><i class="fa fa-globe"></i>{{currentLanguage | uppercase}}</a>
-						<ul class="dropdown-menu inverse-dropdown" role="menu">
-							<li><a href="" data-ng-click="toggleLanguage('fr')"><img class="flag flag-fr"/><span style="padding-left: 10px">Fr</span></a></li>
-							<li><a href="" data-ng-click="toggleLanguage('en')"><img class="flag flag-gb"/><span style="padding-left: 10px">Eng</span></a></li>
-						</ul>
+					<li class="dropdown" data-ng-controller="LanguageController">
+						 <a class="dropdown-toggle" data-toggle="dropdown" href="javascript:;">
+                             <span>
+                                 <i class="fa fa-globe"></i>
+                                 <span class="hidden-tablet">{{currentLanguage | uppercase}}</span>
+                             </span>
+                         </a>
+                         <ul class="dropdown-menu inverse-dropdown">
+                             <li data-active-menu="{{key}}" data-ng-repeat="(key, language) in languages">
+                                 <a href="" data-ng-click="changeLanguage(key)">{{language}}</a>
+                             </li>
+                         </ul>
 					</li>
 					<li
 						data-ng-class="navClass('user-settings') + navClass('user-profile')"
@@ -238,6 +244,7 @@
 		th:src="@{/assets/bower_components/jquery-ui/jquery-ui.min.js}"></script>
 	<script th:src="@{/assets/bower_components/angular/angular.js}"></script>
 	<script th:src="@{/assets/js/app/application.js}"></script>
+	<script th:src="@{/assets/js/app/constants.js}"></script>
 	<script th:src="@{/assets/js/jquery.jOrgChart.js}"></script>
 	<script
 		th:src="@{/assets/js/app/controllers/app-controller.js}"></script>
@@ -262,6 +269,10 @@
 		th:src="@{/assets/bower_components/angular-route/angular-route.min.js}"></script>
 	<script
 		th:src="@{/assets/bower_components/angular-strap/dist/angular-strap.min.js}"></script>
+	<script 
+		th:src="@{/assets/bower_components/angular-cookies/angular-cookies.js}"></script>
+	<script 
+		th:src="@{/assets/bower_components/angular-dynamic-locale/src/tmhDynamicLocale.js}"></script>
 	<script
 		th:src="@{/assets/bower_components/angular-strap/dist/modules/popover.js}"></script>
 	<script
@@ -290,6 +301,8 @@
 		th:src="@{/assets/bower_components/angular-translate/angular-translate.min.js}"></script>
 	<script
 		th:src="@{/assets/bower_components/angular-translate-loader-static-files/angular-translate-loader-static-files.min.js}"></script>
+	<script
+		th:src="@{/assets/bower_components/angular-translate-storage-cookie/angular-translate-storage-cookie.min.js}"></script>
 	<script
 		th:src="@{/assets/bower_components/angular-strap/dist/modules/modal.js}"></script>
 	<script

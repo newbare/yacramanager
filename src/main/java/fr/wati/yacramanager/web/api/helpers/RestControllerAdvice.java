@@ -9,6 +9,8 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -44,6 +46,7 @@ import fr.wati.yacramanager.web.api.WorkLogRestController;
 		TaskRestController.class,CraController.class,AuthenticationController.class})
 public class RestControllerAdvice {
 
+	private Logger logger=LoggerFactory.getLogger(RestControllerAdvice.class);
 	@Autowired
 	private SimpMessagingTemplate messagingTemplate;
 
@@ -64,7 +67,7 @@ public class RestControllerAdvice {
 			throws IOException {
 		// messagingTemplate.convertAndSendToUser(SecurityUtils.getConnectedUser().getUsername(),
 		// "/queue/errors", ex.getMessage());
-		ex.printStackTrace();
+		logger.error(ex.getMessage(), ex);
 		return ex.getMessage();
 
 	}

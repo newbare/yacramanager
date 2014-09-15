@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javax.annotation.security.RolesAllowed;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -29,6 +31,7 @@ import com.codahale.metrics.annotation.Timed;
 import fr.wati.yacramanager.beans.Client;
 import fr.wati.yacramanager.beans.Company;
 import fr.wati.yacramanager.beans.Contact;
+import fr.wati.yacramanager.beans.Role;
 import fr.wati.yacramanager.services.ClientService;
 import fr.wati.yacramanager.services.CompanyService;
 import fr.wati.yacramanager.services.impl.DtoMapper;
@@ -145,6 +148,7 @@ public class ClientController {
 
 	@RequestMapping(method = RequestMethod.POST)
 	@Timed
+	@RolesAllowed(Role.ROLE_SSII_ADMIN)
 	public ResponseEntity<String> create(
 			@PathVariable("companyId") Long companyId, @RequestBody ClientDTO dto) {
 		Company company = companyService.findOne(companyId);
@@ -154,6 +158,7 @@ public class ClientController {
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	@Timed
+	@RolesAllowed(Role.ROLE_SSII_ADMIN)
 	public void delete(@PathVariable("companyId") Long companyId,
 			@PathVariable("id") Long id) {
 		Company company = companyService.findOne(companyId);

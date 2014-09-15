@@ -43,7 +43,7 @@ import fr.wati.yacramanager.services.CustomObjectMapper;
 @ComponentScan(basePackages = { "fr.wati.yacramanager.web" })
 @PropertySource(value = { "classpath:database-yacra.properties" })
 @EnableWebMvc
-@Import(value={MetricsConfiguration.class,AspectConfiguration.class})
+@Import(value={MetricsConfiguration.class,AspectConfiguration.class,LocaleConfiguration.class})
 public class WebConfig extends WebMvcConfigurerAdapter {
 	private Logger logger = LoggerFactory.getLogger(WebConfig.class);
 
@@ -119,17 +119,6 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 	}
 
 	
-	@Bean
-    public MessageSource messageSource() {
-        final ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
-        messageSource.setBasename("classpath:/i18n/messages");
-        messageSource.setDefaultEncoding("UTF-8");
-        messageSource.setCacheSeconds(environment.getProperty("cacheSeconds", Integer.class, 1));
-        return messageSource;
-    }
-	
-	
-
 	@Bean
 	public StandardServletMultipartResolver multipartResolver() {
 		return new StandardServletMultipartResolver();

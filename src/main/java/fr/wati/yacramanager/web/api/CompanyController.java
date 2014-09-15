@@ -124,6 +124,7 @@ public class CompanyController implements RestCrudController<CompanyDTO> {
 	@Override
 	@RequestMapping(method = RequestMethod.POST)
 	@Timed
+	@RolesAllowed(Role.ROLE_ADMIN)
 	public ResponseEntity<String> create(@RequestBody CompanyDTO dto) {
 		companyService.createCompany(dto.toCompany(new Company()));
 		return new ResponseEntity<String>(HttpStatus.CREATED);

@@ -44,6 +44,21 @@ App.factory("AbsenceREST", function($resource) {
 	});
 });
 
+App.factory('LanguageService', function ($http, $translate, LANGUAGES) {
+    return {
+        getBy: function(language) {
+            if (language == undefined) {
+                language = $translate.storage().get('NG_TRANSLATE_LANG_KEY');
+            }
+
+            var promise =  $http.get( _contextPath+'/assets/i18n/' + language + '.json').then(function(response) {
+                return LANGUAGES;
+            });
+            return promise;
+        }
+    };
+});
+
 App.factory("CompanyREST", function($resource) {
 	return $resource(_contextPath + "/app/api/company/:id", {}, {
 		update : {
@@ -86,16 +101,16 @@ App.factory('MetricsService', function($resource) {
 // };
 // });
 //
-// jhipsterApp.factory('HealthCheckService', function ($rootScope, $http) {
-// return {
-// check: function() {
-// var promise = $http.get('health').then(function(response){
-// return response.data;
-// });
-// return promise;
-// }
-// };
-// });
+App.factory('HealthCheckService', function($rootScope, $http) {
+	return {
+		check : function() {
+			var promise = $http.get(_contextPath + '/app/admin/health').then(function(response) {
+				return response.data;
+			});
+			return promise;
+		}
+	};
+});
 
 App.factory("EmployeesREST", function($resource) {
 	return $resource(_contextPath + "/app/api/users/:id", {}, {

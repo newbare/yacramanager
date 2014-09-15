@@ -66,7 +66,7 @@ var App = angular.module('yaCRAApp', [ 'ngResource', 'mgcrea.ngStrap',
 		'http-auth-interceptor', 'timer', 'localytics.directives',
 		'daterangepicker', 'pascalprecht.translate', 'angular-loading-bar',
 		'ngQuickDate', 'xeditable', 'colorpicker.module', 'angular.filter',
-		'truncate','ncy-angular-breadcrumb' ]);
+		'truncate','ncy-angular-breadcrumb','ngCookies','tmh.dynamicLocale' ]);
 
 
 App.config(['$httpProvider', function($httpProvider,$modal) {
@@ -76,18 +76,12 @@ App.config(['$httpProvider', function($httpProvider,$modal) {
     $httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
 }]);
 
-App.config(['$translateProvider', function ($translateProvider) {
-	$translateProvider.preferredLanguage('en');
-    $translateProvider.useStaticFilesLoader({
-      prefix: _contextPath+'/assets/i18n/messages_',
-      suffix: '.json'
-    });
-}]);
-
 App.config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
     cfpLoadingBarProvider.parentSelector = '.main';
   }])
 
+  
+  
 App.run(function($rootScope, $templateCache, UsersREST) {
 	$rootScope.page = '';
 	// $templateCache.removeAll();

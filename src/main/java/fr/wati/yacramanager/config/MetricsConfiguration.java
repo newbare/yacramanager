@@ -22,6 +22,8 @@ import com.codahale.metrics.jvm.ThreadStatesGaugeSet;
 import com.ryantenney.metrics.spring.config.annotation.EnableMetrics;
 import com.ryantenney.metrics.spring.config.annotation.MetricsConfigurerAdapter;
 
+import fr.wati.yacramanager.config.metrics.DatabaseHealthCheck;
+
 @Configuration
 @EnableMetrics(proxyTargetClass = true)
 public class MetricsConfiguration extends MetricsConfigurerAdapter implements EnvironmentAware {
@@ -42,7 +44,7 @@ public class MetricsConfiguration extends MetricsConfigurerAdapter implements En
 
     public static final MetricRegistry METRIC_REGISTRY = new MetricRegistry();
 
-    private static final HealthCheckRegistry HEALTH_CHECK_REGISTRY = new HealthCheckRegistry();
+    public static final HealthCheckRegistry HEALTH_CHECK_REGISTRY = new HealthCheckRegistry();
 
     private Environment environment;
 
@@ -62,7 +64,14 @@ public class MetricsConfiguration extends MetricsConfigurerAdapter implements En
     public HealthCheckRegistry getHealthCheckRegistry() {
         return HEALTH_CHECK_REGISTRY;
     }
+    @Bean
+    public DatabaseHealthCheck databaseHealthCheck() {
+        return new DatabaseHealthCheck();
+    }
 
+    
+    
+    
     @PostConstruct
     public void init() {
         log.debug("Registring JVM gauges");
@@ -76,5 +85,6 @@ public class MetricsConfiguration extends MetricsConfigurerAdapter implements En
             final JmxReporter jmxReporter = JmxReporter.forRegistry(METRIC_REGISTRY).build();
             jmxReporter.start();
         }
+        HEALTH_CHECK_REGISTRY.register("database", databaseHealthCheck());
     }
 }
