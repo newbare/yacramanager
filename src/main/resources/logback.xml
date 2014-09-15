@@ -30,7 +30,7 @@
 	
     <logger name="javax.activation" level="WARN"/>
     <logger name="fr.wati.yacramanager" level="DEBUG"/>
-    <logger name="fr.wati.yacramanager.aop.LoggingAspect" level="DEBUG"/>
+    <logger name="fr.wati.yacramanager.aop.LoggingAspect" level="INFO"/>
     <logger name="ch.qos.logback" level="WARN"/>
     <logger name="com.codahale.metrics" level="WARN"/>
     <logger name="com.ryantenney" level="WARN"/>

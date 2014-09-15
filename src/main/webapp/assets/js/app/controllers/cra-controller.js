@@ -4,7 +4,6 @@ function CraController($scope,$rootScope,CraREST,$filter,$http,WorkLogREST,alert
 	$rootScope.page={"title":"CRA","description":"View and manage you CRA"};
 	$scope.dateFormat="dd MMMM yyyy";
 	$scope.craDateFormat="EEE dd/MM";
-	$scope.absencePortfolio={}
 	$scope.resetNewAbsence=function(){
 		$scope.newAbsence={};
 	};
@@ -12,23 +11,6 @@ function CraController($scope,$rootScope,CraREST,$filter,$http,WorkLogREST,alert
 	var formatDate=function(date){
 		return $filter('date')(date, 'yyyy-MM-dd');
 	};
-	
-	$scope.refreshPortfolio=function(){
-		AbsenceREST.getPortfolio({
-			"requesterId" : _userId
-		}).$promise.then(function(result) {
-			$scope.absencePortfolio=result.result;
-			$scope.totalPortfolioRemaining=$scope.countTotalPortfolio($scope.absencePortfolio);
-		});
-	}
-	$scope.countTotalPortfolio=function(absencePortfolios){
-		var total=0;
-		angular.forEach(absencePortfolios,function(item){
-			total+=item.remaining;
-		});
-		return total;
-	};
-	$scope.refreshPortfolio();
 	
 	$scope.absencePeriods = [ {
 		name : 'ALL',

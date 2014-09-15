@@ -136,7 +136,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	public void configure(WebSecurity web) throws Exception {
 		web.ignoring().antMatchers("/assets/bower_components/**")
-				.antMatchers("/assets/css/**").antMatchers("/assets/js/**");
+				.antMatchers("/assets/css/**").antMatchers("/assets/js/**")
+				.antMatchers("/swagger-ui/**");
 	}
 
 	@Bean

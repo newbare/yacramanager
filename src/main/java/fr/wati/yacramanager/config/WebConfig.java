@@ -43,7 +43,7 @@ import fr.wati.yacramanager.services.CustomObjectMapper;
 @ComponentScan(basePackages = { "fr.wati.yacramanager.web" })
 @PropertySource(value = { "classpath:database-yacra.properties" })
 @EnableWebMvc
-@Import(value={MetricsConfiguration.class,AspectConfiguration.class,LocaleConfiguration.class})
+@Import(value={MetricsConfiguration.class,AspectConfiguration.class,LocaleConfiguration.class,ELFinderConfig.class})
 public class WebConfig extends WebMvcConfigurerAdapter {
 	private Logger logger = LoggerFactory.getLogger(WebConfig.class);
 

@@ -31,6 +31,9 @@
 	th:href="@{/assets/bower_components/ngQuickDate/dist/ng-quick-date-default-theme.css}"/>
 <link rel="stylesheet"
 	th:href="@{/assets/bower_components/fullcalendar/fullcalendar.css}"/>
+
+<link rel="stylesheet"
+	th:href="@{/assets/bower_components/ng-finder/examples/css/elfinder.css}"/>
 	<link rel="stylesheet" th:href="@{/assets/bower_components/chosen/chosen.min.css}"/>
 <link rel="stylesheet"
 	th:href="@{/assets/bower_components/jquery.gritter/css/jquery.gritter.css}"/>
@@ -52,6 +55,10 @@
 </script>
 </head>
 <body data-ng-controller="AppCtrl" data-web-socket="" data-auth-application-support="" class="waiting-for-angular" data-events-to-wait="eventsToWait" data-application-loading-support="" data-connection-lost-support="">
+	<!-- <div class="development-ribbon"></div> -->
+	<div class="ribbon">
+  		<a href="">Developpement</a>
+	</div>
 	<div id="initializing-panel"></div>
 	<div id="app-login-content" data-ng-controller="LoginCtrl">
 		<div class="row">
@@ -124,6 +131,8 @@
 								data-ui-sref="absences">{{'app.navbar.menu.absences' | translate}}</a></li>
 							<li data-ng-class="navClass('timesheet')"><a
 								data-ui-sref="timesheet">{{'app.navbar.menu.timesheet' | translate}}</a></li>
+							<li data-ng-class="navClass('files')"><a
+								data-ui-sref="files">{{'app.navbar.menu.files' | translate}}</a></li>
 						</ul>
 					</li>
 					<li data-ng-class="navClass('tasks')" class="visible-md-inline visible-lg-inline">
@@ -197,6 +206,8 @@
 							<li><a data-ui-sref="user-settings"><i class="fa fa-cog"></i>{{'app.navbar.menu.settings' | translate}}</a></li>
 							<li><a data-ui-sref="user-profile"><i class="fa fa-user"></i>
 									{{'app.navbar.menu.profile' | translate}}</a></li>
+							<li class="divider"></li>
+							<li><a data-ui-sref="api-docs">{{'app.navbar.menu.api.doc' | translate}}</a></li>
 							<li class="divider"></li>
 							<li><a th:href="@{/auth/logout}"><i
 									class="fa fa-power-off"></i>{{'app.navbar.menu.logout' | translate}}</a></li>
@@ -295,6 +306,10 @@
 		th:src="@{/assets/bower_components/angular-strap/dist/modules/select.js}"></script>
 	<script
 		th:src="@{/assets/bower_components/moment/moment.js}"></script>
+	<script
+		th:src="@{/assets/bower_components/elfinder/js/elfinder.min.js}"></script>
+	<script
+		th:src="@{/assets/bower_components/ng-finder/ng-finder.src.js}"></script>
 		<script
 		th:src="@{/assets/bower_components/moment-range/lib/moment-range.js}"></script>
 	<script

@@ -204,6 +204,53 @@ App.directive('authApplicationSupport', function($timeout) {
       }
     });
 
+App.directive('absencePortfolio',['AbsenceREST', function(AbsenceREST) {
+    return {
+    	replace:true,
+        restrict: 'E',
+        template:'<fieldset data-collapsible-fieldset="Used on selected period" data-collapsible-fieldset-collapsed="true">'
+					+'<div>'
+					+'<div class="progress">'
+					+'  <div class="progress-bar progress-bar-striped " data-ng-class="{\'progress-bar-success\':$index==1,\'progress-bar-warning\':$index==2,\'progress-bar-info\':$index==3,\'progress-bar-danger\':$index==4}" '
+					+'	  		style="width: {{portfolio.remaining*100/totalPortfolioRemaining}}%" data-ng-repeat="portfolio in absencePortfolio" title="{{portfolio.typeAbsenceDTO.label}} {{portfolio.remaining*100/totalPortfolioRemaining |number:0 }}%">'
+					+'	    <span class="sr-only">portfolio.remaining*100/totalPortfolioRemaining</span>'
+					+'	    {{portfolio.typeAbsenceDTO.label | characters:15}} {{portfolio.remaining*100/totalPortfolioRemaining |number:0 }}%'
+					+'	  </div>'
+					+'	</div>'
+					+'</div>'
+					+'<div class="row">'
+					+'	<div class="col-md-4" data-ng-repeat="portfolio in absencePortfolio">'
+					+'		<div class="col-md-8"><span>{{portfolio.typeAbsenceDTO.label}}: </span></div>'
+					+'		<div class="col-md-4">'
+					+'			<span>'
+					+'				<strong>{{portfolio.remaining}}</strong>'
+					+'			</span>'
+					+'			</div>'
+					+'	</div>'
+					+'</div>'
+					+'</fieldset>',
+        link: function(scope, elem, attrs) {
+        	scope.absencePortfolio={};
+        	scope.refreshPortfolio=function(){
+        		AbsenceREST.getPortfolio({
+        			"requesterId" : _userId
+        		}).$promise.then(function(result) {
+        			scope.absencePortfolio=result.result;
+        			scope.totalPortfolioRemaining=scope.countTotalPortfolio(scope.absencePortfolio);
+        		});
+        	}
+        	scope.countTotalPortfolio=function(absencePortfolios){
+        		var total=0;
+        		angular.forEach(absencePortfolios,function(item){
+        			total+=item.remaining;
+        		});
+        		return total;
+        	};
+        	scope.refreshPortfolio();
+        }
+      }
+    }]);
+
 App.directive('applicationLoadingSupport', function($timeout) {
     return {
         restrict: 'A',

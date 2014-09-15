@@ -1,0 +1,13 @@
+{
+  "name": "ng-finder",
+  "version": "0.1.0",
+  "main": "ng-finder.js",
+  "ignore": [
+    "examples"
+  ],
+  "dependencies": {
+    "angular": "1.2.0-rc.2",
+    "elfinder": "~1.0.1",
+    "bootstrap": "~3.0.0"
+  }
+}

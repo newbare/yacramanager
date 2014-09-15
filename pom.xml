@@ -15,6 +15,7 @@
 		<codahale-metrics.version>3.0.2</codahale-metrics.version>
 		<usertype-core.version>3.2.0.GA</usertype-core.version>
 		<HikariCP.version>1.4.0</HikariCP.version>
+		<swagger-springmvc.version>0.8.8</swagger-springmvc.version>
 		<!-- log configuration -->
 		<logback.loglevel>DEBUG</logback.loglevel>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -84,6 +85,11 @@
 					<groupId>net.sf.ehcache</groupId>
 				</exclusion>
 			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>elfinder</groupId>
+			<artifactId>elfinder-servlet</artifactId>
+			<version>0.9</version>
 		</dependency>
 		<dependency>
 			<groupId>com.zaxxer</groupId>
@@ -349,6 +355,40 @@
 			<artifactId>postgresql</artifactId>
 			<version>9.3-1101-jdbc41</version>
 		</dependency>
+		 <dependency>
+            <groupId>com.mangofactory</groupId>
+            <artifactId>swagger-springmvc</artifactId>
+            <version>${swagger-springmvc.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.fasterxml.jackson.module</groupId>
+                    <artifactId>jackson-module-scala_2.10</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.scala-lang</groupId>
+                    <artifactId>scalap</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.scala-lang</groupId>
+                    <artifactId>scala-compiler</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+		 <dependency>
+		 	<groupId>commons-codec</groupId>
+		 	<artifactId>commons-codec</artifactId>
+		 	<version>1.8</version>
+		 </dependency>
+		 <dependency>
+		 	<groupId>commons-fileupload</groupId>
+		 	<artifactId>commons-fileupload</artifactId>
+		 	<version>1.3</version>
+		 </dependency>
+		 <dependency>
+		 	<groupId>org.json</groupId>
+		 	<artifactId>json</artifactId>
+		 	<version>20090211</version>
+		 </dependency>
 	</dependencies>
 
 	<repositories>

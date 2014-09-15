@@ -199,6 +199,10 @@ App.controller('WorkLogCtrl',['$scope','$http','WorkLogREST','alertService',func
  	$scope.resetWorkLog();
 }]);
 
+App.controller('FilesController',['$scope',function($scope){
+	$scope.fileConnectorURL=_contextPath+'/app/file-connector';
+}]);
+
 App.controller('LoginCtrl', [ '$scope','$http','authService',function($scope,$http, authService) {
 	$scope.submit = function() {
 	      $http({
@@ -312,7 +316,16 @@ App.config([ '$stateProvider', '$urlRouterProvider','$locationProvider','$transl
 			        pageTitle: 'Timesheet',
 			        ncyBreadcrumbLabel: 'Timesheet'
 			      }
+			}).state('files', {
+				url : "/files",
+				templateUrl : _contextPath+'/views/app/files.html',
+				controller : 'FilesController',
+				data: {
+			        pageTitle: 'Files',
+			        ncyBreadcrumbLabel: 'Files'
+			      }
 			})
+			
 			.state('messages', {
 				url : "/messages",
 				templateUrl : _contextPath+'/views/app/messages.html',
@@ -337,7 +350,12 @@ App.config([ '$stateProvider', '$urlRouterProvider','$locationProvider','$transl
 				url : "/user-profile",
 				templateUrl : _contextPath+'/views/app/user-profile.html',
 				controller : UserProfileController
-			}).state('company', {
+			}).state('api-docs', {
+				url : "/api-docs",
+				templateUrl : _contextPath+'/views/app/api-docs.html',
+				controller : UserProfileController
+			})
+			.state('company', {
 				url : "/company",
 				templateUrl : _contextPath+'/views/app/company.html',
 				controller : CompanyController,
