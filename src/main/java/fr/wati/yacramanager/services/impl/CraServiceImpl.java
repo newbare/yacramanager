@@ -137,72 +137,20 @@ public class CraServiceImpl implements CraService {
 					.findByEmployeAndStartDateBetween(currentEmploye,
 							startDate, endDate);
 			CraAbsenceDetail craAbsenceDetail = new CraAbsenceDetail();
+
+			//worklog part
 			List<WorkLog> employeWorkLogs = workLogService
-					.findByEmployeAndStartDateBetween(currentEmploye,
+					.findByEmployeAndStartDateBetweenAndExtratimeFalse(currentEmploye,
 							startDate, endDate);
-			// handle CraTaskRow
-			CraTaskRow craTaskRow = null;
-			Map<Long, CraTaskRow> craTaskMap=new HashMap<>();
-			for (WorkLog workLog : employeWorkLogs) {
-				if(craTaskMap.containsKey(workLog.getTask().getId())){
-					craTaskRow=craTaskMap.get(workLog.getTask().getId());
-				}else {
-					craTaskRow=new CraTaskRow();
-					ProjectDTO projectDTO = dtoMapper.map(workLog.getTask().getProject());
-					projectDTO.setClient(clientService.toClientDTO(workLog.getTask().getProject().getClient()));
-					craTaskRow.setProject(projectDTO);
-					craTaskRow.setTask(dtoMapper.map(workLog.getTask()));
-					craTaskMap.put(workLog.getTask().getId(), craTaskRow);
-					employeCraDetailsDTO.getTaskRows().add(craTaskRow);
-				}
-				for (DateTime currentDate = startDate; currentDate
-						.isBefore(endDate); currentDate = currentDate
-						.plusDays(1)) {
-					Long currentDuration = 0L;
-					switch (workLog.getWorkLogType()) {
-					case DURATION:
-						if (DateTimeComparator.getDateOnlyInstance().compare(
-								currentDate, workLog.getStartDate()) == 0) {
-							currentDuration = workLog.getDuration();
-						}
-						break;
-					case TIME:
-						if (DateUtils.isDayBetween(currentDate, workLog.getStartDate(),
-								workLog.getEndDate())) {
-							currentDuration = (workLog.getEndDate().getMillis() - workLog
-									.getStartDate().getMillis()) / 1000 / 60;
-						}
-						break;
-					default:
-						break;
-					}
-					if (!craTaskRow.getDuration().containsKey(currentDate)) {
-						craTaskRow.getDuration().put(currentDate,
-								currentDuration);
-					} else {
-						craTaskRow.getDuration().put(
-								currentDate,
-								craTaskRow.getDuration().get(currentDate)
-										+ currentDuration);
-					}
-					if(DateTimeComparator
-							.getDateOnlyInstance().compare(currentDate, workLog.getStartDate())==0){
-						if (!craTaskRow.getValidationStatus().containsKey(
-								currentDate)) {
-							craTaskRow.getValidationStatus().put(currentDate,
-									workLog.getValidationStatus());
-						} else {
-							craTaskRow.getValidationStatus().put(
-									currentDate,
-									ValidationStatus.isApprovedAndOperator(
-											craTaskRow.getValidationStatus().get(
-													currentDate),
-											workLog.getValidationStatus()));
-						}
-					}
-					
-				}
-			}
+			handleWorkLogPart(startDate, endDate, employeCraDetailsDTO.getTaskRows(),
+					employeWorkLogs);
+			
+			//Extra Time part
+			//worklog part
+			List<WorkLog> employeExtraTime = workLogService
+					.findExtraTime(currentEmploye,startDate, endDate);
+			handleWorkLogPart(startDate, endDate, employeCraDetailsDTO.getExtraTimeRows(),
+					employeExtraTime);
 
 			for (DateTime currentDate = startDate; currentDate
 					.isBefore(endDate); currentDate = currentDate.plusDays(1)) {
@@ -249,6 +197,79 @@ public class CraServiceImpl implements CraService {
 			}
 		}
 		return craDTO;
+	}
+
+
+
+
+
+	private void handleWorkLogPart(DateTime startDate, DateTime endDate,
+			List<CraTaskRow> taskRows,
+			List<WorkLog> employeWorkLogs) {
+		// handle CraTaskRow
+		CraTaskRow craTaskRow = null;
+		Map<Long, CraTaskRow> craTaskMap=new HashMap<>();
+		for (WorkLog workLog : employeWorkLogs) {
+			if(craTaskMap.containsKey(workLog.getTask().getId())){
+				craTaskRow=craTaskMap.get(workLog.getTask().getId());
+			}else {
+				craTaskRow=new CraTaskRow();
+				ProjectDTO projectDTO = dtoMapper.map(workLog.getTask().getProject());
+				projectDTO.setClient(clientService.toClientDTO(workLog.getTask().getProject().getClient()));
+				craTaskRow.setProject(projectDTO);
+				craTaskRow.setTask(dtoMapper.map(workLog.getTask()));
+				craTaskRow.setExtraTime(workLog.isExtraTime());
+				craTaskMap.put(workLog.getTask().getId(), craTaskRow);
+				taskRows.add(craTaskRow);
+			}
+			for (DateTime currentDate = startDate; currentDate
+					.isBefore(endDate); currentDate = currentDate
+					.plusDays(1)) {
+				Long currentDuration = 0L;
+				switch (workLog.getWorkLogType()) {
+				case DURATION:
+					if (DateTimeComparator.getDateOnlyInstance().compare(
+							currentDate, workLog.getStartDate()) == 0) {
+						currentDuration = workLog.getDuration();
+					}
+					break;
+				case TIME:
+					if (DateUtils.isDayBetween(currentDate, workLog.getStartDate(),
+							workLog.getEndDate())) {
+						currentDuration = (workLog.getEndDate().getMillis() - workLog
+								.getStartDate().getMillis()) / 1000 / 60;
+					}
+					break;
+				default:
+					break;
+				}
+				if (!craTaskRow.getDuration().containsKey(currentDate)) {
+					craTaskRow.getDuration().put(currentDate,
+							currentDuration);
+				} else {
+					craTaskRow.getDuration().put(
+							currentDate,
+							craTaskRow.getDuration().get(currentDate)
+									+ currentDuration);
+				}
+				if(DateTimeComparator
+						.getDateOnlyInstance().compare(currentDate, workLog.getStartDate())==0){
+					if (!craTaskRow.getValidationStatus().containsKey(
+							currentDate)) {
+						craTaskRow.getValidationStatus().put(currentDate,
+								workLog.getValidationStatus());
+					} else {
+						craTaskRow.getValidationStatus().put(
+								currentDate,
+								ValidationStatus.isApprovedAndOperator(
+										craTaskRow.getValidationStatus().get(
+												currentDate),
+										workLog.getValidationStatus()));
+					}
+				}
+				
+			}
+		}
 	}
 
 	@Override

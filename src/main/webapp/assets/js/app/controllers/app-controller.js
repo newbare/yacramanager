@@ -292,13 +292,13 @@ App.config([ '$stateProvider', '$urlRouterProvider','$locationProvider','$transl
 			        pageTitle: 'Frais',
 			        ncyBreadcrumbLabel: 'Frais'
 			      }
-			}).state('cra', {
-				url : "/cra",
-				templateUrl : _contextPath+'/views/app/cra.html',
-				controller : CraController,
+			}).state('activity-report', {
+				url : "/activity-report",
+				templateUrl : _contextPath+'/views/app/activity-report.html',
+				controller : ActivityReportController,
 				data: {
-			        pageTitle: 'CRA',
-			        ncyBreadcrumbLabel: 'CRA'
+			        pageTitle: 'Activity report',
+			        ncyBreadcrumbLabel: 'Activity report'
 			      }
 			}).state('absences', {
 				url : "/absences",
@@ -632,12 +632,12 @@ App.config([ '$stateProvider', '$urlRouterProvider','$locationProvider','$transl
 				controller : AdminSettingsController
 			});
 			
+			$translateProvider.preferredLanguage('en');
+			
 			$translateProvider.useStaticFilesLoader({
 			      prefix: _contextPath+'/assets/i18n/',
 			      suffix: '.json'
 			});
-			
-			$translateProvider.preferredLanguage('en');
 
 			$translateProvider.useCookieStorage();
 

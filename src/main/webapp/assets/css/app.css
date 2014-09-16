@@ -889,8 +889,8 @@ a .badge {
 
 /* End of Date picker section */
 .cra-container {
-	/* max-width: 100%;
-	overflow: auto; */
+	/* max-width: 100%;*/
+	overflow: auto;
 	
 }
 
@@ -914,7 +914,7 @@ a .badge {
 }
 
 .cra-table-task {
-	min-width: 20%;
+	min-width: 250px;
 }
 
 .scrollable-x {

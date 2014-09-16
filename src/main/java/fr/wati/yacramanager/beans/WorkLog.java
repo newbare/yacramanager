@@ -41,6 +41,7 @@ public class WorkLog extends AuditableEntity implements Valideable {
 	 */
 	private Long duration;
 	private String description;
+	private boolean extraTime;
 	@Enumerated(EnumType.ORDINAL)
 	private WorkLogType workLogType;
 	@Enumerated(EnumType.STRING)
@@ -56,6 +57,13 @@ public class WorkLog extends AuditableEntity implements Valideable {
 	 */
 	public void setId(Long id) {
 		this.id = id;
+	}
+	
+	public boolean isExtraTime() {
+		return extraTime;
+	}
+	public void setExtraTime(boolean extraTime) {
+		this.extraTime = extraTime;
 	}
 	/**
 	 * @return the task

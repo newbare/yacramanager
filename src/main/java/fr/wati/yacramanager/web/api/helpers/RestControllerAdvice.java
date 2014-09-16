@@ -26,7 +26,7 @@ import fr.wati.yacramanager.web.api.AbsenceController;
 import fr.wati.yacramanager.web.api.AuthenticationController;
 import fr.wati.yacramanager.web.api.ClientController;
 import fr.wati.yacramanager.web.api.CompanyController;
-import fr.wati.yacramanager.web.api.CraController;
+import fr.wati.yacramanager.web.api.ActivityReportController;
 import fr.wati.yacramanager.web.api.CustomMapEditor;
 import fr.wati.yacramanager.web.api.NoteDeFraisController;
 import fr.wati.yacramanager.web.api.ProjectController;
@@ -43,7 +43,7 @@ import fr.wati.yacramanager.web.api.WorkLogRestController;
 		AbsenceController.class, CompanyController.class,
 		ClientController.class, UserRestController.class,
 		ProjectController.class, WorkLogRestController.class,
-		TaskRestController.class,CraController.class,AuthenticationController.class})
+		TaskRestController.class,ActivityReportController.class,AuthenticationController.class})
 public class RestControllerAdvice {
 
 	private Logger logger=LoggerFactory.getLogger(RestControllerAdvice.class);

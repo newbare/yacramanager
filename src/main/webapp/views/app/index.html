@@ -56,9 +56,9 @@
 </head>
 <body data-ng-controller="AppCtrl" data-web-socket="" data-auth-application-support="" class="waiting-for-angular" data-events-to-wait="eventsToWait" data-application-loading-support="" data-connection-lost-support="">
 	<!-- <div class="development-ribbon"></div> -->
-	<div class="ribbon">
+	<!-- <div class="ribbon">
   		<a href="">Developpement</a>
-	</div>
+	</div> -->
 	<div id="initializing-panel"></div>
 	<div id="app-login-content" data-ng-controller="LoginCtrl">
 		<div class="row">
@@ -119,14 +119,14 @@
 					<li data-has-role="ROLE_SSII_ADMIN" data-ng-cloak=""
 						data-ng-class="navClass('company/')"><a
 						data-ui-sref="company"><i class="fa fa-university"></i>{{userInfo.company.name}}</a></li>
-					<li class="dropdown" data-ng-class="navClass('frais') + navClass('cra') + navClass('absences') + navClass('timesheet')">
+					<li class="dropdown" data-ng-class="navClass('frais') + navClass('activity-report') + navClass('absences') + navClass('timesheet')">
 						<a href="" class="dropdown-toggle" data-toggle="dropdown">{{'app.navbar.menu.workspace' | translate}}<span class="caret"></span></a>
 						<ul class="workspace-menu inverse-dropdown dropdown-menu " role="menu">
 							<li data-ng-class="navClass('tasks')" class="visible-xs-inline visible-sm-inline">
 								<a data-ui-sref="tasks"><i class="fa fa-tasks"></i>{{'app.navbar.menu.tasks' | translate}}</a>
 							</li>
 							<li data-ng-class="navClass('frais')"><a data-ui-sref="frais">{{'app.navbar.menu.frais' | translate}}</a></li>
-							<li data-ng-class="navClass('cra')"><a data-ui-sref="cra">{{'app.navbar.menu.cra' | translate}}</a></li>
+							<li data-ng-class="navClass('activity-report')"><a data-ui-sref="activity-report">{{'app.navbar.menu.cra' | translate}}</a></li>
 							<li data-ng-class="navClass('absences')"><a
 								data-ui-sref="absences">{{'app.navbar.menu.absences' | translate}}</a></li>
 							<li data-ng-class="navClass('timesheet')"><a
@@ -372,7 +372,7 @@
 	<script
 		th:src="@{/assets/js/app/controllers/tasks-controller.js}"></script>
 	<script
-		th:src="@{/assets/js/app/controllers/cra-controller.js}"></script>
+		th:src="@{/assets/js/app/controllers/activity-report-controller.js}"></script>
 	<script
 		th:src="@{/assets/js/app/controllers/user-settings-controller.js}"></script>
 	<script

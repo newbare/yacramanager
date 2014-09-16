@@ -219,9 +219,9 @@ App.directive('absencePortfolio',['AbsenceREST', function(AbsenceREST) {
 					+'	</div>'
 					+'</div>'
 					+'<div class="row">'
-					+'	<div class="col-md-4" data-ng-repeat="portfolio in absencePortfolio">'
-					+'		<div class="col-md-8"><span>{{portfolio.typeAbsenceDTO.label}}: </span></div>'
-					+'		<div class="col-md-4">'
+					+'	<div class="col-md-4 col-xs-12" data-ng-repeat="portfolio in absencePortfolio">'
+					+'		<div class="col-md-8 col-xs-6"><span>{{portfolio.typeAbsenceDTO.label}}: </span></div>'
+					+'		<div class="col-md-4 col-xs-2">'
 					+'			<span>'
 					+'				<strong>{{portfolio.remaining}}</strong>'
 					+'			</span>'
@@ -231,9 +231,13 @@ App.directive('absencePortfolio',['AbsenceREST', function(AbsenceREST) {
 					+'</fieldset>',
         link: function(scope, elem, attrs) {
         	scope.absencePortfolio={};
+        	var userID=attrs.userId || _userId;
+        	scope.$on('absence-portfolio-changed',function(){
+        		scope.refreshPortfolio();
+        	});
         	scope.refreshPortfolio=function(){
         		AbsenceREST.getPortfolio({
-        			"requesterId" : _userId
+        			"requesterId" : userID
         		}).$promise.then(function(result) {
         			scope.absencePortfolio=result.result;
         			scope.totalPortfolioRemaining=scope.countTotalPortfolio(scope.absencePortfolio);
@@ -338,6 +342,34 @@ App.directive('ngConfirm',function($modal) {
 						}
 	};
 });
+
+App.filter('range', function() {
+	  return function(input, total) {
+	    total = parseInt(total);
+	    for (var i=0; i<total; i++)
+	      input.push(i);
+	    return input;
+	  };
+	});
+
+App.filter('partition', function() {
+	  var cache = {};
+	  var filter = function(arr, size) {
+	    if (!arr) { return; }
+	    var newArr = [];
+	    for (var i=0; i<arr.length; i+=size) {
+	      newArr.push(arr.slice(i, i+size));
+	    }
+	    var arrString = JSON.stringify(arr);
+	    var fromCache = cache[arrString+size];
+	    if (JSON.stringify(fromCache) === JSON.stringify(newArr)) {
+	      return fromCache;
+	    }
+	    cache[arrString+size] = newArr;
+	    return newArr;
+	  };
+	  return filter;
+	});
 
 App.directive('passwordStrengthBar', function() {
     return {

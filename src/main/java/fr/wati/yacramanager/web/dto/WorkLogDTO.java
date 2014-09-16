@@ -22,6 +22,7 @@ public class WorkLogDTO implements Valideable{
 	private String projectName;
 	private String clientName;
 	private boolean editable=true;
+	private boolean extraTime;
 	private boolean allDay;
 	private String type;
 	private String color;
@@ -69,6 +70,16 @@ public class WorkLogDTO implements Valideable{
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+	
+	
+
+	public boolean isExtraTime() {
+		return extraTime;
+	}
+
+	public void setExtraTime(boolean extraTime) {
+		this.extraTime = extraTime;
 	}
 
 	public DateTime getStart() {

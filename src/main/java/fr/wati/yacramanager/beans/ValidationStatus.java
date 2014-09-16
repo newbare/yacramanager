@@ -2,7 +2,7 @@ package fr.wati.yacramanager.beans;
 
 public enum ValidationStatus {
 
-	WAIT_FOR_APPROVEMENT, APPROVED, REJECTED;
+	SAVED,WAIT_FOR_APPROVEMENT, APPROVED, REJECTED;
 
 	public static ValidationStatus isApprovedAndOperator(ValidationStatus status1,
 			ValidationStatus status2) {

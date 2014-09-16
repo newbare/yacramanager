@@ -49,7 +49,7 @@ import fr.wati.yacramanager.web.dto.AbsenceDTO.TypeAbsenceDTO;
 import fr.wati.yacramanager.web.dto.ApprovalDTO;
 import fr.wati.yacramanager.web.dto.ResponseWrapper;
 
-@RestController()
+@RestController
 @RequestMapping("/app/api/absences")
 public class AbsenceController  {
 

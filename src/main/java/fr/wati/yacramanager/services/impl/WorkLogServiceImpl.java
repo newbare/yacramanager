@@ -127,8 +127,7 @@ public class WorkLogServiceImpl implements WorkLogService,SpecificationFactory<W
 
 	@Override
 	public Page<WorkLog> findByEmploye(Employe employe, Pageable pageable) {
-		// TODO Auto-generated method stub
-		return null;
+		return workLogRepository.findByEmploye(employe, pageable);
 	}
 
 	@Override
@@ -173,5 +172,24 @@ public class WorkLogServiceImpl implements WorkLogService,SpecificationFactory<W
 	public void setApplicationEventPublisher(
 			ApplicationEventPublisher applicationEventPublisher) {
 		this.applicationEventPublisher=applicationEventPublisher;
+	}
+
+	@Override
+	public Page<WorkLog> findExtraTime(Employe employe, DateTime dateDebut,
+			DateTime dateFin, Pageable pageable) {
+		return workLogRepository.findByEmployeAndStartDateBetweenAndExtraTimeTrue(employe, dateDebut, dateFin, pageable);
+	}
+
+	@Override
+	public List<WorkLog> findExtraTime(Employe employe, DateTime dateDebut,
+			DateTime dateFin) {
+		return workLogRepository.findByEmployeAndStartDateBetweenAndExtraTimeTrue(employe, dateDebut, dateFin);
+	}
+
+	@Override
+	public List<WorkLog> findByEmployeAndStartDateBetweenAndExtratimeFalse(
+			Employe employe, DateTime dateDebut, DateTime dateFin) {
+		// TODO Auto-generated method stub
+		return workLogRepository.findByEmployeAndStartDateBetweenAndExtraTimeFalse(employe, dateDebut, dateFin);
 	}
 }

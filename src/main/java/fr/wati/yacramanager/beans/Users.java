@@ -48,6 +48,7 @@ public class Users extends AuditableEntity  {
 	@OneToMany
 	@JoinColumn(name="userId", referencedColumnName="id")
 	private List<Settings> settings=new ArrayList<>();
+	
 	/**
 	 * @return the password
 	 */

@@ -30,7 +30,7 @@ public class UserFsVolumeProvider extends SharedFsVolumeProvider {
 		Company company = ((Employe) users).getCompany();
 		userPath = company.getName() + File.separatorChar + users.getUsername()
 				+ "_" + users.getId();
-		String userRootFilePath = environment.getProperty("document.root.folder") + File.separator
+		String userRootFilePath = environment.getProperty("document.root.folder",environment.getProperty("user.home")+ File.separator+".yacra") + File.separator
 				+ userPath;
 		fsVolume.setRootDir(new File(userRootFilePath));
 		return fsVolume;

@@ -1,9 +1,10 @@
 'use strict';
 
-function CraController($scope,$rootScope,CraREST,$filter,$http,WorkLogREST,alertService,AbsenceREST) {
+function ActivityReportController($scope,$rootScope,ActivityReportREST,$filter,$http,WorkLogREST,alertService,AbsenceREST) {
 	$rootScope.page={"title":"CRA","description":"View and manage you CRA"};
 	$scope.dateFormat="dd MMMM yyyy";
 	$scope.craDateFormat="EEE dd/MM";
+	$scope.numberOfWeek=0;
 	$scope.resetNewAbsence=function(){
 		$scope.newAbsence={};
 	};
@@ -36,13 +37,14 @@ function CraController($scope,$rootScope,CraREST,$filter,$http,WorkLogREST,alert
 			$scope.dateRange={
 					startDate:$scope.currentDate.clone().startOf('isoWeek'),
 					endDate: $scope.currentDate.clone().endOf('isoWeek')
-			}
+			};
 		}else if ('month'===$scope.currentView) {
 			$scope.dateRange={
 					startDate:$scope.currentDate.clone().startOf('month'),
 					endDate: $scope.currentDate.clone().endOf('month')
-			}
+			};
 		}
+		$scope.numberOfWeek=($scope.dateRange.endDate.diff($scope.dateRange.startDate, 'days')+1)/7;
 		$scope.$broadcast('craViewChanged', $scope.currentView);
 	}
 	
@@ -103,7 +105,7 @@ function CraController($scope,$rootScope,CraREST,$filter,$http,WorkLogREST,alert
 			$scope.resetNewAbsence();
 			hideFn();
 			$scope.retrieveCraDetails($scope.currentFilter);
-			$scope.refreshPortfolio();
+			$scope.$broadcast('absence-portfolio-changed');
 		});
 	}
 	
@@ -154,16 +156,6 @@ function CraController($scope,$rootScope,CraREST,$filter,$http,WorkLogREST,alert
 			$scope.retrieveCraDetails(data);
 		};
 	
-//	$scope.retrieveCra=function(){
-//		$http.get(
-//				_contextPath + "/app/api/cra?start=" +$scope.dateRange.startDate.toISOString()+"&end="+$scope.dateRange.endDate.toISOString(), {
-//					params : {}
-//				}).then(function(response) {
-//					$scope.cra = response.data;
-//				    $scope.respStartDate=response.data.startDate;
-//				    $scope.respEndDate=response.data.endDate;
-//				});
-//	};
 	$scope.retrieveCraDetails=function(filter){
 		var userIds=[];
 		angular.forEach(filter,function(filterElement){
@@ -174,19 +166,14 @@ function CraController($scope,$rootScope,CraREST,$filter,$http,WorkLogREST,alert
 				
 			}
 		});
-		CraREST.getDetails({
+		ActivityReportREST.getDetails({
 			employeIds : userIds.join(),
 			start : $scope.dateRange.startDate.toISOString(),
 			end : $scope.dateRange.endDate.toISOString()
 		}).$promise.then(function(result) {
 			$scope.craDetails=result;
 		});
-//		$http.get(
-//				_contextPath + "/app/api/cra/details?employeIds="+userIds.join()+"&start=" +$scope.dateRange.startDate.toISOString()+"&end="+$scope.dateRange.endDate.toISOString(), {
-//					params : {}
-//				}).then(function(response) {
-//					$scope.craDetails = response.data;
-//				});
+
 	};
 	$scope.formatCraDetailDuration=function(duration){
 		return $filter('date')(duration*1000, 'shortTime');
@@ -242,12 +229,22 @@ function CraController($scope,$rootScope,CraREST,$filter,$http,WorkLogREST,alert
 		worklog.duration = diff;
 		worklog.taskId = taskRow.task.id;
 		worklog.taskName = taskRow.task.name;
-		worklog.description = 'Created from Cra view';
+		worklog.description = 'Created from activity report view';
 		worklog.employeId = _userId;
 		return WorkLogREST.save(worklog).$promise.then(function(result) {
 			alertService.show('success', 'Confirmation', 'Donn� sauvegard�');
 		});
 	};
 	
+	
+	$scope.sendForApproval=function(employeId){
+		ActivityReportREST.submit({
+			employeId : employeId,
+			startDate : $scope.dateRange.startDate.toISOString(),
+			endDate : $scope.dateRange.endDate.toISOString()
+		},{}).$promise.then(function(result) {
+			alertService.show('success','Activity report','The request has been sent!');
+		});
+	};
 	
 }

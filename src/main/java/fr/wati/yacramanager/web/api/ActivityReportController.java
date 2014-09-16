@@ -3,34 +3,44 @@ package fr.wati.yacramanager.web.api;
 import java.util.List;
 
 import org.joda.time.DateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
-import org.springframework.stereotype.Controller;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.codahale.metrics.annotation.Timed;
 
+import fr.wati.yacramanager.services.ActivityReportService;
 import fr.wati.yacramanager.services.CraService;
 import fr.wati.yacramanager.services.EmployeService;
+import fr.wati.yacramanager.services.ServiceException;
 import fr.wati.yacramanager.utils.SecurityUtils;
 import fr.wati.yacramanager.web.dto.CraDTO;
 import fr.wati.yacramanager.web.dto.CraDetailsDTO;
 
-@Controller
-@RequestMapping("/app/api/cra")
-public class CraController {
+@RestController
+@RequestMapping("/app/api/activity-report")
+public class ActivityReportController {
 
+	private Logger logger=LoggerFactory.getLogger(ActivityReportController.class);
 	@Autowired
 	private CraService craService;
 	
 	@Autowired
 	private EmployeService employeService;
+	
+	@Autowired
+	private ActivityReportService activityReportService;
 	
 	@InitBinder
     public void initBinder(WebDataBinder binder) {
@@ -50,5 +60,17 @@ public class CraController {
 	public @ResponseBody CraDetailsDTO getCraDetails(@RequestParam(value="employeIds", required=true) List<Long> employeIds, @RequestParam(value="start", required=true) @DateTimeFormat(iso=ISO.DATE_TIME) DateTime startDate, @RequestParam(value="end", required=true) @DateTimeFormat(iso=ISO.DATE_TIME) DateTime endDate){
 		CraDetailsDTO craDetailsDTO=craService.generateCraDetail(employeService.findAll(employeIds), startDate, endDate);
 		return craDetailsDTO;
+	}
+	
+	@RequestMapping(value="/submit", method=RequestMethod.POST)
+	@ResponseStatus(value = HttpStatus.OK)
+	@Timed
+	public void submitNewActivityReport(@RequestParam(value="employeId") Long employeId,@RequestParam(value="startDate") @DateTimeFormat(iso=ISO.DATE_TIME) DateTime startDate,@RequestParam(value="endDate") @DateTimeFormat(iso=ISO.DATE_TIME) DateTime endDate) throws RestServiceException{
+		try {
+			activityReportService.submitNewActivityReport(employeService.findOne(employeId), startDate, endDate);
+		} catch (ServiceException e) {
+			logger.error(e.getMessage(), e);
+			throw new RestServiceException(e);
+		}
 	}
 }

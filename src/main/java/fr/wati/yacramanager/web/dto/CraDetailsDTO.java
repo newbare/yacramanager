@@ -45,6 +45,7 @@ public class CraDetailsDTO {
 		private String employeName;
 		private List<CraDetailDay> days = new ArrayList<>();
 		private List<CraTaskRow> taskRows = new ArrayList<>();
+		private List<CraTaskRow> extraTimeRows = new ArrayList<>();
 		private CraAbsenceDetail craAbsenceDetail;
 
 		public Long getEmployeId() {
@@ -86,6 +87,16 @@ public class CraDetailsDTO {
 		public void setCraAbsenceDetail(CraAbsenceDetail craAbsenceDetail) {
 			this.craAbsenceDetail = craAbsenceDetail;
 		}
+
+		public List<CraTaskRow> getExtraTimeRows() {
+			return extraTimeRows;
+		}
+
+		public void setExtraTimeRows(List<CraTaskRow> extraTimeRows) {
+			this.extraTimeRows = extraTimeRows;
+		}
+		
+		
 	}
 
 	public static class CraDetailDay{
@@ -117,6 +128,7 @@ public class CraDetailsDTO {
 	public static class CraTaskRow {
 		private ProjectDTO project;
 		private TaskDTO task;
+		private boolean extraTime;
 		private Map<DateTime, Long> duration = new HashMap<>();
 		private Map<DateTime, ValidationStatus> validationStatus =new HashMap<>();
 
@@ -152,6 +164,15 @@ public class CraDetailsDTO {
 			this.validationStatus = validationStatus;
 		}
 
+		public boolean isExtraTime() {
+			return extraTime;
+		}
+
+		public void setExtraTime(boolean extraTime) {
+			this.extraTime = extraTime;
+		}
+
+		
 	}
 
 	public static class CraAbsenceDetail {

@@ -18,8 +18,17 @@ public interface WorkLogRepository extends JpaRepository<WorkLog, Long>,JpaSpeci
 
 	Page<WorkLog> findByEmployeAndStartDateBetween(Employe employe,
 			DateTime dateDebut, DateTime dateFin, Pageable pageable);
+	
+	Page<WorkLog> findByEmployeAndStartDateBetweenAndExtraTimeTrue(Employe employe,
+			DateTime dateDebut, DateTime dateFin, Pageable pageable);
 
 	List<WorkLog> findByEmployeAndStartDateBetween(Employe employe,
+			DateTime dateDebut, DateTime dateFin);
+	
+	List<WorkLog> findByEmployeAndStartDateBetweenAndExtraTimeFalse(Employe employe,
+			DateTime dateDebut, DateTime dateFin);
+	
+	List<WorkLog> findByEmployeAndStartDateBetweenAndExtraTimeTrue(Employe employe,
 			DateTime dateDebut, DateTime dateFin);
 
 	Page<WorkLog> findByEmploye(Employe employe, Pageable pageable);

@@ -171,13 +171,17 @@ App.factory("CompanySettingsREST", function($resource) {
 	});
 });
 
-App.factory("CraREST", function($resource) {
-	return $resource(_contextPath + "/app/api/cra",{},{
+App.factory("ActivityReportREST", function($resource) {
+	return $resource(_contextPath + "/app/api/activity-report",{},{
 		getDetails : {
-			url : _contextPath + "/app/api/cra/details",
+			url : _contextPath + "/app/api/activity-report/details",
 			method : 'GET',
 			isArray : false
 
+		},
+		submit : {
+			url : _contextPath + "/app/api/activity-report/submit",
+			method : 'POST'
 		}
 	});
 });

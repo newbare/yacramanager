@@ -298,6 +298,7 @@ public class DtoMapper {
 			break;
 		}
 		workLogDTO.setDescription(workLog.getDescription());
+		workLogDTO.setExtraTime(workLog.isExtraTime());
 		
 		return workLogDTO;
 	}
