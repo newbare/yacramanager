@@ -83,10 +83,13 @@ public class HealthCheckCustomServlet extends HealthCheckServlet {
         if (results.isEmpty()) {
             resp.setStatus(HttpServletResponse.SC_NOT_IMPLEMENTED);
         } else {
+        	/*
+        	 * Always return HttpServletResponse.SC_OK(200) as error must be in the response
+        	 */
             if (isAllHealthy(results)) {
                 resp.setStatus(HttpServletResponse.SC_OK);
             } else {
-                resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                resp.setStatus(HttpServletResponse.SC_OK);
             }
         }
 

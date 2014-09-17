@@ -54,6 +54,7 @@
 					</label>
 				</td>
 				<td data-title="'Task'" >
+					<h5 data-ng-show="worklog.extraTime"><span class="label label-danger"><strong><i class="fa fa-usd"></i></strong> Extra time</span></h5>
 					<h6><span><strong>{{ worklog.taskName}}</strong></span></h6><h6><span class="text-muted">{{ worklog.clientName}} - {{ worklog.projectName}}</span></h6>
 				</td>
 				<td data-title="'Description'" data-sortable="'description'" >{{ worklog.description}}</td>

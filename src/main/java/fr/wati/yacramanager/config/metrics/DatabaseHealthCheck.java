@@ -9,8 +9,6 @@ import javax.sql.DataSource;
 
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.EnvironmentAware;
-import org.springframework.core.env.Environment;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.ConnectionCallback;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -20,14 +18,12 @@ import org.springframework.util.StringUtils;
 import com.codahale.metrics.health.HealthCheck;
 
 @Component
-public class DatabaseHealthCheck extends HealthCheck implements
-		EnvironmentAware, InitializingBean {
+public class DatabaseHealthCheck extends HealthCheck implements InitializingBean {
 	@Autowired
 	private DataSource dataSource;
 
 	private JdbcTemplate jdbcTemplate;
 
-	private Environment environment;
 
 	private static Map<String, String> queries = new HashMap<String, String>();
 
@@ -64,17 +60,6 @@ public class DatabaseHealthCheck extends HealthCheck implements
 		}
 
 		return Result.healthy();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.springframework.context.EnvironmentAware#setEnvironment(org.
-	 * springframework.core.env.Environment)
-	 */
-	@Override
-	public void setEnvironment(Environment environment) {
-		this.environment = environment;
 	}
 
 	private String getProduct() {

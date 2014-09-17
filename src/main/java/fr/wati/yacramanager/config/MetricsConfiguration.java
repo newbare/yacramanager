@@ -23,68 +23,85 @@ import com.ryantenney.metrics.spring.config.annotation.EnableMetrics;
 import com.ryantenney.metrics.spring.config.annotation.MetricsConfigurerAdapter;
 
 import fr.wati.yacramanager.config.metrics.DatabaseHealthCheck;
+import fr.wati.yacramanager.config.metrics.MailHealthCheck;
+import fr.wati.yacramanager.config.metrics.WebSocketHealthCheck;
 
 @Configuration
 @EnableMetrics(proxyTargetClass = true)
-public class MetricsConfiguration extends MetricsConfigurerAdapter implements EnvironmentAware {
+public class MetricsConfiguration extends MetricsConfigurerAdapter implements
+		EnvironmentAware {
 
-    private static final String ENV_METRICS = "metrics.";
-    private static final String ENV_METRICS_GRAPHITE = "metrics.graphite.";
-    private static final String PROP_JMX_ENABLED = "metrics.jmx.enabled";
-    private static final String PROP_GRAPHITE_ENABLED = "enabled";
-    private static final String PROP_PORT = "port";
-    private static final String PROP_HOST = "host";
-    private static final String PROP_METRIC_REG_JVM_MEMORY = "jvm.memory";
-    private static final String PROP_METRIC_REG_JVM_GARBAGE = "jvm.garbage";
-    private static final String PROP_METRIC_REG_JVM_THREADS = "jvm.threads";
-    private static final String PROP_METRIC_REG_JVM_FILES = "jvm.files";
-    private static final String PROP_METRIC_REG_JVM_BUFFERS = "jvm.buffers";
+	private static final String PROP_JMX_ENABLED = "metrics.jmx.enabled";
+	private static final String PROP_METRIC_REG_JVM_MEMORY = "jvm.memory";
+	private static final String PROP_METRIC_REG_JVM_GARBAGE = "jvm.garbage";
+	private static final String PROP_METRIC_REG_JVM_THREADS = "jvm.threads";
+	private static final String PROP_METRIC_REG_JVM_FILES = "jvm.files";
+	private static final String PROP_METRIC_REG_JVM_BUFFERS = "jvm.buffers";
 
-    private final Logger log = LoggerFactory.getLogger(MetricsConfiguration.class);
+	private final Logger log = LoggerFactory
+			.getLogger(MetricsConfiguration.class);
 
-    public static final MetricRegistry METRIC_REGISTRY = new MetricRegistry();
+	public static final MetricRegistry METRIC_REGISTRY = new MetricRegistry();
 
-    public static final HealthCheckRegistry HEALTH_CHECK_REGISTRY = new HealthCheckRegistry();
+	public static final HealthCheckRegistry HEALTH_CHECK_REGISTRY = new HealthCheckRegistry();
 
-    private Environment environment;
+	private Environment environment;
 
-    @Override
-    public void setEnvironment(Environment environment) {
-        this.environment = environment;
-    }
+	@Override
+	public void setEnvironment(Environment environment) {
+		this.environment = environment;
+	}
 
-    @Override
-    @Bean
-    public MetricRegistry getMetricRegistry() {
-        return METRIC_REGISTRY;
-    }
+	@Override
+	@Bean
+	public MetricRegistry getMetricRegistry() {
+		return METRIC_REGISTRY;
+	}
 
-    @Override
-    @Bean
-    public HealthCheckRegistry getHealthCheckRegistry() {
-        return HEALTH_CHECK_REGISTRY;
-    }
-    @Bean
-    public DatabaseHealthCheck databaseHealthCheck() {
-        return new DatabaseHealthCheck();
-    }
+	@Override
+	@Bean
+	public HealthCheckRegistry getHealthCheckRegistry() {
+		return HEALTH_CHECK_REGISTRY;
+	}
 
-    
-    
-    
-    @PostConstruct
-    public void init() {
-        log.debug("Registring JVM gauges");
-        METRIC_REGISTRY.register(PROP_METRIC_REG_JVM_MEMORY, new MemoryUsageGaugeSet());
-        METRIC_REGISTRY.register(PROP_METRIC_REG_JVM_GARBAGE, new GarbageCollectorMetricSet());
-        METRIC_REGISTRY.register(PROP_METRIC_REG_JVM_THREADS, new ThreadStatesGaugeSet());
-        METRIC_REGISTRY.register(PROP_METRIC_REG_JVM_FILES, new FileDescriptorRatioGauge());
-        METRIC_REGISTRY.register(PROP_METRIC_REG_JVM_BUFFERS, new BufferPoolMetricSet(ManagementFactory.getPlatformMBeanServer()));
-        if (environment.getProperty(PROP_JMX_ENABLED, Boolean.class, false)) {
-            log.info("Initializing Metrics JMX reporting");
-            final JmxReporter jmxReporter = JmxReporter.forRegistry(METRIC_REGISTRY).build();
-            jmxReporter.start();
-        }
-        HEALTH_CHECK_REGISTRY.register("database", databaseHealthCheck());
-    }
+	@Bean
+	public DatabaseHealthCheck databaseHealthCheck() {
+		return new DatabaseHealthCheck();
+	}
+
+	@Bean
+	public MailHealthCheck mailHealthCheck() {
+		return new MailHealthCheck();
+	}
+	
+	@Bean
+	public WebSocketHealthCheck webSocketHealthCheck() {
+		return new WebSocketHealthCheck();
+	}
+
+	@PostConstruct
+	public void init() {
+		log.debug("Registring JVM gauges");
+		METRIC_REGISTRY.register(PROP_METRIC_REG_JVM_MEMORY,
+				new MemoryUsageGaugeSet());
+		METRIC_REGISTRY.register(PROP_METRIC_REG_JVM_GARBAGE,
+				new GarbageCollectorMetricSet());
+		METRIC_REGISTRY.register(PROP_METRIC_REG_JVM_THREADS,
+				new ThreadStatesGaugeSet());
+		METRIC_REGISTRY.register(PROP_METRIC_REG_JVM_FILES,
+				new FileDescriptorRatioGauge());
+		METRIC_REGISTRY.register(
+				PROP_METRIC_REG_JVM_BUFFERS,
+				new BufferPoolMetricSet(ManagementFactory
+						.getPlatformMBeanServer()));
+		if (environment.getProperty(PROP_JMX_ENABLED, Boolean.class, false)) {
+			log.info("Initializing Metrics JMX reporting");
+			final JmxReporter jmxReporter = JmxReporter.forRegistry(
+					METRIC_REGISTRY).build();
+			jmxReporter.start();
+		}
+		HEALTH_CHECK_REGISTRY.register("database", databaseHealthCheck());
+		HEALTH_CHECK_REGISTRY.register("mailService", mailHealthCheck());
+		HEALTH_CHECK_REGISTRY.register("webSocketBrokerService", webSocketHealthCheck());
+	}
 }

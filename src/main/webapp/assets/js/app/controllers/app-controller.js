@@ -632,7 +632,8 @@ App.config([ '$stateProvider', '$urlRouterProvider','$locationProvider','$transl
 				controller : AdminSettingsController
 			});
 			
-			$translateProvider.preferredLanguage('en');
+//			$translateProvider.preferredLanguage('en');
+			$translateProvider.determinePreferredLanguage()
 			
 			$translateProvider.useStaticFilesLoader({
 			      prefix: _contextPath+'/assets/i18n/',
