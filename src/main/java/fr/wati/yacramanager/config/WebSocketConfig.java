@@ -22,7 +22,7 @@ public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
 
 	@Override
 	public void configureMessageBroker(MessageBrokerRegistry registry) {
-		registry.enableSimpleBroker("/topic");
+//		registry.enableSimpleBroker("/topic");
 		StompBrokerRelayRegistration stompBrokerRelay = registry.enableStompBrokerRelay("/queue/", "/topic/");
 		stompBrokerRelay.setRelayHost(env.getProperty("stomp.broker.relay.host", "localhost"));
 		stompBrokerRelay.setRelayPort(env.getProperty("stomp.broker.relay.port", Integer.class,61613));

@@ -51,6 +51,18 @@ App.service('WebSocketService', function($timeout,notifService) {
 		});
 	};
 	
+	var subscribeToCompanyQueue=function(){
+		stompClient.subscribe("/user/queue/"+_userCompanyName, function(msg) {
+			notifService.notify('info','From company queue',msg.body)
+		});
+	};
+	
+	var subscribeToCompanyTopic=function(){
+		stompClient.subscribe("/topic/"+_userCompanyName, function(msg) {
+			notifService.notify('info','From company topic',msg.body)
+		});
+	};
+	
 	this.connect = function connect() {
 			var socket = new SockJS('/yacramanager/yacra');
 			stompClient = Stomp.over(socket);
@@ -63,6 +75,8 @@ App.service('WebSocketService', function($timeout,notifService) {
 				subscribeToCommonTopic();
 				subscribeToErrorQueue();
 				subscribeToInfoQueue();
+				subscribeToCompanyQueue();
+				subscribeToCompanyTopic();
 				});
 	};
 });

@@ -3,6 +3,7 @@ package fr.wati.yacramanager.web.api;
 import java.util.List;
 
 import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,7 +66,7 @@ public class ActivityReportController {
 	@RequestMapping(value="/submit", method=RequestMethod.POST)
 	@ResponseStatus(value = HttpStatus.OK)
 	@Timed
-	public void submitNewActivityReport(@RequestParam(value="employeId") Long employeId,@RequestParam(value="startDate") @DateTimeFormat(iso=ISO.DATE_TIME) DateTime startDate,@RequestParam(value="endDate") @DateTimeFormat(iso=ISO.DATE_TIME) DateTime endDate) throws RestServiceException{
+	public void submitNewActivityReport(@RequestParam(value="employeId") Long employeId,@RequestParam(value="startDate") @DateTimeFormat(iso=ISO.DATE) LocalDate startDate,@RequestParam(value="endDate") @DateTimeFormat(iso=ISO.DATE) LocalDate endDate) throws RestServiceException{
 		try {
 			activityReportService.submitNewActivityReport(employeService.findOne(employeId), startDate, endDate);
 		} catch (ServiceException e) {

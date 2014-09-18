@@ -1,6 +1,6 @@
 package fr.wati.yacramanager.services.impl;
 
-import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,8 +23,8 @@ public class ActivityReportServiceImpl implements ActivityReportService {
 	}
 
 	@Override
-	public void submitNewActivityReport(Employe employe, DateTime startDate,
-			DateTime endDate) throws ServiceException {
+	public void submitNewActivityReport(Employe employe, LocalDate startDate,
+			LocalDate endDate) throws ServiceException {
 		ActivityReport activityReport=new ActivityReport();
 		activityReport.setEmploye(employe);
 		activityReport.setStartDate(startDate);

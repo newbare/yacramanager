@@ -37,6 +37,7 @@ import org.thymeleaf.templateresolver.ITemplateResolver;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 import fr.wati.yacramanager.services.CustomObjectMapper;
+import fr.wati.yacramanager.web.thymeleaf.ThymeleafPdfViewResolver;
 
 @Configuration
 @EnableAspectJAutoProxy(proxyTargetClass = true)
@@ -64,20 +65,27 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 //	}
 
 	@Bean
-	public ViewResolver viewResolver(ResourceLoader resourceLoader) {
+	public ViewResolver appViewResolver(ResourceLoader resourceLoader) {
 		ThymeleafViewResolver thymeleafViewResolver = new ThymeleafViewResolver();
-		thymeleafViewResolver.setTemplateEngine(templateEngine());
+		thymeleafViewResolver.setTemplateEngine(appTemplateEngine());
 		thymeleafViewResolver.setCharacterEncoding("UTF-8");
 		return thymeleafViewResolver;
 	}
 	
 	@Bean
-	@Description("Thymeleaf template resolver serving HTML 5 emails")
+	public ViewResolver pdfViewResolver(ResourceLoader resourceLoader) {
+		ThymeleafPdfViewResolver thymeleafPdfViewResolver=new ThymeleafPdfViewResolver(); 
+		thymeleafPdfViewResolver.setTemplateEngine(pdfTemplateEngine());
+		thymeleafPdfViewResolver.setCharacterEncoding("UTF-8");
+		return thymeleafPdfViewResolver;
+	}
+	
+	@Bean
+	@Description("Thymeleaf template resolver serving HTML 5 app page")
 	public ServletContextTemplateResolver webTemplateResolver() {
 		ServletContextTemplateResolver webTemplateResolver = new ServletContextTemplateResolver();
 		webTemplateResolver.setPrefix("/views/");
 		webTemplateResolver.setSuffix(".html");
-		//webTemplateResolver.setTemplateMode("LEGACYHTML5");
 		webTemplateResolver.setTemplateMode("HTML5");
 		webTemplateResolver.setCharacterEncoding(CharEncoding.UTF_8);
 		webTemplateResolver.setCacheable(environment.getProperty("web.template.resolver.cache",Boolean.class,false));
@@ -99,11 +107,33 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 	}
 
 	@Bean
-	public SpringTemplateEngine templateEngine(){
+	@Description("Thymeleaf template resolver serving HTML 5 app page")
+	public ServletContextTemplateResolver pdfTemplateResolver() {
+		ServletContextTemplateResolver webTemplateResolver = new ServletContextTemplateResolver();
+		webTemplateResolver.setPrefix("/pdf/");
+		webTemplateResolver.setSuffix(".html");
+		webTemplateResolver.setTemplateMode("XHTML");
+		webTemplateResolver.setCharacterEncoding(CharEncoding.UTF_8);
+		webTemplateResolver.setCacheable(environment.getProperty("pdf.template.resolver.cache",Boolean.class,false));
+		webTemplateResolver.setOrder(1);
+		return webTemplateResolver;
+	}
+	
+	@Bean
+	public SpringTemplateEngine appTemplateEngine(){
 		SpringTemplateEngine springTemplateEngine=new SpringTemplateEngine();
 		Set<ITemplateResolver> templateResolvers=new HashSet<>();
 		templateResolvers.add(webTemplateResolver());
 		templateResolvers.add(emailTemplateResolver());
+		springTemplateEngine.setTemplateResolvers(templateResolvers);
+		return springTemplateEngine;
+	}	
+	
+	@Bean
+	public SpringTemplateEngine pdfTemplateEngine(){
+		SpringTemplateEngine springTemplateEngine=new SpringTemplateEngine();
+		Set<ITemplateResolver> templateResolvers=new HashSet<>();
+		templateResolvers.add(pdfTemplateResolver());
 		springTemplateEngine.setTemplateResolvers(templateResolvers);
 		return springTemplateEngine;
 	}	

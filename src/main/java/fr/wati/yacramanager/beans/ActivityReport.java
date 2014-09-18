@@ -11,7 +11,7 @@ import javax.persistence.OneToOne;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Type;
-import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 
 @SuppressWarnings("serial")
 @Entity
@@ -21,10 +21,10 @@ public class ActivityReport extends AuditableEntity implements Valideable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	@Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
-	private DateTime startDate;
-	@Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
-	private DateTime endDate;
+	@Type(type="org.jadira.usertype.dateandtime.joda.PersistentLocalDate")
+	private LocalDate startDate;
+	@Type(type="org.jadira.usertype.dateandtime.joda.PersistentLocalDate")
+	private LocalDate endDate;
 	@OneToOne
 	private Employe employe;
 	@Enumerated(EnumType.STRING)
@@ -60,25 +60,25 @@ public class ActivityReport extends AuditableEntity implements Valideable {
 
 
 
-	public DateTime getStartDate() {
+	public LocalDate getStartDate() {
 		return startDate;
 	}
 
 
 
-	public void setStartDate(DateTime startDate) {
+	public void setStartDate(LocalDate startDate) {
 		this.startDate = startDate;
 	}
 
 
 
-	public DateTime getEndDate() {
+	public LocalDate getEndDate() {
 		return endDate;
 	}
 
 
 
-	public void setEndDate(DateTime endDate) {
+	public void setEndDate(LocalDate endDate) {
 		this.endDate = endDate;
 	}
 
