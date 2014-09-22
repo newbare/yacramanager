@@ -38,6 +38,7 @@ import com.codahale.metrics.servlets.HealthCheckServlet;
 import com.codahale.metrics.servlets.MetricsServlet;
 
 import fr.wati.yacramanager.config.metrics.HealthCheckCustomServlet;
+import fr.wati.yacramanager.web.filters.PDFRendererFilter;
 
 public class DispatcherServletInitializer extends
 		AbstractAnnotationConfigDispatcherServletInitializer {
@@ -84,6 +85,12 @@ public class DispatcherServletInitializer extends
 		super.onStartup(servletContext);
 		 EnumSet<DispatcherType> disps = EnumSet.of(DispatcherType.REQUEST, DispatcherType.FORWARD, DispatcherType.ASYNC);
 	     initMetrics(servletContext, disps);
+	     /*
+	      * PDF filter
+	      */
+	     javax.servlet.FilterRegistration.Dynamic pdfFilter = servletContext.addFilter("pdfRendererFilter", PDFRendererFilter.class);
+	     pdfFilter.addMappingForUrlPatterns(disps, true, "/*");
+	     pdfFilter.setAsyncSupported(true);
 	     log.info("Web application fully configured");
 	}
 
