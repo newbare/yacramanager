@@ -67,6 +67,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 	@Bean
 	public ViewResolver appViewResolver(ResourceLoader resourceLoader) {
 		ThymeleafViewResolver thymeleafViewResolver = new ThymeleafViewResolver();
+		thymeleafViewResolver.setExcludedViewNames(new String[]{"*PDF"});
 		thymeleafViewResolver.setTemplateEngine(appTemplateEngine());
 		thymeleafViewResolver.setCharacterEncoding("UTF-8");
 		return thymeleafViewResolver;
@@ -75,6 +76,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 	@Bean
 	public ViewResolver pdfViewResolver(ResourceLoader resourceLoader) {
 		ThymeleafPdfViewResolver thymeleafPdfViewResolver=new ThymeleafPdfViewResolver(); 
+		thymeleafPdfViewResolver.setViewNames(new String[]{"*PDF"});
 		thymeleafPdfViewResolver.setTemplateEngine(pdfTemplateEngine());
 		thymeleafPdfViewResolver.setCharacterEncoding("UTF-8");
 		return thymeleafPdfViewResolver;
@@ -119,7 +121,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 		return webTemplateResolver;
 	}
 	
-	@Bean
+	@Bean(name="appTemplateEngine")
 	public SpringTemplateEngine appTemplateEngine(){
 		SpringTemplateEngine springTemplateEngine=new SpringTemplateEngine();
 		Set<ITemplateResolver> templateResolvers=new HashSet<>();

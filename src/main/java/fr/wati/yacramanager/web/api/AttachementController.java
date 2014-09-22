@@ -74,13 +74,14 @@ public class AttachementController {
 					.findAttachementsByIds(id);
 			if (!attachementsByIds.isEmpty()) {
 				InputStream inputStream = new ByteArrayInputStream(attachementService.getAttachementContent(id));
-				IOUtils.copy(inputStream, response.getOutputStream());
+				
 				response.setContentType(attachementsByIds.get(0).getContentType());
 				String fileName=attachementsByIds.get(0).getName();
 				if (fileName != null) {
                     response.setHeader("Content-Disposition", String.format("attachment; filename=\"%s\"", fileName));
                 }
-				response.flushBuffer();
+				IOUtils.copy(inputStream, response.getOutputStream());
+				//response.flushBuffer();
 			}
 		} catch (IOException ex) {
 			LOG.info(ex.getMessage(),ex);

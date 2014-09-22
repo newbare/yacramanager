@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -51,7 +52,7 @@ public class AuthenticationController {
 	@Autowired
 	private MailService mailService;
 
-	@Autowired
+	@Resource(name="appTemplateEngine")
 	private SpringTemplateEngine templateEngine;
 
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
