@@ -539,7 +539,7 @@
 					<keystoreFile>${project.basedir}/src/main/config/tomcat-ssl.keystore</keystoreFile>
 					<keystorePass>tomcat7</keystorePass>
 					<systemProperties>
-						<JAVA_OPTS>-Xms256m -Xmx512m -XX:MaxPermSize=256m</JAVA_OPTS>
+						<JAVA_OPTS>-Xmx1024m -XX:MaxPermSize=512m</JAVA_OPTS>
 					</systemProperties>
 				</configuration>
 			</plugin>

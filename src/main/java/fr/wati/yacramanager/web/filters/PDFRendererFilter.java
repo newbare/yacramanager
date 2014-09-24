@@ -50,12 +50,13 @@ public class PDFRendererFilter implements Filter {
 //                DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 //                documentBuilder.setEntityResolver(FSEntityResolver.instance());
                 //Document xhtmlContent = documentBuilder.parse(source);
-                Document xhtmlContent = XMLResource.load(source).getDocument();
+            	response.setContentType("application/pdf");
+            	Document xhtmlContent = XMLResource.load(source).getDocument();
                 ITextRenderer renderer = new ITextRenderer();
                 //renderer.setDocument(xhtmlContent, "");
-                renderer.setDocument(xhtmlContent, "");
+                renderer.setDocument(xhtmlContent, null);
                 renderer.layout();
-                response.setContentType("application/pdf");
+               
 
                 String filename = String.valueOf(request.getAttribute("filename"));
                 if (filename != null) {

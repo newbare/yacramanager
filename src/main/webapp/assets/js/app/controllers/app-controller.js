@@ -207,7 +207,7 @@ App.controller('LoginCtrl', [ '$scope','$http','authService',function($scope,$ht
 	$scope.submit = function() {
 	      $http({
 	    	  method: 'POST',
-	    	  url: _contextPath+'/auth/login/',
+	    	  url: _contextPath+'/auth/authentication',
 	    	  transformRequest: function( data, getHeaders){
 	    		  var headers = getHeaders();
 	    		  headers["Content-Type"] = "application/x-www-form-urlencoded; charset=utf-8";
