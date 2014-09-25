@@ -36,6 +36,7 @@ import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 import org.thymeleaf.templateresolver.ITemplateResolver;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
+import fr.wati.yacramanager.config.apidoc.SwaggerConfiguration;
 import fr.wati.yacramanager.services.CustomObjectMapper;
 
 @Configuration
@@ -43,53 +44,56 @@ import fr.wati.yacramanager.services.CustomObjectMapper;
 @ComponentScan(basePackages = { "fr.wati.yacramanager.web" })
 @PropertySource(value = { "classpath:database-yacra.properties" })
 @EnableWebMvc
-@Import(value={MetricsConfiguration.class,AspectConfiguration.class,LocaleConfiguration.class,ELFinderConfig.class})
+@Import(value = { MetricsConfiguration.class, AspectConfiguration.class,
+		LocaleConfiguration.class, ELFinderConfig.class,SwaggerConfiguration.class })
 public class WebConfig extends WebMvcConfigurerAdapter {
 	private Logger logger = LoggerFactory.getLogger(WebConfig.class);
 
 	@Autowired
 	private CustomObjectMapper customObjectMapper;
-	
-	@Autowired
-	private Environment  environment;
 
-//	@Bean
-//	public ViewResolver viewResolver(ResourceLoader resourceLoader) {
-//		InternalResourceViewResolver internalResourceViewResolver = new InternalResourceViewResolver();
-//		internalResourceViewResolver.setViewClass(JstlView.class);
-//		internalResourceViewResolver.setContentType("text/html;charset=UTF-8");
-//		internalResourceViewResolver.setPrefix("/views/");
-//		internalResourceViewResolver.setSuffix(".jsp");
-//		return internalResourceViewResolver;
-//	}
+	@Autowired
+	private Environment environment;
+
+	// @Bean
+	// public ViewResolver viewResolver(ResourceLoader resourceLoader) {
+	// InternalResourceViewResolver internalResourceViewResolver = new
+	// InternalResourceViewResolver();
+	// internalResourceViewResolver.setViewClass(JstlView.class);
+	// internalResourceViewResolver.setContentType("text/html;charset=UTF-8");
+	// internalResourceViewResolver.setPrefix("/views/");
+	// internalResourceViewResolver.setSuffix(".jsp");
+	// return internalResourceViewResolver;
+	// }
 
 	@Bean
 	public ViewResolver appViewResolver(ResourceLoader resourceLoader) {
 		ThymeleafViewResolver thymeleafViewResolver = new ThymeleafViewResolver();
-//		thymeleafViewResolver.setExcludedViewNames(new String[]{"*PDF"});
+		// thymeleafViewResolver.setExcludedViewNames(new String[]{"*PDF"});
 		thymeleafViewResolver.setTemplateEngine(appTemplateEngine());
 		thymeleafViewResolver.setCharacterEncoding("UTF-8");
 		return thymeleafViewResolver;
 	}
-	
-//	@Bean
-//	public ViewResolver pdfViewResolver(ResourceLoader resourceLoader) {
-//		ResourceBundleViewResolver bundleViewResolver = new ResourceBundleViewResolver();
-//		bundleViewResolver.setBasename("pdf.views");
-//		bundleViewResolver.setOrder(3);
-//		return bundleViewResolver;
-//	}
-	
-	
-//	@Bean
-//	public ViewResolver pdfViewResolver(ResourceLoader resourceLoader) {
-//		ThymeleafPdfViewResolver thymeleafPdfViewResolver=new ThymeleafPdfViewResolver(); 
-//		thymeleafPdfViewResolver.setViewNames(new String[]{"*PDF"});
-//		thymeleafPdfViewResolver.setTemplateEngine(pdfTemplateEngine());
-//		thymeleafPdfViewResolver.setCharacterEncoding("UTF-8");
-//		return thymeleafPdfViewResolver;
-//	}
-	
+
+	// @Bean
+	// public ViewResolver pdfViewResolver(ResourceLoader resourceLoader) {
+	// ResourceBundleViewResolver bundleViewResolver = new
+	// ResourceBundleViewResolver();
+	// bundleViewResolver.setBasename("pdf.views");
+	// bundleViewResolver.setOrder(3);
+	// return bundleViewResolver;
+	// }
+
+	// @Bean
+	// public ViewResolver pdfViewResolver(ResourceLoader resourceLoader) {
+	// ThymeleafPdfViewResolver thymeleafPdfViewResolver=new
+	// ThymeleafPdfViewResolver();
+	// thymeleafPdfViewResolver.setViewNames(new String[]{"*PDF"});
+	// thymeleafPdfViewResolver.setTemplateEngine(pdfTemplateEngine());
+	// thymeleafPdfViewResolver.setCharacterEncoding("UTF-8");
+	// return thymeleafPdfViewResolver;
+	// }
+
 	@Bean
 	@Description("Thymeleaf template resolver serving HTML 5 app page")
 	public ServletContextTemplateResolver webTemplateResolver() {
@@ -98,7 +102,8 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 		webTemplateResolver.setSuffix(".html");
 		webTemplateResolver.setTemplateMode("HTML5");
 		webTemplateResolver.setCharacterEncoding(CharEncoding.UTF_8);
-		webTemplateResolver.setCacheable(environment.getProperty("web.template.resolver.cache",Boolean.class,false));
+		webTemplateResolver.setCacheable(environment.getProperty(
+				"web.template.resolver.cache", Boolean.class, false));
 		webTemplateResolver.setOrder(1);
 		return webTemplateResolver;
 	}
@@ -107,47 +112,49 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 	@Description("Thymeleaf template resolver serving HTML 5 emails")
 	public ClassLoaderTemplateResolver emailTemplateResolver() {
 		ClassLoaderTemplateResolver emailTemplateResolver = new ClassLoaderTemplateResolver();
-        emailTemplateResolver.setPrefix("mails/");
-        emailTemplateResolver.setSuffix(".html");
+		emailTemplateResolver.setPrefix("mails/");
+		emailTemplateResolver.setSuffix(".html");
 		emailTemplateResolver.setTemplateMode("HTML5");
-		emailTemplateResolver.setCacheable(environment.getProperty("email.template.resolver.cache",Boolean.class,false));
+		emailTemplateResolver.setCacheable(environment.getProperty(
+				"email.template.resolver.cache", Boolean.class, false));
 		emailTemplateResolver.setCharacterEncoding(CharEncoding.UTF_8);
 		emailTemplateResolver.setOrder(2);
 		return emailTemplateResolver;
 	}
 
-//	@Bean
-//	@Description("Thymeleaf template resolver serving HTML 5 app page")
-//	public ServletContextTemplateResolver pdfTemplateResolver() {
-//		ServletContextTemplateResolver webTemplateResolver = new ServletContextTemplateResolver();
-//		webTemplateResolver.setPrefix("/pdf/");
-//		webTemplateResolver.setSuffix(".html");
-//		webTemplateResolver.setTemplateMode("XHTML");
-//		webTemplateResolver.setCharacterEncoding(CharEncoding.UTF_8);
-//		webTemplateResolver.setCacheable(environment.getProperty("pdf.template.resolver.cache",Boolean.class,false));
-//		webTemplateResolver.setOrder(1);
-//		return webTemplateResolver;
-//	}
-	
-	@Bean(name="appTemplateEngine")
-	public SpringTemplateEngine appTemplateEngine(){
-		SpringTemplateEngine springTemplateEngine=new SpringTemplateEngine();
-		Set<ITemplateResolver> templateResolvers=new HashSet<>();
+	// @Bean
+	// @Description("Thymeleaf template resolver serving HTML 5 app page")
+	// public ServletContextTemplateResolver pdfTemplateResolver() {
+	// ServletContextTemplateResolver webTemplateResolver = new
+	// ServletContextTemplateResolver();
+	// webTemplateResolver.setPrefix("/pdf/");
+	// webTemplateResolver.setSuffix(".html");
+	// webTemplateResolver.setTemplateMode("XHTML");
+	// webTemplateResolver.setCharacterEncoding(CharEncoding.UTF_8);
+	// webTemplateResolver.setCacheable(environment.getProperty("pdf.template.resolver.cache",Boolean.class,false));
+	// webTemplateResolver.setOrder(1);
+	// return webTemplateResolver;
+	// }
+
+	@Bean(name = "appTemplateEngine")
+	public SpringTemplateEngine appTemplateEngine() {
+		SpringTemplateEngine springTemplateEngine = new SpringTemplateEngine();
+		Set<ITemplateResolver> templateResolvers = new HashSet<>();
 		templateResolvers.add(webTemplateResolver());
 		templateResolvers.add(emailTemplateResolver());
 		springTemplateEngine.setTemplateResolvers(templateResolvers);
 		return springTemplateEngine;
-	}	
-	
-//	@Bean(name="pdfTemplateEngine")
-//	public SpringTemplateEngine pdfTemplateEngine(){
-//		SpringTemplateEngine springTemplateEngine=new SpringTemplateEngine();
-//		Set<ITemplateResolver> templateResolvers=new HashSet<>();
-//		templateResolvers.add(pdfTemplateResolver());
-//		springTemplateEngine.setTemplateResolvers(templateResolvers);
-//		return springTemplateEngine;
-//	}	
-	
+	}
+
+	// @Bean(name="pdfTemplateEngine")
+	// public SpringTemplateEngine pdfTemplateEngine(){
+	// SpringTemplateEngine springTemplateEngine=new SpringTemplateEngine();
+	// Set<ITemplateResolver> templateResolvers=new HashSet<>();
+	// templateResolvers.add(pdfTemplateResolver());
+	// springTemplateEngine.setTemplateResolvers(templateResolvers);
+	// return springTemplateEngine;
+	// }
+
 	@Bean
 	@Description("Spring mail message resolver")
 	public MessageSource emailMessageSource() {
@@ -158,7 +165,6 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 		return messageSource;
 	}
 
-	
 	@Bean
 	public StandardServletMultipartResolver multipartResolver() {
 		return new StandardServletMultipartResolver();

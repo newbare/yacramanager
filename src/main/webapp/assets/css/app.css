@@ -21,6 +21,11 @@
   background-color: #fff;
 }
 
+.navbar-custom .navbar-nav > li > a{
+	border-bottom: 3px solid transparent;	
+}
+
+
 .navbar-custom .navbar-nav > li > a:HOVER,
 .navbar-custom .navbar-nav > .active > a,
 .navbar-custom .navbar-nav > .active > a:hover,
@@ -250,9 +255,9 @@ table.table>tr>td.tool-btn-col,table.table>tbody>tr>td.tool-btn-col {
 }
 
 #loading-bar .bar {
-	top: 50px !important;
+	top: 54px !important;
 	height: 3px !important;
-	background: #d2d6d9 !important;
+	background: #2ECC71 !important;
 }
 
 #loading-bar-spinner {
@@ -265,15 +270,15 @@ table.table>tr>td.tool-btn-col,table.table>tbody>tr>td.tool-btn-col {
 
 /* Fancy blur effect */
 #loading-bar .peg {
-  -moz-box-shadow: #2C3E50 1px 0 6px 1px !important;
-  -ms-box-shadow: #2C3E50 1px 0 6px 1px !important;
-  -webkit-box-shadow: #2C3E50 1px 0 6px 1px !important;
-  box-shadow: #2C3E50 1px 0 6px 1px !important;
+  -moz-box-shadow: #2ECC71 1px 0 6px 1px !important;
+  -ms-box-shadow: #2ECC71 1px 0 6px 1px !important;
+  -webkit-box-shadow: #2ECC71 1px 0 6px 1px !important;
+  box-shadow: #2ECC71 1px 0 6px 1px !important;
 }
 
 #loading-bar-spinner .spinner-icon {
-  border-top-color:  #2C3E50 !important;
-  border-left-color: #2C3E50 !important;
+  border-top-color:  #2ECC71 !important;
+  border-left-color: #2ECC71 !important;
 }
 
 .popover.timesheet-event {
