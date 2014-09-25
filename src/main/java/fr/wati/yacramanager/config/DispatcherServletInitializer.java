@@ -88,9 +88,9 @@ public class DispatcherServletInitializer extends
 	     /*
 	      * PDF filter
 	      */
-	     javax.servlet.FilterRegistration.Dynamic pdfFilter = servletContext.addFilter("pdfRendererFilter", PDFRendererFilter.class);
-	     pdfFilter.addMappingForUrlPatterns(disps, true, "/*");
-	     pdfFilter.setAsyncSupported(true);
+//	     javax.servlet.FilterRegistration.Dynamic pdfFilter = servletContext.addFilter("pdfRendererFilter", PDFRendererFilter.class);
+//	     pdfFilter.addMappingForUrlPatterns(disps, true, "/*");
+//	     pdfFilter.setAsyncSupported(true);
 	     log.info("Web application fully configured");
 	}
 

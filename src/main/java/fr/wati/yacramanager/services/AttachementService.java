@@ -17,6 +17,8 @@ public interface AttachementService {
 	
 	List<Attachement> findAttachementsByIds(Long... ids);
 	
+	List<Attachement> findAllAttachementForEmploye(Long employeId);
+	
 	void removeAttachement(Attachement attachement);
 	
 	void update(Attachement attachement);

@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.codahale.metrics.annotation.Timed;
+import com.mangofactory.swagger.annotations.ApiIgnore;
 
 import fr.wati.yacramanager.beans.Company;
 import fr.wati.yacramanager.beans.Role;
@@ -40,6 +41,7 @@ import fr.wati.yacramanager.web.dto.CompanyDTO;
 import fr.wati.yacramanager.web.dto.ResponseWrapper;
 
 @RestController
+@ApiIgnore
 @RequestMapping("/app/api/company")
 public class CompanyController implements RestCrudController<CompanyDTO> {
 

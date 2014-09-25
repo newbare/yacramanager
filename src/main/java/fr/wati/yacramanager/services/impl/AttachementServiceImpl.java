@@ -10,8 +10,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import fr.wati.yacramanager.beans.Attachement;
+import fr.wati.yacramanager.beans.Employe;
 import fr.wati.yacramanager.dao.repository.AttachementRepository;
 import fr.wati.yacramanager.services.AttachementService;
+import fr.wati.yacramanager.services.EmployeService;
 
 /**
  * @author Rachid Ouattara
@@ -23,6 +25,9 @@ public class AttachementServiceImpl implements AttachementService {
 
 	@Autowired
 	private AttachementRepository attachementRepository;
+	
+	@Autowired
+	private EmployeService employeService;
 
 	/*
 	 * (non-Javadoc)
@@ -78,6 +83,12 @@ public class AttachementServiceImpl implements AttachementService {
 		Attachement attachement=attachementRepository.findOne(id);
 		byte[] content = attachement.getContent();
 		return content;
+	}
+
+	@Override
+	public List<Attachement> findAllAttachementForEmploye(Long employeId) {
+		Employe employe = employeService.findOne(employeId);
+		return attachementRepository.findByNoteDeFrais_Employe(employe);
 	}
 
 }

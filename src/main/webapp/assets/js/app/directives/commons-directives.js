@@ -436,4 +436,34 @@ App.directive('passwordStrengthBar', function() {
     }
 });
 
+App
+		.directive(
+				'ngJspdf',
+				function($compile) {
+					return {
+						restrict : 'E',
+						replace : true,
+						scope:true,
+						transclude : true,
+						template : '<a href="" data-ng-click="exportToPDF()" ng-transclude></a>"',
+						link : function($scope, elem, attrs) {
+							$scope.targetFragmentId = attrs.target;
+							$scope.fileName = attrs.filename;
+							
+							$scope.exportToPDF = function() {
+								var doc = new jsPDF('landscape');
+
+								// All units are in the set measurement for the
+								// document
+								// This can be changed to "pt" (points), "mm"
+								// (Default), "cm", "in"
+								doc.fromHTML($('#'+$scope.targetFragmentId).get(0), 15, 15, {
+									'width' : 170
+								});
+								doc.save($scope.fileName);
+							};
+						}
+					}
+				});
+
 

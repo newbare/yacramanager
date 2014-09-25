@@ -66,6 +66,23 @@ function ActivityReportController($scope,$rootScope,ActivityReportREST,$filter,$
 		$scope.refreshView();
 	};
 	
+	$scope.exportToPDF=function(){
+		var doc = new jsPDF('landscape');
+
+		var specialElementHandlers = {
+				'.tool-img': function(element, renderer){
+					return true;
+				}
+		};
+		// All units are in the set measurement for the document
+		// This can be changed to "pt" (points), "mm" (Default), "cm", "in"
+		doc.fromHTML($('#activity-report-fragment').get(0), 15, 15, {
+			'width': 170,
+			'elementHandlers': specialElementHandlers
+		});
+		doc.save('test-body.pdf');
+	};
+	
 	$scope.refreshView=function(){
 		$scope.updateCurrentview($scope.currentView);
 	};

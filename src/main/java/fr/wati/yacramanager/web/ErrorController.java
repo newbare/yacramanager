@@ -3,6 +3,7 @@ package fr.wati.yacramanager.web;
 import java.text.MessageFormat;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -15,8 +16,14 @@ import com.google.common.base.Throwables;
 public class ErrorController {
 
 	@RequestMapping("/error")
-	public ModelAndView error(HttpServletRequest httpServletRequest){
-		ModelAndView modelAndView=new ModelAndView("error");
+	public ModelAndView error(HttpServletRequest httpServletRequest,HttpServletResponse httpServletResponse){
+		int status=httpServletResponse.getStatus();
+		ModelAndView modelAndView=null;
+		if(status>=400){
+			modelAndView=new ModelAndView(String.valueOf(status));
+		}else {
+			modelAndView=new ModelAndView("error");
+		}
 		modelAndView.addObject("status", httpServletRequest.getAttribute("javax.servlet.error.status_code"));
 		modelAndView.addObject("reason", httpServletRequest.getAttribute("javax.servlet.error.message"));
 		// retrieve some useful information from the request

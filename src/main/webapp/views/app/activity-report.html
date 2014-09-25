@@ -25,6 +25,7 @@
 	  <li class="next"><a href="" data-ng-click="next()">{{'app.timesheet.toolbar.next' | translate}} <i class="fa fa-long-arrow-right"></i></a></li>
 	</ul>
 </div>
+<div id="activity-report-fragment">
 <div class="" data-ng-repeat="employeCraDetail in craDetails.employeCraDetailsDTOs">
 	<hr data-ng-show="craDetails.employeCraDetailsDTOs.length>1">
 	<div class="row">
@@ -33,7 +34,7 @@
 			<div class="btn-group btn-group-sm pull-right">
                     <button class="btn btn-default dropdown-toggle" data-toggle="dropdown"><i class="fa fa-file-o"></i> Export <span class="caret"></span></button>
                     <ul class="dropdown-menu" role="menu">
-				    <li><a href="#"><i class="fa fa-file-pdf-o"></i> Pdf</a></li>
+				    <li><data-ng-jspdf data-target="activity-report-fragment" data-filename="directive.pdf"><i class="fa fa-file-pdf-o"></i> Pdf</data-ng-jspdf></li>
 				    <li><a href="#"><i class="fa fa-file-excel-o"></i> Excel</a></li>
 				  </ul>
                     <button class="btn btn-default" ><i class="fa fa-print"></i> Print</button>
@@ -44,7 +45,7 @@
 	  	</div>
 	</div>
 	<div class="row">
-	<absence-portfolio data-user-id="{{employeCraDetail.employeId}}"></absence-portfolio>
+	<!-- <absence-portfolio data-user-id="{{employeCraDetail.employeId}}"></absence-portfolio> -->
 </div>
 	<div class="cra-container">
 	<div class="table-responsive">
@@ -176,6 +177,7 @@
     </span>
 </form>
 </script>
+</div>
 </div>
 </div>
 </div>

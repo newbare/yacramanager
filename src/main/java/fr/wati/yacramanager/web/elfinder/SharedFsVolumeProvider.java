@@ -11,19 +11,22 @@ import org.springframework.stereotype.Component;
 import cn.bluejoe.elfinder.service.FsVolume;
 import fr.wati.yacramanager.beans.Company;
 import fr.wati.yacramanager.beans.Employe;
-import fr.wati.yacramanager.beans.Users;
+import fr.wati.yacramanager.services.AttachementService;
 
 @Component
-public abstract class SharedFsVolumeProvider implements VolumeProvider {
+public abstract class SharedFsVolumeProvider implements VolumeProvider<Employe> {
 
 	@Autowired
 	private Environment environment;
 	
+	@Autowired
+	private AttachementService attachementService;
+	
 	@Override
-	public abstract FsVolume getUserPrivateVolume(Users users);
+	public abstract FsVolume getUserPrivateVolume(Employe users);
 
 	@Override
-	public List<FsVolume> getSharedVolumes(Users users) {
+	public List<FsVolume> getSharedVolumes(Employe users) {
 		List<FsVolume> fsVolumes=new ArrayList<>();
 		DefaultFsVolume fsVolume = new DefaultFsVolume();
 		String companyPublicPath = null;
@@ -38,10 +41,17 @@ public abstract class SharedFsVolumeProvider implements VolumeProvider {
 	}
 
 	@Override
-	public List<FsVolume> getAllVolumesForUser(Users users) {
+	public FsVolume getUserAttachementsVolume(Employe users) {
+		AttachementFsVolume attachementFsVolume=new AttachementFsVolume(attachementService.findAllAttachementForEmploye(users.getId()));
+		return attachementFsVolume;
+	}
+
+	@Override
+	public List<FsVolume> getAllVolumesForUser(Employe users) {
 		List<FsVolume> fsVolumes=new ArrayList<>();
 		fsVolumes.addAll(getSharedVolumes(users));
 		fsVolumes.add(getUserPrivateVolume(users));
+		fsVolumes.add(getUserAttachementsVolume(users));
 		return fsVolumes;
 	}
 

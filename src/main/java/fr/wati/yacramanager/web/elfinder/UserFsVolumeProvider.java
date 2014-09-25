@@ -10,7 +10,6 @@ import cn.bluejoe.elfinder.service.FsVolume;
 import fr.wati.yacramanager.beans.Company;
 import fr.wati.yacramanager.beans.Employe;
 import fr.wati.yacramanager.beans.Personne;
-import fr.wati.yacramanager.beans.Users;
 import fr.wati.yacramanager.services.CompanyService;
 
 @Component("UserFsVolumeProvider")
@@ -23,7 +22,7 @@ public class UserFsVolumeProvider extends SharedFsVolumeProvider {
 	private CompanyService companyService;
 
 	@Override
-	public FsVolume getUserPrivateVolume(Users users) {
+	public FsVolume getUserPrivateVolume(Employe users) {
 		DefaultFsVolume fsVolume = new DefaultFsVolume();
 		fsVolume.setName(((Personne) users).getUsername());
 		String userPath = null;

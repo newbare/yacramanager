@@ -3,13 +3,14 @@ package fr.wati.yacramanager.web.elfinder;
 import java.util.List;
 
 import cn.bluejoe.elfinder.service.FsVolume;
-import fr.wati.yacramanager.beans.Users;
 
-public interface VolumeProvider {
+public interface VolumeProvider<T> {
 
-	FsVolume getUserPrivateVolume(Users users);
+	FsVolume getUserPrivateVolume(T users);
 	
-	List<FsVolume> getSharedVolumes(Users users);
+	FsVolume getUserAttachementsVolume(T users);
 	
-	List<FsVolume> getAllVolumesForUser(Users users);
+	List<FsVolume> getSharedVolumes(T users);
+	
+	List<FsVolume> getAllVolumesForUser(T users);
 }

@@ -15,6 +15,7 @@ import cn.bluejoe.elfinder.service.FsServiceConfig;
 import cn.bluejoe.elfinder.service.FsVolume;
 import fr.wati.yacramanager.beans.Users;
 import fr.wati.yacramanager.utils.SecurityUtils;
+import fr.wati.yacramanager.web.elfinder.AttachementFsVolume.AttachementFsItem;
 
 @Component
 public class FileSystemService implements FsService, InitializingBean {
@@ -59,15 +60,24 @@ public class FileSystemService implements FsService, InitializingBean {
 
 	@Override
 	public String getHash(FsItem item) throws IOException {
-		String relativePath = item.getVolume().getPath(item);
-		String base = new String(Base64.encodeBase64(relativePath.getBytes()));
+		if(item instanceof AttachementFsItem){
+			if(((AttachementFsItem)item).getAttachement()!=null){
+				return String.valueOf(((AttachementFsItem)item).getAttachement().getId());
+			}else {
+				return "";
+			}
+		}else {
+			String relativePath = item.getVolume().getPath(item);
+			String base = new String(Base64.encodeBase64(relativePath.getBytes()));
 
-		for (String[] pair : escapes)
-		{
-			base = base.replace(pair[0], pair[1]);
+			for (String[] pair : escapes)
+			{
+				base = base.replace(pair[0], pair[1]);
+			}
+
+			return getVolumeId(item.getVolume()) + "_" + base;
 		}
-
-		return getVolumeId(item.getVolume()) + "_" + base;
+		
 	}
 
 	@Override
