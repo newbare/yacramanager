@@ -171,6 +171,7 @@ function AdminSettingsController($scope,$rootScope) {
 
 function LogsController($scope, LogsService,ngTableParams) {
     $scope.loggers = [];
+    $scope.totalLoggersCount = 0;
     $scope.filter='';
     
     $scope.changeLevel = function (name, level) {
@@ -200,6 +201,7 @@ function LogsController($scope, LogsService,ngTableParams) {
 							key:$scope.filter
 						},function(data) {
 					params.total(data.totalCount);
+					$scope.totalLoggersCount=data.totalCount;
 					$scope.startIndex=data.startIndex;
 					$scope.endIndex=data.endIndex;
 					if(data.totalCount>=1){

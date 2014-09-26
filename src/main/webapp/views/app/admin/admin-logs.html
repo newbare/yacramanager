@@ -1,6 +1,6 @@
 <div class="panel panel-default sub-panel">
 	<div class="panel-body">
-	    <p translate="logs.nbloggers" translate-values="{total: '{{ loggers.length }}'}">There are {{ loggers.length }} loggers.</p>
+	    <p translate="logs.nbloggers" translate-values="{total: '{{ totalLoggersCount }}'}">There are {{ totalLoggersCount }} loggers.</p>
 	    {{'logs.filter' | translate}} <input type="text" ng-change="doFilter()" data-ng-model="filter" data-ng-model-options="{ debounce: 1000 }" class="form-control">
 	    <hr>
 	    <div class="table-responsive">

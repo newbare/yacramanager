@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.collections.Closure;
 import org.apache.commons.collections.CollectionUtils;
@@ -15,18 +17,19 @@ import fr.wati.yacramanager.beans.Attachement;
 
 public class AttachementFsVolume implements FsVolume {
 
+	private static final String ROOT_PATH = "attachements";
+	private static final String PATH_SEPARATOR="_";
 	private List<Attachement> attachements=new ArrayList<>();
-	private List<AttachementFsItem> attachementFsItems=new ArrayList<>();
+	private Map<Long,AttachementFsItem> attachementFsItems=new HashMap<>();
 	private AttachementFsItem root;
 	
 	public AttachementFsVolume(List<Attachement> attachements) {
-		root=new AttachementFsItem(null, this);
+		root=new AttachementFsItem(null, this,true);
 		this.attachements=attachements;
 		CollectionUtils.forAllDo(attachements, new Closure() {
 			@Override
 			public void execute(Object input) {
-				attachementFsItems.add(new AttachementFsItem((Attachement)input, AttachementFsVolume.this));
-				
+				attachementFsItems.put(((Attachement)input).getId(),new AttachementFsItem((Attachement)input, AttachementFsVolume.this));
 			}
 		});
 	}
@@ -58,13 +61,13 @@ public class AttachementFsVolume implements FsVolume {
 
 	@Override
 	public boolean exists(FsItem paramFsItem) {
-		return paramFsItem!=null && ((AttachementFsItem)paramFsItem).getAttachement()!=null;
+		return paramFsItem!=null && (((AttachementFsItem)paramFsItem).getAttachement()!=null|| ((AttachementFsItem)paramFsItem).isRoot());
 	}
 
 	@Override
 	public FsItem fromPath(String paramString) {
-		// TODO Auto-generated method stub
-		return null;
+		String[] strings = paramString.split(PATH_SEPARATOR);
+		return strings.length>1? attachementFsItems.get(strings[1]): root;
 	}
 
 	@Override
@@ -74,12 +77,12 @@ public class AttachementFsVolume implements FsVolume {
 
 	@Override
 	public long getLastModified(FsItem paramFsItem) {
-		return paramFsItem!=root? ((AttachementFsItem)paramFsItem).getAttachement().getLastModifiedDate().getMillis():0;
+		return !((AttachementFsItem)paramFsItem).isRoot()? ((AttachementFsItem)paramFsItem).getAttachement().getLastModifiedDate().getMillis():0;
 	}
 
 	@Override
 	public String getMimeType(FsItem paramFsItem) {
-		return paramFsItem!=root? ((AttachementFsItem)paramFsItem).getAttachement().getContentType():"";
+		return !((AttachementFsItem)paramFsItem).isRoot()? ((AttachementFsItem)paramFsItem).getAttachement().getContentType():"directory";
 	}
 
 	@Override
@@ -89,19 +92,21 @@ public class AttachementFsVolume implements FsVolume {
 
 	@Override
 	public String getName(FsItem paramFsItem) {
-		return paramFsItem!=root ?((AttachementFsItem)paramFsItem).getAttachement().getName():getName();
+		return !((AttachementFsItem)paramFsItem).isRoot() ?((AttachementFsItem)paramFsItem).getAttachement().getName():getName();
 	}
 
 	@Override
 	public FsItem getParent(FsItem paramFsItem) {
-		// TODO Auto-generated method stub
-		return null;
+		if(((AttachementFsItem)paramFsItem).isRoot()){
+			return null;
+		}else {
+			return root;
+		}
 	}
 
 	@Override
 	public String getPath(FsItem paramFsItem) throws IOException {
-		// TODO Auto-generated method stub
-		return null;
+		return ((AttachementFsItem)paramFsItem).isRoot()?ROOT_PATH:ROOT_PATH+PATH_SEPARATOR+((AttachementFsItem)paramFsItem).getAttachement().getId();
 	}
 
 	@Override
@@ -123,23 +128,23 @@ public class AttachementFsVolume implements FsVolume {
 
 	@Override
 	public boolean hasChildFolder(FsItem paramFsItem) {
-		return paramFsItem.equals(root);
+		return ((AttachementFsItem)paramFsItem).isRoot();
 	}
 
 	@Override
 	public boolean isFolder(FsItem paramFsItem) {
-		return paramFsItem.equals(root);
+		return ((AttachementFsItem)paramFsItem).isRoot();
 	}
 
 	@Override
 	public boolean isRoot(FsItem paramFsItem) {
-		return paramFsItem.equals(root);
+		return ((AttachementFsItem)paramFsItem).isRoot();
 	}
 
 	@Override
 	public FsItem[] listChildren(FsItem paramFsItem) {
-		if(paramFsItem.equals(root)){
-			return attachementFsItems.toArray(new AttachementFsItem[attachementFsItems.size()]);
+		if(((AttachementFsItem)paramFsItem).isRoot()){
+			return attachementFsItems.values().toArray(new AttachementFsItem[attachementFsItems.size()]);
 		}
 		return new FsItem[0];
 	}
@@ -174,13 +179,35 @@ public class AttachementFsVolume implements FsVolume {
 	public static class AttachementFsItem implements FsItem{
 		private Attachement attachement;
 		private AttachementFsVolume attachementFsVolume;
+		private boolean root=false;
 		
 		
 		public AttachementFsItem(Attachement attachement,
-				AttachementFsVolume attachementFsVolume) {
+				AttachementFsVolume attachementFsVolume,boolean root) {
 			super();
 			this.attachement = attachement;
 			this.attachementFsVolume = attachementFsVolume;
+			this.root=root;
+		}
+
+		public AttachementFsItem(Attachement attachement,
+				AttachementFsVolume attachementFsVolume) {
+			this(attachement, attachementFsVolume, false);
+		}
+
+		/**
+		 * @return the root
+		 */
+		public boolean isRoot() {
+			return root;
+		}
+
+
+		/**
+		 * @param root the root to set
+		 */
+		public void setRoot(boolean root) {
+			this.root = root;
 		}
 
 

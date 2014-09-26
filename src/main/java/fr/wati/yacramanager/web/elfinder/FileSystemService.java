@@ -34,25 +34,30 @@ public class FileSystemService implements FsService, InitializingBean {
 	public FsItem fromHash(String hash) throws IOException {
 		for (FsVolume v : getVolumes())
 		{
-			String prefix = getVolumeId(v) + "_";
+			if(v instanceof AttachementFsVolume){
+				return v.fromPath(hash);
+			}else {
+				String prefix = getVolumeId(v) + "_";
 
-			if (hash.equals(prefix))
-			{
-				return v.getRoot();
-			}
-
-			if (hash.startsWith(prefix))
-			{
-				String localHash = hash.substring(prefix.length());
-
-				for (String[] pair : escapes)
+				if (hash.equals(prefix))
 				{
-					localHash = localHash.replace(pair[1], pair[0]);
+					return v.getRoot();
 				}
 
-				String relativePath = new String(Base64.decodeBase64(localHash));
-				return v.fromPath(relativePath);
+				if (hash.startsWith(prefix))
+				{
+					String localHash = hash.substring(prefix.length());
+
+					for (String[] pair : escapes)
+					{
+						localHash = localHash.replace(pair[1], pair[0]);
+					}
+
+					String relativePath = new String(Base64.decodeBase64(localHash));
+					return v.fromPath(relativePath);
+				}
 			}
+			
 		}
 
 		return null;
@@ -62,9 +67,9 @@ public class FileSystemService implements FsService, InitializingBean {
 	public String getHash(FsItem item) throws IOException {
 		if(item instanceof AttachementFsItem){
 			if(((AttachementFsItem)item).getAttachement()!=null){
-				return String.valueOf(((AttachementFsItem)item).getAttachement().getId());
+				return ((AttachementFsItem)item).getVolume().getPath(((AttachementFsItem)item));
 			}else {
-				return "";
+				return ((AttachementFsItem)item).getVolume().getPath(((AttachementFsItem)item));
 			}
 		}else {
 			String relativePath = item.getVolume().getPath(item);
