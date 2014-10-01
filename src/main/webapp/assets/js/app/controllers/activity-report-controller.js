@@ -257,8 +257,8 @@ function ActivityReportController($scope,$rootScope,ActivityReportREST,$filter,$
 	$scope.sendForApproval=function(employeId){
 		ActivityReportREST.submit({
 			employeId : employeId,
-			startDate : $scope.dateRange.startDate.toISOString(),
-			endDate : $scope.dateRange.endDate.toISOString()
+			startDate : $scope.dateRange.startDate.format('YYYY-MM-DD'),
+			endDate : $scope.dateRange.endDate.format('YYYY-MM-DD')
 		},{}).$promise.then(function(result) {
 			alertService.show('success','Activity report','The request has been sent!');
 		});

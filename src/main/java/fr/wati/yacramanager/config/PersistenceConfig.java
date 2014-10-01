@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContextException;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
@@ -41,6 +42,7 @@ public class PersistenceConfig
 		return new JpaTransactionManager(factory);
 	}
 	@Bean
+	@Profile(value={Constants.SPRING_PROFILE_DEVELOPMENT,Constants.SPRING_PROFILE_PRODUCTION})
 	public LocalContainerEntityManagerFactoryBean entityManagerFactory()
 	{
 		LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
@@ -73,6 +75,7 @@ public class PersistenceConfig
 		return new HibernateExceptionTranslator();
 	}
 	@Bean
+	@Profile(value={Constants.SPRING_PROFILE_DEVELOPMENT,Constants.SPRING_PROFILE_PRODUCTION})
 	public DataSource dataSource()
 	{
 		log.debug("Configuring Datasource");
@@ -84,7 +87,7 @@ public class PersistenceConfig
         }
         HikariConfig config = new HikariConfig();
         config.setDataSourceClassName(env.getProperty("dataSource.dataSourceClassName"));
-        if (env.getProperty("url") == null || "".equals(env.getProperty("dataSource.url"))) {
+        if (env.getProperty("dataSource.url") == null || "".equals(env.getProperty("dataSource.url"))) {
             config.addDataSourceProperty("databaseName", env.getProperty("dataSource.databaseName"));
             config.addDataSourceProperty("serverName", env.getProperty("dataSource.serverName"));
         } else {

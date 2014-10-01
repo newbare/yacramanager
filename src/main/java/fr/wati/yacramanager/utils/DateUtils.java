@@ -8,6 +8,7 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeComparator;
 import org.joda.time.DateTimeConstants;
 import org.joda.time.Days;
+import org.joda.time.LocalDate;
 
 public class DateUtils {
 
@@ -15,11 +16,11 @@ public class DateUtils {
 	}
 
 	
-	public static int getBusinessDaysBetween(DateTime startDate,DateTime endDate){
+	public static int getBusinessDaysBetween(LocalDate startDate,LocalDate endDate){
 		int days = Days.daysBetween(
-				startDate.withTimeAtStartOfDay(),
-				endDate.withTimeAtStartOfDay()).getDays()+1;
-		for (DateTime currentDate = startDate; currentDate
+				startDate,
+				endDate).getDays()+1;
+		for (LocalDate currentDate = startDate; currentDate
 				.isBefore(endDate); currentDate = currentDate.plusDays(1)) {
 			if(isDayOff(currentDate)){
 				days-=1;
@@ -28,7 +29,7 @@ public class DateUtils {
 		return days;
 	}
 	
-	public static boolean isDayOff(DateTime date) {
+	public static boolean isDayOff(LocalDate date) {
 		return isWeekEnd(date) || jourFerie(date);
 	}
 
@@ -36,12 +37,12 @@ public class DateUtils {
 		return date.isBefore(new DateTime());
 	}
 
-	public static boolean isWeekEnd(DateTime date) {
+	public static boolean isWeekEnd(LocalDate date) {
 		int dayOfWeek = date.getDayOfWeek();
 		return (DateTimeConstants.SUNDAY == dayOfWeek || DateTimeConstants.SATURDAY == dayOfWeek);
 	}
 
-	public static boolean jourFerie(final DateTime date) {
+	public static boolean jourFerie(final LocalDate date) {
 		List<DateTime> jourFeries = CalendarUtil.getJourFeries(date.getYear());
 		int countMatches = CollectionUtils.countMatches(jourFeries,
 				new Predicate() {

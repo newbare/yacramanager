@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.codahale.metrics.annotation.Timed;
 
+import fr.wati.yacramanager.beans.Employe;
 import fr.wati.yacramanager.services.ActivityReportService;
 import fr.wati.yacramanager.services.CraService;
 import fr.wati.yacramanager.services.EmployeService;
@@ -51,14 +52,14 @@ public class ActivityReportController {
 	
 	@RequestMapping(method=RequestMethod.GET)
 	@Timed
-	public @ResponseBody CraDTO getCra(@RequestParam(value="start", required=true) @DateTimeFormat(iso=ISO.DATE_TIME) DateTime startDate, @RequestParam(value="end", required=true) @DateTimeFormat(iso=ISO.DATE_TIME) DateTime endDate){
+	public @ResponseBody CraDTO getCra(@RequestParam(value="start", required=true) @DateTimeFormat(iso=ISO.DATE) LocalDate startDate, @RequestParam(value="end", required=true) @DateTimeFormat(iso=ISO.DATE) LocalDate endDate){
 		CraDTO craDTO=craService.generateCra(SecurityUtils.getConnectedUser(), startDate, endDate);
 		return craDTO;
 	}
 	
 	@RequestMapping(value="/details", method=RequestMethod.GET)
 	@Timed
-	public @ResponseBody CraDetailsDTO getCraDetails(@RequestParam(value="employeIds", required=true) List<Long> employeIds, @RequestParam(value="start", required=true) @DateTimeFormat(iso=ISO.DATE_TIME) DateTime startDate, @RequestParam(value="end", required=true) @DateTimeFormat(iso=ISO.DATE_TIME) DateTime endDate){
+	public @ResponseBody CraDetailsDTO getCraDetails(@RequestParam(value="employeIds", required=true) List<Long> employeIds, @RequestParam(value="startDate", required=true) @DateTimeFormat(iso=ISO.DATE) LocalDate startDate, @RequestParam(value="endDate", required=true) @DateTimeFormat(iso=ISO.DATE) LocalDate endDate){
 		CraDetailsDTO craDetailsDTO=craService.generateCraDetail(employeService.findAll(employeIds), startDate, endDate);
 		return craDetailsDTO;
 	}
@@ -68,6 +69,7 @@ public class ActivityReportController {
 	@Timed
 	public void submitNewActivityReport(@RequestParam(value="employeId") Long employeId,@RequestParam(value="startDate") @DateTimeFormat(iso=ISO.DATE) LocalDate startDate,@RequestParam(value="endDate") @DateTimeFormat(iso=ISO.DATE) LocalDate endDate) throws RestServiceException{
 		try {
+			Employe employe = employeService.findOne(employeId);
 			activityReportService.submitNewActivityReport(employeService.findOne(employeId), startDate, endDate);
 		} catch (ServiceException e) {
 			logger.error(e.getMessage(), e);

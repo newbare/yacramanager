@@ -1,5 +1,7 @@
 package fr.wati.yacramanager.services.impl;
 
+import java.util.List;
+
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,6 +33,13 @@ public class ActivityReportServiceImpl implements ActivityReportService {
 		activityReport.setEndDate(endDate);
 		activityReport.setValidationStatus(ValidationStatus.WAIT_FOR_APPROVEMENT);
 		activityReportRepository.save(activityReport);
+	}
+
+	@Override
+	public List<ActivityReport> findByEmployeAndStartDateBetweenOrEndDateDateBetween(
+			Employe employe, LocalDate startDate, LocalDate endDate)
+			throws ServiceException {
+		return activityReportRepository.findByEmployeAndStartDateBetweenOrEndDateBetween(employe, startDate, endDate,startDate,endDate);
 	}
 
 }

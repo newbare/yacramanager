@@ -71,7 +71,9 @@ public class EmployeServiceImpl implements EmployeService {
 
 	@Override
 	public <S extends Employe> S save(S entity) {
-		contactRepository.save(entity.getContact());
+		if(entity.getContact()!=null){
+			contactRepository.save(entity.getContact());
+		}
 		S save = employeRepository.save(entity);
 		applicationEventPublisher.publishEvent(ActivityEvent
 				.createWithSource(this).user()

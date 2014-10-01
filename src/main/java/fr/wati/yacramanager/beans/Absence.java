@@ -15,6 +15,7 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 
 import fr.wati.yacramanager.utils.DateUtils;
 import fr.wati.yacramanager.web.dto.AbsenceDTO.TypeAbsence;
@@ -31,10 +32,10 @@ public class Absence extends AuditableEntity implements Valideable {
 	private DateTime date;
 	private boolean endMorning;
 	private boolean startAfternoon;
-	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
-	private DateTime startDate;
-	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
-	private DateTime endDate;
+	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDate")
+	private LocalDate startDate;
+	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDate")
+	private LocalDate endDate;
 	private String description;
 	@ManyToOne
 	private Employe employe;
@@ -48,7 +49,7 @@ public class Absence extends AuditableEntity implements Valideable {
 	}
 
 	public Absence(boolean endMorning, boolean startAfternoon,
-			DateTime startDate, DateTime endDate, String description) {
+			LocalDate startDate, LocalDate endDate, String description) {
 		super();
 		this.endMorning = endMorning;
 		this.startAfternoon = startAfternoon;
@@ -97,19 +98,19 @@ public class Absence extends AuditableEntity implements Valideable {
 		this.startAfternoon = startAfternoon;
 	}
 
-	public DateTime getStartDate() {
+	public LocalDate getStartDate() {
 		return startDate;
 	}
 
-	public void setStartDate(DateTime startDate) {
+	public void setStartDate(LocalDate startDate) {
 		this.startDate = startDate;
 	}
 
-	public DateTime getEndDate() {
+	public LocalDate getEndDate() {
 		return endDate;
 	}
 
-	public void setEndDate(DateTime date2) {
+	public void setEndDate(LocalDate date2) {
 		this.endDate = date2;
 	}
 

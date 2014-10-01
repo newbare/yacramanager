@@ -6,28 +6,29 @@ import java.util.List;
 import java.util.Map;
 
 import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 
 import fr.wati.yacramanager.beans.ValidationStatus;
 
 public class CraDetailsDTO {
 
-	private DateTime startDate;
-	private DateTime endDate;
+	private LocalDate startDate;
+	private LocalDate endDate;
 	private List<EmployeCraDetailsDTO> employeCraDetailsDTOs=new ArrayList<>();
 
-	public DateTime getStartDate() {
+	public LocalDate getStartDate() {
 		return startDate;
 	}
 
-	public void setStartDate(DateTime startDate) {
+	public void setStartDate(LocalDate startDate) {
 		this.startDate = startDate;
 	}
 
-	public DateTime getEndDate() {
+	public LocalDate getEndDate() {
 		return endDate;
 	}
 
-	public void setEndDate(DateTime endDate) {
+	public void setEndDate(LocalDate endDate) {
 		this.endDate = endDate;
 	}
 
@@ -100,20 +101,20 @@ public class CraDetailsDTO {
 	}
 
 	public static class CraDetailDay{
-		private DateTime date;
+		private LocalDate date;
 		private boolean dayOff;
 		
 		
 		
-		public CraDetailDay(DateTime date, boolean dayOff) {
+		public CraDetailDay(LocalDate date, boolean dayOff) {
 			super();
 			this.date = date;
 			this.dayOff = dayOff;
 		}
-		public DateTime getDate() {
+		public LocalDate getDate() {
 			return date;
 		}
-		public void setDate(DateTime date) {
+		public void setDate(LocalDate date) {
 			this.date = date;
 		}
 		public boolean isDayOff() {
@@ -176,28 +177,28 @@ public class CraDetailsDTO {
 	}
 
 	public static class CraAbsenceDetail {
-		private Map<DateTime, Long> duration = new HashMap<>();
-		private Map<DateTime, ValidationStatus> validationStatus =new HashMap<>();
+		private Map<LocalDate, Long> duration = new HashMap<>();
+		private Map<LocalDate, ValidationStatus> validationStatus =new HashMap<>();
 
-		public Map<DateTime, Long> getDuration() {
+		public Map<LocalDate, Long> getDuration() {
 			return duration;
 		}
 
-		public void setDuration(Map<DateTime, Long> duration) {
+		public void setDuration(Map<LocalDate, Long> duration) {
 			this.duration = duration;
 		}
 
 		/**
 		 * @return the validationStatus
 		 */
-		public Map<DateTime, ValidationStatus> getValidationStatus() {
+		public Map<LocalDate, ValidationStatus> getValidationStatus() {
 			return validationStatus;
 		}
 
 		/**
 		 * @param validationStatus the validationStatus to set
 		 */
-		public void setValidationStatus(Map<DateTime, ValidationStatus> validationStatus) {
+		public void setValidationStatus(Map<LocalDate, ValidationStatus> validationStatus) {
 			this.validationStatus = validationStatus;
 		}
 

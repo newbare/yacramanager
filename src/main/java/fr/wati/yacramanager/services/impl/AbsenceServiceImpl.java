@@ -3,7 +3,7 @@ package fr.wati.yacramanager.services.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
@@ -19,9 +19,9 @@ import fr.wati.yacramanager.beans.Absence;
 import fr.wati.yacramanager.beans.AbsencePortfolio;
 import fr.wati.yacramanager.beans.AbsencePortfolio.AbsencePortfolioPK;
 import fr.wati.yacramanager.beans.Absence_;
+import fr.wati.yacramanager.beans.Activities.ActivityOperation;
 import fr.wati.yacramanager.beans.Employe;
 import fr.wati.yacramanager.beans.ValidationStatus;
-import fr.wati.yacramanager.beans.Activities.ActivityOperation;
 import fr.wati.yacramanager.dao.repository.AbsenceRepository;
 import fr.wati.yacramanager.dao.specifications.CommonSpecifications;
 import fr.wati.yacramanager.listeners.ActivityEvent;
@@ -52,7 +52,7 @@ public class AbsenceServiceImpl implements AbsenceService {
 	private ApplicationEventPublisher applicationEventPublisher;
 
 	@Override
-	public Page<Absence> findByStartDateBetween(DateTime dateDebut, DateTime dateFin,
+	public Page<Absence> findByStartDateBetween(LocalDate dateDebut, LocalDate dateFin,
 			Pageable pageable) {
 		return absenceRepository.findByDateBetween(dateDebut, dateFin, pageable);
 	}
@@ -130,7 +130,7 @@ public class AbsenceServiceImpl implements AbsenceService {
 
 	@Override
 	public Page<Absence> findByEmployeAndStartDateBetween(Employe employe,
-			DateTime dateDebut, DateTime dateFin, Pageable pageable) {
+			LocalDate dateDebut, LocalDate dateFin, Pageable pageable) {
 		return absenceRepository.findByEmployeAndStartDateBetween(employe, dateDebut, dateFin, pageable);
 	}
 
@@ -143,7 +143,7 @@ public class AbsenceServiceImpl implements AbsenceService {
 
 	@Override
 	public List<Absence> findByEmployeAndStartDateBetween(Employe employe,
-			DateTime dateDebut, DateTime dateFin) {
+			LocalDate dateDebut, LocalDate dateFin) {
 		return absenceRepository.findByEmployeAndStartDateBetween(employe, dateDebut, dateFin);
 	}
 

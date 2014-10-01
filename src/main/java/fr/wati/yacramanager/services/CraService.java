@@ -1,6 +1,6 @@
 package fr.wati.yacramanager.services;
 
-import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 import org.springframework.context.ApplicationEventPublisherAware;
 
 import fr.wati.yacramanager.beans.Employe;
@@ -9,9 +9,9 @@ import fr.wati.yacramanager.web.dto.CraDetailsDTO;
 
 public interface CraService extends ApplicationEventPublisherAware {
 	
-	CraDTO generateCra(Employe employe,DateTime startDate,DateTime endDate);
+	CraDTO generateCra(Employe employe,LocalDate startDate,LocalDate endDate);
 
-	CraDetailsDTO generateCraDetail(Iterable<Employe> employes,DateTime startDate,DateTime endDate);
+	CraDetailsDTO generateCraDetail(Iterable<Employe> employes,LocalDate startDate,LocalDate endDate);
 	
-	void approve(Iterable<Employe> employes,DateTime startDate,DateTime endDate);
+	void approve(Iterable<Employe> employes,LocalDate startDate,LocalDate endDate);
 }

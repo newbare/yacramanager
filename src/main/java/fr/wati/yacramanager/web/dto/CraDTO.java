@@ -3,12 +3,12 @@ package fr.wati.yacramanager.web.dto;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 
 public class CraDTO {
 	
-	private DateTime startDate;
-	private DateTime endDate;
+	private LocalDate startDate;
+	private LocalDate endDate;
 	private List<Day> days;
 
 	
@@ -19,22 +19,22 @@ public class CraDTO {
 		days=new ArrayList<>();
 	}
 
-	public CraDTO(DateTime startDate, DateTime endDate) {
+	public CraDTO(LocalDate startDate, LocalDate endDate) {
 		this();
 		this.startDate = startDate;
 		this.endDate = endDate;
 	}
 	
-	public DateTime getStartDate() {
+	public LocalDate getStartDate() {
 		return startDate;
 	}
-	public void setStartDate(DateTime startDate) {
+	public void setStartDate(LocalDate startDate) {
 		this.startDate = startDate;
 	}
-	public DateTime getEndDate() {
+	public LocalDate getEndDate() {
 		return endDate;
 	}
-	public void setEndDate(DateTime endDate) {
+	public void setEndDate(LocalDate endDate) {
 		this.endDate = endDate;
 	}
 	public List<Day> getDays() {
@@ -49,7 +49,7 @@ public class CraDTO {
 	}
 	
 	public static class Day {
-		private DateTime date;
+		private LocalDate date;
 		private DayElement morning;
 		private DayElement afternoon;
 		private boolean dayOff=false;
@@ -65,10 +65,10 @@ public class CraDTO {
 		public void setAfternoon(DayElement afternoon) {
 			this.afternoon = afternoon;
 		}
-		public DateTime getDate() {
+		public LocalDate getDate() {
 			return date;
 		}
-		public void setDate(DateTime date) {
+		public void setDate(LocalDate date) {
 			this.date = date;
 		}
 		public boolean isDayOff() {

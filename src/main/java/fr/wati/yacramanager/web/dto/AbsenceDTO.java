@@ -1,6 +1,7 @@
 package fr.wati.yacramanager.web.dto;
 
 import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 
 import fr.wati.yacramanager.beans.Absence;
 import fr.wati.yacramanager.beans.ValidationStatus;
@@ -13,8 +14,8 @@ public class AbsenceDTO implements Valideable{
 	private String employeName;
 	private DateTime date;
 	private String description;
-	private DateTime startDate;
-	private DateTime endDate;
+	private LocalDate startDate;
+	private LocalDate endDate;
 	private String typeAbsence;
 	private boolean startAfternoon;
 	private boolean endMorning;
@@ -74,16 +75,16 @@ public class AbsenceDTO implements Valideable{
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	public DateTime getStartDate() {
+	public LocalDate getStartDate() {
 		return startDate;
 	}
-	public void setStartDate(DateTime startDate) {
+	public void setStartDate(LocalDate startDate) {
 		this.startDate = startDate;
 	}
-	public DateTime getEndDate() {
+	public LocalDate getEndDate() {
 		return endDate;
 	}
-	public void setEndDate(DateTime endDate) {
+	public void setEndDate(LocalDate endDate) {
 		this.endDate = endDate;
 	}
 	public String getTypeAbsence() {
