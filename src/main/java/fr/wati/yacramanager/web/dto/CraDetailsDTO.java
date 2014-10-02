@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.joda.time.LocalDate;
 
+import fr.wati.yacramanager.beans.ActivityReport;
 import fr.wati.yacramanager.beans.ValidationStatus;
 
 public class CraDetailsDTO {
@@ -47,6 +48,7 @@ public class CraDetailsDTO {
 		private List<CraTaskRow> taskRows = new ArrayList<>();
 		private List<CraTaskRow> extraTimeRows = new ArrayList<>();
 		private CraAbsenceDetail craAbsenceDetail;
+		private ActivityReport activityReport;
 
 		public Long getEmployeId() {
 			return employeId;
@@ -95,6 +97,14 @@ public class CraDetailsDTO {
 		public void setExtraTimeRows(List<CraTaskRow> extraTimeRows) {
 			this.extraTimeRows = extraTimeRows;
 		}
+
+		public ActivityReport getActivityReport() {
+			return activityReport;
+		}
+
+		public void setActivityReport(ActivityReport activityReport) {
+			this.activityReport = activityReport;
+		}
 		
 		
 	}
@@ -102,16 +112,26 @@ public class CraDetailsDTO {
 	public static class CraDetailDay{
 		private LocalDate date;
 		private boolean dayOff;
+		private boolean approved;
 		
 		
 		
-		public CraDetailDay(LocalDate date, boolean dayOff) {
+		public CraDetailDay(LocalDate date, boolean dayOff,boolean approved) {
 			super();
 			this.date = date;
 			this.dayOff = dayOff;
+			this.approved=approved;
 		}
 		public LocalDate getDate() {
 			return date;
+		}
+		
+		
+		public boolean isApproved() {
+			return approved;
+		}
+		public void setApproved(boolean approved) {
+			this.approved = approved;
 		}
 		public void setDate(LocalDate date) {
 			this.date = date;

@@ -260,6 +260,7 @@ function ActivityReportController($scope,$rootScope,ActivityReportREST,$filter,$
 			startDate : $scope.dateRange.startDate.format('YYYY-MM-DD'),
 			endDate : $scope.dateRange.endDate.format('YYYY-MM-DD')
 		},{}).$promise.then(function(result) {
+			$scope.retrieveCraDetails($scope.currentFilter);
 			alertService.show('success','Activity report','The request has been sent!');
 		});
 	};

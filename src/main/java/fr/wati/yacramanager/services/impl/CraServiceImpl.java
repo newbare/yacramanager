@@ -16,13 +16,16 @@ import org.springframework.stereotype.Service;
 import com.google.common.collect.Lists;
 
 import fr.wati.yacramanager.beans.Absence;
+import fr.wati.yacramanager.beans.ActivityReport;
 import fr.wati.yacramanager.beans.Employe;
 import fr.wati.yacramanager.beans.ValidationStatus;
 import fr.wati.yacramanager.beans.WorkLog;
 import fr.wati.yacramanager.services.AbsenceService;
+import fr.wati.yacramanager.services.ActivityReportService;
 import fr.wati.yacramanager.services.ClientService;
 import fr.wati.yacramanager.services.CraService;
 import fr.wati.yacramanager.services.EmployeService;
+import fr.wati.yacramanager.services.ServiceException;
 import fr.wati.yacramanager.services.WorkLogService;
 import fr.wati.yacramanager.utils.DateUtils;
 import fr.wati.yacramanager.web.dto.AbsenceDTO;
@@ -44,6 +47,9 @@ public class CraServiceImpl implements CraService {
 
 	@Autowired
 	private WorkLogService workLogService;
+	
+	@Autowired
+	private ActivityReportService activityReportService;
 	
 	@Autowired
 	private ClientService clientService;
@@ -114,7 +120,7 @@ public class CraServiceImpl implements CraService {
 
 	@Override
 	public CraDetailsDTO generateCraDetail(Iterable<Employe> employes,
-			LocalDate startDate, LocalDate endDate) {
+			LocalDate startDate, LocalDate endDate) throws ServiceException {
 		CraDetailsDTO craDTO = new CraDetailsDTO();
 		craDTO.setStartDate(startDate);
 		craDTO.setEndDate(endDate);
@@ -134,6 +140,8 @@ public class CraServiceImpl implements CraService {
 			employeCraDetailsDTO.setEmployeId(currentEmploye.getId());
 			employeCraDetailsDTO.setEmployeName(currentEmploye.getFullName());
 			craDTO.getEmployeCraDetailsDTOs().add(employeCraDetailsDTO);
+			List<ActivityReport> activityReports = activityReportService.findByEmployeAndStartDateBetweenAndEndDateBetween(currentEmploye, startDate, endDate);
+			employeCraDetailsDTO.setActivityReport(activityReports!=null && activityReports.size()>0 ?activityReports.get(0):null);
 			List<Absence> absences = absenceService
 					.findByEmployeAndStartDateBetween(currentEmploye,
 							startDate, endDate);
@@ -153,10 +161,27 @@ public class CraServiceImpl implements CraService {
 			handleWorkLogPart(startDate.toDateTimeAtStartOfDay(), endDate.toDateTimeAtStartOfDay(), employeCraDetailsDTO.getExtraTimeRows(),
 					employeExtraTime);
 
-			for (LocalDate currentDate = startDate; currentDate
-					.isBefore(endDate); currentDate = currentDate.plusDays(1)) {
-				employeCraDetailsDTO.getDays().add(
-						new CraDetailDay(currentDate, DateUtils.isDayOff(currentDate)));
+			for (LocalDate currentDate = startDate; (currentDate
+					.isBefore(endDate) || currentDate.isEqual(endDate) ); currentDate = currentDate.plusDays(1)) {
+				employeCraDetailsDTO
+						.getDays()
+						.add(new CraDetailDay(
+								currentDate,
+								DateUtils.isDayOff(currentDate),
+								employeCraDetailsDTO.getActivityReport() != null ? (DateUtils.isDayBetween(
+										currentDate.toDateTimeAtStartOfDay(),
+										employeCraDetailsDTO
+												.getActivityReport()
+												.getStartDate()
+												.toDateTimeAtStartOfDay(),
+										employeCraDetailsDTO
+												.getActivityReport()
+												.getEndDate()
+												.toDateTimeAtStartOfDay()) && ValidationStatus.APPROVED
+										.equals(employeCraDetailsDTO
+												.getActivityReport()
+												.getValidationStatus()))
+										: false));
 				if(!craAbsenceDetail.getDuration().containsKey(currentDate)){
 					craAbsenceDetail.getDuration().put(currentDate, 0L);
 				}
@@ -178,7 +203,7 @@ public class CraServiceImpl implements CraService {
 									8 * 60L);
 						}
 						if(DateTimeComparator
-								.getDateOnlyInstance().compare(currentDate, currentAbsence.getStartDate())==0){
+								.getDateOnlyInstance().compare(currentDate.toDateTimeAtStartOfDay(), currentAbsence.getStartDate().toDateTimeAtStartOfDay())==0){
 							if (!craAbsenceDetail.getValidationStatus().containsKey(
 									currentDate)) {
 								craAbsenceDetail.getValidationStatus().put(currentDate,
@@ -223,8 +248,8 @@ public class CraServiceImpl implements CraService {
 				craTaskMap.put(workLog.getTask().getId(), craTaskRow);
 				taskRows.add(craTaskRow);
 			}
-			for (DateTime currentDate = startDate; currentDate
-					.isBefore(endDate); currentDate = currentDate
+			for (DateTime currentDate = startDate; (currentDate
+					.isBefore(endDate)|| currentDate.isEqual(endDate)); currentDate = currentDate
 					.plusDays(1)) {
 				Long currentDuration = 0L;
 				switch (workLog.getWorkLogType()) {

@@ -8,7 +8,7 @@ App.service('alertService', function($alert) {
 			title : title,
 			content : content,
 			type : type,
-			placement: 'top',
+			//placement: 'top',
 			keyboard : true,
 			show : false,
 			duration: 10,

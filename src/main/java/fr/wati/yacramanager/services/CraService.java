@@ -11,7 +11,7 @@ public interface CraService extends ApplicationEventPublisherAware {
 	
 	CraDTO generateCra(Employe employe,LocalDate startDate,LocalDate endDate);
 
-	CraDetailsDTO generateCraDetail(Iterable<Employe> employes,LocalDate startDate,LocalDate endDate);
+	CraDetailsDTO generateCraDetail(Iterable<Employe> employes,LocalDate startDate,LocalDate endDate) throws ServiceException;
 	
 	void approve(Iterable<Employe> employes,LocalDate startDate,LocalDate endDate);
 }

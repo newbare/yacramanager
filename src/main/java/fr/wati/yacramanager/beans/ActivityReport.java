@@ -13,6 +13,8 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Type;
 import org.joda.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @SuppressWarnings("serial")
 @Entity
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
@@ -25,13 +27,13 @@ public class ActivityReport extends AuditableEntity implements Valideable {
 	private LocalDate startDate;
 	@Type(type="org.jadira.usertype.dateandtime.joda.PersistentLocalDate")
 	private LocalDate endDate;
+	@JsonIgnore
 	@OneToOne
 	private Employe employe;
 	@Enumerated(EnumType.STRING)
 	private ValidationStatus validationStatus=ValidationStatus.SAVED;
 
 	public ActivityReport() {
-		// TODO Auto-generated constructor stub
 	}
 
 	

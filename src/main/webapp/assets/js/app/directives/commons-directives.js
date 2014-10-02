@@ -208,7 +208,7 @@ App.directive('absencePortfolio',['AbsenceREST', function(AbsenceREST) {
     return {
     	replace:true,
         restrict: 'E',
-        template:'<fieldset data-collapsible-fieldset="Used on selected period" data-collapsible-fieldset-collapsed="true">'
+        template:'<fieldset data-collapsible-fieldset="Available time off" data-collapsible-fieldset-collapsed="true">'
 					+'<div>'
 					+'<div class="progress">'
 					+'  <div class="progress-bar progress-bar-striped " data-ng-class="{\'progress-bar-success\':$index==1,\'progress-bar-warning\':$index==2,\'progress-bar-info\':$index==3,\'progress-bar-danger\':$index==4}" '
