@@ -11,5 +11,5 @@ import fr.wati.yacramanager.beans.Employe;
 
 public interface ActivityReportRepository extends JpaRepository<ActivityReport, Long>, JpaSpecificationExecutor<ActivityReport>{
 
-	List<ActivityReport> findByEmployeAndStartDateBetweenOrEndDateBetween(Employe employe,LocalDate startDate,LocalDate endDate,LocalDate startDate2,LocalDate endDate2);
+	List<ActivityReport> findByEmployeAndStartDateBetweenAndEndDateBetween(Employe employe,LocalDate startDate,LocalDate endDate,LocalDate startDate2,LocalDate endDate2);
 }

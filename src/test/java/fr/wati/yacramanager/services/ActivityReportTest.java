@@ -14,7 +14,6 @@ import org.springframework.test.context.junit4.AbstractTransactionalJUnit4Spring
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import fr.wati.yacramanager.beans.ActivityReport;
-import fr.wati.yacramanager.beans.Contact;
 import fr.wati.yacramanager.beans.Employe;
 import fr.wati.yacramanager.config.Constants;
 import fr.wati.yacramanager.config.TestServicesConfig;
@@ -40,8 +39,10 @@ public class ActivityReportTest extends
 		
 		activityReportService.submitNewActivityReport(employe, new LocalDate(2014,9,01), new LocalDate(2014,9,30));
 		
-		List<ActivityReport> findByEmployeAndStartDateBetweenOrEndDateDateBetween = activityReportService.findByEmployeAndStartDateBetweenOrEndDateDateBetween(employe, new LocalDate(2014,9,01), new LocalDate(2014,9,30));
+		List<ActivityReport> findByEmployeAndStartDateBetweenOrEndDateDateBetween = activityReportService.findByEmployeAndStartDateBetweenAndEndDateBetween(employe, new LocalDate(2014,9,1), new LocalDate(2014,9,30));
 		Assert.assertTrue(findByEmployeAndStartDateBetweenOrEndDateDateBetween!=null && findByEmployeAndStartDateBetweenOrEndDateDateBetween.size()>0);
+		findByEmployeAndStartDateBetweenOrEndDateDateBetween = activityReportService.findByEmployeAndStartDateBetweenAndEndDateBetween(employe, new LocalDate(2014,9,1), new LocalDate(2014,9,29));
+		Assert.assertTrue(findByEmployeAndStartDateBetweenOrEndDateDateBetween!=null && findByEmployeAndStartDateBetweenOrEndDateDateBetween.size()==0);
 		
 		
 	}

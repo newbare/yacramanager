@@ -245,11 +245,11 @@ public class CraServiceImpl implements CraService {
 					break;
 				}
 				if (!craTaskRow.getDuration().containsKey(currentDate)) {
-					craTaskRow.getDuration().put(currentDate,
+					craTaskRow.getDuration().put(currentDate.toLocalDate(),
 							currentDuration);
 				} else {
 					craTaskRow.getDuration().put(
-							currentDate,
+							currentDate.toLocalDate(),
 							craTaskRow.getDuration().get(currentDate)
 									+ currentDuration);
 				}
@@ -257,11 +257,11 @@ public class CraServiceImpl implements CraService {
 						.getDateOnlyInstance().compare(currentDate, workLog.getStartDate())==0){
 					if (!craTaskRow.getValidationStatus().containsKey(
 							currentDate)) {
-						craTaskRow.getValidationStatus().put(currentDate,
+						craTaskRow.getValidationStatus().put(currentDate.toLocalDate(),
 								workLog.getValidationStatus());
 					} else {
 						craTaskRow.getValidationStatus().put(
-								currentDate,
+								currentDate.toLocalDate(),
 								ValidationStatus.isApprovedAndOperator(
 										craTaskRow.getValidationStatus().get(
 												currentDate),

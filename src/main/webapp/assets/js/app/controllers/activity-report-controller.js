@@ -185,8 +185,8 @@ function ActivityReportController($scope,$rootScope,ActivityReportREST,$filter,$
 		});
 		ActivityReportREST.getDetails({
 			employeIds : userIds.join(),
-			start : $scope.dateRange.startDate.toISOString(),
-			end : $scope.dateRange.endDate.toISOString()
+			startDate : $scope.dateRange.startDate.format('YYYY-MM-DD'),
+			endDate : $scope.dateRange.endDate.format('YYYY-MM-DD')
 		}).$promise.then(function(result) {
 			$scope.craDetails=result;
 		});

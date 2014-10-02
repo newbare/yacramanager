@@ -11,5 +11,14 @@ public interface ActivityReportService {
 
 	void submitNewActivityReport(Employe employe,LocalDate startDate,LocalDate endDate) throws ServiceException;
 	
-	List<ActivityReport> findByEmployeAndStartDateBetweenOrEndDateDateBetween(Employe employe,LocalDate startDate,LocalDate endDate) throws ServiceException;
+	/**
+	 * @param employe
+	 * @param startDate
+	 * @param endDate
+	 * @return
+	 * @throws ServiceException
+	 */
+	List<ActivityReport> findByEmployeAndStartDateBetweenAndEndDateBetween(
+			Employe employe, LocalDate startDate, LocalDate endDate)
+			throws ServiceException;
 }

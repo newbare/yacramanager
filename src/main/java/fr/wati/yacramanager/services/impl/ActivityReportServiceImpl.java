@@ -36,10 +36,10 @@ public class ActivityReportServiceImpl implements ActivityReportService {
 	}
 
 	@Override
-	public List<ActivityReport> findByEmployeAndStartDateBetweenOrEndDateDateBetween(
+	public List<ActivityReport> findByEmployeAndStartDateBetweenAndEndDateBetween(
 			Employe employe, LocalDate startDate, LocalDate endDate)
 			throws ServiceException {
-		return activityReportRepository.findByEmployeAndStartDateBetweenOrEndDateBetween(employe, startDate, endDate,startDate,endDate);
+		return activityReportRepository.findByEmployeAndStartDateBetweenAndEndDateBetween(employe, startDate, endDate,startDate,endDate);
 	}
 
 }
