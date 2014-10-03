@@ -182,6 +182,14 @@ App.factory("ActivityReportREST", function($resource) {
 		submit : {
 			url : _contextPath + "/app/api/activity-report/submit",
 			method : 'POST'
+		},
+		approve : {
+			url : _contextPath + "/app/api/activity-report/approve",
+			method : 'POST'
+		},
+		cancel : {
+			url : _contextPath + "/app/api/activity-report/cancel",
+			method : 'POST'
 		}
 	});
 });

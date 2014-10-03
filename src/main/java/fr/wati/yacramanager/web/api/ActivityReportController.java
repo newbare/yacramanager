@@ -67,7 +67,8 @@ public class ActivityReportController {
 	CraDetailsDTO getCraDetails(
 			@RequestParam(value = "employeIds", required = true) List<Long> employeIds,
 			@RequestParam(value = "startDate", required = true) @DateTimeFormat(iso = ISO.DATE) LocalDate startDate,
-			@RequestParam(value = "endDate", required = true) @DateTimeFormat(iso = ISO.DATE) LocalDate endDate) throws RestServiceException{
+			@RequestParam(value = "endDate", required = true) @DateTimeFormat(iso = ISO.DATE) LocalDate endDate)
+			throws RestServiceException {
 		CraDetailsDTO craDetailsDTO;
 		try {
 			craDetailsDTO = craService.generateCraDetail(
@@ -89,10 +90,44 @@ public class ActivityReportController {
 			throws RestServiceException {
 		try {
 			Employe employe = employeService.findOne(employeId);
-			activityReportService.submitNewActivityReport(employe, startDate, endDate);
+			activityReportService.submitNewActivityReport(employe, startDate,
+					endDate);
 		} catch (ServiceException e) {
 			logger.error(e.getMessage(), e);
 			throw new RestServiceException(e);
 		}
 	}
+
+	@RequestMapping(value = "/cancel", method = RequestMethod.POST)
+	@ResponseStatus(value = HttpStatus.OK)
+	@Timed
+	public void cancelSubmittedActivityReport(
+			@RequestParam(value = "employeId") Long employeId,
+			@RequestParam(value = "activityReportId") Long activityReportId)
+			throws RestServiceException {
+		try {
+			Employe employe = employeService.findOne(employeId);
+			activityReportService.cancelSubmittedActivityReport(employe,activityReportId);
+		} catch (ServiceException e) {
+			logger.error(e.getMessage(), e);
+			throw new RestServiceException(e);
+		}
+	}
+	
+	@RequestMapping(value = "/approve", method = RequestMethod.POST)
+	@ResponseStatus(value = HttpStatus.OK)
+	@Timed
+	public void approveSubmittedActivityReport(
+			@RequestParam(value = "employeId") Long employeId,
+			@RequestParam(value = "activityReportId") Long activityReportId)
+			throws RestServiceException {
+		try {
+			Employe employe = employeService.findOne(employeId);
+			activityReportService.approveSubmittedActivityReport(employe, activityReportService.findOne(activityReportId));
+		} catch (ServiceException e) {
+			logger.error(e.getMessage(), e);
+			throw new RestServiceException(e);
+		}
+	}
+	
 }

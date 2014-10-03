@@ -41,16 +41,16 @@
 		  	</div>
 		  	<div class="btn-group btn-group-sm pull-right">
 					<button class="btn btn-success"
-						data-ng-if="isCurrentEmploye(employeCraDetail.employeId) && employeCraDetail.activityReport==null"
+						data-ng-if="isCurrentEmploye(employeCraDetail.employeId) && (employeCraDetail.activityReport==null || employeCraDetail.activityReport!=null && employeCraDetail.activityReport.validationStatus=='SAVED')"
 						data-ng-click="sendForApproval(employeCraDetail.employeId)">
 						<i class="fa fa-upload"></i> Send for approval
 					</button>
 					<button class="btn btn-warning"
 						data-ng-if="isCurrentEmploye(employeCraDetail.employeId) && employeCraDetail.activityReport!=null && employeCraDetail.activityReport.validationStatus=='WAIT_FOR_APPROVEMENT'"
-						data-ng-click="sendForApproval(employeCraDetail.employeId)">
+						data-ng-click="cancelActivityReport(employeCraDetail.employeId,employeCraDetail.activityReport.id)">
 						<i class="fa fa-ban"></i> Cancel submission
 					</button>
-					<button  data-ng-disabled="true"
+					<button data-ng-disabled="true"
 						data-ng-if="isCurrentEmploye(employeCraDetail.employeId) && employeCraDetail.activityReport!=null && employeCraDetail.activityReport.validationStatus=='APPROVED'"
 						class="btn btn-danger">
 						<i class="fa fa-lock"></i> Locked

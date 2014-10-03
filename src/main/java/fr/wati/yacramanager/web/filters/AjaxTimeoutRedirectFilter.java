@@ -64,7 +64,7 @@ public class AjaxTimeoutRedirectFilter extends GenericFilterBean
  
                     if (authenticationTrustResolver.isAnonymous(SecurityContextHolder.getContext().getAuthentication()))
                     {
-                        logger.info("User session expired or not logged in yet");
+                        logger.debug("User session expired or not logged in yet");
                         String ajaxHeader = ((HttpServletRequest) request).getHeader("X-Requested-With");
                         String rapidLoginValue= ((HttpServletRequest) request).getHeader("AJAX-LOGIN");
                         boolean rapidLogin=false;

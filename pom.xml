@@ -534,7 +534,7 @@
 				<artifactId>tomcat7-maven-plugin</artifactId>
 				<version>2.2</version>
 				<configuration>
-					<port>8080</port>
+					<!-- <port>8080</port> -->
 					<httpsPort>9090</httpsPort>
 					<keystoreFile>${project.basedir}/src/main/config/tomcat-ssl.keystore</keystoreFile>
 					<keystorePass>tomcat7</keystorePass>
