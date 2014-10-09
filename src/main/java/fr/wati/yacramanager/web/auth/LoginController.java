@@ -10,7 +10,7 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class LoginController {
 
-	@RequestMapping(value = "/auth/login/")
+	@RequestMapping(value = "/auth/login/**")
 	public ModelAndView login(
 			@RequestParam(value = "error", defaultValue = "false", required = false) boolean error,
 			HttpSession httpSession) {

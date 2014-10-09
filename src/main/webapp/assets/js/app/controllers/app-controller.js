@@ -109,19 +109,21 @@ App.controller('LanguageController', function ($scope, $translate, LanguageServi
     
 });
 
+
+
 App.controller('WorkLogCtrl',['$scope','$http','WorkLogREST','alertService',function($scope,$http,WorkLogREST,alertService){
 	 $scope.timerRunning = false;
 	 $scope.open=false
 	 $scope.project=undefined;
 	 $scope.task=undefined
 	 var start=undefined;
-	 
      $scope.startTimer = function (){
          $scope.$broadcast('timer-start');
          $scope.timerRunning = true;
          $scope.open=false;
          start=moment();
          $scope.updateStartable();
+//         $(".timer-widget-content.dropdown-menu").dropdown('toggle');
      };
 
      $scope.stopTimer = function (){
@@ -232,13 +234,14 @@ App.controller('LoginCtrl', [ '$scope','$http','authService',function($scope,$ht
 App.config([ '$stateProvider', '$urlRouterProvider','$locationProvider','$translateProvider','tmhDynamicLocaleProvider',
 		function($stateProvider, $urlRouterProvider,$locationProvider,$translateProvider,tmhDynamicLocaleProvider) {
 
+	 		$locationProvider.html5Mode(true).hashPrefix('!');
 //	 		if(window.history && window.history.pushState){
 //	 			$locationProvider.html5Mode(true);
 //	 		}
 			// Use $urlRouterProvider to configure any redirects (when) and
 			// invalid urls (otherwise).
 			$urlRouterProvider
-			.when('','/home')
+			.when('/','/home')
 			.when('/company', '/company/home')
 			.when('/admin/company', '/admin/company/view/quickview')
 			.when('/company/employees', '/company/employees/view/quickview')
@@ -353,7 +356,7 @@ App.config([ '$stateProvider', '$urlRouterProvider','$locationProvider','$transl
 			}).state('api-docs', {
 				url : "/api-docs",
 				templateUrl : _contextPath+'/views/app/api-docs.html',
-				controller : UserProfileController
+				controller : ApiDocsController
 			})
 			.state('company', {
 				url : "/company",

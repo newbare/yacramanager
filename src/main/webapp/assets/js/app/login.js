@@ -2,6 +2,10 @@ var yaCRAApp = {};
 
 var App = angular.module('yaCRAApp', [ 'ngResource', 'ngRoute', 'ngAnimate','mgcrea.ngStrap' ]);
 
+App.run(function($rootScope) {
+	$rootScope.appContextPath=_contextPath;
+});
+
 App.factory("RegistrationRest", function($resource) {
 	return $resource(_contextPath+"/auth/api/register" , {}, {});
 });
@@ -102,7 +106,10 @@ function PasswordRecoveryController($scope, $location,AuthenticationREST) {
 		}
 	}
 }
-App.config([ '$routeProvider', function($routeProvider) {
+App.config([ '$routeProvider','$locationProvider', function($routeProvider,$locationProvider) {
+	
+	$locationProvider.html5Mode(true).hashPrefix('!');
+	
 	$routeProvider.when('/', {
 		templateUrl : '../../assets/others/login.html',
 		controller : LoginController

@@ -92,7 +92,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.requiresSecure()
 				.and()
 				.formLogin()
-					.defaultSuccessUrl("/app/")
+					.defaultSuccessUrl("/app/view/")
 					.loginProcessingUrl("/auth/authentication")
 					.loginPage("/auth/login/")
 					.failureUrl("/auth/login/?error=true")

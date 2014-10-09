@@ -84,6 +84,7 @@ App.config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
   
 App.run(function($rootScope, $templateCache, UsersREST) {
 	$rootScope.page = '';
+	$rootScope.appContextPath=_contextPath;
 	// $templateCache.removeAll();
 	$rootScope.$on('$stateChangeStart', function(event, toState, toParams,
 			fromState, fromParams) {

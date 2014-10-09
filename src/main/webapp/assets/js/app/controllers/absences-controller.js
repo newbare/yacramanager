@@ -1,5 +1,10 @@
 'use strict';
 
+function ApiDocsController($scope,$rootScope) {
+	$scope.appContextPath=$rootScope.appContextPath;
+};
+
+
 function AbsencesController($scope, $rootScope, AbsenceREST, alertService,ngTableParams,notifService,$http) {
 	$rootScope.page = {
 		"title" : "Absences",

@@ -4,11 +4,10 @@ import java.io.File;
 
 import org.apache.commons.io.FilenameUtils;
 
-import cn.bluejoe.elfinder.localfs.LocalFsItem;
 import cn.bluejoe.elfinder.service.FsItem;
 import cn.bluejoe.elfinder.util.MimeTypesUtils;
 
-public class DefaultFsVolume extends cn.bluejoe.elfinder.localfs.LocalFsVolume {
+public class DefaultFsVolume extends LocalFsVolume {
 
 	private File asFile(FsItem fsi) {
 		return ((LocalFsItem) fsi).getFile();

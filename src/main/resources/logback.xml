@@ -52,6 +52,8 @@
     <logger name="liquibase" level="warn"/>
     <logger name="org.dozer" level="warn"/>
     <logger name="reactor" level="warn"/>
+    <logger name="io.netty" level="warn"/>
+    
     
 
     <contextListener class="ch.qos.logback.classic.jul.LevelChangePropagator">

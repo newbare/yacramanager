@@ -125,8 +125,13 @@ public class ActivityReportServiceImpl implements ActivityReportService {
 			throw new ServiceException("Activity report not found");
 		}
 		if(employeService.isManager(employe.getId(), activityReport.getEmploye().getId()) || employe.getId().equals(activityReport.getEmploye().getId())){
-			activityReport.setValidationStatus(ValidationStatus.SAVED);
-			activityReportRepository.save(activityReport);
+			if(ValidationStatus.WAIT_FOR_APPROVEMENT.equals(activityReport.getValidationStatus())){
+				activityReport.setValidationStatus(ValidationStatus.SAVED);
+				activityReportRepository.save(activityReport);
+			}else {
+				throw new ServiceException("You cannot cancel this activity report");
+			}
+			
 		}else {
 			throw new ServiceException("You cannot cancel this activity report");
 		}
@@ -140,8 +145,12 @@ public class ActivityReportServiceImpl implements ActivityReportService {
 			throw new ServiceException("The activity report should be in a right status");
 		}
 		if(employeService.isManager(employeManager.getId(), activityReport.getEmploye().getId())){
-			activityReport.setValidationStatus(ValidationStatus.APPROVED);
-			activityReportRepository.save(activityReport);
+			if(ValidationStatus.WAIT_FOR_APPROVEMENT.equals(activityReport.getValidationStatus())){
+				activityReport.setValidationStatus(ValidationStatus.APPROVED);
+				activityReportRepository.save(activityReport);
+			}else {
+				throw new ServiceException("You cannot approve this activity report due to its status: "+activityReport.getValidationStatus());
+			}
 		}else {
 			throw new ServiceException("Only a manager can approve this activity report");
 		}
