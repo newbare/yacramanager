@@ -103,11 +103,12 @@ public class ActivityReportController {
 	@Timed
 	public void cancelSubmittedActivityReport(
 			@RequestParam(value = "employeId") Long employeId,
-			@RequestParam(value = "activityReportId") Long activityReportId)
+			@RequestParam(value = "startDate") @DateTimeFormat(iso = ISO.DATE) LocalDate startDate,
+			@RequestParam(value = "endDate") @DateTimeFormat(iso = ISO.DATE) LocalDate endDate)
 			throws RestServiceException {
 		try {
 			Employe employe = employeService.findOne(employeId);
-			activityReportService.cancelSubmittedActivityReport(employe,activityReportId);
+			activityReportService.cancelSubmittedActivityReport(employe,startDate,endDate);
 		} catch (ServiceException e) {
 			logger.error(e.getMessage(), e);
 			throw new RestServiceException(e);
@@ -119,11 +120,12 @@ public class ActivityReportController {
 	@Timed
 	public void approveSubmittedActivityReport(
 			@RequestParam(value = "employeId") Long employeId,
-			@RequestParam(value = "activityReportId") Long activityReportId)
+			@RequestParam(value = "startDate") @DateTimeFormat(iso = ISO.DATE) LocalDate startDate,
+			@RequestParam(value = "endDate") @DateTimeFormat(iso = ISO.DATE) LocalDate endDate)
 			throws RestServiceException {
 		try {
 			Employe employe = employeService.findOne(employeId);
-			activityReportService.approveSubmittedActivityReport(employe, activityReportService.findOne(activityReportId));
+			activityReportService.approveSubmittedActivityReport(employe, activityReportService.findByEmployeAndStartDateAndEndDate(employe, startDate, endDate));
 		} catch (ServiceException e) {
 			logger.error(e.getMessage(), e);
 			throw new RestServiceException(e);

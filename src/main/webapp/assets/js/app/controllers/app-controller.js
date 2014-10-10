@@ -378,7 +378,8 @@ App.config([ '$stateProvider', '$urlRouterProvider','$locationProvider','$transl
 				templateUrl : _contextPath+'/views/app/templates/partials/panel-view.html',
 				controller : CompanyEmployeesController,
 				data: {
-				    ncyBreadcrumbSkip: true 
+					pageTitle: 'Employe view',
+					ncyBreadcrumbLabel : 'Employees'
 				  }
 			}).state('company.employees.details', {
 				url : "/details/:id",
@@ -398,10 +399,7 @@ App.config([ '$stateProvider', '$urlRouterProvider','$locationProvider','$transl
 				url : "/view",
 				templateUrl : _contextPath+'/views/app/company/employees/company-employees-view.html',
 				controller : CompanyEmployeesViewController,
-				data: {
-					pageTitle: 'Employe view',
-					ncyBreadcrumbLabel : 'Employees'
-				  }
+				data: {ncyBreadcrumbSkip: true}
 			})
 			.state('company.employees.view.list', {
 				url : "/list",
@@ -435,19 +433,28 @@ App.config([ '$stateProvider', '$urlRouterProvider','$locationProvider','$transl
 				url : "/clients",
 				templateUrl : _contextPath+'/views/app/templates/partials/panel-view.html',
 				//controller : CompanyEmployeesController
-				data: {ncyBreadcrumbSkip: true}
+				data: {
+					ncyBreadcrumbLabel : 'Clients'
+				  }
 			}).state('company.clients.details', {
 				url : "/details/:id",
 				templateUrl : _contextPath+'/views/app/company/clients/company-clients-overview.html',
-				controller : CompanyClientsOverviewController
+				controller : CompanyClientsOverviewController,
+				resolve : {
+					client :function(ClientsREST,$stateParams) {
+						return ClientsREST.get(
+								{companyId : _userCompanyId,id:$stateParams.id});
+					}
+				},
+				data : {
+					ncyBreadcrumbLabel : '{{client.name}}'
+				}
 			})
 			.state('company.clients.view', {
 				url : "/view",
 				templateUrl : _contextPath+'/views/app/company/clients/company-clients-view.html',
 				controller : CompanyClientsViewController,
-				data: {
-					ncyBreadcrumbLabel : 'Clients'
-				  }
+				data: {ncyBreadcrumbSkip: true}
 			})
 			.state('company.clients.view.list', {
 				url : "/list",
@@ -482,19 +489,28 @@ App.config([ '$stateProvider', '$urlRouterProvider','$locationProvider','$transl
 				url : "/projects",
 				templateUrl : _contextPath+'/views/app/templates/partials/panel-view.html',
 				//controller : CompanyEmployeesController
-				data: {ncyBreadcrumbSkip: true}
+				data: {
+					ncyBreadcrumbLabel : 'Projects'
+				  }
 			}).state('company.projects.details', {
 				url : "/details/:id",
 				templateUrl : _contextPath+'/views/app/company/projects/company-projects-overview.html',
-				controller : CompanyProjectsOverviewController
+				controller : CompanyProjectsOverviewController,
+				resolve : {
+					project :function(ProjectsREST,$stateParams) {
+						return ProjectsREST.get(
+								{companyId : _userCompanyId,id:$stateParams.id});
+					}
+				},
+				data : {
+					ncyBreadcrumbLabel : '{{project.name}}'
+				}
 			})
 			.state('company.projects.view', {
 				url : "/view",
 				templateUrl : _contextPath+'/views/app/company/projects/company-projects-view.html',
 				controller : CompanyProjectsViewController,
-				data: {
-					ncyBreadcrumbLabel : 'Projects'
-				  }
+				data: {ncyBreadcrumbSkip: true}
 			})
 			.state('company.projects.view.list', {
 				url : "/list",

@@ -35,10 +35,17 @@ public class ActivityReportServiceImpl implements ActivityReportService {
 	@Override
 	public void submitNewActivityReport(Employe employe, LocalDate startDate,
 			LocalDate endDate) throws ServiceException {
-		ActivityReport activityReport=new ActivityReport();
-		activityReport.setEmploye(employe);
-		activityReport.setStartDate(startDate);
-		activityReport.setEndDate(endDate);
+		ActivityReport activityReport=null;
+		ActivityReport existingActivityReport = activityReportRepository.findByEmployeAndStartDateAndEndDate(employe, startDate, endDate);
+		if(existingActivityReport!=null){
+			activityReport=existingActivityReport;
+		}else {
+			activityReport=new ActivityReport();
+			activityReport.setEmployeId(employe.getId());
+			activityReport.setEmploye(employe);
+			activityReport.setStartDate(startDate);
+			activityReport.setEndDate(endDate);
+		}
 		activityReport.setValidationStatus(ValidationStatus.WAIT_FOR_APPROVEMENT);
 		activityReportRepository.save(activityReport);
 	}
@@ -118,9 +125,8 @@ public class ActivityReportServiceImpl implements ActivityReportService {
 	}
 
 	@Override
-	public void cancelSubmittedActivityReport(Employe employe,
-			Long activityreportId) throws ServiceException {
-		ActivityReport activityReport = activityReportRepository.findOne(activityreportId);
+	public void cancelSubmittedActivityReport(Employe employe,LocalDate startDate,LocalDate endDate) throws ServiceException {
+		ActivityReport activityReport = activityReportRepository.findByEmployeAndStartDateAndEndDate(employe, startDate, endDate);
 		if(activityReport==null){
 			throw new ServiceException("Activity report not found");
 		}
@@ -155,6 +161,12 @@ public class ActivityReportServiceImpl implements ActivityReportService {
 			throw new ServiceException("Only a manager can approve this activity report");
 		}
 		
+	}
+
+	@Override
+	public ActivityReport findByEmployeAndStartDateAndEndDate(Employe employe,
+			LocalDate startDate, LocalDate endDate) {
+		return activityReportRepository.findByEmployeAndStartDateAndEndDate(employe, startDate, endDate);
 	}
 
 }

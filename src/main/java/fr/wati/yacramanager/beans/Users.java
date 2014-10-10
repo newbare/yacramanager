@@ -11,6 +11,7 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -42,7 +43,7 @@ public class Users extends AuditableEntity  {
 	private String password;
 	private boolean enabled;
 	private String activationKey;
-	@ManyToMany(cascade = CascadeType.ALL)
+	@ManyToMany(fetch=FetchType.EAGER,cascade = CascadeType.ALL)
 	@JoinTable(name = "users_roles", joinColumns = { @JoinColumn(name = "userId") }, inverseJoinColumns = { @JoinColumn(name = "roleId") })
 	private Set<Role> roles = new HashSet<>();
 	@OneToMany
@@ -143,6 +144,44 @@ public class Users extends AuditableEntity  {
 	 */
 	public void setActivationKey(String activationKey) {
 		this.activationKey = activationKey;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((roles == null) ? 0 : roles.hashCode());
+		result = prime * result
+				+ ((username == null) ? 0 : username.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Users other = (Users) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (roles == null) {
+			if (other.roles != null)
+				return false;
+		} else if (!roles.equals(other.roles))
+			return false;
+		if (username == null) {
+			if (other.username != null)
+				return false;
+		} else if (!username.equals(other.username))
+			return false;
+		return true;
 	}
 
 }

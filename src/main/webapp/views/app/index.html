@@ -117,7 +117,7 @@
 				<ul class="nav navtop navbar-nav navbar-left">
 					<li data-has-role="ROLE_ADMIN"
 						data-ng-class="navClass('admin/')"><a
-						data-ui-sref="admin">{{'app.navbar.menu.admin' | translate}}</a></li>
+						data-ui-sref="admin"><i class="fa fa-star"></i>{{'app.navbar.menu.admin' | translate}}</a></li>
 					<li data-has-role="ROLE_SSII_ADMIN" data-ng-cloak=""
 						data-ng-class="navClass('company/')"><a
 						data-ui-sref="company"><i class="fa fa-university"></i>{{userInfo.company.name}}</a></li>
@@ -202,17 +202,13 @@
 							class="caret"></span></a>
 						<ul class="dropdown-menu" role="menu">
 							<li data-ng-class="navClass('messages')" >
-								<a data-ui-sref="messages"><i class="fa fa-envelope"></i>Messages</a>
+								<a data-ui-sref="messages">Messages</a>
 							</li>
-							<li class="divider"></li>
-							<li><a data-ui-sref="user-settings"><i class="fa fa-cog"></i>{{'app.navbar.menu.settings' | translate}}</a></li>
-							<li><a data-ui-sref="user-profile"><i class="fa fa-user"></i>
-									{{'app.navbar.menu.profile' | translate}}</a></li>
-							<li class="divider"></li>
+							<li><a data-ui-sref="user-settings">{{'app.navbar.menu.settings' | translate}}</a></li>
+							<li><a data-ui-sref="user-profile">{{'app.navbar.menu.profile' | translate}}</a></li>
 							<li><a data-ui-sref="api-docs">{{'app.navbar.menu.api.doc' | translate}}</a></li>
-							<li class="divider"></li>
 							<li><a th:href="@{/auth/logout}"><i
-									class="fa fa-power-off"></i>{{'app.navbar.menu.logout' | translate}}</a></li>
+									class="fa fa-sign-out"></i>{{'app.navbar.menu.logout' | translate}}</a></li>
 						</ul></li>
 					</ul>
 				</div>

@@ -11,7 +11,7 @@ public interface ActivityReportService extends CrudService<ActivityReport, Long>
 
 	void submitNewActivityReport(Employe employe,LocalDate startDate,LocalDate endDate) throws ServiceException;
 	
-	void cancelSubmittedActivityReport(Employe employe,Long activityreportId) throws ServiceException;
+	void cancelSubmittedActivityReport(Employe employe,LocalDate startDate,LocalDate endDate) throws ServiceException;
 	
 	void approveSubmittedActivityReport(Employe employeManager,ActivityReport activityReport) throws ServiceException;
 	/**
@@ -24,4 +24,6 @@ public interface ActivityReportService extends CrudService<ActivityReport, Long>
 	List<ActivityReport> findByEmployeAndStartDateBetweenAndEndDateBetween(
 			Employe employe, LocalDate startDate, LocalDate endDate)
 			throws ServiceException;
+	
+	ActivityReport findByEmployeAndStartDateAndEndDate(Employe employe,LocalDate startDate,LocalDate endDate);
 }

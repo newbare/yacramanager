@@ -17,6 +17,7 @@ import fr.wati.yacramanager.beans.ActivityReport;
 import fr.wati.yacramanager.beans.Employe;
 import fr.wati.yacramanager.config.Constants;
 import fr.wati.yacramanager.config.TestServicesConfig;
+import fr.wati.yacramanager.dao.repository.ActivityReportRepository;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = { TestServicesConfig.class })
@@ -29,6 +30,9 @@ public class ActivityReportTest extends
 	
 	@Autowired
 	private ActivityReportService activityReportService;
+	
+	@Autowired
+	private ActivityReportRepository activityReportRepository;
 	
 	@Test
 	public void testCreateAndRetrieve() throws ServiceException {
@@ -44,7 +48,8 @@ public class ActivityReportTest extends
 		findByEmployeAndStartDateBetweenOrEndDateDateBetween = activityReportService.findByEmployeAndStartDateBetweenAndEndDateBetween(employe, new LocalDate(2014,9,1), new LocalDate(2014,9,29));
 		Assert.assertTrue(findByEmployeAndStartDateBetweenOrEndDateDateBetween!=null && findByEmployeAndStartDateBetweenOrEndDateDateBetween.size()==0);
 		
-		
+		ActivityReport findByEmployeAndStartDateAndEndDate = activityReportRepository.findByEmployeAndStartDateAndEndDate(employe, new LocalDate(2014,9,01), new LocalDate(2014,9,30));
+		Assert.assertNotNull(findByEmployeAndStartDateAndEndDate);
 	}
 
 }

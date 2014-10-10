@@ -3,9 +3,8 @@ package fr.wati.yacramanager.beans;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.OneToOne;
 
 import org.hibernate.annotations.Cache;
@@ -17,16 +16,18 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @SuppressWarnings("serial")
 @Entity
+@IdClass(ActivityReportPK.class)
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class ActivityReport extends AuditableEntity implements Valideable {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
 	@Type(type="org.jadira.usertype.dateandtime.joda.PersistentLocalDate")
 	private LocalDate startDate;
+	@Id
 	@Type(type="org.jadira.usertype.dateandtime.joda.PersistentLocalDate")
 	private LocalDate endDate;
+	@Id
+	private Long employeId;
 	@JsonIgnore
 	@OneToOne
 	private Employe employe;
@@ -47,19 +48,6 @@ public class ActivityReport extends AuditableEntity implements Valideable {
 	public void setEmploye(Employe employe) {
 		this.employe = employe;
 	}
-
-
-
-	public Long getId() {
-		return id;
-	}
-
-
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
 
 
 	public LocalDate getStartDate() {
@@ -96,4 +84,17 @@ public class ActivityReport extends AuditableEntity implements Valideable {
 		this.validationStatus=validationStatus;
 	}
 
+
+
+	public Long getEmployeId() {
+		return employeId;
+	}
+
+
+
+	public void setEmployeId(Long employeId) {
+		this.employeId = employeId;
+	} 
+	
+	
 }

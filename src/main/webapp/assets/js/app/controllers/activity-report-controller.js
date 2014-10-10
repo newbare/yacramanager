@@ -265,20 +265,22 @@ function ActivityReportController($scope,$rootScope,ActivityReportREST,$filter,$
 		});
 	};
 	
-	$scope.cancelActivityReport=function(employeId,activityReportId){
+	$scope.cancelActivityReport=function(employeId,startDate,endDate){
 		ActivityReportREST.cancel({
 			employeId : employeId,
-			activityReportId : activityReportId
+			startDate : startDate,
+			endDate: endDate
 		},{}).$promise.then(function(result) {
 			$scope.retrieveCraDetails($scope.currentFilter);
 			alertService.show('success','Activity report has been canceled','The request has been sent!');
 		});
 	};
 	
-	$scope.approveActivityReport=function(activityReportId){
+	$scope.approveActivityReport=function(activityReportId,startDate,endDate){
 		ActivityReportREST.approve({
 			employeId : _userId,
-			activityReportId : activityReportId
+			startDate : startDate,
+			endDate: endDate
 		},{}).$promise.then(function(result) {
 			$scope.retrieveCraDetails($scope.currentFilter);
 			alertService.show('success','Activity report has been approved','The request has been sent!');

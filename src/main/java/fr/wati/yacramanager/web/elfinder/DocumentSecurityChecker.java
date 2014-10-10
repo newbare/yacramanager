@@ -14,22 +14,20 @@ public class DocumentSecurityChecker implements FsSecurityChecker {
 	@Override
 	public boolean isLocked(FsService paramFsService, FsItem paramFsItem)
 			throws IOException {
-		// TODO Auto-generated method stub
-		return false;
+		
+		return !(paramFsItem instanceof LocalFsItem);
 	}
 
 	@Override
 	public boolean isReadable(FsService paramFsService, FsItem paramFsItem)
 			throws IOException {
-		// TODO Auto-generated method stub
-		return true;
+		return paramFsItem instanceof LocalFsItem;
 	}
 
 	@Override
 	public boolean isWritable(FsService paramFsService, FsItem paramFsItem)
 			throws IOException {
-		// TODO Auto-generated method stub
-		return true;
+		return paramFsItem instanceof LocalFsItem;
 	}
 
 }

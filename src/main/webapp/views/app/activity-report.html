@@ -47,7 +47,7 @@
 					</button>
 					<button class="btn btn-warning"
 						data-ng-if="isCurrentEmploye(employeCraDetail.employeId) && employeCraDetail.activityReport!=null && employeCraDetail.activityReport.validationStatus=='WAIT_FOR_APPROVEMENT'"
-						data-ng-click="cancelActivityReport(employeCraDetail.employeId,employeCraDetail.activityReport.id)">
+						data-ng-click="cancelActivityReport(employeCraDetail.employeId,employeCraDetail.activityReport.startDate,employeCraDetail.activityReport.endDate)">
 						<i class="fa fa-ban"></i> Cancel submission
 					</button>
 					<button data-ng-disabled="true"
