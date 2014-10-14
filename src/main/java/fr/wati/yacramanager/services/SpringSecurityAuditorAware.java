@@ -10,7 +10,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import fr.wati.yacramanager.beans.Users;
-import fr.wati.yacramanager.services.CustomUserDetailsService.CustomUserDetails;
+import fr.wati.yacramanager.services.security.CustomUserDetailsService.CustomUserDetails;
 
 /**
  * @author Rachid Ouattara

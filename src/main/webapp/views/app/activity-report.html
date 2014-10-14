@@ -78,10 +78,8 @@
 			<tr data-ng-repeat="taskRow in employeCraDetail.taskRows">
 				<td class=""><h6><span><strong>{{taskRow.task.name}}</strong></span></h6><h6><span class="text-muted">{{taskRow.project.client.name}} - {{taskRow.project.name}}</span></h6></td>
 				<td data-ng-repeat="day in employeCraDetail.days" data-ng-class="{'cra-we' : day.dayOff, 'cra-today' : isToday(day.date)}" style="vertical-align: middle;text-align: center;">
-					<span data-ng-switch on="day.dayOff">
-						<a href="#" ng-switch-when="false" data-ng-disabled="day.dayOff" data-editable-number="taskRow.duration[day.date]" data-buttons="no" data-e-style="width: 50px;" data-e-required data-onbeforesave="updateCraValue($data,taskRow,day,employeCraDetail.days)">{{ taskRow.duration[day.date] || 0 | duration  }}</a>
-						<span ng-switch-when="true" data-editable-number="taskRow.duration[day.date]" e-form="textBtnForm" data-e-style="width: 50px;">{{ taskRow.duration[day.date] || 0 | duration  }}</span>
-					</span>
+						<a href="#" data-ng-if="!day.dayOff && !day.approved" data-ng-disabled="day.dayOff" data-editable-number="taskRow.duration[day.date]" data-buttons="no" data-e-style="width: 50px;" data-e-required data-onbeforesave="updateCraValue($data,taskRow,day,employeCraDetail.days)">{{ taskRow.duration[day.date] || 0 | duration  }}</a>
+						<span data-ng-if="day.dayOff || day.approved" data-editable-number="taskRow.duration[day.date]" e-form="textBtnForm" data-e-style="width: 50px;">{{ taskRow.duration[day.date] || 0 | duration  }}</span>
 					<span class="text-warning" data-title="Some entries are not approuved yet" data-bs-tooltip="" data-ng-show="taskRow.validationStatus[day.date]!=undefined && taskRow.validationStatus[day.date]!='APPROVED'"><span class="glyphicon glyphicon-warning-sign"></span></span>
 				</td>
 				<td style="vertical-align: middle;text-align: center;">
@@ -95,10 +93,8 @@
 					<h6><span><strong>{{extraRow.task.name}}</strong></span></h6><h6><span class="text-muted">{{extraRow.project.client.name}} - {{extraRow.project.name}}</span></h6>
 				</td>
 				<td data-ng-repeat="day in employeCraDetail.days" data-ng-class="{'cra-we' : day.dayOff, 'cra-today' : isToday(day.date)}" style="vertical-align: middle;text-align: center;">
-					<span data-ng-switch on="day.dayOff">
-						<a href="#" ng-switch-when="false" data-ng-disabled="day.dayOff" data-editable-number="extraRow.duration[day.date]" data-buttons="no" data-e-style="width: 50px;" data-e-required data-onbeforesave="updateCraValue($data,extraRow,day,employeCraDetail.days)">{{ extraRow.duration[day.date] || 0 | duration  }}</a>
-						<span ng-switch-when="true" data-editable-number="extraRow.duration[day.date]" e-form="textBtnForm" data-e-style="width: 50px;">{{ extraRow.duration[day.date] || 0 | duration  }}</span>
-					</span>
+						<a href="#" data-ng-if="!day.dayOff && !day.approved" data-ng-disabled="day.dayOff" data-editable-number="extraRow.duration[day.date]" data-buttons="no" data-e-style="width: 50px;" data-e-required data-onbeforesave="updateCraValue($data,extraRow,day,employeCraDetail.days)">{{ extraRow.duration[day.date] || 0 | duration  }}</a>
+						<span data-ng-if="day.dayOff || day.approved" data-editable-number="extraRow.duration[day.date]" e-form="textBtnForm" data-e-style="width: 50px;">{{ extraRow.duration[day.date] || 0 | duration  }}</span>
 					<span class="text-warning" data-title="Some entries are not approuved yet" data-bs-tooltip="" data-ng-show="extraRow.validationStatus[day.date]!=undefined && extraRow.validationStatus[day.date]!='APPROVED'"><span class="glyphicon glyphicon-warning-sign"></span></span>
 				</td>
 				<td style="vertical-align: middle;text-align: center;">
@@ -109,10 +105,8 @@
 			<tr data-ng-show="employeCraDetail.craAbsenceDetail">
 				<td><h6><span><strong>Time off</strong></span></h6></td>
 				<td data-ng-repeat="day in employeCraDetail.days" data-ng-class="{'cra-we' : day.dayOff , 'cra-today' : isToday(day.date)}" style="vertical-align: middle;text-align: center;">
-					<span data-ng-switch on="day.dayOff">
-						<a href="" ng-switch-when="false" data-ng-disabled="day.dayOff"  data-title=" Add to {{day.date | date : 'shortDate'}}" data-content-template="cra/timeoff/edit-timeoff-popover.html" data-bs-popover="">{{ employeCraDetail.craAbsenceDetail.duration[day.date]  || 0 | duration }}</a>
-						<span ng-switch-when="true"  >{{ employeCraDetail.craAbsenceDetail.duration[day.date]  || 0 | duration }}</span>
-					</span>
+					<a href="" data-ng-if="!day.dayOff && !day.approved" data-ng-disabled="day.dayOff"  data-title=" Add to {{day.date | date : 'shortDate'}}" data-content-template="cra/timeoff/edit-timeoff-popover.html" data-bs-popover="">{{ employeCraDetail.craAbsenceDetail.duration[day.date]  || 0 | duration }}</a>
+					<span data-ng-if="day.dayOff || day.approved"  >{{ employeCraDetail.craAbsenceDetail.duration[day.date]  || 0 | duration }}</span>
 					<span class="text-warning" data-title="Some entries are not approuved yet" data-bs-tooltip="" data-ng-show="employeCraDetail.craAbsenceDetail.validationStatus[day.date]!=undefined && employeCraDetail.craAbsenceDetail.validationStatus[day.date]!='APPROVED'"><span class="glyphicon glyphicon-warning-sign"></span></span>
 				</td>
 				<td style="vertical-align: middle;text-align: center;">

@@ -32,7 +32,8 @@
 <body>
 	<div class="container">
 		<div id="alerts-container"></div>
-		<div data-ng-view="" class="am-fade"></div>
+		<div id="" data-ui-view="" class="" data-ng-cloak=""></div>
+		<!-- <div data-ng-view="" class="am-fade"></div> -->
 	</div>
 	<script
 		th:src="@{/assets/bower_components/jquery/dist/jquery.min.js}"></script>
@@ -51,6 +52,18 @@
 		th:src="@{/assets/bower_components/angular-strap/dist/modules/modal.js}"></script>
 	<script
 		th:src="@{/assets/bower_components/angular-strap/dist/modules/alert.min.js}"></script>
+	<script
+		th:src="@{/assets/bower_components/angular-ui-router/release/angular-ui-router.js}"></script>
+	<script 
+		th:src="@{/assets/bower_components/angular-cookies/angular-cookies.js}"></script>
+	<script 
+		th:src="@{/assets/bower_components/angular-dynamic-locale/src/tmhDynamicLocale.js}"></script>
+		<script
+		th:src="@{/assets/bower_components/angular-translate/angular-translate.min.js}"></script>
+	<script
+		th:src="@{/assets/bower_components/angular-translate-loader-static-files/angular-translate-loader-static-files.min.js}"></script>
+	<script
+		th:src="@{/assets/bower_components/angular-translate-storage-cookie/angular-translate-storage-cookie.min.js}"></script>
 	<script th:src="@{/assets/js/app/login.js}"></script>
 </body>
 </html>

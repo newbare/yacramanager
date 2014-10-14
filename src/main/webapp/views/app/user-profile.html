@@ -89,6 +89,10 @@
 			<div class="col-md-6">
 				<form role="form">
 					<div class="form-group" >
+						<label for="password">Current password</label>
+						<input type="password" class="form-control" id="current-password" data-ng-model="currentPassword" placeholder="Current password">
+					</div>
+					<div class="form-group" >
 						<label for="password">New password</label>
 						<input type="password" class="form-control" id="password" data-ng-model="newPassword" placeholder="New password">
 						<password-strength-bar password-to-check="newPassword"/>

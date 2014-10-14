@@ -7,6 +7,13 @@ function UserProfileController($scope, $rootScope, UsersREST, alertService,Emplo
 		"title" : "User profile",
 		"description" : "Edit your profile"
 	}
+	$scope.civilities = [ {
+		value : 'HOMME',
+		text : 'Homme'
+	}, {
+		value : 'FEMME',
+		text : 'Femme'
+	} ];
 	$scope.newPassword = "";
 	$scope.confirmPassword = "";
 	$scope.canChangePassword = function() {

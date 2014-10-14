@@ -1,7 +1,7 @@
 /**
  * 
  */
-package fr.wati.yacramanager.services;
+package fr.wati.yacramanager.services.security;
 
 import java.util.ArrayList;
 import java.util.Collection;

@@ -8,8 +8,10 @@ import java.util.Set;
 import org.dozer.Mapper;
 import org.dozer.spring.DozerBeanMapperFactoryBean;
 import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -20,10 +22,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import fr.wati.yacramanager.beans.Activities.ActivityOperation;
 import fr.wati.yacramanager.beans.Company;
+import fr.wati.yacramanager.beans.CompanyAccountInfo;
 import fr.wati.yacramanager.beans.Contact;
 import fr.wati.yacramanager.beans.Employe;
 import fr.wati.yacramanager.beans.Gender;
 import fr.wati.yacramanager.beans.Role;
+import fr.wati.yacramanager.dao.repository.CompanyAccountInfoRepository;
 import fr.wati.yacramanager.dao.repository.ContactRepository;
 import fr.wati.yacramanager.dao.repository.EmployeDto;
 import fr.wati.yacramanager.dao.repository.EmployeRepository;
@@ -63,6 +67,12 @@ public class EmployeServiceImpl implements EmployeService {
 	
 	@Autowired
 	private RoleRepository roleRepository;
+	
+	@Autowired
+	private CompanyAccountInfoRepository companyAccountInfoRepository;
+	
+	@Autowired
+	private Environment environment;
 
 	private ApplicationEventPublisher applicationEventPublisher;
 
@@ -166,6 +176,10 @@ public class EmployeServiceImpl implements EmployeService {
 		company.setRegisteredDate(new DateTime());
 		Company createCompany = companyService.createCompany(company);
 		employe.setCompany(createCompany);
+		CompanyAccountInfo companyAccountInfo=new CompanyAccountInfo();
+		companyAccountInfo.setLocked(false);
+		companyAccountInfo.setExpiredDate(new LocalDate().plusDays(environment.getProperty("yacra.trial.period.days", Integer.class, 30)));
+		companyAccountInfoRepository.save(companyAccountInfo);
 		Set<Role> roles=new HashSet<>();
 		roles.add(roleRepository.findByRole(Role.ROLE_SSII_ADMIN));
 		roles.add(roleRepository.findByRole(Role.ROLE_INDEP));

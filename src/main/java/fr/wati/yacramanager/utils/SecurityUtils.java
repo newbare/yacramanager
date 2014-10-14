@@ -10,8 +10,8 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 
 import fr.wati.yacramanager.beans.Employe;
-import fr.wati.yacramanager.services.CustomUserDetailsService.CustomUserDetails;
 import fr.wati.yacramanager.services.impl.EmployeServiceImpl;
+import fr.wati.yacramanager.services.security.CustomUserDetailsService.CustomUserDetails;
 
 /**
  * @author Rachid-home

@@ -1,6 +1,7 @@
 var yaCRAApp = {};
 
-var App = angular.module('yaCRAApp', [ 'ngResource', 'ngRoute', 'ngAnimate','mgcrea.ngStrap' ]);
+var App = angular.module('yaCRAApp', [ 'ngResource',
+                               		'ui.router','pascalprecht.translate','ngCookies','tmh.dynamicLocale','mgcrea.ngStrap']);
 
 App.run(function($rootScope) {
 	$rootScope.appContextPath=_contextPath;
@@ -106,22 +107,60 @@ function PasswordRecoveryController($scope, $location,AuthenticationREST) {
 		}
 	}
 }
-App.config([ '$routeProvider','$locationProvider', function($routeProvider,$locationProvider) {
-	
+
+App.config([ '$stateProvider', '$urlRouterProvider','$locationProvider','$translateProvider','tmhDynamicLocaleProvider',
+     		function($stateProvider, $urlRouterProvider,$locationProvider,$translateProvider,tmhDynamicLocaleProvider) {
+
 	$locationProvider.html5Mode(true).hashPrefix('!');
+	$urlRouterProvider
+	.when('/','/login')
+	.otherwise('/login');
+	$stateProvider
+	.state('login', {
+		url : "/login",
+		templateUrl : _contextPath+'/assets/others/login.html',
+		controller : LoginController,
+		data: {
+	        pageTitle: 'Login page'
+	      }
+	})
+	.state('register', {
+		url : "/register",
+		templateUrl : _contextPath+'/assets/others/register.html',
+		controller : RegisterController,
+		data: {
+	        pageTitle: 'Registration'
+	      }
+	})
+	.state('forgot-password', {
+		url : "/forgot-password",
+		templateUrl : _contextPath+'/assets/others/forgot-password.html',
+		controller : PasswordRecoveryController,
+		data: {
+	        pageTitle: 'Registration'
+	      }
+	})
 	
-	$routeProvider.when('/', {
-		templateUrl : '../../assets/others/login.html',
-		controller : LoginController
-	})
-	.when('/register', {
-		templateUrl : '../../assets/others/register.html',
-		controller : RegisterController
-	}).when('/forgot-password', {
-		templateUrl : '../../assets/others/forgot-password.html',
-		controller : PasswordRecoveryController
-	})
-	.otherwise({
-		redirectTo : '/'
-	});
-} ]);
+	
+	
+}]);
+
+//App.config([ '$routeProvider','$locationProvider', function($routeProvider,$locationProvider) {
+//	
+//	$locationProvider.html5Mode(true).hashPrefix('!');
+//	
+//	$routeProvider.when('/', {
+//		templateUrl : '../../assets/others/login.html',
+//		controller : LoginController
+//	})
+//	.when('/register', {
+//		templateUrl : '../../assets/others/register.html',
+//		controller : RegisterController
+//	}).when('/forgot-password', {
+//		templateUrl : '../../assets/others/forgot-password.html',
+//		controller : PasswordRecoveryController
+//	})
+//	.otherwise({
+//		redirectTo : '/'
+//	});
+//} ]);

@@ -37,6 +37,7 @@ import org.springframework.security.web.authentication.rememberme.JdbcTokenRepos
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.security.web.header.writers.frameoptions.XFrameOptionsHeaderWriter;
 
+import fr.wati.yacramanager.services.security.PreAuthenticationChecker;
 import fr.wati.yacramanager.web.filters.AjaxTimeoutRedirectFilter;
 
 /**
@@ -57,6 +58,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
 	private UserDetailsService userDetailsService;
+	
+	@Autowired
+	private PreAuthenticationChecker preAuthenticationChecker;
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
@@ -181,6 +185,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
 		authenticationProvider.setPasswordEncoder(passwordEncoder);
 		authenticationProvider.setUserDetailsService(userDetailsService);
+		authenticationProvider.setPreAuthenticationChecks(preAuthenticationChecker);
 		return authenticationProvider;
 	}
 }
