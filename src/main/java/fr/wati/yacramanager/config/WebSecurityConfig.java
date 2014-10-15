@@ -98,8 +98,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.formLogin()
 					.defaultSuccessUrl("/app/view/")
 					.loginProcessingUrl("/auth/authentication")
-					.loginPage("/auth/login/")
-					.failureUrl("/auth/login/?error=true")
+					.loginPage("/auth/")
+					.failureUrl("/auth/?error=true")
 					.permitAll()
 					.and()
 				.logout()
@@ -120,7 +120,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				// .invalidSessionUrl("/auth/login/?invalid-session=true")
 				.maximumSessions(
 						env.getProperty("max.sessions", Integer.class, 5))
-				.expiredUrl("/auth/login/?expired-session=true")
+				.expiredUrl("/auth/?expired-session=true")
 				.and()
 				.and()
 				.addFilterAfter(ajaxTimeoutRedirectFilter(),
