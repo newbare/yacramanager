@@ -12,6 +12,16 @@
 			<div class="modal-body" >
 				<form role="form" class="">
 					<div class="form-group">
+					    <label for="name">{{'form.edit.project.client' | translate}}</label>
+					    <select data-chosen data-ng-change="selectClient(client)"
+						          data-placeholder="Select a client"
+						          data-ng-model="client"
+						          data-ng-options="c.name for c in clients">
+						           <option value=""></option>
+						  </select>
+					    <!-- <input type="text" data-ng-model="project.client" class="form-control" id="name" placeholder="{{'form.edit.project.name' | translate}}" required autofocus="autofocus"> -->
+					 </div>
+					<div class="form-group">
 					    <label for="name">{{'form.edit.project.name' | translate}}</label>
 					    <input type="text" data-ng-model="project.name" class="form-control" id="name" placeholder="{{'form.edit.project.name' | translate}}" required autofocus="autofocus">
 					 </div>

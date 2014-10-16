@@ -546,7 +546,7 @@ function CompanyProjectsViewController($scope, $rootScope,$http,ProjectsREST,ngT
 		$scope.doFilterList(args);
 	});
 	$scope.postProject=function(hideFn){
-		ProjectsREST.save({companyId :_userCompanyId,clientId :12},$scope.project).$promise.then(function(result) {
+		ProjectsREST.save({companyId :_userCompanyId,clientId :$scope.client.id},$scope.project).$promise.then(function(result) {
    		 hideFn();
    		 alertService.show('info','Confirmation', 'Project created');
 		});
@@ -584,11 +584,23 @@ function CompanyProjectsController($scope, $rootScope,$http,ngTableParams,Projec
 	
 	$scope.$on('userInfo', function(event, userInfo) {
 		//do afteruserInfo is retrieved 
-	
-		
 		//End userInfo listener
 	});
 	
+	var fetchClients = function(queryParams) {
+		return $http.get(
+				_contextPath + "/app/api/" + _userCompanyId + "/client", {
+					params : {}
+				}).then(function(response) {
+					$scope.clients=response.data.result;
+				});
+	}; 
+
+	fetchClients();
+	
+	$scope.selectClient=function(client){
+		$scope.client=client;
+	}
 	
 	$scope.hasDatas=false;
 	

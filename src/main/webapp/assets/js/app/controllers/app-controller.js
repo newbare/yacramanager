@@ -488,7 +488,7 @@ App.config([ '$stateProvider', '$urlRouterProvider','$locationProvider','$transl
 			.state('company.projects', {
 				url : "/projects",
 				templateUrl : _contextPath+'/views/app/templates/partials/panel-view.html',
-				//controller : CompanyEmployeesController
+				controller : CompanyProjectsController,
 				data: {
 					ncyBreadcrumbLabel : 'Projects'
 				  }

@@ -114,7 +114,7 @@ App.config([ '$stateProvider', '$urlRouterProvider','$locationProvider','$transl
 	$locationProvider.html5Mode(true).hashPrefix('!');
 	$urlRouterProvider
 	.when('/','/login')
-	.otherwise('/login');
+	
 	$stateProvider
 	.state('login', {
 		url : "/login",
