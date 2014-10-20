@@ -6,7 +6,7 @@ function UserProfileController($scope, $rootScope, UsersREST, alertService,Emplo
 	$rootScope.page = {
 		"title" : "User profile",
 		"description" : "Edit your profile"
-	}
+	};
 	$scope.civilities = [ {
 		value : 'HOMME',
 		text : 'Homme'
@@ -17,17 +17,14 @@ function UserProfileController($scope, $rootScope, UsersREST, alertService,Emplo
 	$scope.newPassword = "";
 	$scope.confirmPassword = "";
 	$scope.canChangePassword = function() {
-		return $scope.newPassword != "" && $scope.confirmPassword != ""
-				&& $scope.newPassword == $scope.confirmPassword;
+		return $scope.newPassword !== "" && $scope.confirmPassword !== ""	&& $scope.newPassword === $scope.confirmPassword;
 	};
 	$scope.changePassword = function() {
-		UsersREST.changePassword(JSON.stringify($scope.newPassword), function(
-				status) {
+		UsersREST.changePassword(JSON.stringify($scope.newPassword), function(status) {
 			alertService.show('success','Confirmation','Password has been changed');
 		});
 	};
 	
-	$scope.employe=undefined;
 	$scope.refresh=function(){
 		$scope.employe=EmployeesREST.get({id:_userId});
 	};
@@ -37,7 +34,7 @@ function UserProfileController($scope, $rootScope, UsersREST, alertService,Emplo
 	$scope.currentTab = 'basicInfos';
 	$scope.activateTab = function(tab) {
 		$scope.currentTab = tab;
-	}
+	};
 	$scope.isActiveTab = function(tab) {
 		return tab == $scope.currentTab;
 	};

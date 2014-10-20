@@ -8,7 +8,7 @@ App.service('alertService', function($alert) {
 			title : title,
 			content : content,
 			type : type,
-			placement: 'top',
+			//placement: 'top',
 			keyboard : true,
 			show : false,
 			duration: 10,
@@ -37,29 +37,29 @@ App.service('WebSocketService', function($timeout,notifService) {
 	
 	var subscribeToCommonTopic=function(){
 		stompClient.subscribe('/topic/yacra', function(msg) {
-			notifService.notify('info','From topic',msg.body)
+			notifService.notify('info','From topic',msg.body);
 		});
 	};
 	var subscribeToErrorQueue=function(){
 		stompClient.subscribe("/user/queue/errors", function(msg) {
-			notifService.notify('error','Error',msg.body)
+			notifService.notify('error','Error',msg.body);
 		});
 	};
 	var subscribeToInfoQueue=function(){
 		stompClient.subscribe("/user/queue/info", function(msg) {
-			notifService.notify('info','Info',msg.body)
+			notifService.notify('info','Info',msg.body);
 		});
 	};
 	
 	var subscribeToCompanyQueue=function(){
 		stompClient.subscribe("/user/queue/"+_userCompanyName, function(msg) {
-			notifService.notify('info','From company queue',msg.body)
+			notifService.notify('info','From company queue',msg.body);
 		});
 	};
 	
 	var subscribeToCompanyTopic=function(){
 		stompClient.subscribe("/topic/"+_userCompanyName, function(msg) {
-			notifService.notify('info','From company topic',msg.body)
+			notifService.notify('info','From company topic',msg.body);
 		});
 	};
 	

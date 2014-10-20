@@ -16,5 +16,5 @@ App.service('craService', function($http, $q) {
 		}).error(function(data, status, headers, config) {
 			alert("error" + status);
 		});
-	}
+	};
 });

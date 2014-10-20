@@ -1,5 +1,5 @@
 function TimeSheetController($scope,$rootScope,$http,$sce,WorkLogREST,alertService,$popover,$compile,$modal,ngTableParams) {
-	$rootScope.page={"title":"Timesheet","description":"View and manage timesheet"}
+	$rootScope.page={"title":"Timesheet","description":"View and manage timesheet"};
 	$scope.timeType="duration";
 	$scope.timesheetCalendarTitle=undefined;
 	var editWorklogModal = $modal({scope: $scope, template: _contextPath+'/views/app/templates/edit-worklog.tpl.html', show: false});
@@ -8,20 +8,18 @@ function TimeSheetController($scope,$rootScope,$http,$sce,WorkLogREST,alertServi
 	};
 	
 	$scope.resetWorklogForm=function(){
-		$scope.worklog={}
+		$scope.worklog={};
 		$scope.worklog.durationTime=0;
 		$scope.worklog.timeType="DURATION";
 		$scope.worklog.description=undefined;
 		$scope.project=undefined;
 		$scope.task=undefined;
-	}
+	};
 	
 	$scope.resetWorklogForm();
 	
 	var fetchProjects = function(queryParams) {
-		return $http.get(
-				_contextPath + "/app/api/" + _userCompanyId + "/project/employe/"
-						+ _userId, {
+		return $http.get(_contextPath + "/app/api/" + _userCompanyId + "/project/employe/"+ _userId, {
 					params : {}
 				}).then(function(response) {
 					$scope.projects=response.data.result;
@@ -33,18 +31,17 @@ function TimeSheetController($scope,$rootScope,$http,$sce,WorkLogREST,alertServi
 	$scope.selectProject=function(project){
 		$scope.project=project;
 		fetchTasks();
-	}
+	};
 	$scope.selectTask=function(task){
 		$scope.task=task;
-	}
+	};
 	
 	$scope.selectTask=function(task){
 		$scope.task=task;
-	}
+	};
 	
 	var fetchTasks = function(queryParams) {
-		return $http.get(
-				_contextPath + "/app/api/" + _userCompanyId + "/task/"+$scope.project.id+"/"+ _userId, {
+		return $http.get(_contextPath + "/app/api/" + _userCompanyId + "/task/"+$scope.project.id+"/"+ _userId, {
 					params : {}
 				}).then(function(response) {
 					$scope.tasks=response.data.result;
@@ -84,7 +81,7 @@ function TimeSheetController($scope,$rootScope,$http,$sce,WorkLogREST,alertServi
 				$http.get(_contextPath+"/app/api/users/managed/"+_userId,{params:{"me":true} })
 					.success(function(data, status) {
 						$defer.resolve(data);
-					})
+					});
 			},
 			currentFilter:{},
 			displayed: true
@@ -145,11 +142,11 @@ function TimeSheetController($scope,$rootScope,$http,$sce,WorkLogREST,alertServi
     
     $scope.eventRender=function(event, element,view) {
     	popover=$popover(element, {title: event.title,placement:'top',trigger:'click',html:true,template: _contextPath+'/views/app/templates/worklog.popover.tpl.html',container:'body' });
-    	popover.$scope.event = event
+    	popover.$scope.event = event;
     	popover.$scope.isValidated=$scope.isValidated;
     	popover.$scope.isWaiting=$scope.isWaiting;
     	popover.$scope.isRejected=$scope.isRejected;
-    }
+    };
     
     $scope.eventSource = {
             url: _contextPath+"/app/api/worklog/calendar",
@@ -190,7 +187,7 @@ function TimeSheetController($scope,$rootScope,$http,$sce,WorkLogREST,alertServi
     };
     $scope.showTable=function(visible){
     	$scope.tableVisible=visible;
-    }
+    };
     
     $scope.next = function(calendar) {
       calendar.fullCalendar('next');
@@ -236,7 +233,7 @@ function TimeSheetController($scope,$rootScope,$http,$sce,WorkLogREST,alertServi
     	 WorkLogREST.save(worklog).$promise.then(function(result) {
     		 $scope.currentView.calendar.refetchEvents();
     		 hideFn();
-    		 alertService.show('success','Confirmation', 'Donn� sauvegard�');
+    		 alertService.show('success','Confirmation', 'Data saved');
     		 $scope.resetWorklogForm();
     		 $scope.tableParams.reload();
 		});

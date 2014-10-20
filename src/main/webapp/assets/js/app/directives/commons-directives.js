@@ -5,7 +5,7 @@ App.directive('webSocket', [ '$timeout', 'WebSocketService', 'notifService',
 				link : function(scope, elem, attrs, ctrl) {
 					scope.$on('application-loaded', function() {
 						WebSocketService.connect();
-					})
+					});
 					
 //					timer(function() {
 //						WebSocketService.connect();
@@ -22,12 +22,12 @@ App.directive('updateTitle', function($rootScope) {
 	      var listener = function(event, toState, toParams, fromState, fromParams) {
 	        var title = 'YACRA Manager';
 	        if (toState.data && toState.data.pageTitle) title = title+ ' | '+toState.data.pageTitle;
-	        element.text(title)
+	        element.text(title);
 	      };
 
 	      $rootScope.$on('$stateChangeStart', listener);
 	    }
-	  }
+	  };
 	});
 App.directive('activeMenu', function($translate, $locale, tmhDynamicLocale) {
     return {
@@ -47,7 +47,7 @@ App.directive('activeMenu', function($translate, $locale, tmhDynamicLocale) {
             });
         }
     };
-})
+});
 App.directive('httpRequestError', [ '$rootScope', 'alertService', 'notifService',
                      		function($rootScope, alertService, notifService) {
                      			return {
@@ -73,7 +73,7 @@ App.directive('fileInput',['$compile',function($compile) {
                      		                });
                      		            });
                      				}
-                     			}
+                     			};
                      		}]);
 App.directive('colResizable',function($compile) {
 		return {
@@ -81,7 +81,7 @@ App.directive('colResizable',function($compile) {
 			link : function($scope, elem, attrs) {
 				elem.colResizable();
 			}
-		}
+		};
 	});
 
 App.directive('fixedTableColumn', function($compile) {
@@ -100,10 +100,9 @@ App.directive('fixedTableColumn', function($compile) {
 						$(this).height(elem.find('tr:eq(' + i + ')').height());
 					});
 				}
-				;
 			});
 		}
-	}
+	};
 });
 
 App.directive('organigram',function($compile) {
@@ -115,7 +114,7 @@ App.directive('organigram',function($compile) {
 	            dragAndDrop  : true
 	        });
 		}
-	}
+	};
 });
 
 App.directive('hasRole', ['notifService',
@@ -201,34 +200,34 @@ App.directive('authApplicationSupport', function($timeout) {
             login.slideUp();
           });
         }
-      }
+      };
     });
 
 App.directive('absencePortfolio',['AbsenceREST', function(AbsenceREST) {
     return {
     	replace:true,
         restrict: 'E',
-        template:'<fieldset data-collapsible-fieldset="Available time off" data-collapsible-fieldset-collapsed="true">'
-					+'<div>'
-					+'<div class="progress">'
-					+'  <div class="progress-bar progress-bar-striped " data-ng-class="{\'progress-bar-success\':$index==1,\'progress-bar-warning\':$index==2,\'progress-bar-info\':$index==3,\'progress-bar-danger\':$index==4}" '
-					+'	  		style="width: {{portfolio.remaining*100/totalPortfolioRemaining}}%" data-ng-repeat="portfolio in absencePortfolio" title="{{portfolio.typeAbsenceDTO.label}} {{portfolio.remaining*100/totalPortfolioRemaining |number:0 }}%">'
-					+'	    <span class="sr-only">portfolio.remaining*100/totalPortfolioRemaining</span>'
-					+'	    {{portfolio.typeAbsenceDTO.label | characters:15}} {{portfolio.remaining*100/totalPortfolioRemaining |number:0 }}%'
-					+'	  </div>'
-					+'	</div>'
-					+'</div>'
-					+'<div class="row">'
-					+'	<div class="col-md-4 col-xs-12" data-ng-repeat="portfolio in absencePortfolio">'
-					+'		<div class="col-md-8 col-xs-6"><span>{{portfolio.typeAbsenceDTO.label}}: </span></div>'
-					+'		<div class="col-md-4 col-xs-2">'
-					+'			<span>'
-					+'				<strong>{{portfolio.remaining}}</strong>'
-					+'			</span>'
-					+'			</div>'
-					+'	</div>'
-					+'</div>'
-					+'</fieldset>',
+        template:'<fieldset data-collapsible-fieldset="Available time off" data-collapsible-fieldset-collapsed="true">'+
+					'<div>'+
+					'<div class="progress">'+
+					'  <div class="progress-bar progress-bar-striped " data-ng-class="{\'progress-bar-success\':$index==1,\'progress-bar-warning\':$index==2,\'progress-bar-info\':$index==3,\'progress-bar-danger\':$index==4}" '+
+					'	  		style="width: {{portfolio.remaining*100/totalPortfolioRemaining}}%" data-ng-repeat="portfolio in absencePortfolio" title="{{portfolio.typeAbsenceDTO.label}} {{portfolio.remaining*100/totalPortfolioRemaining |number:0 }}%">'+
+					'	    <span class="sr-only">portfolio.remaining*100/totalPortfolioRemaining</span>'+
+					'	    {{portfolio.typeAbsenceDTO.label | characters:15}} {{portfolio.remaining*100/totalPortfolioRemaining |number:0 }}%'+
+					'	  </div>'+
+					'	</div>'+
+					'</div>'+
+					'<div class="row">'+
+					'	<div class="col-md-4 col-xs-12" data-ng-repeat="portfolio in absencePortfolio">'+
+					'		<div class="col-md-8 col-xs-6"><span>{{portfolio.typeAbsenceDTO.label}}: </span></div>'+
+					'		<div class="col-md-4 col-xs-2">'+
+					'			<span>'+
+					'				<strong>{{portfolio.remaining}}</strong>'+
+					'			</span>'+
+					'			</div>'+
+					'	</div>'+
+					'</div>'+
+					'</fieldset>',
         link: function(scope, elem, attrs) {
         	scope.absencePortfolio={};
         	var userID=attrs.userId || _userId;
@@ -242,7 +241,7 @@ App.directive('absencePortfolio',['AbsenceREST', function(AbsenceREST) {
         			scope.absencePortfolio=result.result;
         			scope.totalPortfolioRemaining=scope.countTotalPortfolio(scope.absencePortfolio);
         		});
-        	}
+        	};
         	scope.countTotalPortfolio=function(absencePortfolios){
         		var total=0;
         		angular.forEach(absencePortfolios,function(item){
@@ -252,7 +251,7 @@ App.directive('absencePortfolio',['AbsenceREST', function(AbsenceREST) {
         	};
         	scope.refreshPortfolio();
         }
-      }
+      };
     }]);
 
 App.directive('applicationLoadingSupport', function($timeout) {
@@ -269,8 +268,8 @@ App.directive('applicationLoadingSupport', function($timeout) {
 								  eventsToWait.splice(i, 1);
 								  debug("event "+event+' finished');
 								}
-							};
-						if(eventsToWait.length==0){
+							}
+						if(eventsToWait.length===0){
 	        				 debug('All event finished');
 	        				 scope.$broadcast('application-loaded');
 	        				//once Angular is started, remove class:
@@ -283,7 +282,7 @@ App.directive('applicationLoadingSupport', function($timeout) {
         		});
         	}
         }
-      }
+      };
     });
 
 App.directive('connectionLostSupport', function($modal) {
@@ -303,7 +302,7 @@ App.directive('connectionLostSupport', function($modal) {
 			});
 			
 		}
-	}
+	};
 });
 
 App.directive('ngConfirm',function($modal) {
@@ -315,8 +314,7 @@ App.directive('ngConfirm',function($modal) {
 							// scope.$on('application-loaded', function() {
 							var confirmModal = $modal({
 								scope : scope,
-								template : _contextPath
-										+ '/views/app/templates/partials/confirm-dialog.tpl.html',
+								template : _contextPath	+ '/views/app/templates/partials/confirm-dialog.tpl.html',
 								placement : 'center',
 								backdrop : 'static',
 								show : false
@@ -333,7 +331,7 @@ App.directive('ngConfirm',function($modal) {
 							};
 							scope.no = function(hide) {
 								hide();
-							}
+							};
 							element.bind('click', function(event) {
 								scope.showModal();
 								event.stopImmediatePropagation();
@@ -433,7 +431,7 @@ App.directive('passwordStrengthBar', function() {
                 }
             });
         }
-    }
+    };
 });
 
 App
@@ -463,7 +461,7 @@ App
 								doc.save($scope.fileName);
 							};
 						}
-					}
+					};
 				});
 
 

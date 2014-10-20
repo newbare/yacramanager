@@ -10,7 +10,7 @@ angular.module('ngHtmlCompile', []).directive(
 						$compile(element.contents())(scope);
 					});
 				}
-			}
+			};
 		});
 angular
 		.module('ng-criterias', [ 'ng' ])
@@ -39,29 +39,23 @@ angular
 									onRemoveCriteria : '&'
 								},
 								template : 
-										  '<span class="ng-criterion inlineBlock" data-ng-class="{active: active, noteditable: !isEditable, disabled: !isEditable}" data-ng-show="criteriaConfig.displayed" >'
-										+'<div class="btn-group dropdown">'
-										+ '<button type="button" class="criterion-btn dropdown-toggle"  data-toggle="dropdown" ng-bind-html="buttonLabel" data-ng-disabled="!isEditable"></button>'
-										+ '<a href="" class="criterion-remove" data-ng-click="dismissCriteria(criteriaConfig.name)" data-ng-show="closeable" data-ng-disabled="!isEditable">'
-										+ '<i class="fa fa-times-circle"></i>'
-										+ '</a>'
-										+'<div class="filter-content dropdown-menu" ng-html-compile="filterContentHTML">'
-										+'</div>' 
-										+'</div>'
-										+ '</span>',
+										  '<span class="ng-criterion inlineBlock" data-ng-class="{active: active, noteditable: !isEditable, disabled: !isEditable}" data-ng-show="criteriaConfig.displayed" >'+
+										'<div class="btn-group dropdown">'+
+										 '<button type="button" class="criterion-btn dropdown-toggle"  data-toggle="dropdown" ng-bind-html="buttonLabel" data-ng-disabled="!isEditable"></button>'+
+										 '<a href="" class="criterion-remove" data-ng-click="dismissCriteria(criteriaConfig.name)" data-ng-show="closeable" data-ng-disabled="!isEditable">'+
+										 '<i class="fa fa-times-circle"></i>'+
+										 '</a>'+
+										'<div class="filter-content dropdown-menu" ng-html-compile="filterContentHTML">'+
+										'</div>'+ 
+										'</div>'+
+										 '</span>',
 								link : function($scope, element, attrs) {
 									// default config values
-									var textFilterTemplate = _contextPath
-											+ '/assets/others/criteria/criteria-text.tpl.html';
-									var checkBoxFilterTemplate = _contextPath
-											+ '/assets/others/criteria/criteria-checkbox.tpl.html';
-									var dateFilterTemplate = _contextPath
-											+ '/assets/others/criteria/criteria-date.tpl.html';
-									var booleanFilterTemplate = _contextPath
-											+ '/assets/others/criteria/criteria-boolean.tpl.html';
-									var comparatorFilterTemplate = _contextPath
-									+ '/assets/others/criteria/criteria-comparator.tpl.html';
-									
+									var textFilterTemplate = _contextPath + '/assets/others/criteria/criteria-text.tpl.html';
+									var checkBoxFilterTemplate = _contextPath + '/assets/others/criteria/criteria-checkbox.tpl.html';
+									var dateFilterTemplate = _contextPath + '/assets/others/criteria/criteria-date.tpl.html';
+									var booleanFilterTemplate = _contextPath + '/assets/others/criteria/criteria-boolean.tpl.html';
+									var comparatorFilterTemplate = _contextPath	+ '/assets/others/criteria/criteria-comparator.tpl.html';
 									$scope.filterType = $scope.criteriaConfig.filterType;
 									$scope.filterContentHTML=undefined;
 									$scope.isEditable=($scope.criteriaConfig.editable!==undefined)?$scope.criteriaConfig.editable:true;
@@ -89,16 +83,16 @@ angular
 											$scope.uniqueDate=undefined;
 											$scope.dateRange={startDate: null, endDate: null};
 											$scope.dateRange.startDate=undefined;
-											$scope.dateRange.endDate=undefined
+											$scope.dateRange.endDate=undefined;
 										}else if ($scope.filterType === "BOOLEAN") {
 											$scope.booleanValue=undefined;
 										}else if ($scope.filterType === "COMPARATOR") {
 											$scope.filterValue=undefined;
 										}
-									}
+									};
 									$scope.closeFilterContent=function(){
 										$('[data-toggle="dropdown"]').parent().removeClass('open');
-									}
+									};
 									$scope.initialiseTemplates=function(){
 										// compute content depending on the
 										// filter type
@@ -147,7 +141,7 @@ angular
 											}
 										} else if ($scope.filterType === "COMPARATOR") {
 											if($scope.filterContentHTML===undefined){
-												$scope.operator="equals"
+												$scope.operator="equals";
 												fetchTemplate(comparatorFilterTemplate)
 													.then(
 															function(content) {
@@ -188,11 +182,10 @@ angular
 									
 									$scope.computeButtonLabel = function(value) {
 										$scope.buttonLabel = $sce.trustAsHtml($scope.criteriaConfig.defaultButtonLabel + ' '+ value + spanCaret);
-									}
+									};
 									$scope.resetButtonLabel = function() {
 										$scope.buttonLabel = $sce
-												.trustAsHtml($scope.criteriaConfig.defaultButtonLabel
-														+ spanCaret);
+												.trustAsHtml($scope.criteriaConfig.defaultButtonLabel+ spanCaret);
 									};
 									$scope.resetButtonLabel();
 									$scope.onFilterText = function() {
@@ -202,8 +195,7 @@ angular
 											value : $scope.filterValue
 										};
 										if ($scope.filterValue !== "" && $scope.filterValue !== undefined) {
-											$scope.computeButtonLabel('('
-													+ $scope.filterValue + ')')
+											$scope.computeButtonLabel('('+ $scope.filterValue + ')');
 										} else {
 											$scope.resetButtonLabel();
 										}
@@ -216,27 +208,19 @@ angular
 									};
 
 									$scope.onFilterDate = function() {
-										var computedValue=undefined;
+										var computedValue;
 										if($scope.dateSelector=="byDate"){
-											computedValue=$scope.uniqueDate
+											computedValue=$scope.uniqueDate;
 										}else {
-											computedValue= {start : $scope.dateRange.startDate,end : $scope.dateRange.endDate}
+											computedValue= {start : $scope.dateRange.startDate,end : $scope.dateRange.endDate};
 										}
 										var filter = {
 											type  : ($scope.dateSelector=="byDate") ?"DATE":"DATE_RANGE",
 											field : $scope.criteriaConfig.name,
 											value :computedValue
 										};
-										if (($scope.dateSelector=="byRangeDate") && ($scope.dateRange.startDate !== undefined
-												&& $scope.dateRange.endDate !== undefined)) {
-											$scope.computeButtonLabel('('
-													+ $filter('date')(
-															$scope.dateRange.startDate,
-															'shortDate')
-													+ '-'
-													+ $filter('date')(
-															$scope.dateRange.endDate,
-															'shortDate') + ')');
+										if (($scope.dateSelector=="byRangeDate") && ($scope.dateRange.startDate !== undefined && $scope.dateRange.endDate !== undefined)) {
+											$scope.computeButtonLabel('('+ $filter('date')($scope.dateRange.startDate,'shortDate')+ '-'+$filter('date')($scope.dateRange.endDate,'shortDate') + ')');
 											
 										}else if (($scope.dateSelector=="byDate") && ($scope.uniqueDate!==undefined)) {
 											$scope.computeButtonLabel('('+ $filter('date')($scope.uniqueDate,'shortDate')+ ')');
@@ -261,7 +245,7 @@ angular
 											comparatorValue= {
 													start : $scope.comparatorStartValue,
 													end : $scope.comparatorEndValue
-												}
+												};
 										}else {
 											comparatorValue=$scope.comparatorValue; 
 										}
@@ -270,8 +254,7 @@ angular
 											field : $scope.criteriaConfig.name,
 											value : comparatorValue
 										};
-										if ($scope.comparatorValue !== undefined
-												|| ($scope.comparatorStartValue !== undefined && $scope.comparatorEndValue !== undefined)) {
+										if ($scope.comparatorValue !== undefined || ($scope.comparatorStartValue !== undefined && $scope.comparatorEndValue !== undefined)) {
 											if ($scope.operator==="between") {
 												if($scope.comparatorStartValue === undefined || $scope.comparatorEndValue === undefined){
 													comparatorValue=undefined;
@@ -279,7 +262,7 @@ angular
 													comparatorValue= {
 															start : $scope.comparatorStartValue,
 															end : $scope.comparatorEndValue
-														}
+														};
 												}
 											}else if($scope.operator==="equals") {
 												$scope.computeButtonLabel('(='+comparatorValue+')');
@@ -307,7 +290,7 @@ angular
 											value : $scope.booleanValue
 										};
 										if ($scope.booleanValue !== undefined && $scope.booleanValue !== "undefined" ) {
-											$scope.computeButtonLabel('('+ $scope.booleanValue + ')')
+											$scope.computeButtonLabel('('+ $scope.booleanValue + ')');
 										} else {
 											$scope.resetButtonLabel();
 										}
@@ -329,8 +312,7 @@ angular
 													if (entry.ticked) {
 														selected.push(entry);
 														if (i > 0) {
-															btnLabel = btnLabel
-																	+ ' , ';
+															btnLabel = btnLabel	+ ' , ';
 														}
 														if($scope.criteriaConfig.buttonSelectedItemsFormater !== undefined &&  angular.isFunction($scope.criteriaConfig.buttonSelectedItemsFormater)){
 															btnLabel = btnLabel	+ $scope.criteriaConfig.buttonSelectedItemsFormater(entry);
@@ -341,7 +323,7 @@ angular
 													}
 												});
 										if (btnLabel !== "") {
-											$scope.computeButtonLabel(btnLabel)
+											$scope.computeButtonLabel(btnLabel);
 										} else {
 											$scope.resetButtonLabel();
 										}
@@ -392,48 +374,48 @@ angular
 									doFilter : '&'
 								},
 								template : 
-									'<div class="ng-criteria-bar row" >'
-									+ '<ul class="list-inline">'
-										+ '<li ng-repeat="criterion in criterions">'
-											+ '<div data-ng-criteria data-criteria-config="criterion" data-on-filter-triggered="filterTriggered(criterion.currentFilter)" data-on-remove-criteria="removeFilter(criterion.name)"></div>'
-										+ '</li>'
-										+ '<li class="divider-vertical"></li>'
-										+ '<li class="dropdown pull-right">'
+									'<div class="ng-criteria-bar row" >'+
+									 '<ul class="list-inline">'+
+										 '<li ng-repeat="criterion in criterions">'+
+											 '<div data-ng-criteria data-criteria-config="criterion" data-on-filter-triggered="filterTriggered(criterion.currentFilter)" data-on-remove-criteria="removeFilter(criterion.name)"></div>'+
+										 '</li>'+
+										 '<li class="divider-vertical"></li>'+
+										 '<li class="dropdown pull-right">'+
 //										+ '<span id="manage-filter-btn">'
-										+'<div class="btn-group">'
-											+ '<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"> <i class="fa fa-filter"></i> <span class="caret"></span></button>'
-											+ '<div class="more-content dropdown-menu">'
-											+ '<form role="form">'
-											+ '<div class="checkbox">'
-												+ '<label>'
-													+ '<input type="checkbox" data-ng-model="autoSearchEnable"> auto filter'
-												+ '</label>'
-											   + '</div>'
-											+ '<div class="input-group">'
-													+ '<input type="search" data-ng-model="managedFilterSearch" class="form-control" placeholder="Filter text" name="srch-term" id="srch-term">'
-													+ '<span class="input-group-addon"><i class="fa fa-search"></i></span>'
-												+ '</div>'
-												+ '<br>'
-												+ '<ul class="list-group">'
-													+ '<li class="list-group-item" ng-repeat="criterion in managedCriterions | filter : managedFilterSearch">'
-														+ '<div class="checkbox">'
-															+ '<label>'
-																+ '<input type="checkbox" data-ng-model="criterion.displayed" data-ng-change="showHideCriterion(criterion)"> {{criterion.name}}'
-															+ '</label>'
-														+ '</div>'
-													+ '</li>'
-												+ '</ul>'
-											+ '</div>'
-											+'</form>'
-											+'</div>'
+										'<div class="btn-group">'+
+											 '<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"> <i class="fa fa-filter"></i> <span class="caret"></span></button>'+
+											 '<div class="more-content dropdown-menu">'+
+											 '<form role="form">'+
+											 '<div class="checkbox">'+
+												 '<label>'+
+													 '<input type="checkbox" data-ng-model="autoSearchEnable"> auto filter'+
+												 '</label>'+
+											    '</div>'+
+											 '<div class="input-group">'+
+													 '<input type="search" data-ng-model="managedFilterSearch" class="form-control" placeholder="Filter text" name="srch-term" id="srch-term">'+
+													 '<span class="input-group-addon"><i class="fa fa-search"></i></span>'+
+												 '</div>'+
+												 '<br>'+
+												 '<ul class="list-group">'+
+													 '<li class="list-group-item" ng-repeat="criterion in managedCriterions | filter : managedFilterSearch">'+
+														 '<div class="checkbox">'+
+															 '<label>'+
+																 '<input type="checkbox" data-ng-model="criterion.displayed" data-ng-change="showHideCriterion(criterion)"> {{criterion.name}}'+
+															 '</label>'+
+														 '</div>'+
+													 '</li>'+
+												 '</ul>'+
+											 '</div>'+
+											'</form>'+
+											'</div>'+
 //										+ '</span>'
-										+ '</li>'
-										+ '<li class="pull-right">'
-											+ '<button type="button" class="btn btn-primary" data-ng-click="doFilter(filters)"><i class="fa fa-search"></i></button>'
-										+ '</li>'
-									+ '</ul>'
+										 '</li>'+
+										 '<li class="pull-right">'+
+											 '<button type="button" class="btn btn-primary" data-ng-click="doFilter(filters)"><i class="fa fa-search"></i></button>'+
+										 '</li>'+
+									 '</ul>'+
 									
-								+ '</div>',
+								 '</div>',
 								link : function($scope, element, attrs) {
 									debugEnabled=false;
 									debug=function(text){
@@ -449,8 +431,6 @@ angular
 													$scope.managedCriterions.push(criterion);
 												}
 											});
-										;
-									
 									$scope.showHideCriterion=function(criterion){
 										if(criterion.displayed===false){
 											$scope.removeFilter(criterion.name);
@@ -460,7 +440,7 @@ angular
 									$scope.filters=$scope.criteriaBarConfig.filters;
 									$scope.autoSearchEnable=($scope.criteriaBarConfig.autoFilter !== undefined) ? $scope.criteriaBarConfig.autoFilter:false;
 									$scope.filterTriggered=function(filterResult){
-										var foundExistingFilter=undefined;
+										var foundExistingFilter;
 										debug("Criteria bar watcher triggered:"+filterResult.type+' '+filterResult.field+' '+filterResult.value);
 										foundExistingFilter=findFilterByFieldName(filterResult.field);
 										if(foundExistingFilter!== undefined){
@@ -470,10 +450,10 @@ angular
 												//update existing filter
 												debug("update existing filter"+foundExistingFilter.field);
 												foundExistingFilter.value=filterResult.value;
-												if(filterResult.type.indexOf('COMPARATOR_') == 0){
+												if(filterResult.type.indexOf('COMPARATOR_') === 0){
 													foundExistingFilter.type=filterResult.type;
 												}
-												if(filterResult.type.indexOf('DATE') == 0){
+												if(filterResult.type.indexOf('DATE') === 0){
 													foundExistingFilter.type=filterResult.type;
 												}
 											}
@@ -505,6 +485,6 @@ angular
 											}
 									};
 									}
-								}
+								};
 							}
-						 ])
+						 ]);

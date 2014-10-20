@@ -21,7 +21,7 @@ App.controller('LanguageController', function ($scope, $translate, LanguageServi
 
 App.run(function($rootScope) {
 	$rootScope.appContextPath=_contextPath;
-})
+});
 
 App
 		.config([
@@ -32,8 +32,7 @@ App
 				'tmhDynamicLocaleProvider',
 				function($stateProvider, $urlRouterProvider, $locationProvider,
 						$translateProvider, tmhDynamicLocaleProvider) {
-					$translateProvider.determinePreferredLanguage()
-
+					$translateProvider.determinePreferredLanguage();
 					$translateProvider.useStaticFilesLoader({
 						prefix : _contextPath + '/assets/i18n/',
 						suffix : '.json'
@@ -42,8 +41,7 @@ App
 					$translateProvider.useCookieStorage();
 
 					tmhDynamicLocaleProvider
-							.localeLocationPattern(_contextPath
-									+ '/assets/bower_components/angular-i18n/angular-locale_{{locale}}.js')
+							.localeLocationPattern(_contextPath	+ '/assets/bower_components/angular-i18n/angular-locale_{{locale}}.js');
 					tmhDynamicLocaleProvider
 							.useCookieStorage('NG_TRANSLATE_LANG_KEY');
 
@@ -53,7 +51,7 @@ App
 App.factory('LanguageService', function ($http, $translate, LANGUAGES) {
     return {
         getBy: function(language) {
-            if (language == undefined) {
+            if (language === undefined) {
                 language = $translate.storage().get('NG_TRANSLATE_LANG_KEY') || window.navigator.language;
             }
 

@@ -47,7 +47,7 @@ App.factory("AbsenceREST", function($resource) {
 App.factory('LanguageService', function ($http, $translate, LANGUAGES) {
     return {
         getBy: function(language) {
-            if (language == undefined) {
+            if (language === undefined) {
                 language = $translate.storage().get('NG_TRANSLATE_LANG_KEY') || window.navigator.language;
             }
 
@@ -90,17 +90,6 @@ App.factory('MetricsService', function($resource) {
 	});
 });
 
-// jhipsterApp.factory('ThreadDumpService', function ($http) {
-// return {
-// dump: function() {
-// var promise = $http.get('dump').then(function(response){
-// return response.data;
-// });
-// return promise;
-// }
-// };
-// });
-//
 App.factory('HealthCheckService', function($rootScope, $http) {
 	return {
 		check : function() {
@@ -163,8 +152,7 @@ App.factory("TasksREST", function($resource) {
 });
 
 App.factory("CompanySettingsREST", function($resource) {
-	return $resource(_contextPath + "/app/api/settings/company/"
-			+ _userCompanyId + "/:id", {}, {
+	return $resource(_contextPath + "/app/api/settings/company/"+ _userCompanyId + "/:id", {}, {
 		update : {
 			method : 'PUT'
 		}
@@ -215,8 +203,7 @@ App.factory("UsersREST", function($resource) {
 });
 
 App.factory("UserSettingsREST", function($resource) {
-	return $resource(_contextPath + "/app/api/settings/user/" + _userId
-			+ "/:id", {}, {
+	return $resource(_contextPath + "/app/api/settings/user/" + _userId	+ "/:id", {}, {
 		update : {
 			method : 'PUT'
 		}

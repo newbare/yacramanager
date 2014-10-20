@@ -79,7 +79,7 @@ function LoginController($scope, $location) {
 	if (typeof activationMessage !== 'undefined'){
 		$scope.activationMessage=activationMessage;
 	}
-};
+}
 
 function RegisterController($scope, $location,RegistrationRest,alertService) {
 	$scope.loadLogin = function() {
@@ -92,7 +92,7 @@ function RegisterController($scope, $location,RegistrationRest,alertService) {
 				alertService.show('success','Saved','Account has been created !');
 				$scope.loadLogin();
 		});
-	}
+	};
 }
 
 function PasswordRecoveryController($scope, $location,AuthenticationREST) {
@@ -101,19 +101,18 @@ function PasswordRecoveryController($scope, $location,AuthenticationREST) {
 	};
 	$scope.email="";
 	$scope.recoverPassword=function(){
-		if($scope.email!=undefined && $scope.email!=""){
+		if($scope.email!==undefined && $scope.email!==""){
 			console.log($scope.email);
 			AuthenticationREST.recoverPassword(JSON.stringify($scope.email));
 		}
-	}
+	};
 }
 
 App.config([ '$stateProvider', '$urlRouterProvider','$locationProvider','$translateProvider','tmhDynamicLocaleProvider',
      		function($stateProvider, $urlRouterProvider,$locationProvider,$translateProvider,tmhDynamicLocaleProvider) {
 
 	$locationProvider.html5Mode(true).hashPrefix('!');
-	$urlRouterProvider
-	.when('/','/login')
+	$urlRouterProvider.when('/','/login');
 	
 	$stateProvider
 	.state('login', {
@@ -139,28 +138,5 @@ App.config([ '$stateProvider', '$urlRouterProvider','$locationProvider','$transl
 		data: {
 	        pageTitle: 'Registration'
 	      }
-	})
-	
-	
-	
+	});
 }]);
-
-//App.config([ '$routeProvider','$locationProvider', function($routeProvider,$locationProvider) {
-//	
-//	$locationProvider.html5Mode(true).hashPrefix('!');
-//	
-//	$routeProvider.when('/', {
-//		templateUrl : '../../assets/others/login.html',
-//		controller : LoginController
-//	})
-//	.when('/register', {
-//		templateUrl : '../../assets/others/register.html',
-//		controller : RegisterController
-//	}).when('/forgot-password', {
-//		templateUrl : '../../assets/others/forgot-password.html',
-//		controller : PasswordRecoveryController
-//	})
-//	.otherwise({
-//		redirectTo : '/'
-//	});
-//} ]);
