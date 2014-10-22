@@ -45,10 +45,10 @@ var debug=function(text){
 var getUserInitials=function(name){
 	wordArray=name.split(" ");
 	return wordArray[0]+"."+ wordArray[1].substr(0,1);
-}
+};
 
 var clone=function(obj) {
-	if (null == obj || "object" != typeof obj)
+	if (null === obj || "object" != typeof obj)
 		return obj;
 	var copy = obj.constructor();
 	for ( var attr in obj) {
@@ -56,7 +56,7 @@ var clone=function(obj) {
 			copy[attr] = obj[attr];
 	}
 	return copy;
-}
+};
 
 var yaCRAApp = {};
 
@@ -78,7 +78,7 @@ App.config(['$httpProvider', function($httpProvider,$modal) {
 
 App.config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
     cfpLoadingBarProvider.parentSelector = '.main';
-  }])
+  }]);
 
   
   
@@ -131,18 +131,18 @@ App.factory('httpRequestServerErrorInterceptor',function ($q,$rootScope) {
             			data: rejection.data,
             			url: rejection.config.url,
             			method: rejection.config.method
-            	}
+            	};
             	$rootScope.$broadcast('event:http-request-error', requestError);
             }
             return $q.reject(rejection);
          }
-     }
+     };
 });
 
 App.factory('httpConnectionLostInterceptor', function($q,$rootScope) {
 	return {
 		responseError : function(rejection) {
-			if (rejection.status == 0) {
+			if (rejection.status === 0) {
 				$rootScope.$broadcast('event:http-connection-lost');
 				//alert("Connection lost with server :(");
 				return;

@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <base th:href="@{/auth/}" />
 <title>Sign in &middot; Yacra Manager</title>
+<!-- build:css @{/assets/dist/css/yacra-login.min.css} -->
 <link th:href="@{/assets/css/site.css}" rel="stylesheet"/>
 <link th:href="@{/assets/bower_components/bootstrap/dist/css/bootstrap.min.css}"
 	rel="stylesheet"/>
@@ -14,6 +15,7 @@
 <link rel="stylesheet"
 	th:href="@{/assets/bower_components/fontawesome/css/font-awesome.min.css}"/>
 <link rel="stylesheet" th:href="@{/assets/css/yacra-fonts.css}"/>
+<!-- endbuild -->
 </head>
 <script th:inline="javascript" type="text/javascript">
     var _contextPath = [[@{/}]] ;
@@ -36,6 +38,7 @@
 		<div id="" data-ui-view="" class="" data-ng-cloak=""></div>
 		<!-- <div data-ng-view="" class="am-fade"></div> -->
 	</div>
+	<!-- build:css @{/assets/dist/js/yacra-login.js} -->
 	<script
 		th:src="@{/assets/bower_components/jquery/dist/jquery.min.js}"></script>
 	<script
@@ -66,5 +69,6 @@
 	<script
 		th:src="@{/assets/bower_components/angular-translate-storage-cookie/angular-translate-storage-cookie.min.js}"></script>
 	<script th:src="@{/assets/js/app/login.js}"></script>
+	<!-- endbuild -->
 </body>
 </html>

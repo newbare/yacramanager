@@ -29,7 +29,7 @@ function ActivityReportController($scope,$rootScope,ActivityReportREST,$filter,$
 	$scope.currentView=undefined;
 	$scope.currentDate=moment();
 	
-	$scope.dateRange={startDate:null,endDate: null}
+	$scope.dateRange={startDate:null,endDate: null};
 	
 	$scope.updateCurrentview=function(view){
 		$scope.currentView=view;
@@ -46,7 +46,7 @@ function ActivityReportController($scope,$rootScope,ActivityReportREST,$filter,$
 		}
 		$scope.numberOfWeek=($scope.dateRange.endDate.diff($scope.dateRange.startDate, 'days')+1)/7;
 		$scope.$broadcast('craViewChanged', $scope.currentView);
-	}
+	};
 	
 	$scope.previous=function(){
 		if('week'===$scope.currentView){
@@ -94,11 +94,11 @@ function ActivityReportController($scope,$rootScope,ActivityReportREST,$filter,$
 	$scope.isTodaySelected=function(){
 		var range = moment().range($scope.dateRange.startDate, $scope.dateRange.endDate);
 		return range.contains(moment());
-	}
+	};
 	
 	$scope.isToday=function(date){
-		return moment().isSame(date, 'day');;
-	}
+		return moment().isSame(date, 'day');
+	};
 	$scope.loadAbsenceTypes=function(){
 		AbsenceREST.getTypes(function(data) {
 			$scope.absencesTypes = data;
@@ -118,13 +118,13 @@ function ActivityReportController($scope,$rootScope,ActivityReportREST,$filter,$
 				typeAbsence:$scope.newAbsence.typeAbsence
 		};
 		AbsenceREST.save(toCreate).$promise.then(function(result) {
-			alertService.show('success','Confirmation', 'Donn� sauvegard�');
+			alertService.show('success','Confirmation', 'Data saved');
 			$scope.resetNewAbsence();
 			hideFn();
 			$scope.retrieveCraDetails($scope.currentFilter);
 			$scope.$broadcast('absence-portfolio-changed');
 		});
-	}
+	};
 	
 	
 	$scope.employeCriteriaConfig={
@@ -194,7 +194,7 @@ function ActivityReportController($scope,$rootScope,ActivityReportREST,$filter,$
 	};
 	$scope.formatCraDetailDuration=function(duration){
 		return $filter('date')(duration*1000, 'shortTime');
-	}
+	};
 	
 	$scope.updateCurrentview('week');
 	
@@ -205,12 +205,12 @@ function ActivityReportController($scope,$rootScope,ActivityReportREST,$filter,$
 	
 	$scope.isCurrentEmploye=function(employeId){
 		return employeId==_userId;
-	}
+	};
 	
 	$scope.taskRowTotal=function(taskRow,days){
 		var rowTotal=0;
 		angular.forEach(days,function(day){
-			rowTotal=rowTotal+taskRow.duration[day.date]
+			rowTotal=rowTotal+taskRow.duration[day.date];
 		});
 		return rowTotal;
 	};
@@ -218,11 +218,11 @@ function ActivityReportController($scope,$rootScope,ActivityReportREST,$filter,$
 	$scope.dayColumnTotal=function(employeCraDetail,day){
 		var columnTotal=0;
 		angular.forEach(employeCraDetail.taskRows,function(taskRow){
-			columnTotal+=taskRow.duration[day.date]
+			columnTotal+=taskRow.duration[day.date];
 		});
 		columnTotal+=employeCraDetail.craAbsenceDetail.duration[day.date];
 		return columnTotal;
-	}
+	};
 	
 	$scope.craTotal=function(employeCraDetail){
 		var craTotal=0;
@@ -249,7 +249,7 @@ function ActivityReportController($scope,$rootScope,ActivityReportREST,$filter,$
 		worklog.description = 'Created from activity report view';
 		worklog.employeId = _userId;
 		return WorkLogREST.save(worklog).$promise.then(function(result) {
-			alertService.show('success', 'Confirmation', 'Donn� sauvegard�');
+			alertService.show('success', 'Confirmation', 'Data saved');
 		});
 	};
 	

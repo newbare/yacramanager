@@ -1,9 +1,9 @@
 function AdminController($scope,$rootScope) {
-	$rootScope.page={"title":"Admin","description":"Configure application"}
+	$rootScope.page={"title":"Admin","description":"Configure application"};
 }
 
 function AdminHomeController($scope,$rootScope) {
-	$scope.page={"title":"Admin board","description":"Home page"}
+	$scope.page={"title":"Admin board","description":"Home page"};
 }
 
 function AdminCompaniesController($scope,$rootScope,CompanyREST,ngTableParams,alertService,notifService) {
@@ -24,7 +24,7 @@ function AdminCompaniesController($scope,$rootScope,CompanyREST,ngTableParams,al
 	
 	$scope.postCompany = function(hideFn) {
 		CompanyREST.save($scope.company).$promise.then(function(result) {
-			alertService.show('info','Confirmation', 'Donn� sauvegard�');
+			alertService.show('info','Confirmation', 'Data saved');
 			$scope.reset();
 			$scope.tableParams.reload();
 			hideFn();
@@ -42,7 +42,7 @@ function AdminCompaniesController($scope,$rootScope,CompanyREST,ngTableParams,al
 	};
 	$scope.putCompany = function() {
 		CompanyREST.update($scope.company).$promise.then(function(result) {
-			alertService.show('info','Created','Mise � jour effectu�');
+			alertService.show('info','Created','Data updated');
 			$scope.reset();
 			$scope.tableParams.reload();
 			hideFn();
@@ -140,7 +140,7 @@ function AdminCompanyViewController($scope, $rootScope,$http,CompanyREST,ngTable
 	
 	$scope.refreshDatas=function(){
 		$scope.tableParams.reload();
-	}
+	};
 }
 
 
@@ -158,7 +158,7 @@ function AdminCompanyListController($scope, $rootScope,$http,$state){
 	      $state.go('admin.company.details',{ id:company.id });
 	 };
 	 $scope.tableParams.settings().counts=[10, 25, 50, 100];
-};
+}
 
 function AdminCompanyOverviewController($scope,company){
 	$scope.companyId=company.id;
@@ -166,8 +166,8 @@ function AdminCompanyOverviewController($scope,company){
 }
 
 function AdminSettingsController($scope,$rootScope) {
-	$scope.page={"title":"Settings","description":"Home page"}
-};
+	$scope.page={"title":"Settings","description":"Home page"};
+}
 
 function LogsController($scope, LogsService,ngTableParams) {
     $scope.loggers = [];
@@ -182,7 +182,7 @@ function LogsController($scope, LogsService,ngTableParams) {
     $scope.doFilter=function(){
     	$scope.tableParams.page(1); 
     	$scope.tableParams.reload();
-    }
+    };
     
     $scope.tableParams = new ngTableParams({
 		page : 1, // show first page
@@ -215,7 +215,7 @@ function LogsController($scope, LogsService,ngTableParams) {
 				});
 			}
 		}});
-};
+}
 
 function MetricsController($scope, MetricsService,HealthCheckService) {
 
@@ -223,7 +223,7 @@ function MetricsController($scope, MetricsService,HealthCheckService) {
 	$scope.currentStackTrace=[];
 	$scope.setStackTrace=function(key,error){
 		$scope.currentStackTrace={"key":key,"error":error};
-	}
+	};
     $scope.refresh = function() {
     	
     	HealthCheckService.check().then(function(promise) {
@@ -260,34 +260,6 @@ function MetricsController($scope, MetricsService,HealthCheckService) {
     };
 
     $scope.refresh();
-
-//    $scope.threadDump = function() {
-//        ThreadDumpService.dump().then(function(data) {
-//            $scope.threadDump = data;
-//
-//            $scope.threadDumpRunnable = 0;
-//            $scope.threadDumpWaiting = 0;
-//            $scope.threadDumpTimedWaiting = 0;
-//            $scope.threadDumpBlocked = 0;
-//
-//            angular.forEach(data, function(value, key) {
-//                if (value.threadState == 'RUNNABLE') {
-//                    $scope.threadDumpRunnable += 1;
-//                } else if (value.threadState == 'WAITING') {
-//                    $scope.threadDumpWaiting += 1;
-//                } else if (value.threadState == 'TIMED_WAITING') {
-//                    $scope.threadDumpTimedWaiting += 1;
-//                } else if (value.threadState == 'BLOCKED') {
-//                    $scope.threadDumpBlocked += 1;
-//                }
-//            });
-//
-//            $scope.threadDumpAll = $scope.threadDumpRunnable + $scope.threadDumpWaiting +
-//                $scope.threadDumpTimedWaiting + $scope.threadDumpBlocked;
-//
-//        });
-//    };
-
     $scope.getLabelClass = function(threadState) {
         if (threadState == 'RUNNABLE') {
             return "label-success";
@@ -299,4 +271,4 @@ function MetricsController($scope, MetricsService,HealthCheckService) {
             return "label-danger";
         }
     };
-};
+}

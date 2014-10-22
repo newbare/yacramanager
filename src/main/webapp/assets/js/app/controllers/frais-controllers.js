@@ -10,10 +10,10 @@ function FraisController($scope, $rootScope, NoteREST, alertService,
 	
 	$scope.activateTab=function(tab){
 		$scope.currentTab=tab;
-	}
+	};
 	$scope.isActiveTab=function(tab){
 		return tab==$scope.currentTab;
-	}
+	};
 	$scope.initialActionLabel = "Ajouter une note";
 	$scope.dateFormat = "dd MMMM yyyy";
 	$scope.hasDatas = false;
@@ -72,7 +72,7 @@ function FraisController($scope, $rootScope, NoteREST, alertService,
 				$http.get(_contextPath+"/app/api/users/managed/"+_userId,{params:{"me":true} })
 					.success(function(data, status) {
 						$defer.resolve(data);
-					})
+					});
 			},
 			currentFilter:{},
 			displayed: true
@@ -154,13 +154,13 @@ function FraisController($scope, $rootScope, NoteREST, alertService,
 		note.date = today;
 		note.description = undefined;
 		note.amount = 0;
-		note.attachements
+		note.attachements=undefined;
 		$scope.edition = false;
 		$scope.selectedFile=undefined;
 	};
 
 	function clone(obj) {
-		if (null == obj || "object" != typeof obj)
+		if (null === obj || "object" != typeof obj)
 			return obj;
 		var copy = obj.constructor();
 		for ( var attr in obj) {
@@ -172,7 +172,7 @@ function FraisController($scope, $rootScope, NoteREST, alertService,
 
 	$scope.onFileSelect=function(file){
 		$scope.selectedFile=file;
-	}
+	};
 	
 	$scope.postNote=function(note,hideFn){
 		 NoteREST.save(note).$promise.then(function(result) {
@@ -197,8 +197,7 @@ function FraisController($scope, $rootScope, NoteREST, alertService,
 											// only
 			}).progress(
 					function(evt) {
-						console.log('percent: '
-								+ parseInt(100.0 * evt.loaded / evt.total));
+						console.log('percent: '	+ parseInt(100.0 * evt.loaded / evt.total));
 					}).success(function(data, status, headers, config) {
 				// file is uploaded successfully
 				console.log(data);
@@ -216,7 +215,7 @@ function FraisController($scope, $rootScope, NoteREST, alertService,
 	};
 	$scope.putNote = function() {
 		NoteREST.update(clone(note)).$promise.then(function(result) {
-			notifService.notify('info', 'Created', 'Modification effectu���');
+			notifService.notify('info', 'Created', 'Data updated');
 			$scope.reset();
 			$scope.tableParams.reload();
 		});
@@ -224,7 +223,7 @@ function FraisController($scope, $rootScope, NoteREST, alertService,
 	
 	$scope.refreshDatas=function(){
 		$scope.tableParams.reload();
-	}
+	};
 	
 	$scope.editNote = function(id) {
 		$scope.edition = true;
@@ -247,7 +246,7 @@ function FraisController($scope, $rootScope, NoteREST, alertService,
 			id : id
 		}).$promise.then(function(result) {
 			$scope.tableParams.reload();
-			notifService.notify('info', 'Confirmation', 'Note supprim��');
+			notifService.notify('info', 'Confirmation', 'Expense deleted');
 		}, function(error) {
 			console.log(error);
 			notifService.notify('error', '' + error.status, error.data);
@@ -300,7 +299,6 @@ function FraisController($scope, $rootScope, NoteREST, alertService,
 			if (id == item.id) {
 				findOne = item;
 			}
-			;
 		});
 		return findOne;
 	};
@@ -328,15 +326,14 @@ function FraisController($scope, $rootScope, NoteREST, alertService,
 				$scope.deSelectNote($scope.getNoteForId(allNote, item.id));
 			}
 		});
-		if ((unchecked == 0) || (checked == 0)) {
-			$scope.checkboxes.checked = (checked == total);
+		if ((unchecked === 0) || (checked === 0)) {
+			$scope.checkboxes.checked = (checked === total);
 		}
-		if (total == 0) {
+		if (total === 0) {
 			$scope.checkboxes.checked = false;
 		}
 		// grayed checkbox
-		angular.element(document.getElementById("select_all")).prop(
-				"indeterminate", (checked != 0 && unchecked != 0));
+		angular.element(document.getElementById("select_all")).prop("indeterminate", (checked !==0 && unchecked !== 0));
 	}, true);
 
 }

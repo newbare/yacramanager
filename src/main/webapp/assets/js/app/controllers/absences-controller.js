@@ -2,7 +2,7 @@
 
 function ApiDocsController($scope,$rootScope) {
 	$scope.appContextPath=$rootScope.appContextPath;
-};
+}
 
 
 function AbsencesController($scope, $rootScope, AbsenceREST, alertService,ngTableParams,notifService,$http) {
@@ -16,10 +16,10 @@ function AbsencesController($scope, $rootScope, AbsenceREST, alertService,ngTabl
 	
 	$scope.activateTab=function(tab){
 		$scope.currentTab=tab;
-	}
+	};
 	$scope.isActiveTab=function(tab){
 		return tab==$scope.currentTab;
-	}
+	};
 	
 	/*
 	 * criteria config
@@ -52,7 +52,7 @@ function AbsencesController($scope, $rootScope, AbsenceREST, alertService,ngTabl
 				$http.get(_contextPath+"/app/api/users/managed/"+_userId,{params:{"me":true} })
 					.success(function(data, status) {
 						$defer.resolve(data);
-					})
+					});
 			},
 			currentFilter:{},
 			displayed: true
@@ -63,8 +63,7 @@ function AbsencesController($scope, $rootScope, AbsenceREST, alertService,ngTabl
 			filterType:"ARRAY",
 			closeable:true,
 			filterValue:
-				[{name:"RTT",label:"RTT",ticked:false},{name:"CP",label:"Conge paye",ticked:false}]
-				,
+				[{name:"RTT",label:"RTT",ticked:false},{name:"CP",label:"Conge paye",ticked:false}]	,
 			onFilter: function(value) {
 				console.log('Filter checkbox ['+value.field+'] selected items '+value.value.length);
 			},
@@ -143,8 +142,7 @@ function AbsencesController($scope, $rootScope, AbsenceREST, alertService,ngTabl
 		var index = $scope.selectedAbsences.indexOf(absence);
 		if(index!=-1){
 			$scope.selectedAbsences.splice(index, 1);
-		};
-		
+		}
 	};
 	
 	$scope.reset = function() {
@@ -170,12 +168,12 @@ function AbsencesController($scope, $rootScope, AbsenceREST, alertService,ngTabl
 
 	$scope.refreshDatas=function(){
 		$scope.tableParams.reload();
-	}
+	};
 	
 	$scope.postAbsence = function(hideFn) {
 		$scope.currentAbsence.typeAbsence=$scope.currentAbsence.typeAbsence.name;
 		AbsenceREST.save($scope.currentAbsence).$promise.then(function(result) {
-			alertService.show('success','Confirmation', 'Donn� sauvegard�');
+			alertService.show('success','Confirmation', 'Data saved');
 			$scope.reset();
 			$scope.tableParams.reload();
 			hideFn();
@@ -183,7 +181,7 @@ function AbsencesController($scope, $rootScope, AbsenceREST, alertService,ngTabl
 	};
 	$scope.putAbsence = function() {
 		AbsenceREST.update(clone(absence)).$promise.then(function(result) {
-			notifService.notify('info','Created','Nouvelle absence enregistr�');
+			notifService.notify('info','Created','New time off saved');
 			$scope.reset();
 			$scope.tableParams.reload();
 			hideFn();
@@ -230,7 +228,7 @@ function AbsencesController($scope, $rootScope, AbsenceREST, alertService,ngTabl
 	}, {
 		total : 0, // length of data
 		getData : function($defer, params) {
-			if($scope.tableFilter!=undefined && $scope.tableFilter!=''){
+			if($scope.tableFilter!==undefined && $scope.tableFilter!==''){
 				AbsenceREST.get(
 						{
 							page:params.$params.page-1,
@@ -284,25 +282,6 @@ function AbsencesController($scope, $rootScope, AbsenceREST, alertService,ngTabl
 		});
 	};
 	
-//	$scope.approvementTableParams = new ngTableParams({
-//		page : 1, // show first page
-//		count : 10, // count per page
-//		sorting : {
-//			date : 'desc' // initial sorting
-//		}
-//	}, {
-//		total : 0, // length of data
-//		getData : function($defer, params) {
-//			$http.get(_contextPath+"/app/api/absences/approval",{params:{"requesterId":_userId} })
-//			.success(function(data, status) {
-//				params.total(data.totalCount);
-//				$scope.approvementTotal=data.totalCount;
-//				$scope.approvements=data.result;
-//				// set new data
-//				$defer.resolve(data.result.approvalEntities);
-//			});
-//		}});
-	
 	$scope.checkboxes = { 'checked': false, items: {} };
 
 	$scope.getAbsenceForId=function(array,id){
@@ -310,7 +289,7 @@ function AbsencesController($scope, $rootScope, AbsenceREST, alertService,ngTabl
 		angular.forEach(array, function(item) {
 			if(id==item.id){
 				findOne= item;
-			};
+			}
 		});
 		return findOne;
 	};
@@ -339,14 +318,14 @@ function AbsencesController($scope, $rootScope, AbsenceREST, alertService,ngTabl
             	$scope.deSelectAbsence($scope.getAbsenceForId(allAbsence,item.id));
 			}
         });
-        if ((unchecked == 0) || (checked == 0)) {
+        if ((unchecked === 0) || (checked === 0)) {
             $scope.checkboxes.checked = (checked == total);
         }
-        if(total==0){
+        if(total===0){
         	$scope.checkboxes.checked =false;
         }
         // grayed checkbox
-        angular.element(document.getElementById("select_all")).prop("indeterminate", (checked != 0 && unchecked != 0));
+        angular.element(document.getElementById("select_all")).prop("indeterminate", (checked !== 0 && unchecked !== 0));
     }, true);
 	
-	};
+	}

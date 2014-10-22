@@ -43,7 +43,7 @@ function TasksController($scope, $rootScope,ngTableParams, alertService,Projects
 							});
 						}
 						$defer.resolve(value);
-					})
+					});
 			},
 			currentFilter:{},
 			displayed: true
@@ -78,11 +78,10 @@ function TasksController($scope, $rootScope,ngTableParams, alertService,Projects
 	});
 	
 	$scope.canAddTask=function(){
-		return $scope.taskToAdd !=undefined && $scope.taskToAdd.taskName!=undefined && $scope.taskToAdd.taskName.length>0;
+		return $scope.taskToAdd !==undefined && $scope.taskToAdd.taskName!==undefined && $scope.taskToAdd.taskName.length>0;
 	};
 	
 	$scope.addTask=function(project){
-		$scope.taskToAdd !=undefined;
 		var newtask={name:$scope.taskToAdd.taskName,description:$scope.taskToAdd.taskDescription,projectId:project.id,employeId:_userId};
 		TasksREST.save({companyId :_userCompanyId},newtask).$promise.then(function(result){
 			alertService.show('success','Confirmation', 'New task created');
@@ -101,37 +100,5 @@ function TasksController($scope, $rootScope,ngTableParams, alertService,Projects
 		});
 	};
 	
-//	$scope.tableParams = new ngTableParams({
-//		page : 1, // show first page
-//		count : 10, // count per page
-//		sorting : {
-//			id : 'desc' // initial sorting
-//		}
-//	}, {
-//		total : 0, // length of data
-//		getData : function($defer, params) {
-//			if($scope.tableFilter!==""){
-//				TasksREST.get(
-//						{
-//							companyId : _userCompanyId,
-//							page:params.$params.page-1,
-//							size:params.$params.count,
-//							sort:params.$params.sorting,
-//							filter:$scope.tableFilter
-//						},function(data) {
-//					params.total(data.totalCount);
-//					$scope.startIndex=data.startIndex;
-//					$scope.endIndex=data.endIndex;
-//					if(data.totalCount>=1){
-//						$scope.hasDatas=true;
-//					}else {
-//						$scope.hasDatas=false;
-//					}
-//					allAbsence=data.result;
-//					// set new data
-//					$defer.resolve(data.result);
-//				});
-//			}
-//		}});
 	$scope.refreshProjects();
 }

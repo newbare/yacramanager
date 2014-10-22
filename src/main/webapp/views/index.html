@@ -9,7 +9,7 @@
 <link rel="icon" href="../../favicon.ico"/>
 
 <title>Yacra Manager</title>
-
+<!-- build:css @{/assets/dist/css/yacra.min.css} -->
 <link rel="stylesheet"
 	th:href="@{/assets/bower_components/bootstrap/dist/css/bootstrap.min.css}"/>
 <link rel="stylesheet"
@@ -17,6 +17,7 @@
 	<link rel="stylesheet" th:href="@{/assets/css/yacra-fonts.css}"/>
 	<link rel="stylesheet" th:href="@{/assets/css/yacranav.css}"/>
 	<link rel="stylesheet" th:href="@{/assets/css/yacrafooter.css}"/>
+<!-- endbuild -->
 <!-- Custom styles for this template -->
 
 <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -169,6 +170,7 @@
 	<!-- Bootstrap core JavaScript
     ================================================== -->
 	<!-- Placed at the end of the document so the pages load faster -->
+	<!-- build:css @{/assets/dist/js/yacra.js} -->
 	<script
 		th:src="@{/assets/bower_components/jquery/dist/jquery.min.js}"></script>
 	<script
@@ -193,5 +195,6 @@
 		th:src="@{/assets/bower_components/angular-translate-loader-static-files/angular-translate-loader-static-files.min.js}"></script>
 	<script
 		th:src="@{/assets/bower_components/angular-translate-storage-cookie/angular-translate-storage-cookie.min.js}"></script>
+	<!-- endbuild -->
 </body>
 </html>

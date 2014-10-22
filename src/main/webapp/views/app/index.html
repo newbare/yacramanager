@@ -6,6 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <base th:href="@{/app/view/}" />
+<!-- build:css @{/assets/dist/css/yacra-app.min.css} -->
 <link rel="stylesheet" th:href="@{/assets/css/flags/flags.css}"/>
 <link rel="stylesheet"
 	th:href="@{/assets/css/angular-criterias.css}"/>
@@ -50,7 +51,7 @@
 <link rel="stylesheet" th:href="@{/assets/css/app.css}"/>
 <link rel="stylesheet" th:href="@{/assets/css/yacranav.css}"/>
 <link rel="stylesheet" th:href="@{/assets/css/yacrafooter.css}"/>
-
+<!-- endbuild -->
 
 <script th:inline="javascript" type="text/javascript">
 	var _contextPath = [[@{/}]] ;
@@ -277,7 +278,7 @@
 	<!-- Bootstrap core JavaScript
     ================================================== -->
 	<!-- Placed at the end of the document so the pages load faster -->
-
+<!-- build:js @{/assets/dist/js/yacra-app.js} -->
 	<script
 		th:src="@{/assets/bower_components/jquery/dist/jquery.min.js}"></script>
 		<script
@@ -408,5 +409,6 @@
 		th:src="@{/assets/js/app/controllers/user-settings-controller.js}"></script>
 	<script
 		th:src="@{/assets/js/app/controllers/user-profile-controller.js}"></script>
+		<!-- endbuild -->
 </body>
 </html>

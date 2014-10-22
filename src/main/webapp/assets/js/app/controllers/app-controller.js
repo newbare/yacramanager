@@ -1,7 +1,7 @@
 var serializeData=function(data) {
 	// If this is not an object, defer to native stringification.
 	if (!angular.isObject(data)) {
-		return ((data == null) ? "" : data.toString());
+		return ((data === null) ? "" : data.toString());
 	}
 	var buffer = [];
 	// Serialize each key in the object.
@@ -10,13 +10,12 @@ var serializeData=function(data) {
 			continue;
 		}
 		var value = data[name];
-		buffer.push(encodeURIComponent(name) + "="
-				+ encodeURIComponent((value == null) ? "" : value));
+		buffer.push(encodeURIComponent(name) + "=" + encodeURIComponent((value === null) ? "" : value));
 	}
 	// Serialize the buffer and clean it up for transportation.
 	var source = buffer.join("&").replace(/%20/g, "+");
 	return (source);
-}
+};
 
 App.config(function($datepickerProvider) {
 	angular.extend($datepickerProvider.defaults, {
@@ -71,7 +70,7 @@ App.controller('AppCtrl', [ '$scope', '$location', 'UsersREST','$rootScope','$tr
 			$scope.eventsToWait=['userInfo'];
 			$scope.navClass = function(page) {
 				var currentRoute = $location.path().substring(1) || 'home';
-				return currentRoute.indexOf(page)==0 ? 'active' :'';
+				return currentRoute.indexOf(page)===0 ? 'active' :'';
 			};
 			
 			$scope.containerClass=function(){
@@ -83,13 +82,13 @@ App.controller('AppCtrl', [ '$scope', '$location', 'UsersREST','$rootScope','$tr
 			};
 			$scope.isValidated=function(data){
 				return 'APPROVED'==data.validationStatus;
-			}
+			};
 			$scope.isWaiting=function(data){
 				return 'WAIT_FOR_APPROVEMENT'==data.validationStatus;
-			}
+			};
 			$scope.isRejected=function(data){
 				return 'REJECTED'==data.validationStatus;
-			}
+			};
 		} ]);
 
 App.controller('LanguageController', function ($scope, $translate, LanguageService) {
@@ -113,10 +112,10 @@ App.controller('LanguageController', function ($scope, $translate, LanguageServi
 
 App.controller('WorkLogCtrl',['$scope','$http','WorkLogREST','alertService',function($scope,$http,WorkLogREST,alertService){
 	 $scope.timerRunning = false;
-	 $scope.open=false
+	 $scope.open=false;
 	 $scope.project=undefined;
-	 $scope.task=undefined
-	 var start=undefined;
+	 $scope.task=undefined;
+	 var start;
      $scope.startTimer = function (){
          $scope.$broadcast('timer-start');
          $scope.timerRunning = true;
@@ -148,7 +147,7 @@ App.controller('WorkLogCtrl',['$scope','$http','WorkLogREST','alertService',func
         	 $scope.worklog.employeId=_userId;
         	 WorkLogREST.save($scope.worklog).$promise.then(function(result) {
         		 $scope.resetWorkLog();
-        		 alertService.show('success','Confirmation', 'Donn� sauvegard�');
+        		 alertService.show('success','Confirmation', 'Data saved');
     		});
     	 }else {
     		 $scope.resetWorkLog();
@@ -159,8 +158,7 @@ App.controller('WorkLogCtrl',['$scope','$http','WorkLogREST','alertService',func
      
      var fetchProjects = function(queryParams) {
  		return $http.get(
- 				_contextPath + "/app/api/" + _userCompanyId + "/project/employe/"
- 						+ _userId, {
+ 				_contextPath + "/app/api/" + _userCompanyId + "/project/employe/"+ _userId, {
  					params : {}
  				}).then(function(response) {
  					$scope.projects=response.data.result;
@@ -173,11 +171,11 @@ App.controller('WorkLogCtrl',['$scope','$http','WorkLogREST','alertService',func
  		$scope.project=project;
  		fetchTasks();
  		$scope.updateStartable();
- 	}
+ 	};
  	$scope.selectTask=function(task){
  		$scope.task=task;
  		$scope.updateStartable();
- 	}
+ 	};
  	
  	var fetchTasks = function(queryParams) {
  		return $http.get(
@@ -228,7 +226,7 @@ App.controller('LoginCtrl', [ '$scope','$http','authService',function($scope,$ht
 	      		$scope.errorMessage=data;
 	      	})
 	      ;
-	    }
+	    };
 }]);
 
 App.config([ '$stateProvider', '$urlRouterProvider','$locationProvider','$translateProvider','tmhDynamicLocaleProvider',
@@ -652,7 +650,7 @@ App.config([ '$stateProvider', '$urlRouterProvider','$locationProvider','$transl
 			});
 			
 //			$translateProvider.preferredLanguage('en');
-			$translateProvider.determinePreferredLanguage()
+			$translateProvider.determinePreferredLanguage();
 			
 			$translateProvider.useStaticFilesLoader({
 			      prefix: _contextPath+'/assets/i18n/',
@@ -662,12 +660,12 @@ App.config([ '$stateProvider', '$urlRouterProvider','$locationProvider','$transl
 			$translateProvider.useCookieStorage();
 
 			tmhDynamicLocaleProvider
-					.localeLocationPattern(_contextPath+'/assets/bower_components/angular-i18n/angular-locale_{{locale}}.js')
+					.localeLocationPattern(_contextPath+'/assets/bower_components/angular-i18n/angular-locale_{{locale}}.js');
 			tmhDynamicLocaleProvider
 					.useCookieStorage('NG_TRANSLATE_LANG_KEY');
 
 		} ]);
 
 function NotificationsController($scope,$rootScope) {
-	$rootScope.page={"title":"Notification","description":"Stay aware..."}
+	$rootScope.page={"title":"Notification","description":"Stay aware..."};
 }

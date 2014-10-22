@@ -11,17 +11,17 @@ function CompanyController($scope, $rootScope) {
 			"description" : "Dashboard"
 		};
 	});
-};
+}
 
 /*COMPANY-EMPLOYEE section*/
 function CompanyEmployeesController($scope) {
 	$scope.currentTab = 'basicInfos';
 	$scope.activateTab = function(tab) {
 		$scope.currentTab = tab;
-	}
+	};
 	$scope.isActiveTab = function(tab) {
 		return tab == $scope.currentTab;
-	}
+	};
 	$scope.civilities = [ {
 		value : 'HOMME',
 		text : 'Homme'
@@ -92,8 +92,7 @@ function CompanyEmployeesViewController($scope, $rootScope,$http,EmployeesREST,n
 			filterType:"ARRAY",
 			closeable:true,
 			filterValue:
-				[{name:"HOMME",label:"Homme",ticked:false},{name:"FEMME",label:"Femme",ticked:false}]
-				,
+				[{name:"HOMME",label:"Homme",ticked:false},{name:"FEMME",label:"Femme",ticked:false}],
 			onFilter: function(value) {
 				console.log('Filter checkbox ['+value.field+'] selected items '+value.value.length);
 			},
@@ -179,7 +178,7 @@ function CompanyEmployeesViewController($scope, $rootScope,$http,EmployeesREST,n
    		 hideFn();
    		 alertService.show('info','Confirmation', 'Employe created');
 		});
-	}
+	};
 }
 
 function CompanyEmployeesQuickViewController($scope,$http,EmployeesREST,ngTableParams,$state){
@@ -203,21 +202,10 @@ function CompanyEmployeesListController($scope, $rootScope,$http,EmployeesREST,n
 	 };
 	 $scope.tableParams.settings().counts=[10, 25, 50, 100];
 	 
-};
+}
 
 function CompanyEmployeesOverviewController($scope,employe,EmployeesREST){
 	$scope.employe=employe;
-//	$scope.refresh=function(){
-//		EmployeesREST.get(
-//				{id:$scope.employeId},function(data) {
-//					$scope.employe=data;
-//				},function(error){
-//					$scope.employe=undefined;
-//				});
-//	};
-//	
-//	$scope.refresh();
-	
 	$scope.updateEmploye = function() {
 		return EmployeesREST.update($scope.employe);
 	};
@@ -335,7 +323,7 @@ function CompanyClientsViewController($scope, $rootScope,$http,ClientsREST,ngTab
    		 hideFn();
    		 alertService.show('info','Confirmation', 'Client created');
 		});
-	}
+	};
 }
 
 function CompanyClientsQuickViewController($scope,$http,ClientsREST,ngTableParams,$state){
@@ -356,7 +344,7 @@ function CompanyClientsListController($scope, $rootScope,$http,ClientsREST,ngTab
 	      $state.go('company.clients.details',{ id:client.id });
 	 };
 	 $scope.tableParams.settings().counts=[10, 25, 50, 100];
-};
+}
 
 function CompanyClientsOverviewController($scope,ClientsREST,client){
 	$scope.client=client;
@@ -374,7 +362,7 @@ function CompanyClientsOverviewController($scope,ClientsREST,client){
 	
 	$scope.deleteContact=function(client,index){
 		client.contacts.splice(index,1);
-	}
+	};
 	$scope.updateClient = function() {
 		var clientToUpdate={id:$scope.client.id,name:$scope.client.name,email:$scope.client.email,contacts:$scope.client.contacts};
 		angular.forEach(clientToUpdate.contacts,function(contact){
@@ -550,7 +538,7 @@ function CompanyProjectsViewController($scope, $rootScope,$http,ProjectsREST,ngT
    		 hideFn();
    		 alertService.show('info','Confirmation', 'Project created');
 		});
-	}
+	};
 }
 
 function CompanyProjectsQuickViewController($scope,$http,ProjectsREST,ngTableParams,$state){
@@ -573,7 +561,7 @@ function CompanyProjectsListController($scope, $rootScope,$http,ProjectsREST,ngT
 	        $state.go('company.projects.details',{ id:project.id });
 	 };
 	
-};
+}
 
 function CompanyProjectsOverviewController($scope,ProjectsREST, project){
 	$scope.project=project;
@@ -600,13 +588,13 @@ function CompanyProjectsController($scope, $rootScope,$http,ngTableParams,Projec
 	
 	$scope.selectClient=function(client){
 		$scope.client=client;
-	}
+	};
 	
 	$scope.hasDatas=false;
 	
 	$scope.refreshDatas=function(){
 		$scope.tableParams.reload();
-	}
+	};
 	$scope.tableFilter="";
 	$scope.companyCriteriaConfig={
 			name:"company",
@@ -657,7 +645,7 @@ function CompanyProjectsController($scope, $rootScope,$http,ngTableParams,Projec
 							});
 						}
 						$defer.resolve(value);
-					})
+					});
 			},
 			currentFilter:{},
 			displayed: true
@@ -747,7 +735,7 @@ function CompanyProjectsController($scope, $rootScope,$http,ngTableParams,Projec
 			}
 		}});
 	
-};
+}
 
 function CompanySettingsController($scope,CompanySettingsREST,$rootScope){
 	$rootScope.page={"title":"Company settings","description":"Edit your settings"};
