@@ -200,7 +200,7 @@ App.controller('WorkLogCtrl',['$scope','$http','WorkLogREST','alertService',func
 }]);
 
 App.controller('FilesController',['$scope',function($scope){
-	$scope.fileConnectorURL=_contextPath+'/app/file-connector';
+	$scope.fileConnectorURL=_contextPath+'app/file-connector';
 }]);
 
 App.controller('LoginCtrl', [ '$scope','$http','authService',function($scope,$http, authService) {

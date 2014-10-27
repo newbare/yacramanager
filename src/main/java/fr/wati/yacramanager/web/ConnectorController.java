@@ -11,20 +11,22 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import javax.annotation.Resource;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.fileupload.FileItemIterator;
 import org.apache.commons.fileupload.FileItemStream;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
-import org.apache.commons.fileupload.util.Streams;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.support.StandardMultipartHttpServletRequest;
 import org.springframework.web.util.WebUtils;
 
 import cn.bluejoe.elfinder.controller.FsException;
@@ -108,51 +110,52 @@ public class ConnectorController
 		final Map<String, String> requestParams = new HashMap<String, String>();
 		List<FileItemStream> listFiles = new ArrayList<FileItemStream>();
 
-		// Parse the request
-		ServletFileUpload sfu = new ServletFileUpload();
+		StandardMultipartHttpServletRequest multipartHttpServletRequest=null;
+		if(request instanceof StandardMultipartHttpServletRequest){
+			multipartHttpServletRequest=(StandardMultipartHttpServletRequest) request;
+		}else {
+			return request;
+		}
+		Set<Entry<String, List<MultipartFile>>> filesEntrySet = multipartHttpServletRequest.getMultiFileMap().entrySet();
 		String characterEncoding = request.getCharacterEncoding();
 		if(StringUtils.isEmpty(characterEncoding)) characterEncoding=WebUtils.DEFAULT_CHARACTER_ENCODING;
-		
-		sfu.setHeaderEncoding(characterEncoding);
-		FileItemIterator iter = sfu.getItemIterator(request);
+		for(Entry<String, List<MultipartFile>> entry:filesEntrySet){
+			final String fieldName=entry.getKey();
+			List<MultipartFile> multipartFiles = entry.getValue();
+			for (final MultipartFile multipartFile : multipartFiles) {
+				InputStream stream=multipartFile.getInputStream();
+				//requestParams.put(multipartFile.getOriginalFilename(), Streams.asString(stream, characterEncoding));
+				
+				ByteArrayOutputStream os = new ByteArrayOutputStream();
+				IOUtils.copy(stream, os);
+				final byte[] bs = os.toByteArray();
+				stream.close();
 
-		while (iter.hasNext())
-		{
-			final FileItemStream item = iter.next();
-			String name = item.getFieldName();
-			InputStream stream = item.openStream();
-			if (item.isFormField())
-			{
-				requestParams.put(name, Streams.asString(stream, characterEncoding));
-			}
-			else
-			{
-				String fileName = item.getName();
-				if (fileName != null && !"".equals(fileName.trim()))
-				{
-					ByteArrayOutputStream os = new ByteArrayOutputStream();
-					IOUtils.copy(stream, os);
-					final byte[] bs = os.toByteArray();
-					stream.close();
-
-					listFiles.add((FileItemStream) Proxy.newProxyInstance(this.getClass().getClassLoader(),
-						new Class[] { FileItemStream.class }, new InvocationHandler()
+				listFiles.add((FileItemStream) Proxy.newProxyInstance(this.getClass().getClassLoader(),
+					new Class[] { FileItemStream.class }, new InvocationHandler()
+					{
+						@Override
+						public Object invoke(Object proxy, Method method, Object[] args) throws Throwable
 						{
-							@Override
-							public Object invoke(Object proxy, Method method, Object[] args) throws Throwable
+							if ("openStream".equals(method.getName()))
 							{
-								if ("openStream".equals(method.getName()))
-								{
-									return new ByteArrayInputStream(bs);
-								}
-
-								return method.invoke(item, args);
+								return new ByteArrayInputStream(bs);
+							}else if ("getContentType".equals(method.getName())) {
+								return multipartFile.getContentType();
+							}else if ("getName".equals(method.getName())) {
+								return multipartFile.getOriginalFilename();
+							}else if ("getFieldName".equals(method.getName())) {
+								return multipartFile.getName();
+							}else if ("isFormField".equals(method.getName())) {
+								return true;
 							}
-						}));
-				}
+
+							return method.invoke(multipartFile.getInputStream(), args);
+						}
+					}));
 			}
 		}
-
+		
 		request.setAttribute(FileItemStream.class.getName(), listFiles);
 		return (HttpServletRequest) Proxy.newProxyInstance(this.getClass().getClassLoader(),
 			new Class[] { HttpServletRequest.class }, new InvocationHandler()
@@ -162,6 +165,12 @@ public class ConnectorController
 				{
 					if ("getParameter".equals(arg1.getName()))
 					{
+						if("cmd".equals(arg2[0])){
+							return request.getParameter("cmd");
+						}
+						if("target".equals(arg2[0])){
+							return request.getParameter("target");
+						}
 						return requestParams.get(arg2[0]);
 					}
 
