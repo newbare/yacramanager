@@ -12,7 +12,7 @@ App.service('alertService', function($alert) {
 			keyboard : true,
 			show : false,
 			duration: 10,
-			template:  _contextPath+'/assets/others/alert/alert.tpl.html',
+			template:  _contextPath+'/templates/alert/alert.tpl.html',
 			container: '#alerts-container'
 			//container: 'body'
 			//container: '#main-view'

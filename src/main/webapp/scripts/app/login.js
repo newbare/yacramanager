@@ -37,7 +37,7 @@ App.service('alertService', function($alert) {
 			keyboard : true,
 			show : false,
 			duration: 5,
-			template:  _contextPath+'/assets/others/alert/alert.tpl.html',
+			template:  _contextPath+'/templates/alert/alert.tpl.html',
 			container: '#alerts-container'
 		});
 		myAlert.$promise.then(myAlert.show);
@@ -117,7 +117,7 @@ App.config([ '$stateProvider', '$urlRouterProvider','$locationProvider','$transl
 	$stateProvider
 	.state('login', {
 		url : "/login",
-		templateUrl : _contextPath+'/assets/others/login.html',
+		templateUrl : _contextPath+'/templates/login.html',
 		controller : LoginController,
 		data: {
 	        pageTitle: 'Login page'
@@ -125,7 +125,7 @@ App.config([ '$stateProvider', '$urlRouterProvider','$locationProvider','$transl
 	})
 	.state('register', {
 		url : "/register",
-		templateUrl : _contextPath+'/assets/others/register.html',
+		templateUrl : _contextPath+'/templates/register.html',
 		controller : RegisterController,
 		data: {
 	        pageTitle: 'Registration'
@@ -133,7 +133,7 @@ App.config([ '$stateProvider', '$urlRouterProvider','$locationProvider','$transl
 	})
 	.state('forgot-password', {
 		url : "/forgot-password",
-		templateUrl : _contextPath+'/assets/others/forgot-password.html',
+		templateUrl : _contextPath+'/templates/forgot-password.html',
 		controller : PasswordRecoveryController,
 		data: {
 	        pageTitle: 'Registration'

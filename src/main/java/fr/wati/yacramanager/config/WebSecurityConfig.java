@@ -37,8 +37,9 @@ import org.springframework.security.web.authentication.rememberme.JdbcTokenRepos
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.security.web.header.writers.frameoptions.XFrameOptionsHeaderWriter;
 
+import fr.wati.yacramanager.beans.Role;
 import fr.wati.yacramanager.services.security.PreAuthenticationChecker;
-import fr.wati.yacramanager.web.filters.AjaxTimeoutRedirectFilter;
+import fr.wati.yacramanager.web.filter.AjaxTimeoutRedirectFilter;
 
 /**
  * Customizes Spring Security configuration.
@@ -76,8 +77,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 				.and()
 				.authorizeRequests()
-				.antMatchers("/assets/**")
-				.permitAll()
 				.antMatchers("/")
 				.permitAll()
 				.antMatchers("/auth/api/**")
@@ -85,9 +84,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/app/admin/**")
 				.hasAnyRole("ADMIN")
 				.antMatchers("/app/**")
-				.hasAnyRole(
-						new String[] { "ADMIN", "SSII_ADMIN", "SALARIE",
-								"INDEP" })
+				.hasAnyAuthority(Role.ADMIN,Role.SSII_ADMIN,Role.SALARIE,Role.INDEP)
 				.anyRequest()
 				.authenticated()
 				.and()
@@ -140,9 +137,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Override
 	public void configure(WebSecurity web) throws Exception {
-		web.ignoring().antMatchers("/assets/bower_components/**")
-				.antMatchers("/assets/css/**").antMatchers("/assets/js/**")
-				.antMatchers("/swagger-ui/**");
+		 web.ignoring()
+         .antMatchers("/bower_components/**")
+         .antMatchers("/fonts/**")
+         .antMatchers("/templates/**")
+         .antMatchers("/images/**")
+         .antMatchers("/scripts/**")
+         .antMatchers("/styles/**")
+         .antMatchers("/views/**")
+         .antMatchers("/i18n/**")
+         .antMatchers("/swagger-ui/**");
 	}
 
 	@Bean
@@ -166,14 +170,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(AuthenticationManagerBuilder auth)
 			throws Exception {
 		auth.authenticationProvider(authenticationProvider());
-		// auth.jdbcAuthentication()
-		// .dataSource(dataSource)
-		// .authoritiesByUsernameQuery(
-		// "SELECT u.USERNAME, r.ROLE FROM USERs u, USERs_ROLEs ur,ROLE r WHERE u.ID = ur.userId and r.id=ur.roleId AND u.USERNAME=?;")
-		// .usersByUsernameQuery(
-		// "SELECT USERNAME, PASSWORD, ENABLED FROM USERs WHERE USERNAME=?;")
-		// .passwordEncoder(passwordEncoder);
-
 	}
 
 	@EnableGlobalMethodSecurity(prePostEnabled = true, jsr250Enabled = true)

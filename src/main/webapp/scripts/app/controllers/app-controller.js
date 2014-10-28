@@ -21,7 +21,7 @@ App.config(function($datepickerProvider) {
 	angular.extend($datepickerProvider.defaults, {
 		dateFormat : 'dd/MM/yyyy',
 		startWeek : 1,
-		template : _contextPath+'/assets/others/datepicker/datepicker.tpl.html',
+		template : _contextPath+'/templates/datepicker/datepicker.tpl.html',
 		autoclose : true,
 		modelDateFormat : 'dd/MM/yyyy',
 		todayHighlight : true
@@ -52,7 +52,7 @@ App.config(function(ngQuickDateDefaultsProvider) {
 
 App.config(function($timepickerProvider) {
 	angular.extend($timepickerProvider.defaults, {
-		template : _contextPath+'/assets/others/timepicker/timepicker.tpl.html'
+		template : _contextPath+'/templates/timepicker/timepicker.tpl.html'
 	});
 });
 
@@ -60,7 +60,7 @@ App.config(function($tooltipProvider) {
   angular.extend($tooltipProvider.defaults, {
     animation: 'am-flip-x',
     trigger: 'hover',
-    template: _contextPath+'/assets/others/tooltip/tooltip.tpl.html'
+    template: _contextPath+'/templates/tooltip/tooltip.tpl.html'
   });
 });
 
@@ -653,14 +653,14 @@ App.config([ '$stateProvider', '$urlRouterProvider','$locationProvider','$transl
 			$translateProvider.determinePreferredLanguage();
 			
 			$translateProvider.useStaticFilesLoader({
-			      prefix: _contextPath+'/assets/i18n/',
+			      prefix: _contextPath+'/i18n/',
 			      suffix: '.json'
 			});
 
 			$translateProvider.useCookieStorage();
 
 			tmhDynamicLocaleProvider
-					.localeLocationPattern(_contextPath+'/assets/bower_components/angular-i18n/angular-locale_{{locale}}.js');
+					.localeLocationPattern(_contextPath+'/bower_components/angular-i18n/angular-locale_{{locale}}.js');
 			tmhDynamicLocaleProvider
 					.useCookieStorage('NG_TRANSLATE_LANG_KEY');
 

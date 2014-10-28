@@ -59,7 +59,7 @@ public class LogsController {
     @RequestMapping(value = "/logs",
             method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @RolesAllowed({Role.ROLE_ADMIN})
+    @RolesAllowed({Role.ADMIN})
     public void changeLevel(@RequestBody LoggerDTO jsonLogger) {
         LoggerContext context = (LoggerContext) LoggerFactory.getILoggerFactory();
         context.getLogger(jsonLogger.getName()).setLevel(Level.valueOf(jsonLogger.getLevel()));

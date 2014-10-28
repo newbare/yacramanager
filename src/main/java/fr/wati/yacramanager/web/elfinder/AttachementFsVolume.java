@@ -1,5 +1,6 @@
 package fr.wati.yacramanager.web.elfinder;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -67,7 +68,7 @@ public class AttachementFsVolume implements FsVolume {
 	@Override
 	public FsItem fromPath(String paramString) {
 		String[] strings = paramString.split(PATH_SEPARATOR);
-		return strings.length>1? attachementFsItems.get(strings[1]): root;
+		return strings.length>1? attachementFsItems.get(Long.valueOf(strings[1])): root;
 	}
 
 	@Override
@@ -116,7 +117,13 @@ public class AttachementFsVolume implements FsVolume {
 
 	@Override
 	public long getSize(FsItem paramFsItem) {
-		// TODO Auto-generated method stub
+		if(paramFsItem!=null){
+			AttachementFsItem attachementFsItem= (AttachementFsItem) paramFsItem;
+			if(!attachementFsItem.isRoot()){
+				Attachement attachement = attachementFsItem.getAttachement();
+				return attachement.getSize();
+			}
+		}
 		return 0;
 	}
 
@@ -151,7 +158,11 @@ public class AttachementFsVolume implements FsVolume {
 
 	@Override
 	public InputStream openInputStream(FsItem paramFsItem) throws IOException {
-		
+		if(paramFsItem!=null){
+			AttachementFsItem attachementFsItem= (AttachementFsItem) paramFsItem;
+			Attachement attachement = attachementFsItem.getAttachement();
+			return new ByteArrayInputStream(attachement.getContent());
+		}
 		return null;
 	}
 

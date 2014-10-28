@@ -51,7 +51,7 @@ App.factory('LanguageService', function ($http, $translate, LANGUAGES) {
                 language = $translate.storage().get('NG_TRANSLATE_LANG_KEY') || window.navigator.language;
             }
 
-            var promise =  $http.get( _contextPath+'/assets/i18n/' + language + '.json').then(function(response) {
+            var promise =  $http.get( _contextPath+'/i18n/' + language + '.json').then(function(response) {
                 return LANGUAGES;
             });
             return promise;

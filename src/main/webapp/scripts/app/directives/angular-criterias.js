@@ -51,11 +51,11 @@ angular
 										 '</span>',
 								link : function($scope, element, attrs) {
 									// default config values
-									var textFilterTemplate = _contextPath + '/assets/others/criteria/criteria-text.tpl.html';
-									var checkBoxFilterTemplate = _contextPath + '/assets/others/criteria/criteria-checkbox.tpl.html';
-									var dateFilterTemplate = _contextPath + '/assets/others/criteria/criteria-date.tpl.html';
-									var booleanFilterTemplate = _contextPath + '/assets/others/criteria/criteria-boolean.tpl.html';
-									var comparatorFilterTemplate = _contextPath	+ '/assets/others/criteria/criteria-comparator.tpl.html';
+									var textFilterTemplate = _contextPath + '/templates/criteria/criteria-text.tpl.html';
+									var checkBoxFilterTemplate = _contextPath + '/templates/criteria/criteria-checkbox.tpl.html';
+									var dateFilterTemplate = _contextPath + '/templates/criteria/criteria-date.tpl.html';
+									var booleanFilterTemplate = _contextPath + '/templates/criteria/criteria-boolean.tpl.html';
+									var comparatorFilterTemplate = _contextPath	+ '/templates/criteria/criteria-comparator.tpl.html';
 									$scope.filterType = $scope.criteriaConfig.filterType;
 									$scope.filterContentHTML=undefined;
 									$scope.isEditable=($scope.criteriaConfig.editable!==undefined)?$scope.criteriaConfig.editable:true;

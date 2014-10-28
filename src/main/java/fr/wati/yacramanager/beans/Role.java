@@ -30,18 +30,18 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @SuppressWarnings("serial")
 public class Role implements Serializable {
 
-	public static final String ROLE_ADMIN = "ROLE_ADMIN";
-	public static final String ROLE_SSII_ADMIN = "ROLE_SSII_ADMIN";
-	public static final String ROLE_SALARIE = "ROLE_SALARIE";
-	public static final String ROLE_INDEP = "ROLE_INDEP";
+	public static final String ADMIN = "ROLE_ADMIN";
+	public static final String SSII_ADMIN = "ROLE_SSII_ADMIN";
+	public static final String SALARIE = "ROLE_SALARIE";
+	public static final String INDEP = "ROLE_INDEP";
 
 	public static List<String> availabeRoles = new ArrayList<String>();
 
 	static {
-		availabeRoles.add(ROLE_SSII_ADMIN);
-		availabeRoles.add(ROLE_SALARIE);
-		availabeRoles.add(ROLE_INDEP);
-		availabeRoles.add(ROLE_ADMIN);
+		availabeRoles.add(SSII_ADMIN);
+		availabeRoles.add(SALARIE);
+		availabeRoles.add(INDEP);
+		availabeRoles.add(ADMIN);
 	}
 
 	@Id

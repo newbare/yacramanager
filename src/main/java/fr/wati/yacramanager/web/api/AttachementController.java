@@ -51,6 +51,7 @@ public class AttachementController {
 				attachement.setDate(new DateTime());
 				attachement.setName(file.getOriginalFilename());
 				attachement.setContentType(file.getContentType());
+				attachement.setSize(file.getSize());
 				attachement.setContent(IOUtils.toByteArray(file
 						.getInputStream()));
 				Long attachementId = attachementService

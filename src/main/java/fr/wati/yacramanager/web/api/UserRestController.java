@@ -96,7 +96,7 @@ public class UserRestController implements RestCrudController<EmployeDto> {
 
 	@RequestMapping(method = RequestMethod.POST)
 	@Timed
-	@RolesAllowed(Role.ROLE_SSII_ADMIN)
+	@RolesAllowed(Role.SSII_ADMIN)
 	public ResponseEntity<String> create(@RequestBody EmployeDto employeDto) {
 		
 		employeService.createNewEmployee(employeDto, employeDto.getCompanyId(), employeDto.getManagerId());

@@ -9,7 +9,6 @@ import org.apache.commons.lang.CharEncoding;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -17,7 +16,6 @@ import org.springframework.context.annotation.Description;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.MediaType;
@@ -27,7 +25,6 @@ import org.springframework.web.multipart.support.StandardServletMultipartResolve
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.thymeleaf.spring4.SpringTemplateEngine;
@@ -57,16 +54,6 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 	@Autowired
 	private Environment environment;
 
-	// @Bean
-	// public ViewResolver viewResolver(ResourceLoader resourceLoader) {
-	// InternalResourceViewResolver internalResourceViewResolver = new
-	// InternalResourceViewResolver();
-	// internalResourceViewResolver.setViewClass(JstlView.class);
-	// internalResourceViewResolver.setContentType("text/html;charset=UTF-8");
-	// internalResourceViewResolver.setPrefix("/views/");
-	// internalResourceViewResolver.setSuffix(".jsp");
-	// return internalResourceViewResolver;
-	// }
 
 	@Bean
 	public ViewResolver appViewResolver(ResourceLoader resourceLoader) {
@@ -77,14 +64,6 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 		return thymeleafViewResolver;
 	}
 
-	// @Bean
-	// public ViewResolver pdfViewResolver(ResourceLoader resourceLoader) {
-	// ResourceBundleViewResolver bundleViewResolver = new
-	// ResourceBundleViewResolver();
-	// bundleViewResolver.setBasename("pdf.views");
-	// bundleViewResolver.setOrder(3);
-	// return bundleViewResolver;
-	// }
 
 	@Bean
 	public ViewResolver pdfViewResolver(ResourceLoader resourceLoader) {
@@ -157,26 +136,21 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 	}
 
 	@Bean
-	@Description("Spring mail message resolver")
-	public MessageSource emailMessageSource() {
-		logger.info("loading non-reloadable mail messages resources");
-		ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
-		messageSource.setBasename("classpath:/assets/mails/messages/messages");
-		messageSource.setDefaultEncoding(CharEncoding.UTF_8);
-		return messageSource;
-	}
-
-	@Bean
 	public StandardServletMultipartResolver multipartResolver() {
 		return new StandardServletMultipartResolver();
 	}
 
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
-		ResourceHandlerRegistration resourceHandlerRegistration = registry
-				.addResourceHandler("/assets/**");
-		resourceHandlerRegistration.addResourceLocations("/assets/");
-		resourceHandlerRegistration.setCachePeriod(0);
+		Integer cachePeriodInSecond = environment.getProperty("app.resources.cache.period", Integer.class, 0);
+		registry.addResourceHandler("/bower_components/**").addResourceLocations("/bower_components/").setCachePeriod(cachePeriodInSecond);
+		registry.addResourceHandler("/fonts/**").addResourceLocations("/fonts/").setCachePeriod(cachePeriodInSecond);
+		registry.addResourceHandler("/i18n/**").addResourceLocations("/i18n/").setCachePeriod(cachePeriodInSecond);
+		registry.addResourceHandler("/styles/**").addResourceLocations("/styles/").setCachePeriod(cachePeriodInSecond);
+        registry.addResourceHandler("/images/**").addResourceLocations("/images/").setCachePeriod(cachePeriodInSecond);
+        registry.addResourceHandler("/scripts/**").addResourceLocations("/scripts/").setCachePeriod(cachePeriodInSecond);
+        registry.addResourceHandler("/templates/**").addResourceLocations("/templates/").setCachePeriod(cachePeriodInSecond);
+        registry.addResourceHandler("/views/**").addResourceLocations("/views/").setCachePeriod(cachePeriodInSecond);
 	}
 
 	@Override

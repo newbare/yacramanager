@@ -1,4 +1,4 @@
-package fr.wati.yacramanager.web.filters;
+package fr.wati.yacramanager.web.filter;
 
 import java.io.IOException;
 

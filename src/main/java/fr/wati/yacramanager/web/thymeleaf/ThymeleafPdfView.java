@@ -50,24 +50,7 @@ public class ThymeleafPdfView extends ThymeleafView {
             htmlWorker.parse(new StringReader(content));
             document.close();
             outputStream.close();
-        	
-        	
-//            DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-//            documentBuilder.setEntityResolver(FSEntityResolver.instance());
-//            Document xhtmlContent = documentBuilder.parse(source);
-//            ITextRenderer renderer = new ITextRenderer();
-//            renderer.setDocument(xhtmlContent, "");
-////            renderer.setDocument(xhtmlContent, request.getRequestURL().toString());
-//            renderer.layout();
-//            response.setContentType("application/pdf");
-//
-//            String filename = request.getParameter("filename");
-//            if (filename != null) {
-//                response.setHeader("Content-Disposition", String.format("attachment; filename=\"%s\"", filename));
-//            }
-//
-//            OutputStream browserStream = response.getOutputStream();
-//            renderer.createPDF(browserStream);
+
         } catch (Exception e) {
             throw new IOException(e);
         }

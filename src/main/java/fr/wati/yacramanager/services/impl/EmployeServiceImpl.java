@@ -181,8 +181,8 @@ public class EmployeServiceImpl implements EmployeService {
 		companyAccountInfo.setExpiredDate(new LocalDate().plusDays(environment.getProperty("yacra.trial.period.days", Integer.class, 30)));
 		companyAccountInfoRepository.save(companyAccountInfo);
 		Set<Role> roles=new HashSet<>();
-		roles.add(roleRepository.findByRole(Role.ROLE_SSII_ADMIN));
-		roles.add(roleRepository.findByRole(Role.ROLE_INDEP));
+		roles.add(roleRepository.findByRole(Role.SSII_ADMIN));
+		roles.add(roleRepository.findByRole(Role.INDEP));
 		employe.setRoles(roles);
 		createCompany.getClients().get(0).getProjects().get(0).getAssignedEmployees().add(employe);
 		employe.getProjects().add(createCompany.getClients().get(0).getProjects().get(0));

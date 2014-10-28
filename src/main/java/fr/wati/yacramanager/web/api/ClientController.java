@@ -148,7 +148,7 @@ public class ClientController {
 
 	@RequestMapping(method = RequestMethod.POST)
 	@Timed
-	@RolesAllowed(Role.ROLE_SSII_ADMIN)
+	@RolesAllowed(Role.SSII_ADMIN)
 	public ResponseEntity<String> create(
 			@PathVariable("companyId") Long companyId, @RequestBody ClientDTO dto) {
 		Company company = companyService.findOne(companyId);
@@ -158,7 +158,7 @@ public class ClientController {
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	@Timed
-	@RolesAllowed(Role.ROLE_SSII_ADMIN)
+	@RolesAllowed(Role.SSII_ADMIN)
 	public void delete(@PathVariable("companyId") Long companyId,
 			@PathVariable("id") Long id) {
 		Company company = companyService.findOne(companyId);

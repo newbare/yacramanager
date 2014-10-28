@@ -33,6 +33,7 @@ public class Attachement extends AuditableEntity  {
 	@Lob
 	@Basic(fetch=FetchType.LAZY)
 	private byte[] content;
+	private Long size;
 	@ManyToOne
 	private NoteDeFrais noteDeFrais;
 	/**
@@ -106,6 +107,12 @@ public class Attachement extends AuditableEntity  {
 	 */
 	public String getContentType() {
 		return contentType;
+	}
+	public Long getSize() {
+		return size;
+	}
+	public void setSize(Long size) {
+		this.size = size;
 	}
 	
 	

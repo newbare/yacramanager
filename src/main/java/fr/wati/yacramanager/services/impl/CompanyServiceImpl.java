@@ -104,7 +104,7 @@ public class CompanyServiceImpl implements CompanyService {
 	}
 
 	@Override
-	@RolesAllowed(Role.ROLE_ADMIN)
+	@RolesAllowed(Role.ADMIN)
 	public Company createCompany(Company company) {
 		Company saveCompany = companyRepository.save(company);
 		/*
