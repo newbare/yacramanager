@@ -151,6 +151,8 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         registry.addResourceHandler("/scripts/**").addResourceLocations("/scripts/").setCachePeriod(cachePeriodInSecond);
         registry.addResourceHandler("/templates/**").addResourceLocations("/templates/").setCachePeriod(cachePeriodInSecond);
         registry.addResourceHandler("/views/**").addResourceLocations("/views/").setCachePeriod(cachePeriodInSecond);
+        registry.addResourceHandler("/swagger-ui/**").addResourceLocations("/swagger-ui/").setCachePeriod(cachePeriodInSecond);
+        
 	}
 
 	@Override

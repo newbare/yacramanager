@@ -111,7 +111,7 @@ function PasswordRecoveryController($scope, $location,AuthenticationREST) {
 App.config([ '$stateProvider', '$urlRouterProvider','$locationProvider','$translateProvider','tmhDynamicLocaleProvider',
      		function($stateProvider, $urlRouterProvider,$locationProvider,$translateProvider,tmhDynamicLocaleProvider) {
 
-	$locationProvider.html5Mode(true).hashPrefix('!');
+//	$locationProvider.html5Mode(true).hashPrefix('!');
 	$urlRouterProvider.when('/','/login');
 	
 	$stateProvider

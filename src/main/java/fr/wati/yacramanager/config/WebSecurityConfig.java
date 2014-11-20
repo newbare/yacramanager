@@ -84,7 +84,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/app/admin/**")
 				.hasAnyRole("ADMIN")
 				.antMatchers("/app/**")
-				.hasAnyAuthority(Role.ADMIN,Role.SSII_ADMIN,Role.SALARIE,Role.INDEP)
+				.hasAnyRole(
+						new String[] { "ADMIN", "SSII_ADMIN", "SALARIE",
+								"INDEP" })
 				.anyRequest()
 				.authenticated()
 				.and()
@@ -144,7 +146,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
          .antMatchers("/images/**")
          .antMatchers("/scripts/**")
          .antMatchers("/styles/**")
-         .antMatchers("/views/**")
          .antMatchers("/i18n/**")
          .antMatchers("/swagger-ui/**");
 	}
