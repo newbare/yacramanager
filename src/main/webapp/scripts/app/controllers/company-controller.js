@@ -322,6 +322,7 @@ function CompanyClientsViewController($scope, $rootScope,$http,ClientsREST,ngTab
 		ClientsREST.save({companyId :_userCompanyId},$scope.client).$promise.then(function(result) {
    		 hideFn();
    		 alertService.show('info','Confirmation', 'Client created');
+   		$scope.tableParams.reload();
 		});
 	};
 }
@@ -362,13 +363,21 @@ function CompanyClientsOverviewController($scope,ClientsREST,client){
 	
 	$scope.deleteContact=function(client,index){
 		client.contacts.splice(index,1);
+		$scope.updateClient();
 	};
 	$scope.updateClient = function() {
 		var clientToUpdate={id:$scope.client.id,name:$scope.client.name,email:$scope.client.email,contacts:$scope.client.contacts};
 		angular.forEach(clientToUpdate.contacts,function(contact){
 			delete contact.searchField;
 		});
-		return ClientsREST.update({companyId :_userCompanyId},clientToUpdate);
+		return ClientsREST.update({companyId :_userCompanyId},clientToUpdate).$promise.then(
+		        //success
+		        function( value ){
+		        	 $scope.tableParams.reload();
+		        },
+		        //error
+		        function( error ){/*Do something with error*/}
+		      );
 	};
 }
 /*COMPANY-CLIENT End of section*/

@@ -130,7 +130,7 @@ function AbsencesController($scope, $rootScope, AbsenceREST, alertService,ngTabl
 	AbsenceREST.getTypes(function(data) {
 		$scope.absencesType = data;
 	});
-	var today = new Date();
+	var today = moment().format('YYYY-MM-DD');
 	$scope.selectAbsence=function(absence){
 		var index = $scope.selectedAbsences.indexOf(absence);
 		if(index==-1){
@@ -172,6 +172,8 @@ function AbsencesController($scope, $rootScope, AbsenceREST, alertService,ngTabl
 	
 	$scope.postAbsence = function(hideFn) {
 		$scope.currentAbsence.typeAbsence=$scope.currentAbsence.typeAbsence.name;
+		$scope.currentAbsence.startDate=moment.utc($scope.currentAbsence.startDate).format('YYYY-MM-DD');
+		$scope.currentAbsence.endDate=moment.utc($scope.currentAbsence.endDate).format('YYYY-MM-DD')
 		AbsenceREST.save($scope.currentAbsence).$promise.then(function(result) {
 			alertService.show('success','Confirmation', 'Data saved');
 			$scope.reset();

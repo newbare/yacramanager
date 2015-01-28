@@ -6,7 +6,7 @@ function AdminHomeController($scope,$rootScope) {
 	$scope.page={"title":"Admin board","description":"Home page"};
 }
 
-function AdminCompaniesController($scope,$rootScope,CompanyREST,ngTableParams,alertService,notifService) {
+function AdminCompaniesController($scope,$rootScope,CompanyREST,ngTableParams,alertService,notifService,$filter) {
 	$scope.page={"title":"Companies management","description":"Home page"};
 	var allCompany=[];
 	$scope.hasDatas=false;
@@ -15,10 +15,19 @@ function AdminCompaniesController($scope,$rootScope,CompanyREST,ngTableParams,al
 	$scope.company={};
 	$scope.company.contacts=[];
 	$scope.addContact=function(){
-		$scope.company.contacts.push({"email":"","numeroTelephone":""});
+		$scope.company.contacts.push({"name":"","email":"","phoneNumbers":[]});
+		
 	};
+	$scope.addTel=function(contact){
+		contact.phoneNumbers.push("");
+	};
+	$scope.deleteTel=function(contact,index){
+		contact.phoneNumbers.splice(index, 1)
+	};
+	
 	$scope.reset=function(){
 		$scope.company={};
+		$scope.company.registeredDate= $filter("date")(Date.now(), 'yyyy-MM-dd')
 		$scope.company.contacts=[];
 	};
 	
@@ -49,7 +58,39 @@ function AdminCompaniesController($scope,$rootScope,CompanyREST,ngTableParams,al
 		});
 	};
 	
+	$scope.reset();
 	
+	
+	$scope.tableParams = new ngTableParams({
+		page : 1, // show first page
+		count : 10, // count per page
+		sorting : {
+			registeredDate : 'desc' // initial sorting
+		}
+	}, {
+		total : 0, // length of data
+		getData : function($defer, params) {
+			
+			CompanyREST.get(
+					{
+						page:params.$params.page-1,
+						size:params.$params.count,
+						sort:params.$params.sorting,
+						filter:$scope.tableFilter
+					},function(data) {
+				params.total(data.totalCount);
+				$scope.startIndex=data.startIndex;
+				$scope.endIndex=data.endIndex;
+				if(data.totalCount>=1){
+					$scope.hasDatas=true;
+				}else {
+					$scope.hasDatas=false;
+				}
+				allCompany=data.result;
+				// set new data
+				$defer.resolve(data.result);
+			});
+		}});
 }
 
 
@@ -101,36 +142,6 @@ function AdminCompanyViewController($scope, $rootScope,$http,CompanyREST,ngTable
 		filters:[]
 	};
 	
-	$scope.tableParams = new ngTableParams({
-		page : 1, // show first page
-		count : 10, // count per page
-		sorting : {
-			registeredDate : 'desc' // initial sorting
-		}
-	}, {
-		total : 0, // length of data
-		getData : function($defer, params) {
-			
-			CompanyREST.get(
-					{
-						page:params.$params.page-1,
-						size:params.$params.count,
-						sort:params.$params.sorting,
-						filter:$scope.tableFilter
-					},function(data) {
-				params.total(data.totalCount);
-				$scope.startIndex=data.startIndex;
-				$scope.endIndex=data.endIndex;
-				if(data.totalCount>=1){
-					$scope.hasDatas=true;
-				}else {
-					$scope.hasDatas=false;
-				}
-				allCompany=data.result;
-				// set new data
-				$defer.resolve(data.result);
-			});
-		}});
 	
 	$scope.doFilter=function(data){
 		var serverFilter={filter:data};
@@ -160,9 +171,20 @@ function AdminCompanyListController($scope, $rootScope,$http,$state){
 	 $scope.tableParams.settings().counts=[10, 25, 50, 100];
 }
 
-function AdminCompanyOverviewController($scope,company){
+function AdminCompanyOverviewController($scope,company,CompanyREST){
 	$scope.companyId=company.id;
 	$scope.company=company;
+	
+	$scope.updateCompany = function() {
+		return CompanyREST.update({companyId :$scope.companyId},$scope.company).$promise.then(
+		        //success
+		        function( value ){
+		        	 $scope.tableParams.reload();
+		        },
+		        //error
+		        function( error ){/*Do something with error*/}
+		      );
+	};
 }
 
 function AdminSettingsController($scope,$rootScope) {

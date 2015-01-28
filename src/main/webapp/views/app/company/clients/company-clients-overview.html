@@ -1,10 +1,10 @@
 <div class="row">
-	<h4><strong><span class="text-muted">{{client.name}}</span></strong></h4>
+	<h3><strong><a href="#" onaftersave="updateClient()" buttons="no" editable-text="client.name">{{ client.name || 'Name' }}</a></strong></h3>
 </div> 
 <h5><strong>Contacs</strong></h5>
 <hr>
 <ul class="list-inline">
-	<li><input type="text" data-ng-model="contactFilter" class="form-control" placeholder="Filter text"></li>
+	<li><input type="text" data-ng-model="contactFilter" class="form-control" placeholder="Filter contacts"></li>
 	<li><button class="btn btn-link" data-ng-click="addContact(client)">Add</button></li>
 </ul>
 <div class="row">
@@ -14,7 +14,7 @@
 		<a href="#" onaftersave="updateClient()" buttons="no" editable-email="contact.email">{{ contact.email || 'Email' }}</a><br>
 		<br>
 		<ul class="list-inline">
-			<li data-ng-repeat="phoneNumber in contact.phoneNumbers">
+			<li data-ng-repeat="phoneNumber in contact.phoneNumbers track by $index">
 				<i class="fa fa-phone"></i>
 				<a href="#"  buttons="no" onaftersave="updateClient()" editable-tel="contact.phoneNumbers[$index]">{{ contact.phoneNumbers[$index] || 'Tel' }}</a>
 				<button href="" class="btn btn-link btn-xs" data-ng-click="removePhoneNumbers(contact,$index)"><i class="fa fa-minus-circle text-danger"></i></button>

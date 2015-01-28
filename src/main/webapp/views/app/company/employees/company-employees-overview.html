@@ -49,7 +49,7 @@
 						<td>Tel</td>
 						<td>
 							<ul class="list-inline">
-								<li data-ng-repeat="phoneNumber in employe.phoneNumbers">
+								<li data-ng-repeat="phoneNumber in employe.phoneNumbers track by $index">
 									<i class="fa fa-phone"></i>
 									<a href="#"  onaftersave="updateEmploye()" editable-tel="employe.phoneNumbers[$index]">{{ employe.phoneNumbers[$index] || 'empty' }}</a>
 								</li>

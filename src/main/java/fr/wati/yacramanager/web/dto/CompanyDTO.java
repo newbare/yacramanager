@@ -31,7 +31,15 @@ public class CompanyDTO {
 		company.setName(getName());
 		company.setLicenseEndDate(getLicenseEndDate());
 		company.setRegisteredDate(getRegisteredDate());
-		//company.setContacts(getContacts());
+		List<Contact> contacts=new ArrayList<>();
+		for(ContactDTO contactDTO: getContacts()){
+			Contact contact=new Contact();
+			contact.setName(contactDTO.getName());
+			contact.setEmail(contactDTO.getEmail());
+			contact.setPhoneNumbers(contactDTO.getPhoneNumbers());
+			contacts.add(contact);
+		}
+		company.setContacts(contacts);
 		return company;
 	}
 	/**

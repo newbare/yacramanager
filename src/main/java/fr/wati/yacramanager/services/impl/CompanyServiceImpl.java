@@ -45,7 +45,7 @@ public class CompanyServiceImpl implements CompanyService {
 	public <S extends Company> S save(S entity) {
 		S entityFound=(S) findOne(entity.getId());
 		//contactRepository.save(entity.getContacts());
-		S save = companyRepository.save(entityFound);
+		S save = companyRepository.save(entity);
 		applicationEventPublisher.publishEvent(ActivityEvent
 				.createWithSource(this).user()
 				.operation(ActivityOperation.CREATE)

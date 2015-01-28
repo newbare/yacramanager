@@ -1,87 +1,121 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    </head>
-    <body>
-    	<h1 th:text="#{activity.report.title}">Activity report</h1>
-    	<p th:text="#{activity.report.employe.firstname(${employe.firstName})}">
-    		First name:
-    	</p>
-    	<p th:text="#{activity.report.employe.lastname(${employe.lastName})}">
-    		Last name:
-    	</p>
-        <p th:text="#{activity.report.range(${start},${end})}">
-            From to
-        </p>
-       <br/>
-       <table class="table table-condensed table-bordered cra-table" ><!-- data-fixed-table-column="" -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet"
+	th:href="@{/bower_components/bootstrap/dist/css/bootstrap.min.css}" />
+<link rel="stylesheet"
+	th:href="@{/bower_components/fontawesome/css/font-awesome.min.css}" />
+<link rel="stylesheet" th:href="@{/styles/app.css}" />
+</head>
+<body>
+	<h1 th:text="#{activity.report.title}">Activity report</h1>
+	<p th:text="#{activity.report.employe.firstname(${employe.firstName})}">
+		First name:</p>
+	<p th:text="#{activity.report.employe.lastname(${employe.lastName})}">
+		Last name:</p>
+	<p th:text="#{activity.report.range(${start},${end})}">From to</p>
+	<br />
+	<table class="table table-condensed table-bordered cra-table">
+		<!-- data-fixed-table-column="" -->
 		<thead>
 			<tr>
-			     <th class="cra-table-task">Task</th>
-			     <th  class="day" th:each="day : ${craDetailsDTO.employeCraDetailsDTOs[0].days}">
-			     	<small><span th:text="${#dates.format(day.date, 'dd-MM')}"></span></small>
-			     </th>
-			     <th style="vertical-align: middle;text-align: center;">Total</th>
+				<th class="cra-table-task">Task</th>
+				<th class="day"
+					th:each="day : ${craDetailsDTO.employeCraDetailsDTOs[0].days}">
+					<small><span th:text="${#dates.format(day.date, 'dd-MM')}"></span></small>
+				</th>
+				<th style="vertical-align: middle; text-align: center;">Total</th>
 			</tr>
 		</thead>
 		<tbody>
 			<!-- Simple task rows -->
-			<tr th:each="taskRow :${craDetailsDTO.employeCraDetailsDTOs[0].taskRows}">
-				<td class=""><h6><span th:text="${taskRow.task.name}"></span></h6><h6><span class="text-muted" th:text="${taskRow.project.client.name}"></span> - <span th:text="${taskRow.project.name}"></span></h6></td>
-				<td th:each="day : ${craDetailsDTO.employeCraDetailsDTOs[0].days}" class="day" data-ng-class="{'cra-we' : day.dayOff, 'cra-today' : isToday(day.date)}" style="vertical-align: middle;text-align: center;">
-					<span th:text="${taskRow.duration[day.date]}"></span>
-					<span class="text-warning" data-title="Some entries are not approuved yet" data-bs-tooltip="" ></span><span class="glyphicon glyphicon-warning-sign"></span>
-				</td>
-				<td style="vertical-align: middle;text-align: center;">
-					<span class="text-muted"></span> 
+			<tr
+				th:each="taskRow :${craDetailsDTO.employeCraDetailsDTOs[0].taskRows}">
+				<td class=""><h6>
+						<span th:text="${taskRow.task.name}"></span>
+					</h6>
+					<h6>
+						<span class="text-muted" th:text="${taskRow.project.client.name}"></span>
+						- <span th:text="${taskRow.project.name}"></span>
+					</h6></td>
+				<td th:each="day : ${craDetailsDTO.employeCraDetailsDTOs[0].days}"
+					class="day"
+					data-ng-class="{'cra-we' : day.dayOff, 'cra-today' : isToday(day.date)}"
+					style="vertical-align: middle; text-align: center;"><span
+					th:text="${taskRow.duration[day.date]}"></span> <span
+					class="text-warning"
+					data-title="Some entries are not approuved yet" data-bs-tooltip=""></span><span
+					class="glyphicon glyphicon-warning-sign"></span></td>
+				<td style="vertical-align: middle; text-align: center;"><span
+					class="text-muted"></span> <span class="label label-primary">Primary</span>
 				</td>
 			</tr>
 			<!-- ExtraTimeRows -->
-			<tr th:each="extraRow : ${craDetailsDTO.employeCraDetailsDTOs[0].extraTimeRows}">
+			<tr
+				th:each="extraRow : ${craDetailsDTO.employeCraDetailsDTOs[0].extraTimeRows}">
 				<td class="">
-					<h5><span class="label label-danger"><strong><i class="fa fa-usd"></i></strong> Extra time</span></h5>
-					<h6><span th:text="${extraRow.task.name}"></span></h6><h6><span class="text-muted" th:text="${extraRow.project.client.name}"></span> - <span th:text="${extraRow.project.name}"></span></h6>
+					<h5>
+						<span class="label label-danger"><strong><i
+								class="fa fa-usd"></i></strong> Extra time</span>
+					</h5>
+					<h6>
+						<span th:text="${extraRow.task.name}"></span>
+					</h6>
+					<h6>
+						<span class="text-muted" th:text="${extraRow.project.client.name}"></span>
+						- <span th:text="${extraRow.project.name}"></span>
+					</h6>
 				</td>
-				<td th:each="day : ${craDetailsDTO.employeCraDetailsDTOs[0].days}" class="day" data-ng-class="{'cra-we' : day.dayOff, 'cra-today' : isToday(day.date)}" style="vertical-align: middle;text-align: center;">
-					<span th:text="${extraRow.duration[day.date]}"></span>
-					<span class="text-warning" data-title="Some entries are not approuved yet" data-bs-tooltip=""><span class="glyphicon glyphicon-warning-sign"></span></span>
-				</td>
-				<td style="vertical-align: middle;text-align: center;">
-					<span class="text-muted"></span> 
-				</td>
+				<td th:each="day : ${craDetailsDTO.employeCraDetailsDTOs[0].days}"
+					class="day"
+					data-ng-class="{'cra-we' : day.dayOff, 'cra-today' : isToday(day.date)}"
+					style="vertical-align: middle; text-align: center;"><span
+					th:text="${extraRow.duration[day.date]}"></span> <span
+					class="text-warning"
+					data-title="Some entries are not approuved yet" data-bs-tooltip=""><span
+						class="glyphicon glyphicon-warning-sign"></span></span></td>
+				<td style="vertical-align: middle; text-align: center;"><span
+					class="text-muted"></span></td>
 			</tr>
 			<!-- Time off rows -->
 			<tr data-ng-show="employeCraDetail.craAbsenceDetail">
-				<td><h6><span><strong>Time off</strong></span></h6></td>
-				<td th:each="day : ${craDetailsDTO.employeCraDetailsDTOs[0].days}" class="day" data-ng-class="{'cra-we' : day.dayOff , 'cra-today' : isToday(day.date)}" style="vertical-align: middle;text-align: center;">
-					<span th:text="${craDetailsDTO.employeCraDetailsDTOs[0].craAbsenceDetail.duration[day.date]}"></span>
-					<span class="text-warning" data-title="Some entries are not approuved yet" data-bs-tooltip="" ><span class="glyphicon glyphicon-warning-sign"></span></span>
-				</td>
-				<td style="vertical-align: middle;text-align: center;">
-					<span class="text-muted"></span> 
-				</td>
+				<td><h6>
+						<span><strong>Time off</strong></span>
+					</h6></td>
+				<td th:each="day : ${craDetailsDTO.employeCraDetailsDTOs[0].days}"
+					class="day"
+					data-ng-class="{'cra-we' : day.dayOff , 'cra-today' : isToday(day.date)}"
+					style="vertical-align: middle; text-align: center;"><span
+					th:text="${craDetailsDTO.employeCraDetailsDTOs[0].craAbsenceDetail.duration[day.date]}"></span>
+					<span class="text-warning"
+					data-title="Some entries are not approuved yet" data-bs-tooltip=""><span
+						class="glyphicon glyphicon-warning-sign"></span></span></td>
+				<td style="vertical-align: middle; text-align: center;"><span
+					class="text-muted"></span></td>
 			</tr>
 		</tbody>
 		<tfoot>
 			<tr>
-				<td>
-					
-				</td>
-				<td th:each="day : ${craDetailsDTO.employeCraDetailsDTOs[0].days}" class="day" data-ng-class="{'cra-we' : day.dayOff , 'cra-today' : isToday(day.date)}" style="width: 40px;vertical-align: middle;text-align: center;">
+				<td></td>
+				<td th:each="day : ${craDetailsDTO.employeCraDetailsDTOs[0].days}"
+					class="day"
+					data-ng-class="{'cra-we' : day.dayOff , 'cra-today' : isToday(day.date)}"
+					style="width: 40px; vertical-align: middle; text-align: center;">
 					<span class="text-muted"></span>
 				</td>
-				<td style="vertical-align: middle;text-align: center;">
-					<h5><strong></strong></h5>
+				<td style="vertical-align: middle; text-align: center;">
+					<h5>
+						<strong></strong>
+					</h5>
 				</td>
 			</tr>
 		</tfoot>
 	</table>
-	<br/>
-        <p>
-            <span th:text="#{yacra.signature1}">Regards, </span>
-            <br/>
-            <em th:text="#{yacra.signature2}">Yacra Team.</em>
-        </p>
-    </body>
+	<br />
+	<p>
+		<span th:text="#{yacra.signature1}">Regards, </span> <br /> <em
+			th:text="#{yacra.signature2}">Yacra Team.</em>
+	</p>
+</body>
 </html>

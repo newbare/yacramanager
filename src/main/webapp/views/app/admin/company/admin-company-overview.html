@@ -1,1 +1,56 @@
- {{company.name}}
+<div class="row">
+	<h3><strong><a href="#" onaftersave="updateCompany()" buttons="no" editable-text="company.name">{{ company.name || 'Company Name' }}</a></strong></h3>
+</div> 
+<h5><strong>Contacs</strong></h5>
+<hr>
+<ul class="list-inline">
+	<li><input type="text" data-ng-model="contactFilter" class="form-control" placeholder="Filter contacts"></li>
+	<li><button class="btn btn-link" data-ng-click="addContact(client)">Add</button></li>
+</ul>
+<div class="row">
+	<div class="col-md-3 vcard am-fade" data-ng-repeat="contact in client.contacts | searchField: 'name': 'email' | filter: contactFilter">
+		<button type="button" class="close" data-ng-confirm="Do you want to delete contact {{contact.name}} ?" data-ng-click="deleteContact(client,$index)" ><i class="fa fa-times text-danger"></i><span class="sr-only">Close</span></button>
+		<strong><a href="#" onaftersave="updateClient()" buttons="no" editable-text="contact.name">{{ contact.name || 'Name' }}</a></strong><br>
+		<a href="#" onaftersave="updateClient()" buttons="no" editable-email="contact.email">{{ contact.email || 'Email' }}</a><br>
+		<br>
+		<ul class="list-inline">
+			<li data-ng-repeat="phoneNumber in contact.phoneNumbers track by $index">
+				<i class="fa fa-phone"></i>
+				<a href="#"  buttons="no" onaftersave="updateClient()" editable-tel="contact.phoneNumbers[$index]">{{ contact.phoneNumbers[$index] || 'Tel' }}</a>
+				<button href="" class="btn btn-link btn-xs" data-ng-click="removePhoneNumbers(contact,$index)"><i class="fa fa-minus-circle text-danger"></i></button>
+			</li>
+			<li>
+				<a href="" class="btn btn-link btn-xs" data-ng-click="addPhoneNumbers(contact)"><i class="fa fa-plus-circle"></i></a>
+			</li>
+		</ul>
+		<a href="#" onaftersave="updateClient()" buttons="no" editable-text="contact.adresse.adress">{{ contact.adresse.adress || 'Address' }}</a><br>
+		<a href="#" onaftersave="updateClient()" buttons="no" editable-text="contact.adresse.postCode">{{ contact.adresse.postCode || 'Post Code' }}</a><br>
+		<a href="#" onaftersave="updateClient()" buttons="no" editable-text="contact.adresse.city">{{ contact.adresse.city || 'City' }}</a><br>
+		<a href="#" onaftersave="updateClient()" buttons="no" editable-text="contact.adresse.country">{{ contact.adresse.country || 'Country' }}</a>
+	</div>
+</div>
+
+<div class="row ng-cloak ng-table-pager">
+	<div ng-if="params.settings().counts.length"
+		class="ng-table-counts btn-group pull-right">
+		<button ng-repeat="count in params.settings().counts" type="button"
+			ng-class="{\'active\':params.count()==count}"
+			ng-click="params.count(count)" class="btn btn-default btn-xs">
+			<span ng-bind="count"></span>
+		</button>
+	</div>
+	<ul class="pagination ng-table-pagination">
+		<li ng-class="{\'disabled\': !page.active}" ng-repeat="page in pages"
+			ng-switch="page.type"><a ng-switch-when="prev"
+			ng-click="params.page(page.number)" href="">&laquo;</a> <a
+			ng-switch-when="first" ng-click="params.page(page.number)" href=""><span
+				ng-bind="page.number"></span></a> <a ng-switch-when="page"
+			ng-click="params.page(page.number)" href=""><span
+				ng-bind="page.number"></span></a> <a ng-switch-when="more"
+			ng-click="params.page(page.number)" href="">&#8230;</a> <a
+			ng-switch-when="last" ng-click="params.page(page.number)" href=""><span
+				ng-bind="page.number"></span></a> <a ng-switch-when="next"
+			ng-click="params.page(page.number)" href="">&raquo;</a></li>
+	</ul>
+</div>
+ 

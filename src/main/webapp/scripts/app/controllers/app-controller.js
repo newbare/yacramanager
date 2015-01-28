@@ -230,16 +230,17 @@ App.controller('LoginCtrl', [ '$scope','$http','authService',function($scope,$ht
 }]);
 
 App.config([ '$stateProvider', '$urlRouterProvider','$locationProvider','$translateProvider','tmhDynamicLocaleProvider',
-		function($stateProvider, $urlRouterProvider,$locationProvider,$translateProvider,tmhDynamicLocaleProvider) {
+		function($stateProvider, $urlRouterProvider,$locationProvider,$translateProvider,tmhDynamicLocaleProvider,$state) {
 
-	 		$locationProvider.html5Mode(true).hashPrefix('!');
+	 		//$locationProvider.html5Mode(true).hashPrefix('!');
+//			$locationProvider.hashPrefix('!');
 //	 		if(window.history && window.history.pushState){
 //	 			$locationProvider.html5Mode(true);
 //	 		}
 			// Use $urlRouterProvider to configure any redirects (when) and
 			// invalid urls (otherwise).
 			$urlRouterProvider
-			.when('/','/home')
+			.when('','/home')
 			.when('/company', '/company/home')
 			.when('/admin/company', '/admin/company/view/quickview')
 			.when('/company/employees', '/company/employees/view/quickview')
@@ -578,7 +579,20 @@ App.config([ '$stateProvider', '$urlRouterProvider','$locationProvider','$transl
 			}).state('admin.company.details', {
 				url : "/details/:id",
 				templateUrl : _contextPath+'/views/app/admin/company/admin-company-overview.html',
-				controller : AdminCompanyOverviewController
+				controller : AdminCompanyOverviewController,
+				resolve : {
+					company :function(CompanyREST,$stateParams,$state) {
+						return CompanyREST.get({
+							companyId : _userCompanyId,
+							id : $stateParams.id
+						},function(){},function(error){
+							 //404 company not found
+						    if(response.status === 404) {
+						    	$state.go('error404');
+						    }
+						});
+					}
+				}
 			})
 			.state('admin.company.view', {
 				url : "/view",

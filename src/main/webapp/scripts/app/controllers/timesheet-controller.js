@@ -12,11 +12,14 @@ function TimeSheetController($scope,$rootScope,$http,$sce,WorkLogREST,alertServi
 		$scope.worklog.durationTime=0;
 		$scope.worklog.timeType="DURATION";
 		$scope.worklog.description=undefined;
-		$scope.project=undefined;
-		$scope.task=undefined;
+		$scope.projects=null;
+		fetchProjects();
+		$scope.project=null;
+		$scope.tasks=null;
+		$scope.task=null;
 	};
 	
-	$scope.resetWorklogForm();
+	
 	
 	var fetchProjects = function(queryParams) {
 		return $http.get(_contextPath + "/app/api/" + _userCompanyId + "/project/employe/"+ _userId, {
@@ -28,17 +31,21 @@ function TimeSheetController($scope,$rootScope,$http,$sce,WorkLogREST,alertServi
 
 	fetchProjects();
 	
+	$scope.resetWorklogForm();
+	
 	$scope.selectProject=function(project){
 		$scope.project=project;
-		fetchTasks();
+		if(project!=null){
+			fetchTasks();
+		}else {
+			$scope.tasks=null;
+		}
+		
 	};
 	$scope.selectTask=function(task){
 		$scope.task=task;
 	};
 	
-	$scope.selectTask=function(task){
-		$scope.task=task;
-	};
 	
 	var fetchTasks = function(queryParams) {
 		return $http.get(_contextPath + "/app/api/" + _userCompanyId + "/task/"+$scope.project.id+"/"+ _userId, {

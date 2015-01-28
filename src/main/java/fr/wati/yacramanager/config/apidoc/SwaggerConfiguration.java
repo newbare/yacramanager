@@ -1,5 +1,6 @@
 package fr.wati.yacramanager.config.apidoc;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -32,7 +33,7 @@ public class SwaggerConfiguration implements EnvironmentAware {
         return new SwaggerSpringMvcPlugin(springSwaggerConfig)
                 .apiInfo(apiInfo())
                 .genericModelSubstitutes(ResponseEntity.class)
-                .includePatterns(environment.getProperty("swagger.include.pattern", DEFAULT_INCLUDE_PATTERN));
+                .includePatterns(StringUtils.split(environment.getProperty("swagger.include.patterns", DEFAULT_INCLUDE_PATTERN),","));
     }
 
     /**

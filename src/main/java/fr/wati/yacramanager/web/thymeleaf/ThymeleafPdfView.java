@@ -45,7 +45,7 @@ public class ThymeleafPdfView extends ThymeleafView {
 			HttpServletResponse response) throws Exception {
 		ContentCaptureServletResponse capContent = new ContentCaptureServletResponse(response);
 		super.render(model, request, capContent);
-		// Capture the content for this request
+		//ITEXT XMLWORKER PDF GENERATION
 		
         // Transform the XHTML content to a document readable by the renderer.
         String content = capContent.getContent();
@@ -66,20 +66,17 @@ public class ThymeleafPdfView extends ThymeleafView {
 
 			// CSS
 			CSSResolver cssResolver = new StyleAttrCSSResolver();
-			InputStream csspathtest = Thread.currentThread()
-					.getContextClassLoader()
-					.getResourceAsStream("styles/bootstrap.min.css");
+			InputStream csspathtest = request.getServletContext()
+					.getResourceAsStream("bower_components/bootstrap/dist/css/bootstrap.min.css");
 			CssFile bootstrapCssFile = XMLWorkerHelper.getCSS(csspathtest);
 			cssResolver.addCss(bootstrapCssFile);
 			
-			csspathtest = Thread.currentThread()
-					.getContextClassLoader()
-					.getResourceAsStream("styles/font-awesome.min.css");
+			csspathtest = request.getServletContext()
+					.getResourceAsStream("bower_components/fontawesome/css/font-awesome.min.css");
 			CssFile fontAwesomeCssFile = XMLWorkerHelper.getCSS(csspathtest);
 			cssResolver.addCss(fontAwesomeCssFile);
 			
-			csspathtest = Thread.currentThread()
-					.getContextClassLoader()
+			csspathtest = request.getServletContext()
 					.getResourceAsStream("styles/app.css");
 			CssFile appCssFile = XMLWorkerHelper.getCSS(csspathtest);
 			cssResolver.addCss(appCssFile);
@@ -88,6 +85,8 @@ public class ThymeleafPdfView extends ThymeleafView {
 					new HtmlPipeline(htmlContext, new PdfWriterPipeline(
 							document, pdfWriter)));
 
+			//Pipeline<?> pipeline = new HtmlPipeline(htmlContext, new PdfWriterPipeline(document, pdfWriter));
+			
 			XMLWorker worker = new XMLWorker(pipeline, true);
 			XMLParser p = new XMLParser(worker);
 			p.parse(IOUtils.toInputStream(content));

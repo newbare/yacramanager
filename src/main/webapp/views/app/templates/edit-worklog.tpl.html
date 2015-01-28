@@ -13,10 +13,11 @@
 				<form role="form" class="form-horizontal">
 					<div class="form-group">
 						<label for="project-select" class="col-md-2" >Project</label>
-						<div class="col-md-6">
+						<div class="col-md-7">
 							<select data-chosen data-ng-change="selectProject(project)"
 						          data-placeholder="Select a project"
 						          data-ng-model="project"
+						           data-allow-single-deselect="true"
 						          data-ng-options="p.name for p in projects">
 						           <option value=""></option>
 						  </select>
@@ -25,7 +26,7 @@
 					</div>
 					<div class="form-group">
 						<label for="task-select" class="col-md-2">Task</label>
-						<div class="col-md-6">
+						<div class="col-md-7">
 							<select data-chosen data-ng-change="selectTask(task)"
 						          data-placeholder="Select a task"
 						          data-ng-model="task"
@@ -45,19 +46,29 @@
 					</div>
 					<div class="form-group" data-ng-show="worklog.timeType=='TIME'">
 						<label for="timeStartDate" class="control-label col-md-2" style="text-align: left;">When</label>
-						<div class="col-md-8">
-							<quick-datepicker  class="" ng-model="worklog.timeStartDate"
-								 placeholder="Select start date" ></quick-datepicker>
-							<label for="timeStartDate" class="control-label" style="text-align: center;">To</label>
-							<quick-datepicker class=""
-								ng-model="worklog.timeEndDate" data-autoclose="1" placeholder="Select end date"></quick-datepicker>
-						</div>
+						<!-- <div class="col-md-10"> -->
+							<div class="col-md-4">
+								<input type="datetime-local"  class="form-control" ng-model="worklog.timeStartDate"
+									data-autoclose="1" placeholder="Select start date" >
+							</div>
+							<!-- <quick-datepicker  class="" ng-model="worklog.timeStartDate"
+								 placeholder="Select start date" ></quick-datepicker> -->
+							<div class="col-md-1">
+								<label for="timeStartDate" class="control-label" style="text-align: center;">To</label>
+							</div>
+							<div class="col-md-4">
+								<input type="datetime-local" class="form-control" ng-model="worklog.timeEndDate"
+									data-autoclose="1" placeholder="Select end date" >
+							</div>
+							<!-- <quick-datepicker class=""
+								ng-model="worklog.timeEndDate" data-autoclose="1" placeholder="Select end date"></quick-datepicker> -->
+						<!-- </div> -->
 					</div>
 					<div class="form-group" data-ng-show="worklog.timeType=='DURATION'">
 						<label for="durationStartDate" class="control-label col-md-2" style="text-align: left;">Date</label>
-						<div class="col-md-3">
-							<input type="text" class="form-control" ng-model="worklog.durationStartDate"
-								data-autoclose="1" placeholder="Date" bs-datepicker>
+						<div class="col-md-4">
+							<input type="date" class="form-control" ng-model="worklog.durationStartDate"
+								data-autoclose="1" placeholder="Date" >
 						</div>
 						<div class="col-md-3">
 							<input type="text" class="form-control" data-ng-model="worklog.durationTime"	 placeholder="Minutes">

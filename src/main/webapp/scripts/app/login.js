@@ -112,7 +112,8 @@ App.config([ '$stateProvider', '$urlRouterProvider','$locationProvider','$transl
      		function($stateProvider, $urlRouterProvider,$locationProvider,$translateProvider,tmhDynamicLocaleProvider) {
 
 //	$locationProvider.html5Mode(true).hashPrefix('!');
-	$urlRouterProvider.when('/','/login');
+	$urlRouterProvider.when('','/login')
+	.otherwise('/login');
 	
 	$stateProvider
 	.state('login', {

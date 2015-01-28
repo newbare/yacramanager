@@ -1,5 +1,5 @@
 function FraisController($scope, $rootScope, NoteREST, alertService,
-		ngTableParams, notifService, $upload,$modal,$http) {
+		ngTableParams, notifService, $upload,$modal,$http,$filter) {
 	$rootScope.page = {
 		"title" : "Frais",
 		"description" : "Gerez vos notes de frais"
@@ -120,13 +120,17 @@ function FraisController($scope, $rootScope, NoteREST, alertService,
 		filters:[]
 	};
 	
+	$scope.canPostNote=function(){
+		return $scope.currentNote.date!='' && $scope.currentNote.date!=undefined && $scope.currentNote.amount!=0 && $scope.currentNote.amount!=undefined;
+	};
+	
 	$scope.doFilter=function(data){
 		var serverFilter={filter:data};
 		$scope.tableFilter=JSON.stringify(serverFilter);
 		$scope.refreshDatas();
 	};
 
-	var note = $scope.currentNote = {};
+	
 	var today = new Date();
 	$scope.selectNote = function(note) {
 		var index = $scope.selectedNotes.indexOf(note);
@@ -150,11 +154,12 @@ function FraisController($scope, $rootScope, NoteREST, alertService,
 	$scope.reset = function() {
 		$scope.initialSelectionChanged = false;
 		$scope.selectedActionLabel = $scope.initialActionLabel;
-		note.id = undefined;
-		note.date = today;
-		note.description = undefined;
-		note.amount = 0;
-		note.attachements=undefined;
+		$scope.currentNote={};
+		$scope.currentNote.id=undefined;
+		$scope.currentNote.date = $filter("date")(Date.now(), 'yyyy-MM-dd');
+		$scope.currentNote.description = undefined;
+		$scope.currentNote.amount = 0;
+		$scope.currentNote.attachements=undefined;
 		$scope.edition = false;
 		$scope.selectedFile=undefined;
 	};
@@ -214,7 +219,7 @@ function FraisController($scope, $rootScope, NoteREST, alertService,
 		}
 	};
 	$scope.putNote = function() {
-		NoteREST.update(clone(note)).$promise.then(function(result) {
+		NoteREST.update(clone($scope.currentNote)).$promise.then(function(result) {
 			notifService.notify('info', 'Created', 'Data updated');
 			$scope.reset();
 			$scope.tableParams.reload();
@@ -230,11 +235,11 @@ function FraisController($scope, $rootScope, NoteREST, alertService,
 		NoteREST.get({
 			id : id
 		}, function(data) {
-			note.id = data.id;
-			note.date = data.date;
-			note.amount = data.amount;
-			note.description = data.description;
-			note.attachements = data.attachements;
+			$scope.currentNote.id = data.id;
+			$scope.currentNote.date = data.date;
+			$scope.currentNote.amount = data.amount;
+			$scope.currentNote.description = data.description;
+			$scope.currentNote.attachements = data.attachements;
 		}, function(error) {
 			console.log(error);
 			$scope.reset();

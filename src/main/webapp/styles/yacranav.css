@@ -41,6 +41,10 @@
 	transition: all .15s ease-in-out;
 }
 
+.navbar-custom .dropdown-menu>li>a:hover{
+	background-color: #97c8e8;
+	color:  #fff;
+}
 
 .navbar-custom .navbar-brand {
     color:#fff;
