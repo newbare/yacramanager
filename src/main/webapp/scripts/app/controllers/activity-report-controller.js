@@ -207,6 +207,10 @@ function ActivityReportController($scope,$rootScope,ActivityReportREST,$filter,$
 		return employeId==_userId;
 	};
 	
+	$scope.isCraLocked=function(employeCraDetail){
+		return $scope.isCurrentEmploye(employeCraDetail.employeId) && employeCraDetail.activityReport!=null && employeCraDetail.activityReport.validationStatus=='APPROVED';
+	}
+	
 	$scope.taskRowTotal=function(taskRow,days){
 		var rowTotal=0;
 		angular.forEach(days,function(day){

@@ -10,6 +10,7 @@ public class ClientDTO {
 	private String name;
 	private Long companyId;
 	private List<ContactDTO> contacts = new ArrayList<>();
+	private List<ProjectDTO> projects=new ArrayList<>();
 	
 	public Long getId() {
 		return id;
@@ -43,6 +44,12 @@ public class ClientDTO {
 	}
 	public void setContacts(List<ContactDTO> contacts) {
 		this.contacts = contacts;
+	}
+	public List<ProjectDTO> getProjects() {
+		return projects;
+	}
+	public void setProjects(List<ProjectDTO> projects) {
+		this.projects = projects;
 	}
 	
 }

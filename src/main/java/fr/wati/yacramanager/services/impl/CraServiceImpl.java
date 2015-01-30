@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
+import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 
 import fr.wati.yacramanager.beans.Absence;
@@ -141,7 +142,14 @@ public class CraServiceImpl implements CraService {
 			employeCraDetailsDTO.setEmployeName(currentEmploye.getFullName());
 			craDTO.getEmployeCraDetailsDTOs().add(employeCraDetailsDTO);
 			List<ActivityReport> activityReports = activityReportService.findByEmployeAndStartDateBetweenAndEndDateBetween(currentEmploye, startDate, endDate);
+			List<ValidationStatus> validationStatusList = Lists.transform(activityReports, new Function<ActivityReport, ValidationStatus>() {
+				@Override
+				public ValidationStatus  apply(ActivityReport input) {
+					return input.getValidationStatus();
+				}
+			});
 			employeCraDetailsDTO.setActivityReport(activityReports!=null && activityReports.size()>0 ?activityReports.get(0):null);
+			employeCraDetailsDTO.getActivityReport().setValidationStatus(ValidationStatus.multipleIsApprouvedAndOperator(validationStatusList));
 			List<Absence> absences = absenceService
 					.findByEmployeAndStartDateBetween(currentEmploye,
 							startDate, endDate);

@@ -203,6 +203,8 @@ public class ProjectServiceImpl implements ProjectService{
 		dto.setDescription(project.getDescription());
 		dto.setTasks(dtoMapper.mapTasks(project.getTasks()));
 		dto.setClient(clientService.toClientDTO(project.getClient()));
+		dto.setNumberOfEmployes(project.getAssignedEmployees().size());
+		dto.setNumberOfTasks(project.getTasks().size());
 		return dto;
 	}
 
@@ -222,5 +224,15 @@ public class ProjectServiceImpl implements ProjectService{
 	public void setApplicationEventPublisher(
 			ApplicationEventPublisher applicationEventPublisher) {
 		this.applicationEventPublisher=applicationEventPublisher;
+	}
+
+	@Override
+	public long countNumberOfEmployeeForProject(Project project) {
+		return project.getAssignedEmployees().size();
+	}
+
+	@Override
+	public long countNumberOfTaskForProject(Project project) {
+		return project.getTasks().size();
 	}
 }

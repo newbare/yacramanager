@@ -22,6 +22,8 @@ public class ProjectDTO {
 	private String color;
 	private ClientDTO client;
 	private List<TaskDTO> tasks;
+	private int numberOfTasks;
+	private int numberOfEmployes;
 	/**
 	 * @return the id
 	 */
@@ -99,6 +101,18 @@ public class ProjectDTO {
 	
 	
 	
+	public int getNumberOfTasks() {
+		return numberOfTasks;
+	}
+	public void setNumberOfTasks(int numberOfTasks) {
+		this.numberOfTasks = numberOfTasks;
+	}
+	public int getNumberOfEmployes() {
+		return numberOfEmployes;
+	}
+	public void setNumberOfEmployes(int numberOfEmployes) {
+		this.numberOfEmployes = numberOfEmployes;
+	}
 	public List<TaskDTO> getTasks() {
 		return tasks;
 	}

@@ -16,4 +16,5 @@ public interface EmployeRepository extends JpaRepository<Employe, Long> ,JpaSpec
 	Page<Employe> findByLastNameLike(String string, Pageable pageRequest);
 
 	Page<Employe> findByFirstNameLike(String string, Pageable pageRequest);
+
 }

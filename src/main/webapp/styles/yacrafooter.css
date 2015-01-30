@@ -1,5 +1,8 @@
 .footer .container,
 .footer .container-fluid{
+	
+}
+#footer-main{
 	background-color:#fff;
 	color:#777;
 	/* border-top-left-radius:7px;
@@ -8,6 +11,13 @@
 	padding-top: 30px;
 	padding-bottom: 30px;
 	border: 1px solid #e5e5e5;
+	padding-left: 15px;
+	padding-right: 15px;
+}
+
+#footer-main .row{
+	margin-left: 0px;
+	margin-right: 0px;
 }
 
 .footer .container ul>li>a,

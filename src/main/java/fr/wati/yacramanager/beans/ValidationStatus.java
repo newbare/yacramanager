@@ -1,5 +1,7 @@
 package fr.wati.yacramanager.beans;
 
+import java.util.List;
+
 public enum ValidationStatus {
 
 	SAVED,WAIT_FOR_APPROVEMENT, APPROVED, REJECTED;
@@ -37,5 +39,12 @@ public enum ValidationStatus {
 			return REJECTED;
 		}
 		return status1;
+	}
+	public static ValidationStatus multipleIsApprouvedAndOperator(List<ValidationStatus> status){
+		ValidationStatus validationStatusToReturn=status.get(0);
+		for (int i=1;i <status.size();i++) {
+			validationStatusToReturn=isApprovedAndOperator(validationStatusToReturn, status.get(i));
+		}
+		return validationStatusToReturn;
 	}
 }

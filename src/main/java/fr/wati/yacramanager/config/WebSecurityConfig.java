@@ -114,6 +114,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.tokenValiditySeconds(
 						env.getProperty("rememberme.token.validity",
 								Integer.class))
+				.userDetailsService(userDetailsService)
 				.and()
 				.sessionManagement()
 				// .invalidSessionUrl("/auth/login/?invalid-session=true")

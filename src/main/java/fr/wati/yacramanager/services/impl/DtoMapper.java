@@ -25,6 +25,7 @@ import fr.wati.yacramanager.dao.repository.EmployeDto;
 import fr.wati.yacramanager.dao.repository.UserDto;
 import fr.wati.yacramanager.services.ClientService;
 import fr.wati.yacramanager.services.CompanyService;
+import fr.wati.yacramanager.services.ProjectService;
 import fr.wati.yacramanager.web.dto.AbsenceDTO;
 import fr.wati.yacramanager.web.dto.ClientDTO;
 import fr.wati.yacramanager.web.dto.CompanyDTO;
@@ -46,12 +47,17 @@ public class DtoMapper {
 	@Autowired
 	private CompanyService companyService;
 	
+	@Autowired
+	private ProjectService projectService;
+	
 	public  UserDto map(Users user) {
 		UserDto dto = new UserDto();
 		dto.setId(Integer.valueOf(user.getId().toString()));
 		dto.setUsername(user.getUsername());
 		return dto;
 	}
+	
+	
 
 	public  List<UserDto> mapUsers(Page<Users> users) {
 		List<UserDto> dtos = new ArrayList<UserDto>();
@@ -99,6 +105,16 @@ public class DtoMapper {
 	}
 	
 	@Transactional(readOnly=true)
+	public  List<ProjectDTO> mapProjects(Client client) {
+		Client findOne = clientService.findOne(client.getId());
+		List<ProjectDTO> dtos = new ArrayList<>();
+		for (Project project : findOne.getProjects()) {
+			dtos.add(map(project));
+		}
+		return dtos;
+	}
+	
+	@Transactional(readOnly=true)
 	public  List<ContactDTO> mapContacts(Company company) {
 		Company findOne = companyService.findOne(company.getId());
 		List<ContactDTO> dtos = new ArrayList<>();
@@ -115,7 +131,7 @@ public class DtoMapper {
 		}
 		return dtos;
 	}
-	
+	@Transactional
 	public  ProjectDTO map(Project project) {
 		ProjectDTO dto = new ProjectDTO();
 		dto.setId(project.getId());
@@ -127,6 +143,8 @@ public class DtoMapper {
 //			ClientDTO clientDTO=map(project.getClient());
 //			dto.setClient(clientDTO);
 //		}
+		dto.setNumberOfEmployes(projectService.findOne(project.getId()).getAssignedEmployees().size());
+		dto.setNumberOfTasks(projectService.findOne(project.getId()).getTasks().size());
 		return dto;
 	}
 

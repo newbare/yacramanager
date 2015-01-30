@@ -185,6 +185,11 @@ function AdminCompanyOverviewController($scope,company,CompanyREST){
 		        function( error ){/*Do something with error*/}
 		      );
 	};
+	
+	$scope.addContact=function(client){
+		var newContact={name:undefined,email:undefined,phoneNumbers:[],adresse:{adress:undefined,postCode:undefined,city:undefined,country:undefined}};
+		$scope.company.contacts.push(newContact);
+	};
 }
 
 function AdminSettingsController($scope,$rootScope) {

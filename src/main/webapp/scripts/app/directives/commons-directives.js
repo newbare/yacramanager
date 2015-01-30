@@ -181,23 +181,47 @@ App.directive('collapsibleFieldset',	function() {
 			}
 		};
 });
-App.directive('authApplicationSupport', function($timeout) {
+App.directive('authApplicationSupport', function($timeout,$modal) {
     return {
         restrict: 'A',
+        priority : -1,
         link: function(scope, elem, attrs) {
           var login = elem.find('#app-login-content');
           var main = elem.find('#app-content');
-          
-          login.hide();
-          
+		  var loginModal = undefined;
+		  var modalInitialized=false;
+          var initModal=function(){
+        	  loginModal = $modal({
+  				scope : scope,
+  				template : _contextPath	+ '/views/app/templates/partials/login-modal-.tpl.html',
+  				show : false,
+  				backdrop : 'static',
+  				placement : 'center'
+  			});
+        	  modalInitialized=true;
+          }
+          initModal();
           scope.$on('event:auth-loginRequired', function() {
-            login.slideDown('slow', function() {
-              main.hide();
-            });
+//        	  if(!modalInitialized){
+//        		  initModal();
+//        	  }
+        	  //if(!loginModal.$element.is(':visible')){
+        		  loginModal.$promise.then(loginModal.show);
+        		  if(main.is(':visible')){
+        			  main.hide();
+        		  }
+        	  //}
           });
           scope.$on('event:auth-loginConfirmed', function() {
-            main.show();
-            login.slideUp();
+//        	  if(!modalInitialized){
+//        		  initModal();
+//        	  }
+//        	  if(loginModal.$element.is(':visible')){
+        		  loginModal.$promise.then(loginModal.hide);
+        		  if(!main.is(':visible')){
+        			  main.show();
+        		  }
+        	  //}
           });
         }
       };

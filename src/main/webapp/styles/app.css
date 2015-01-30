@@ -11,6 +11,10 @@
     background-repeat: no-repeat;
 }
 
+.margin-bottom-lg {
+  margin-bottom: 22px !important;
+}
+
 .container-fluid>.navbar-header,.container>.navbar-collapse,.container-fluid>.navbar-collapse
 	{
 	margin-right: -15px;

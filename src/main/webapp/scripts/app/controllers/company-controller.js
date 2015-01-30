@@ -347,7 +347,7 @@ function CompanyClientsListController($scope, $rootScope,$http,ClientsREST,ngTab
 	 $scope.tableParams.settings().counts=[10, 25, 50, 100];
 }
 
-function CompanyClientsOverviewController($scope,ClientsREST,client){
+function CompanyClientsOverviewController($scope,ClientsREST,ProjectsREST,client,alertService){
 	$scope.client=client;
 	$scope.contactFilter='';
 	$scope.addContact=function(client){
@@ -379,6 +379,40 @@ function CompanyClientsOverviewController($scope,ClientsREST,client){
 		        function( error ){/*Do something with error*/}
 		      );
 	};
+	
+	$scope.addNewProject=function(client){
+		client.projects.push({name: '', description: '',isnew:true});
+	};
+	$scope.saveProject=function(project,client){
+		var projectToSave={
+				name:project.name,
+				description:project.description
+		}
+		ProjectsREST.save({companyId :_userCompanyId,clientId :client.id},projectToSave).$promise.then(function(result) {
+	  		 alertService.show('info','Confirmation', 'Project created');
+	  		 $scope.client=ClientsREST.get({companyId : _userCompanyId,id:$scope.client.id})
+			});
+	};
+	$scope.updateProject=function(project){
+		if(!project.isnew){
+			var projectToUpdate=clone(project);
+			delete projectToUpdate.searchField;
+			ProjectsREST.update({companyId :_userCompanyId},projectToUpdate).$promise.then(
+			        //success
+			        function( value ){
+			        	 $scope.tableParams.reload();
+			        	 $scope.client=ClientsREST.get({companyId : _userCompanyId,id:$scope.client.id})
+			        },
+			        //error
+			        function( error ){/*Do something with error*/}
+			      );
+			};
+		}
+		
+	$scope.deleteProject=function(project,index){
+		client.projects.splice(index,1);
+	}
+	
 }
 /*COMPANY-CLIENT End of section*/
 

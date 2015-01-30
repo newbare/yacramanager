@@ -1,11 +1,41 @@
 <div class="row">
 	<h3><strong><a href="#" onaftersave="updateClient()" buttons="no" editable-text="client.name">{{ client.name || 'Name' }}</a></strong></h3>
-</div> 
-<h5><strong>Contacs</strong></h5>
+</div>
+
+<h5><strong>{{client.projects.length}} Projects for {{ client.name || 'Name' }}</strong></h5>
 <hr>
 <ul class="list-inline">
-	<li><input type="text" data-ng-model="contactFilter" class="form-control" placeholder="Filter contacts"></li>
-	<li><button class="btn btn-link" data-ng-click="addContact(client)">Add</button></li>
+	<li><input type="text" data-ng-model="projectFilter" class="form-control input-sm" placeholder="Filter projects"></li>
+	<li><button class="btn btn-link" data-ng-click="addNewProject(client)">Add project</button></li>
+</ul>
+<ul class="list-group">
+  <li class="list-group-item am-fade"  data-ng-repeat="project in client.projects | searchField: 'name': 'description' | filter: projectFilter" >
+    <ul class="list-inline">
+    	<span style="float: right;" data-ng-if="!project.isnew">
+    		<a href="{{appContextPath}}app/view/#/company/projects/view/quickview/{{project.id}}" " >
+				<i class="fa fa-arrow-right"></i>
+			</a>
+    	</span>
+    	<li><p class="text-muted">Created on {{project.createdDate  | date:'medium'}}</p></li>
+    	<li>|</li>
+    	<li><a href="#" onaftersave="updateProject(project)" buttons="no" editable-text="project.name">{{ project.name || 'Name' }}</a></li>
+    	<li>|</li>
+    	<li><a href="#" onaftersave="updateProject(project)"  editable-textarea="project.description" e-rows="3">{{project.description || "Description"}}</a></li>
+    	<li>|</li>
+    	<li><p class="text-warning">{{project.numberOfTasks}} task(s)</p></li>
+    	<li>|</li>
+    	<li><p class="text-warning">{{project.numberOfEmployes}} employee(s)</p></li>
+    	<li>|</li>
+    	<li><button type="button" class="btn btn-success btn-xs" data-ng-if="project.isnew" data-ng-click="saveProject(project,client)">Save</button></li>
+    	<li><button type="button" class="btn btn-danger btn-xs" data-ng-if="project.isnew" data-ng-click="deleteProject(project,$index)">Cancel</button></li>
+    </ul>
+  </li>
+</ul>
+<h5><strong>{{client.contacts.length}} Contacs for {{ client.name || 'Name' }}</strong></h5>
+<hr>
+<ul class="list-inline">
+	<li><input type="text" data-ng-model="contactFilter" class="form-control input-sm" placeholder="Filter contacts"></li>
+	<li><button class="btn btn-link" data-ng-click="addContact(client)">Add contact</button></li>
 </ul>
 <div class="row">
 	<div class="col-md-3 vcard am-fade" data-ng-repeat="contact in client.contacts | searchField: 'name': 'email' | filter: contactFilter">

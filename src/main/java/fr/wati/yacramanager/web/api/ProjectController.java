@@ -66,7 +66,7 @@ public class ProjectController {
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<String> update(
-			@PathVariable("companyId") Long companyId,@PathVariable("id") Long id, ProjectDTO dto) {
+			@PathVariable("companyId") Long companyId,@PathVariable("id") Long id, @RequestBody ProjectDTO dto) {
 		Project project = projectService.findOne(id);
 		if (project != null) {
 			dto.toProject(project);
