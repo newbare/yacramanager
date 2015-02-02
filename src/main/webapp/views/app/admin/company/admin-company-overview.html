@@ -1,34 +1,15 @@
 <div class="row">
 	<h3><strong><a href="#" onaftersave="updateCompany()" buttons="no" editable-text="company.name">{{ company.name || 'Company Name' }}</a></strong></h3>
+	<span class="text-muted">Registered on {{company.registeredDate  | date:'longDate'}}</span>
 </div> 
+<h5><strong>General informations</strong></h5>
+<hr>
+
+License end date: <a href="#" onaftersave="updateCompany()"  editable-date="company.licenseEndDate">{{ company.licenseEndDate || 'License end date' | date:'longDate'  }}</a>
+<hr>
 <h5><strong>{{company.contacts.length}} Contacs for {{ company.name || 'Name' }}</strong></h5>
 <hr>
-<ul class="list-inline">
-	<li><input type="text" data-ng-model="contactFilter" class="form-control input-sm" placeholder="Filter contacts"></li>
-	<li><button class="btn btn-link" data-ng-click="addContact(client)">Add contact</button></li>
-</ul>
-<div class="row">
-	<div class="col-md-3 vcard am-fade" data-ng-repeat="contact in company.contacts | searchField: 'name': 'email' | filter: contactFilter">
-		<button type="button" class="close" data-ng-confirm="Do you want to delete contact {{contact.name}} ?" data-ng-click="deleteContact(client,$index)" ><i class="fa fa-times text-danger"></i><span class="sr-only">Close</span></button>
-		<strong><a href="#" onaftersave="updateClient()" buttons="no" editable-text="contact.name">{{ contact.name || 'Name' }}</a></strong><br>
-		<a href="#" onaftersave="updateClient()" buttons="no" editable-email="contact.email">{{ contact.email || 'Email' }}</a><br>
-		<br>
-		<ul class="list-inline">
-			<li data-ng-repeat="phoneNumber in contact.phoneNumbers track by $index">
-				<i class="fa fa-phone"></i>
-				<a href="#"  buttons="no" onaftersave="updateClient()" editable-tel="contact.phoneNumbers[$index]">{{ contact.phoneNumbers[$index] || 'Tel' }}</a>
-				<button href="" class="btn btn-link btn-xs" data-ng-click="removePhoneNumbers(contact,$index)"><i class="fa fa-minus-circle text-danger"></i></button>
-			</li>
-			<li>
-				<a href="" class="btn btn-link btn-xs" data-ng-click="addPhoneNumbers(contact)"><i class="fa fa-plus-circle"></i></a>
-			</li>
-		</ul>
-		<a href="#" onaftersave="updateClient()" buttons="no" editable-text="contact.adresse.adress">{{ contact.adresse.adress || 'Address' }}</a><br>
-		<a href="#" onaftersave="updateClient()" buttons="no" editable-text="contact.adresse.postCode">{{ contact.adresse.postCode || 'Post Code' }}</a><br>
-		<a href="#" onaftersave="updateClient()" buttons="no" editable-text="contact.adresse.city">{{ contact.adresse.city || 'City' }}</a><br>
-		<a href="#" onaftersave="updateClient()" buttons="no" editable-text="contact.adresse.country">{{ contact.adresse.country || 'Country' }}</a>
-	</div>
-</div>
+<div data-contacts-manager data-contacts-manager-config="contactsManagerConfig"></div>
 
 <div class="row ng-cloak ng-table-pager">
 	<div ng-if="params.settings().counts.length"

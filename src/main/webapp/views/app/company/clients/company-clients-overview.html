@@ -4,16 +4,23 @@
 
 <h5><strong>{{client.projects.length}} Projects for {{ client.name || 'Name' }}</strong></h5>
 <hr>
-<ul class="list-inline">
-	<li><input type="text" data-ng-model="projectFilter" class="form-control input-sm" placeholder="Filter projects"></li>
-	<li><button class="btn btn-link" data-ng-click="addNewProject(client)">Add project</button></li>
-</ul>
+<div class="row">
+	<div class="col-lg-6">
+		<div class="input-group input-group-sm">
+			<span class="input-group-addon "><i class="fa fa-search"></i></span>
+			<input type="text" data-ng-model="projectFilter" class="form-control input-sm" placeholder="Filter projects">
+			 <span class="input-group-btn">
+				<button class="btn btn-success" data-ng-click="addNewProject(client)"><i class="fa fa-plus"></i> Add project</button>
+			</span>
+		</div>
+	</div>
+</div>
 <ul class="list-group">
   <li class="list-group-item am-fade"  data-ng-repeat="project in client.projects | searchField: 'name': 'description' | filter: projectFilter" >
     <ul class="list-inline">
     	<span style="float: right;" data-ng-if="!project.isnew">
     		<a href="{{appContextPath}}app/view/#/company/projects/view/quickview/{{project.id}}" " >
-				<i class="fa fa-arrow-right"></i>
+				Go to <i class="fa fa-arrow-right"></i>
 			</a>
     	</span>
     	<li><p class="text-muted">Created on {{project.createdDate  | date:'medium'}}</p></li>
@@ -33,32 +40,7 @@
 </ul>
 <h5><strong>{{client.contacts.length}} Contacs for {{ client.name || 'Name' }}</strong></h5>
 <hr>
-<ul class="list-inline">
-	<li><input type="text" data-ng-model="contactFilter" class="form-control input-sm" placeholder="Filter contacts"></li>
-	<li><button class="btn btn-link" data-ng-click="addContact(client)">Add contact</button></li>
-</ul>
-<div class="row">
-	<div class="col-md-3 vcard am-fade" data-ng-repeat="contact in client.contacts | searchField: 'name': 'email' | filter: contactFilter">
-		<button type="button" class="close" data-ng-confirm="Do you want to delete contact {{contact.name}} ?" data-ng-click="deleteContact(client,$index)" ><i class="fa fa-times text-danger"></i><span class="sr-only">Close</span></button>
-		<strong><a href="#" onaftersave="updateClient()" buttons="no" editable-text="contact.name">{{ contact.name || 'Name' }}</a></strong><br>
-		<a href="#" onaftersave="updateClient()" buttons="no" editable-email="contact.email">{{ contact.email || 'Email' }}</a><br>
-		<br>
-		<ul class="list-inline">
-			<li data-ng-repeat="phoneNumber in contact.phoneNumbers track by $index">
-				<i class="fa fa-phone"></i>
-				<a href="#"  buttons="no" onaftersave="updateClient()" editable-tel="contact.phoneNumbers[$index]">{{ contact.phoneNumbers[$index] || 'Tel' }}</a>
-				<button href="" class="btn btn-link btn-xs" data-ng-click="removePhoneNumbers(contact,$index)"><i class="fa fa-minus-circle text-danger"></i></button>
-			</li>
-			<li>
-				<a href="" class="btn btn-link btn-xs" data-ng-click="addPhoneNumbers(contact)"><i class="fa fa-plus-circle"></i></a>
-			</li>
-		</ul>
-		<a href="#" onaftersave="updateClient()" buttons="no" editable-text="contact.adresse.adress">{{ contact.adresse.adress || 'Address' }}</a><br>
-		<a href="#" onaftersave="updateClient()" buttons="no" editable-text="contact.adresse.postCode">{{ contact.adresse.postCode || 'Post Code' }}</a><br>
-		<a href="#" onaftersave="updateClient()" buttons="no" editable-text="contact.adresse.city">{{ contact.adresse.city || 'City' }}</a><br>
-		<a href="#" onaftersave="updateClient()" buttons="no" editable-text="contact.adresse.country">{{ contact.adresse.country || 'Country' }}</a>
-	</div>
-</div>
+<div data-contacts-manager data-contacts-manager-config="contactsManagerConfig"></div>
 
 <div class="row ng-cloak ng-table-pager">
 	<div ng-if="params.settings().counts.length"

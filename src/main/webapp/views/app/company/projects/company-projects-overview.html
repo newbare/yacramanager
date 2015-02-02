@@ -1,1 +1,9 @@
- {{project.name}}
+ <div class="row">
+	<h3><strong><a href="#" onaftersave="updateProject()" buttons="no" editable-text="project.name">{{ project.name || 'Project Name' }}</a></strong></h3>
+	<span class="text-muted">Created on {{project.createdDate  | date:'longDate'}}</span>
+</div>
+
+<div class="jumbotron">
+	<h4><strong><a href="#" onaftersave="updateProject()" editable-textarea="project.description"  e-rows="7"><pre>{{ project.description || 'Project Description' }}</pre></a></strong></h4>
+</div>
+

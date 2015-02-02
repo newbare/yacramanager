@@ -1,0 +1,45 @@
+<div class="row">
+	<div class="col-lg-6">
+		<div class="input-group input-group-sm">
+			<span class="input-group-addon "><i class="fa fa-search"></i></span>
+			<input type="text" data-ng-model="contactFilter" class="form-control"
+				placeholder="Filter contacts"> <span class="input-group-btn">
+				<button class="btn btn-success"
+					data-ng-click="addContact(dataObject)">
+					<i class="fa fa-plus"></i> Add contact
+				</button>
+			</span>
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-3 vcard am-fade" data-ng-repeat="contact in dataObject.contacts | searchField: 'name': 'email' | filter: contactFilter">
+		<button type="button" class="close" data-ng-confirm="Do you want to delete contact {{contact.name}} ?" data-ng-click="deleteContact(dataObject,$index)" ><i class="fa fa-times text-danger"></i><span class="sr-only">Close</span></button>
+		<i class="fa fa-user text-primary"></i>
+		<strong><a href="#" onaftersave="update()" buttons="no" editable-text="contact.name">{{ contact.name || 'Name' }}</a></strong><br>
+		<i class="fa fa-envelope text-primary"></i>
+		<a href="#" onaftersave="update()" buttons="no" editable-email="contact.email">{{ contact.email || 'Email' }}</a><br>
+		<br>
+		<ul class="list-inline">
+			<li data-ng-repeat="phoneNumber in contact.phoneNumbers track by $index">
+				<i class="fa fa-phone"></i>
+				<a href="#"  buttons="no" onaftersave="update()" editable-tel="contact.phoneNumbers[$index]">{{ contact.phoneNumbers[$index] || 'Tel' }}</a>
+				<button href="" class="btn btn-link btn-xs" data-ng-click="removePhoneNumbers(contact,$index)"><i class="fa fa-minus-circle text-danger"></i></button>
+			</li>
+			<li>
+				<a href="" class="btn btn-link btn-xs" data-ng-click="addPhoneNumbers(contact)"><i class="fa fa-plus-circle"></i></a>
+			</li>
+		</ul>
+		<div class="row">
+			<div class="col-md-2">
+				<i class="fa fa-home fa-2x text-primary"></i>
+			</div>
+			<div class="col-md-10">
+				<a href="#" onaftersave="update()" buttons="no" editable-text="contact.adresse.adress">{{ contact.adresse.adress || 'Address' }}</a><br>
+				<a href="#" onaftersave="update()" buttons="no" editable-text="contact.adresse.postCode">{{ contact.adresse.postCode || 'Post Code' }}</a><br>
+				<a href="#" onaftersave="update()" buttons="no" editable-text="contact.adresse.city">{{ contact.adresse.city || 'City' }}</a><br>
+				<a href="#" onaftersave="update()" buttons="no" editable-text="contact.adresse.country">{{ contact.adresse.country || 'Country' }}</a>
+			</div>
+		</div>
+	</div>
+</div>

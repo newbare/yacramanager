@@ -37,6 +37,7 @@ public class CompanyDTO {
 			contact.setName(contactDTO.getName());
 			contact.setEmail(contactDTO.getEmail());
 			contact.setPhoneNumbers(contactDTO.getPhoneNumbers());
+			contact.setAdresse(contactDTO.getAdresse());
 			contacts.add(contact);
 		}
 		company.setContacts(contacts);

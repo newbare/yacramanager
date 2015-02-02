@@ -176,7 +176,11 @@ function AdminCompanyOverviewController($scope,company,CompanyREST){
 	$scope.company=company;
 	
 	$scope.updateCompany = function() {
-		return CompanyREST.update({companyId :$scope.companyId},$scope.company).$promise.then(
+		var companyToUpdate={id:$scope.company.id,name:$scope.company.name,registeredDate:$scope.company.registeredDate,licenseEndDate:$scope.company.licenseEndDate,contacts:$scope.company.contacts};
+		angular.forEach(companyToUpdate.contacts,function(contact){
+			delete contact.searchField;
+		});
+		return CompanyREST.update({companyId :$scope.companyId},companyToUpdate).$promise.then(
 		        //success
 		        function( value ){
 		        	 $scope.tableParams.reload();
@@ -185,10 +189,9 @@ function AdminCompanyOverviewController($scope,company,CompanyREST){
 		        function( error ){/*Do something with error*/}
 		      );
 	};
-	
-	$scope.addContact=function(client){
-		var newContact={name:undefined,email:undefined,phoneNumbers:[],adresse:{adress:undefined,postCode:undefined,city:undefined,country:undefined}};
-		$scope.company.contacts.push(newContact);
+	$scope.contactsManagerConfig={
+			dataObject:$scope.company,
+			update:$scope.updateCompany
 	};
 }
 

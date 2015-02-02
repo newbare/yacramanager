@@ -500,3 +500,63 @@ App
 				});
 
 
+App.directive('contactsManager',['$sce',
+         						'$timeout',
+        						'$templateCache',
+        						'$q',
+        						'$http',
+        						'$compile',
+        						'$filter', function($sce, $timeout, $templateCache, $q, $http,
+        								$compile, $filter) {
+    return {
+    	replace:true,
+        restrict: 'AE',
+        scope : {
+			// models
+        	contactsManagerConfig : '='
+        },
+        template : 
+			'<div ng-html-compile="filterContentHTML">'+
+			'</div>',
+        link: function($scope, elem, attrs) {
+        	var textFilterTemplate = _contextPath + '/templates/contact-manager.tpl.html';
+        	$scope.filterContentHTML=undefined;
+        	
+        	$scope.contactsManagerConfig.dataObject.$promise.then(function(value) {
+        		$scope.dataObject=value;
+			});
+        	$scope.update=$scope.contactsManagerConfig.update;
+        	function fetchTemplate(template) {
+				return $q.when(	$templateCache.get(template)|| $http.get(template))
+						.then(function(res) {
+									if (angular.isObject(res)) {
+										$templateCache.put(template,res.data);
+										return res.data;
+									}
+									return res;
+								});
+			};
+        	fetchTemplate(textFilterTemplate)
+			.then(
+					function(content) {
+						$scope.filterContentHTML = content;
+					});
+        	$scope.addContact=function(dataObject){
+        		var newContact={name:undefined,email:undefined,phoneNumbers:[],adresse:{adress:undefined,postCode:undefined,city:undefined,country:undefined}};
+        		dataObject.contacts.push(newContact);
+        	};
+        	
+        	$scope.deleteContact=function(dataObject,index){
+        		dataObject.contacts.splice(index,1);
+        		$scope.update();
+        	};
+        	$scope.addPhoneNumbers=function(contact){
+        		contact.phoneNumbers.push('');
+        	};
+        	$scope.removePhoneNumbers=function(contact,index){
+        		contact.phoneNumbers.splice(index,1);
+        	};
+        }
+      };
+    }]);
+

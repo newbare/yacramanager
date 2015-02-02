@@ -350,21 +350,7 @@ function CompanyClientsListController($scope, $rootScope,$http,ClientsREST,ngTab
 function CompanyClientsOverviewController($scope,ClientsREST,ProjectsREST,client,alertService){
 	$scope.client=client;
 	$scope.contactFilter='';
-	$scope.addContact=function(client){
-		var newContact={name:undefined,email:undefined,phoneNumbers:[],adresse:{adress:undefined,postCode:undefined,city:undefined,country:undefined}};
-		client.contacts.push(newContact);
-	};
-	$scope.addPhoneNumbers=function(contact){
-		contact.phoneNumbers.push('');
-	};
-	$scope.removePhoneNumbers=function(contact,index){
-		contact.phoneNumbers.splice(index,1);
-	};
 	
-	$scope.deleteContact=function(client,index){
-		client.contacts.splice(index,1);
-		$scope.updateClient();
-	};
 	$scope.updateClient = function() {
 		var clientToUpdate={id:$scope.client.id,name:$scope.client.name,email:$scope.client.email,contacts:$scope.client.contacts};
 		angular.forEach(clientToUpdate.contacts,function(contact){
@@ -378,6 +364,11 @@ function CompanyClientsOverviewController($scope,ClientsREST,ProjectsREST,client
 		        //error
 		        function( error ){/*Do something with error*/}
 		      );
+	};
+	
+	$scope.contactsManagerConfig={
+			dataObject:$scope.client,
+			update:$scope.updateClient
 	};
 	
 	$scope.addNewProject=function(client){
