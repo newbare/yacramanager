@@ -44,7 +44,7 @@ import fr.wati.yacramanager.web.thymeleaf.ThymeleafPdfViewResolver;
 @EnableWebMvc
 @Import(value = { MetricsConfiguration.class, AspectConfiguration.class,
 		LocaleConfiguration.class, ELFinderConfig.class,
-		SwaggerConfiguration.class })
+		SwaggerConfiguration.class ,SocialConfig.class})
 public class WebConfig extends WebMvcConfigurerAdapter {
 	private Logger logger = LoggerFactory.getLogger(WebConfig.class);
 

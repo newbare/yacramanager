@@ -37,6 +37,7 @@ import fr.wati.yacramanager.beans.Role;
 import fr.wati.yacramanager.dao.repository.EmployeDto;
 import fr.wati.yacramanager.dao.repository.EmployeRepository;
 import fr.wati.yacramanager.services.EmployeService;
+import fr.wati.yacramanager.services.ServiceException;
 import fr.wati.yacramanager.services.UserService;
 import fr.wati.yacramanager.services.impl.DtoMapper;
 import fr.wati.yacramanager.utils.Filter.FilterBuilder;
@@ -105,7 +106,7 @@ public class UserRestController implements RestCrudController<EmployeDto> {
 	}
 
 	/**
-     * POST  /rest/change_password -> changes the current user's password
+     * POST  /rest/change-password -> changes the current user's password
      */
     @RequestMapping(value = "/change-password",
             method = RequestMethod.POST,
@@ -118,6 +119,23 @@ public class UserRestController implements RestCrudController<EmployeDto> {
         userService.changePassword(SecurityUtils.getConnectedUser().getId(),password);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+    
+    
+    @RequestMapping(value = "/update-manager/{employeeId}",
+            method = RequestMethod.POST,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+	@RolesAllowed(Role.SSII_ADMIN)
+    public ResponseEntity<?> updateManager(@PathVariable("employeeId") Long employeeId ,@RequestBody(required=true) Long managerId) throws RestServiceException {
+    	try {
+			employeService.updateManager(employeeId,managerId);
+		} catch (ServiceException e) {
+			LOG.error(e);
+			throw new RestServiceException(e);
+		}
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+    
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	@ResponseStatus(HttpStatus.NO_CONTENT)

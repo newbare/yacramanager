@@ -149,7 +149,10 @@ public class CraServiceImpl implements CraService {
 				}
 			});
 			employeCraDetailsDTO.setActivityReport(activityReports!=null && activityReports.size()>0 ?activityReports.get(0):null);
-			employeCraDetailsDTO.getActivityReport().setValidationStatus(ValidationStatus.multipleIsApprouvedAndOperator(validationStatusList));
+			if(validationStatusList!=null && !validationStatusList.isEmpty()){
+				employeCraDetailsDTO.getActivityReport().setValidationStatus(ValidationStatus.multipleIsApprouvedAndOperator(validationStatusList));
+			}
+			
 			List<Absence> absences = absenceService
 					.findByEmployeAndStartDateBetween(currentEmploye,
 							startDate, endDate);

@@ -62,7 +62,7 @@ public class AuthenticationController {
 			HttpServletRequest request, HttpServletResponse response,
 			Locale locale) {
 		Employe registerEmploye = employeService
-				.registerEmploye(registrationDTO);
+				.registerEmploye(registrationDTO,false);
 		String content = createHtmlContentFromTemplate(registerEmploye, locale,
 				request, response);
 		mailService.sendActivationEmail(

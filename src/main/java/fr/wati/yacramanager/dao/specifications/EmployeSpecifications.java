@@ -15,6 +15,7 @@ import fr.wati.yacramanager.beans.Gender;
 import fr.wati.yacramanager.beans.Company;
 import fr.wati.yacramanager.beans.Employe;
 import fr.wati.yacramanager.beans.Employe_;
+import fr.wati.yacramanager.beans.Project;
 
 public class EmployeSpecifications {
 
@@ -57,6 +58,15 @@ public class EmployeSpecifications {
 		};
 	}
 	
+	public static Specification<Employe> forProject(final Project project) {
+		return new Specification<Employe>() {
+			public Predicate toPredicate(Root<Employe> root,
+					CriteriaQuery<?> query, CriteriaBuilder builder) {
+				return builder.isMember(project, root.get(Employe_.projects));
+			}
+		};
+	}
+	
 	public static Specification<Employe> forCompanies(final List<Company> companies) {
 		Specifications<Employe> specifications=null;
 		for(Company company:companies){
@@ -64,6 +74,18 @@ public class EmployeSpecifications {
 				specifications=Specifications.where(forCompany(company));
 			}else {
 				specifications=specifications.or(forCompany(company));
+			}
+		}
+		return specifications;
+	}
+	
+	public static Specification<Employe> forProjects(final List<Project> projects) {
+		Specifications<Employe> specifications=null;
+		for(Project project:projects){
+			if(specifications==null){
+				specifications=Specifications.where(forProject(project));
+			}else {
+				specifications=specifications.or(forProject(project));
 			}
 		}
 		return specifications;

@@ -113,6 +113,7 @@ public class TaskDTO {
 			task.setColor(task.getProject().getColor());
 		}
 		task.setName(getName());
+		task.setTaskStatus(task.getTaskStatus());
 		return task;
 	}
 }

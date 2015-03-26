@@ -159,24 +159,30 @@ App.directive('collapsibleFieldset',	function() {
 				var collapsed=(attrs.collapsibleFieldsetCollapsed ===undefined)?true:false;
 				var title=attrs.collapsibleFieldset;
 				var bodyElement=elem.find('div');
+				scope.fieldsetOpen=collapsed;
 				bodyElement.addClass("am-fade");
 				elem.addClass("collapsible");
-				var legendImgElement="<img class=\"tool-img tool-toggle\"  src=\"data:image/gif;base64,R0lGODlhAQABAID/AMDAwAAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==\">";
+				var legendImgElement="<span class=\"fa-stack\"><i class=\"fa fa-circle-thin fa-stack-2x\"></i><i class=\"fa  fa-stack-1x\"></i></span>";
 				var legendElement="<legend>"+legendImgElement+" <span> "+title+"</span></legend>";
 				elem.prepend(legendElement);
-				if(collapsed){
-					elem.addClass("collapsed");
-					elem.find('.tool-img').addClass("collapsed");
-				}
-				elem.children('legend').bind('click', function(event) {
-					collapsed=!collapsed;
+				var toggle=function(){
 					if(collapsed){
 						elem.addClass("collapsed");
 						elem.find('.tool-img').addClass("collapsed");
+						elem.find('legend>span>i:nth-child(2)').addClass("fa-chevron-down");
+						elem.find('legend>span>i:nth-child(2)').removeClass("fa-chevron-up");
 					}else {
 						elem.removeClass("collapsed");
 						elem.find('.tool-img').removeClass("collapsed");
+						elem.find('legend>span>i:nth-child(2)').addClass("fa-chevron-up");
+						elem.find('legend>span>i:nth-child(2)').removeClass("fa-chevron-down");
 					}
+				};
+				
+				toggle();
+				elem.children('legend').bind('click', function(event) {
+					collapsed=!collapsed;
+					toggle();
 				});
 			}
 		};
@@ -484,17 +490,55 @@ App
 							$scope.fileName = attrs.filename;
 							
 							$scope.exportToPDF = function() {
-								var doc = new jsPDF('landscape');
-
+								//var doc = new jsPDF('landscape');
+								var pdf = new jsPDF('landscape', 'pt', 'letter');
+								var source=$('#'+$scope.targetFragmentId).get(0);
 								// All units are in the set measurement for the
 								// document
 								// This can be changed to "pt" (points), "mm"
 								// (Default), "cm", "in"
-								doc.fromHTML($('#'+$scope.targetFragmentId).get(0), 15, 15, {
-									'width' : 170
-								});
-								doc.save($scope.fileName);
+//								doc.fromHTML($('#'+$scope.targetFragmentId).get(0), 15, 15, {
+//									'width' : 170
+//								});
+//								doc.save($scope.fileName);
+								
+								//TEST NEW
+								specialElementHandlers = {
+								        // element with id of "bypass" - jQuery style selector
+								        '#bypassme': function (element, renderer) {
+								            // true = "handled elsewhere, bypass text extraction"
+								            return true
+								        },
+								        'fieldset':function (element, renderer) {
+								            return true
+								        }
+								    };
+								    margins = {
+								        top: 80,
+								        bottom: 60,
+								        left: 40,
+								        width: 522
+								    };
+								    // all coords and widths are in jsPDF instance's declared units
+								    // 'inches' in this case
+								    pdf.fromHTML(
+								    source, // HTML string or DOM elem ref.
+								    margins.left, // x coord
+								    margins.top, { // y coord
+								        'width': margins.width, // max width of content on PDF
+								        'elementHandlers': specialElementHandlers
+								    },
+
+								    function (dispose) {
+								        // dispose: object with X, Y of the last line add to the PDF 
+								        //          this allow the insertion of new lines after html
+								        pdf.save('Test.pdf');
+								    }, margins);
+								
 							};
+							
+							
+							
 						}
 					};
 				});

@@ -2,8 +2,10 @@ package fr.wati.yacramanager.dao.repository;
 
 import java.io.Serializable;
 
+import fr.wati.yacramanager.beans.AuditableEntity;
+
 @SuppressWarnings("serial")
-public class UserDto implements Serializable {
+public class UserDto extends AuditableEntity implements Serializable {
 	
 	private long id;
 	private String username;

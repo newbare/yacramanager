@@ -64,8 +64,8 @@ App.config(function($tooltipProvider) {
   });
 });
 
-App.controller('AppCtrl', [ '$scope', '$location', 'UsersREST','$rootScope','$translate','$locale','LanguageService',
-		function($scope, $location, UsersREST,$rootScope,$translate,$locale,LanguageService) {
+App.controller('AppCtrl', [ '$scope', '$location', 'UsersREST','$rootScope','$translate','$locale','LanguageService','$state',
+		function($scope, $location, UsersREST,$rootScope,$translate,$locale,LanguageService,$state) {
 			
 			$scope.eventsToWait=['userInfo'];
 			$scope.navClass = function(page) {
@@ -229,37 +229,34 @@ App.controller('LoginCtrl', [ '$scope','$http','authService',function($scope,$ht
 	    };
 }]);
 
-App.config([ '$stateProvider', '$urlRouterProvider','$locationProvider','$translateProvider','tmhDynamicLocaleProvider',
-		function($stateProvider, $urlRouterProvider,$locationProvider,$translateProvider,tmhDynamicLocaleProvider,$state) {
+var whenConfig=[ '$urlRouterProvider',	function($urlRouterProvider) {
+	$urlRouterProvider
+	.when('','/home')
+	.when('/company', '/company/home')
+	.when('/admin/company', '/admin/company/view/quickview')
+	.when('/company/employees', '/company/employees/view/quickview')
+	.when('/company/employees/view', '/company/employees/view/quickview')
+	.when('/company/clients', '/company/clients/view/quickview')
+	.when('/company/clients/view', '/company/clients/view/quickview')
+	.when('/company/projects', '/company/projects/view/quickview')
+	.when('/company/projects/view', '/company/projects/view/quickview')
+	.when('/admin', '/admin/home')
+	
 
-	 		//$locationProvider.html5Mode(true).hashPrefix('!');
-//			$locationProvider.hashPrefix('!');
-//	 		if(window.history && window.history.pushState){
-//	 			$locationProvider.html5Mode(true);
-//	 		}
-			// Use $urlRouterProvider to configure any redirects (when) and
-			// invalid urls (otherwise).
-			$urlRouterProvider
-			.when('','/home')
-			.when('/company', '/company/home')
-			.when('/admin/company', '/admin/company/view/quickview')
-			.when('/company/employees', '/company/employees/view/quickview')
-			.when('/company/employees/view', '/company/employees/view/quickview')
-			.when('/company/clients', '/company/clients/view/quickview')
-			.when('/company/clients/view', '/company/clients/view/quickview')
-			.when('/company/projects', '/company/projects/view/quickview')
-			.when('/company/projects/view', '/company/projects/view/quickview')
-			.when('/admin', '/admin/home')
-			
+	// The `when` method says if the url is ever the 1st param, then
+	// redirect to the 2nd param
+	// Here we are just setting up some convenience urls.
+	//.when('/c?id', '/contacts/:id').when('/user/:id', '/contacts/:id')
 
-			// The `when` method says if the url is ever the 1st param, then
-			// redirect to the 2nd param
-			// Here we are just setting up some convenience urls.
-			//.when('/c?id', '/contacts/:id').when('/user/:id', '/contacts/:id')
+	// If the url is ever invalid, e.g. '/asdf', then redirect to '/'
+	// aka the home state
+	.otherwise('/error404');
+}];
 
-			// If the url is ever invalid, e.g. '/asdf', then redirect to '/'
-			// aka the home state
-			.otherwise('/error404');
+
+var stateConfig =[ '$stateProvider','$locationProvider','$translateProvider','tmhDynamicLocaleProvider',
+		function($stateProvider,$locationProvider,$translateProvider,tmhDynamicLocaleProvider) {
+
 			$stateProvider
 			.state('error404', {
 				url : "/error404",
@@ -351,11 +348,17 @@ App.config([ '$stateProvider', '$urlRouterProvider','$locationProvider','$transl
 			}).state('user-profile', {
 				url : "/user-profile",
 				templateUrl : _contextPath+'/views/app/user-profile.html',
-				controller : UserProfileController
+				controller : UserProfileController,
+				data: {
+			        ncyBreadcrumbLabel: 'User profile'
+			      }
 			}).state('api-docs', {
 				url : "/api-docs",
 				templateUrl : _contextPath+'/views/app/api-docs.html',
-				controller : ApiDocsController
+				controller : ApiDocsController,
+				data: {
+			        ncyBreadcrumbLabel: 'Yacra API'
+			      }
 			})
 			.state('company', {
 				url : "/company",
@@ -558,6 +561,7 @@ App.config([ '$stateProvider', '$urlRouterProvider','$locationProvider','$transl
 				url : "/admin",
 				templateUrl : _contextPath+'/views/app/admin.html',
 				controller : AdminController,
+				abstract : true,
 				data: {
 					ncyBreadcrumbLabel : 'Admin'
 				  }
@@ -678,7 +682,9 @@ App.config([ '$stateProvider', '$urlRouterProvider','$locationProvider','$transl
 			tmhDynamicLocaleProvider
 					.useCookieStorage('NG_TRANSLATE_LANG_KEY');
 
-		} ]);
+		} ];
+
+App.config(whenConfig).config(stateConfig)
 
 function NotificationsController($scope,$rootScope) {
 	$rootScope.page={"title":"Notification","description":"Stay aware..."};

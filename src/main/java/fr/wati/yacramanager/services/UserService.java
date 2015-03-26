@@ -8,5 +8,5 @@ public interface UserService extends CrudService<Users, Long>,SpecificationFacto
 	void changePassword(Long userId,String password);
 	Users activateRegistration(String key);
 	void sendActivationMail(Long userId) throws ServiceException;
-	
+	Users findByUsername(String username);
 }

@@ -108,6 +108,10 @@ App.factory("EmployeesREST", function($resource) {
 			params : {
 				id : '@id'
 			}
+		},
+		updateManager:{
+			url:_contextPath + "/app/api/users/update-manager/:employeeId",
+			method : 'POST',
 		}
 	});
 });
@@ -147,6 +151,19 @@ App.factory("TasksREST", function($resource) {
 			params : {
 				id : '@id'
 			}
+		},
+		getAssignedEmployee:{
+			url : _contextPath + "/app/api/:companyId/task/:taskId/assigned/:employeId",
+			method : 'GET',
+			isArray : false
+		},
+		assignEmployeeToTask:{
+			url : _contextPath + "/app/api/:companyId/task/:taskId/assign-employees",
+			method : 'POST'
+		},
+		unAssignEmployeeToTask:{
+			url : _contextPath + "/app/api/:companyId/task/:taskId/unassign-employees",
+			method : 'POST'
 		}
 	});
 });

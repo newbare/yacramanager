@@ -1,5 +1,6 @@
 package fr.wati.yacramanager.services.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -143,8 +144,33 @@ public class TaskServiceImpl implements TaskService {
 	@Transactional
 	public void assignEmployeToTask(Long employeId, Long taskId) {
 		Employe employe = employeService.findOne(employeId);
+		//Task part
 		Task task=findOne(taskId);
+		if(task.getAssignedEmployees()==null){
+			task.setAssignedEmployees(new ArrayList<Employe>());
+		}
 		task.getAssignedEmployees().add(employe);
 		employe.getTasks().add(task);
+		//Project part
+		Project project = task.getProject();
+		if(project.getAssignedEmployees()==null){
+			project.setAssignedEmployees(new ArrayList<Employe>());
+		}
+		if(!project.getAssignedEmployees().contains(employe)){
+			project.getAssignedEmployees().add(employe);
+			employe.getProjects().add(project);
+		}
+	}
+
+	@Override
+	@Transactional
+	public void unAssignEmployeToTask(Long employeId, Long taskId) {
+		Employe employe = employeService.findOne(employeId);
+		Task task=findOne(taskId);
+		if(task.getAssignedEmployees()==null){
+			task.setAssignedEmployees(new ArrayList<Employe>());
+		}
+		task.getAssignedEmployees().remove(employe);
+		employe.getTasks().remove(task);
 	}
 }

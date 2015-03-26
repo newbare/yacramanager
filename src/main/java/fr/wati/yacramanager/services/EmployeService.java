@@ -11,9 +11,11 @@ public interface EmployeService extends CrudService<Employe, Long>,Specification
 
 	UserInfoDTO toUserInfoDTO(Long idPersonne) throws Exception;
 	
-	Employe registerEmploye(RegistrationDTO registrationDTO);
+	Employe registerEmploye(RegistrationDTO registrationDTO,boolean isSocialRegistration);
 
 	List<Employe> getManagedEmployees(Long requesterId);
+	
+	List<Employe> getEmployeesAssignedToTask(Long requesterId,Long taskId);
 	
 	Employe findByContact_Email(String email);
 	
@@ -30,5 +32,7 @@ public interface EmployeService extends CrudService<Employe, Long>,Specification
 	void addManagedEmploye(Long managerId,Long employeId);
 	
 	void createNewEmployee(EmployeDto employeDto,Long companyId,Long managerId);
+
+	void updateManager(Long employeeId, Long managerId) throws ServiceException;
 	
 }

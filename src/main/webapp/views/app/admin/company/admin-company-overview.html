@@ -1,5 +1,5 @@
 <div class="row">
-	<h3><strong><a href="#" onaftersave="updateCompany()" buttons="no" editable-text="company.name">{{ company.name || 'Company Name' }}</a></strong></h3>
+	<h3><strong><a href="#" onaftersave="updateCompany()" buttons="no" editable-text="company.name">{{ company.name || 'Company Name' | uppercase}}</a></strong></h3>
 	<span class="text-muted">Registered on {{company.registeredDate  | date:'longDate'}}</span>
 </div> 
 <h5><strong>General informations</strong></h5>

@@ -18,6 +18,7 @@ import fr.wati.yacramanager.beans.Employe;
 import fr.wati.yacramanager.beans.Project;
 import fr.wati.yacramanager.beans.Project_;
 import fr.wati.yacramanager.beans.Task;
+import fr.wati.yacramanager.beans.TaskStatus;
 import fr.wati.yacramanager.dao.repository.ClientRepository;
 import fr.wati.yacramanager.dao.repository.ProjectRepository;
 import fr.wati.yacramanager.dao.specifications.CommonSpecifications;
@@ -69,6 +70,7 @@ public class ProjectServiceImpl implements ProjectService{
 		defaulTask.setCreatedDate(new DateTime());
 		defaulTask.setName(project.getName()+" - default");
 		defaulTask.setColor(project.getColor());
+		defaulTask.setTaskStatus(TaskStatus.OPEN);
 		taskService.createTask(saveProject.getId(), defaulTask);
 		return saveProject;
 	}

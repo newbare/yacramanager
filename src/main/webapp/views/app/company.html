@@ -4,15 +4,15 @@
 	<ul class="nav nav-pills sub-menu">
 		<li data-ng-class="navClass('company/home')"><a
 			data-ui-sref="company.home">Home</a></li>
-		<li data-ng-class="navClass('company/employees')"><a
-			data-ui-sref="company.employees">Employees</a></li>
-		<li data-ng-class="navClass('company/clients')"><a
-			data-ui-sref="company.clients">Clients</a></li>
-		<li data-ng-class="navClass('company/projects')"><a
-			data-ui-sref="company.projects">Projects</a></li>
-		<li data-ng-class="navClass('company/messages')"><a
+		<li data-ng-class="{ active: $state.includes('company.employees') }"><a
+			data-ui-sref="company.employees.view.quick">Employees</a></li>
+		<li data-ng-class="{ active: $state.includes('company.clients') }"><a
+			data-ui-sref="company.clients.view.quick">Clients</a></li>
+		<li data-ng-class="{ active: $state.includes('company.projects') }"><a
+			data-ui-sref="company.projects.view.quick">Projects</a></li>
+		<li data-ng-class="{ active: $state.includes('company.messages') }"><a
 			data-ui-sref="company.messages">Messages</a></li>
-		<li data-ng-class="navClass('company/settings')"><a
+		<li data-ng-class="{ active: $state.includes('company.settings') }"><a
 			data-ui-sref="company.settings">Settings</a></li>
 	</ul>
 </div>

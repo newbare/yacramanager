@@ -14,5 +14,7 @@ public interface TaskService extends CrudService<Task, Long>,SpecificationFactor
 	
 	void assignEmployeToTask(Long employeId,Long taskId);
 	
+	void unAssignEmployeToTask(Long employeId,Long taskId);
+	
 	List<Task> findByProjectAndAssignedEmployeesIn(Project project, Employe employe);
 }

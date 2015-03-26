@@ -50,6 +50,7 @@ import fr.wati.yacramanager.web.filter.AjaxTimeoutRedirectFilter;
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
+	public static final String DEFAULT_LOGIN_SUCCESS_PATH = "/app/view/";
 	@Autowired
 	private Environment env;
 	@Autowired
@@ -81,6 +82,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.permitAll()
 				.antMatchers("/auth/api/**")
 				.permitAll()
+				.antMatchers("/signin/**","/signup/**","/connect/**")
+				.permitAll()
 				.antMatchers("/app/admin/**")
 				.hasAnyRole("ADMIN")
 				.antMatchers("/app/**")
@@ -95,7 +98,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.requiresSecure()
 				.and()
 				.formLogin()
-					.defaultSuccessUrl("/app/view/")
+					.defaultSuccessUrl(DEFAULT_LOGIN_SUCCESS_PATH)
 					.loginProcessingUrl("/auth/authentication")
 					.loginPage("/auth/")
 					.failureUrl("/auth/?error=true")

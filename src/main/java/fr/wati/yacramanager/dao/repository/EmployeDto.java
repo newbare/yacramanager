@@ -19,6 +19,7 @@ public class EmployeDto extends UserDto {
 	private String postCode;
 	private Long companyId;
 	private Long managerId;
+	private EmployeDto manager;
 	
 	public EmployeDto() {
 	}
@@ -81,6 +82,12 @@ public class EmployeDto extends UserDto {
 	}
 	public void setManagerId(Long managerId) {
 		this.managerId = managerId;
+	}
+	public EmployeDto getManager() {
+		return manager;
+	}
+	public void setManager(EmployeDto manager) {
+		this.manager = manager;
 	}
 
 }

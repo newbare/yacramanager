@@ -66,7 +66,7 @@ var App = angular.module('yaCRAApp', [ 'ngResource', 'mgcrea.ngStrap',
 		'http-auth-interceptor', 'timer', 'localytics.directives',
 		'daterangepicker', 'pascalprecht.translate', 'angular-loading-bar',
 		'ngQuickDate', 'xeditable', 'colorpicker.module', 'angular.filter',
-		'truncate','ncy-angular-breadcrumb','ngCookies','tmh.dynamicLocale','ngFinder' ]);
+		'truncate','ncy-angular-breadcrumb','ngCookies','tmh.dynamicLocale','ngFinder','dcbClearInput' ]);
 
 
 App.config(['$httpProvider', function($httpProvider,$modal) {
@@ -82,8 +82,9 @@ App.config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
 
   
   
-App.run(function($rootScope, $templateCache, UsersREST) {
+App.run(function($rootScope, $templateCache, UsersREST,$state) {
 	$rootScope.page = '';
+	$rootScope.$state = $state;
 	$rootScope.appContextPath=_contextPath;
 	// $templateCache.removeAll();
 	$rootScope.$on('$stateChangeStart', function(event, toState, toParams,
@@ -95,7 +96,7 @@ App.run(function($rootScope, $templateCache, UsersREST) {
 		}
 	});
 	$rootScope.$on('$viewContentLoading', function(event, viewConfig) {
-		console.log(viewConfig);
+//		console.log(viewConfig);
 	});
 	
 	$rootScope.$on('$viewContentLoaded', function(event) {

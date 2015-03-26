@@ -26,7 +26,9 @@ import fr.wati.yacramanager.beans.CompanyAccountInfo;
 import fr.wati.yacramanager.beans.Contact;
 import fr.wati.yacramanager.beans.Employe;
 import fr.wati.yacramanager.beans.Gender;
+import fr.wati.yacramanager.beans.Project;
 import fr.wati.yacramanager.beans.Role;
+import fr.wati.yacramanager.beans.Task;
 import fr.wati.yacramanager.dao.repository.CompanyAccountInfoRepository;
 import fr.wati.yacramanager.dao.repository.ContactRepository;
 import fr.wati.yacramanager.dao.repository.EmployeDto;
@@ -36,6 +38,9 @@ import fr.wati.yacramanager.dao.specifications.EmployeSpecifications;
 import fr.wati.yacramanager.listeners.ActivityEvent;
 import fr.wati.yacramanager.services.CompanyService;
 import fr.wati.yacramanager.services.EmployeService;
+import fr.wati.yacramanager.services.ProjectService;
+import fr.wati.yacramanager.services.ServiceException;
+import fr.wati.yacramanager.services.TaskService;
 import fr.wati.yacramanager.utils.Filter;
 import fr.wati.yacramanager.utils.Filter.FilterArray;
 import fr.wati.yacramanager.utils.Filter.FilterArrayValue;
@@ -66,7 +71,13 @@ public class EmployeServiceImpl implements EmployeService {
 	private CompanyService companyService;
 	
 	@Autowired
+	private ProjectService  projectService;
+	
+	@Autowired
 	private RoleRepository roleRepository;
+	
+	@Autowired
+	private TaskService  taskService;
 	
 	@Autowired
 	private CompanyAccountInfoRepository companyAccountInfoRepository;
@@ -160,11 +171,15 @@ public class EmployeServiceImpl implements EmployeService {
 	 * @see fr.wati.yacramanager.services.EmployeService#registerEmploye(fr.wati.yacramanager.web.dto.RegistrationDTO)
 	 */
 	@Override
-	public Employe registerEmploye(RegistrationDTO registrationDTO) {
+	public Employe registerEmploye(RegistrationDTO registrationDTO,boolean isSocialRegistration) {
 		Employe employe=new Employe();
 		employe.setUsername(registrationDTO.getUsername());
-		employe.setPassword(passwordEncoder.encode(registrationDTO.getPassword()));
-		employe.setEnabled(false);
+		if(isSocialRegistration){
+			employe.setEnabled(true);
+		}else {
+			employe.setPassword(passwordEncoder.encode(registrationDTO.getPassword()));
+			employe.setActivationKey(RandomUtil.generateActivationKey());
+		}
 		employe.setLastName(registrationDTO.getLastName());
 		employe.setFirstName(registrationDTO.getFirstName());
 		Contact contact=new Contact();
@@ -188,7 +203,6 @@ public class EmployeServiceImpl implements EmployeService {
 		employe.getProjects().add(createCompany.getClients().get(0).getProjects().get(0));
 		createCompany.getClients().get(0).getProjects().get(0).getTasks().get(0).getAssignedEmployees().add(employe);
 		employe.getTasks().add(createCompany.getClients().get(0).getProjects().get(0).getTasks().get(0));
-		employe.setActivationKey(RandomUtil.generateActivationKey());
 		Employe saveEmploye = employeRepository.save(employe);
 		return saveEmploye;
 	}
@@ -239,6 +253,13 @@ public class EmployeServiceImpl implements EmployeService {
 					}
 					return EmployeSpecifications.forCompanies(companies);
 				}
+				if("projects".equals(filter.getField())){
+					List<Project> projects=new ArrayList<>();
+					for(FilterArrayValue filterArrayValue: filterArray.getValue()){
+						projects.add(projectService.findOne(Long.valueOf(filterArrayValue.getName())));
+					}
+					return EmployeSpecifications.forProjects(projects);
+				}
 				if("civilite".equals(filter.getField())){
 					List<Gender> civilities=new ArrayList<>();
 					for(FilterArrayValue filterArrayValue: filterArray.getValue()){
@@ -284,7 +305,9 @@ public class EmployeServiceImpl implements EmployeService {
 		employe.setPassword(employeDto.getPassword());
 		employe.setGender(employeDto.getGender());
 		employe.setBirthDay(employeDto.getBirthDay());
-		employe.getContact().setEmail(employeDto.getEmail());
+		Contact contact=new Contact();
+		contact.setEmail(employeDto.getEmail());
+		employe.setContact(contact);
 		employe.setCompany(company);
 		
 		save(employe);
@@ -329,6 +352,34 @@ public class EmployeServiceImpl implements EmployeService {
 		employe.setPassword(passwordEncoder.encode(generatedPassword));
 		save(employe);
 		return generatedPassword;
+	}
+
+	@Override
+	public List<Employe> getEmployeesAssignedToTask(Long requesterId,
+			Long taskId) {
+		Task findOneTask = taskService.findOne(taskId);
+		if(findOneTask==null){
+			throw new IllegalArgumentException("No task found for id: "+taskId);
+		}
+		return employeRepository.findByTasksIn(findOneTask);
+	}
+
+	@Override
+	@Transactional
+	public void updateManager(Long employeeId, Long managerId) throws ServiceException {
+		Employe employee = employeRepository.findOne(employeeId);
+		Employe employeeManager = employeRepository.findOne(managerId);
+		if(employee==null){
+			throw new ServiceException("The given employee Id doesn't exist");
+		}
+		if(employeeManager==null){
+			throw new ServiceException("The given employee manager Id doesn't exist");
+		}
+		employee.setManager(employeeManager);
+		if(!employeeManager.getManagedEmployes().contains(employee)){
+			employeeManager.getManagedEmployes().add(employee);
+		}
+		
 	}
 
 }

@@ -82,29 +82,29 @@
 			</div>
 			<div class="navbar-collapse collapse">
 				<ul class="nav navtop navbar-nav navbar-left">
-					<li data-has-role="ROLE_ADMIN"
-						data-ng-class="navClass('admin/')"><a
-						data-ui-sref="admin"><i class="fa fa-star"></i>{{'app.navbar.menu.admin' | translate}}</a></li>
+					<li data-has-role="ROLE_ADMIN" data-ng-class="{ active: $state.includes('admin') }">
+						<a	data-ui-sref="admin.home"><i class="fa fa-star"></i>{{'app.navbar.menu.admin' | translate}}</a>
+					</li>
 					<li data-has-role="ROLE_SSII_ADMIN" data-ng-cloak=""
-						data-ng-class="navClass('company/')"><a
-						data-ui-sref="company"><i class="fa fa-university"></i>{{userInfo.company.name}}</a></li>
+						data-ng-class="{ active: $state.includes('company') }" ><a
+						data-ui-sref="company.home"><i class="fa fa-university"></i>{{userInfo.company.name}}</a></li>
 					<li class="dropdown" data-ng-class="navClass('frais') + navClass('activity-report') + navClass('absences') + navClass('timesheet')">
 						<a href="" class="dropdown-toggle" data-toggle="dropdown">{{'app.navbar.menu.workspace' | translate}}<span class="caret"></span></a>
 						<ul class="workspace-menu dropdown-menu " role="menu">
-							<li data-ng-class="navClass('tasks')" class="visible-xs-inline visible-sm-inline">
+							<li data-ui-sref-active="active"  class="visible-xs-inline visible-sm-inline">
 								<a data-ui-sref="tasks"><i class="fa fa-tasks"></i>{{'app.navbar.menu.tasks' | translate}}</a>
 							</li>
-							<li data-ng-class="navClass('frais')"><a data-ui-sref="frais">{{'app.navbar.menu.frais' | translate}}</a></li>
-							<li data-ng-class="navClass('activity-report')"><a data-ui-sref="activity-report">{{'app.navbar.menu.cra' | translate}}</a></li>
-							<li data-ng-class="navClass('absences')"><a
+							<li data-ui-sref-active="active" ><a data-ui-sref="frais">{{'app.navbar.menu.frais' | translate}}</a></li>
+							<li data-ui-sref-active="active" ><a data-ui-sref="activity-report">{{'app.navbar.menu.cra' | translate}}</a></li>
+							<li data-ui-sref-active="active" ><a
 								data-ui-sref="absences">{{'app.navbar.menu.absences' | translate}}</a></li>
-							<li data-ng-class="navClass('timesheet')"><a
+							<li data-ui-sref-active="active"><a
 								data-ui-sref="timesheet">{{'app.navbar.menu.timesheet' | translate}}</a></li>
-							<li data-ng-class="navClass('files')"><a
+							<li data-ui-sref-active="active"><a
 								data-ui-sref="files">{{'app.navbar.menu.files' | translate}}</a></li>
 						</ul>
 					</li>
-					<li data-ng-class="navClass('tasks')" class="visible-md-inline visible-lg-inline">
+					<li data-ui-sref-active="active" class="visible-md-inline visible-lg-inline">
 						<a data-ui-sref="tasks"><i class="fa fa-tasks"></i>{{'app.navbar.menu.tasks' | translate}}</a>
 					</li>
 				</ul>
@@ -144,8 +144,12 @@
 									</form>
 							</div>
 						</li>
-						<li><button type="button" class="btn btn-danger btn-xs navbar-btn"  data-ng-click="stopTimer();" data-ng-show="timerRunning" >Stop</button></li>
-						<li data-ng-class="navClass('messages')" data-ng-show="userInfo.hasNewMessages"><a
+						<li>
+							<button type="button" class="btn btn-danger btn-xs navbar-btn"  data-ng-click="stopTimer();" data-ng-show="timerRunning" >
+								 <i class="fa fa-stop"></i>
+							</button>
+						</li>
+						<li data-ui-sref-active="active" data-ng-show="userInfo.hasNewMessages"><a
 						data-ui-sref="messages"><i class="fa fa-envelope"></i></a></li>
 					<!-- <li data-ng-class="navClass('notifications')"><a
 						data-ui-sref="notifications"><i class="fa fa-bell"></i></a></li> -->
@@ -265,7 +269,7 @@
 		th:src="@{/bower_components/ng-file-upload/angular-file-upload.js}"></script>
 	<script th:src="@{/scripts/bootstrap.file-input.js}"></script>
 	<script
-		th:src="@{/bower_components/angular-ui-router/release/angular-ui-router.js}"></script>
+		th:src="@{/bower_components/angular-ui-router/release/angular-ui-router.min.js}"></script>
 	<script
 		th:src="@{/bower_components/angular-resource/angular-resource.min.js}"></script>
 	<script
@@ -310,6 +314,8 @@
 		th:src="@{/bower_components/ng-finder/ng-finder.src.js}"></script>
 		<script
 		th:src="@{/bower_components/moment-range/lib/moment-range.js}"></script>
+	<script
+		th:src="@{/bower_components/angular-clear-input-master/angular.dcb-clear-input.js}"></script>
 	<script
 		th:src="@{/bower_components/angular-translate/angular-translate.min.js}"></script>
 	<script

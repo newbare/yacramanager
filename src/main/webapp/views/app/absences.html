@@ -8,8 +8,8 @@
 	</div>
 </div>
 <ul class="nav nav-pills sub-menu" role="tablist" id="tabs">
-  <li class="active"><a href="" role="tab" data-toggle="tab" data-ng-click="activateTab('myTimeOff')">My time off</a></li>
-  <li data-ng-show="approvementTotal>0"><a href="" role="tab" data-toggle="tab" data-ng-click="activateTab('toBeApprouved')">To be aproved <span class="badge" data-ng-show="approvementTotal>0">{{approvementTotal}}</span></a></li>
+  <li class="active"><a href="" role="tab" data-toggle="tab" data-ng-click="activateTab('myTimeOff')">{{'app.timeoff.mytimeoff' | translate}}</a></li>
+  <li ><a href="" role="tab" data-toggle="tab" data-ng-click="activateTab('toBeApprouved')">{{'app.timeoff.tobeapprouved' | translate}}<span class="badge">{{approvementTotal}}</span></a></li>
 </ul>
 <div class="row"></div>
 <div class="tab-content">

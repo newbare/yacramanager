@@ -39,7 +39,7 @@ public class Task extends AuditableEntity  {
 	@ManyToOne
 	private Project project;
 	@Enumerated(EnumType.STRING)
-	private TaskStatus taskStatus;
+	private TaskStatus taskStatus=TaskStatus.OPEN;
 	@OneToMany(mappedBy="task")
 	private List<WorkLog> workLogs;
 	@ManyToMany(cascade = CascadeType.ALL)

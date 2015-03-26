@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import fr.wati.yacramanager.beans.Absence;
 import fr.wati.yacramanager.beans.Attachement;
+import fr.wati.yacramanager.beans.AuditableEntity;
 import fr.wati.yacramanager.beans.Client;
 import fr.wati.yacramanager.beans.Company;
 import fr.wati.yacramanager.beans.Contact;
@@ -254,6 +255,14 @@ public class DtoMapper {
 		return dtos;
 	}
 	
+	public static void mapAuditableEntityToDTO(AuditableEntity auditableEntityDTO,AuditableEntity auditableEntity){
+		auditableEntityDTO.setCreatedDate(auditableEntity.getCreatedDate());
+		auditableEntityDTO.setCreatedBy(auditableEntity.getCreatedBy());
+		auditableEntityDTO.setLastModifiedDate(auditableEntity.getLastModifiedDate());
+		auditableEntityDTO.setLastModifiedBy(auditableEntity.getLastModifiedBy());
+	}
+	
+	@Transactional
 	public  EmployeDto map(Employe employe) {
 		EmployeDto dto = new EmployeDto();
 		dto.setId(Long.valueOf(employe.getId().toString()));
@@ -266,10 +275,14 @@ public class DtoMapper {
 		dto.setAdress(employe.getContact().getAdresse().getAdress());
 		dto.setBirthDay(employe.getBirthDay());
 		dto.setPhoneNumbers(employe.getContact().getPhoneNumbers());
+		mapAuditableEntityToDTO(dto, employe);
+		if(employe.getManager()!=null){
+			dto.setManager(map(employe.getManager()));
+		}
 		return dto;
 	}
 
-	public  List<EmployeDto> mapEmployees(Page<Employe> employees) {
+	public  List<EmployeDto> mapEmployees(Iterable<Employe> employees) {
 		List<EmployeDto> dtos = new ArrayList<EmployeDto>();
 		for (Employe employe : employees) {
 			dtos.add(map(employe));

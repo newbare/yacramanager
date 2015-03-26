@@ -1,4 +1,4 @@
-function CompanyController($scope, $rootScope) {
+function CompanyController($scope, $rootScope,$state) {
 	if($scope.userInfo){
 		$rootScope.page={
 				"title" : $scope.userInfo.company.name,
@@ -11,11 +11,13 @@ function CompanyController($scope, $rootScope) {
 			"description" : "Dashboard"
 		};
 	});
+	$scope.$state=$state;
 }
 
 /*COMPANY-EMPLOYEE section*/
-function CompanyEmployeesController($scope) {
+function CompanyEmployeesController($scope,$state) {
 	$scope.currentTab = 'basicInfos';
+	$scope.currentEmployee=null;
 	$scope.activateTab = function(tab) {
 		$scope.currentTab = tab;
 	};
@@ -206,19 +208,50 @@ function CompanyEmployeesListController($scope, $rootScope,$http,EmployeesREST,n
 
 function CompanyEmployeesOverviewController($scope,employe,EmployeesREST){
 	$scope.employe=employe;
+	$scope.activateTab('basicInfos');
 	$scope.updateEmploye = function() {
 		return EmployeesREST.update($scope.employe);
 	};
-	
+	$scope.employeManager=undefined;
+	$scope.employe.$promise.then(function(result) {
+		$scope.employeManager=result.manager;
+		$scope.currentEmployee=result;
+	});
 	$scope.addPhoneNumbers=function(employe){
 		employe.phoneNumbers.push('');
+	};
+	$scope.format=function(employee){
+		return employee.firstName +' '+employee.lastName;
+	};
+	
+	$scope.isCurrentSelected=function(employe){
+		if($scope.currentEmployee!=undefined){
+			return $scope.currentEmployee.id==employe.id;
+		}else {
+			return false;
+		}
+	};
+	
+	EmployeesREST.get(
+			{
+				page:0,
+				size:100,
+				sort:"lastName",
+				filter:{"filter":[{"type":"ARRAY","field":"company","value":[{"name":_userCompanyId,"label":"","ticked":true}]}]}
+			},function(data) {
+				$scope.companyEmployees=data.result;
+	});
+	$scope.updateManager=function(){
+		EmployeesREST.updateManager({"employeeId": employe.id},$scope.employeManager.id,function(response){
+			
+		})
 	};
 }
 /*COMPANY-EMPLOYEE End of section*/
 
 
 /*COMPANY-CLIENT section*/
-function CompanyClientsViewController($scope, $rootScope,$http,ClientsREST,ngTableParams,$state,alertService){
+function CompanyClientsViewController($scope, $rootScope,$http,ClientsREST,ngTableParams,$state,alertService,$state){
 	$scope.tableFilter="";
 	$scope.$state=$state;
 	$scope.client={};
@@ -409,7 +442,7 @@ function CompanyClientsOverviewController($scope,ClientsREST,ProjectsREST,client
 
 
 /*COMPANY-PROJECT section*/
-function CompanyProjectsViewController($scope, $rootScope,$http,ProjectsREST,ngTableParams,$state,alertService){
+function CompanyProjectsViewController($scope, $rootScope,$http,ProjectsREST,ngTableParams,$state,alertService,$state){
 	$scope.tableFilter="";
 	$scope.$state=$state;
 	$scope.project={};
@@ -597,8 +630,68 @@ function CompanyProjectsListController($scope, $rootScope,$http,ProjectsREST,ngT
 	
 }
 
-function CompanyProjectsOverviewController($scope,ProjectsREST, project){
-	$scope.project=project;
+function CompanyProjectsOverviewController($scope, ProjectsREST, TasksREST,EmployeesREST,
+		project) {
+	$scope.project = project;
+	$scope.employeeByTask={};
+	$scope.groupByTask=true;
+	
+	$scope.reset=function(){
+		$scope.project.$promise.then(function(project) {
+			angular.forEach(project.tasks,function(task){
+				TasksREST.getAssignedEmployee({companyId:_userCompanyId,taskId:task.id,employeId:_userId}, 
+						function(value) {
+							$scope.employeeByTask[task.id]=value.result;
+						}
+				);
+			});
+			$scope.currentProject=project;
+			EmployeesREST.get(
+					{
+						page:0,
+						size:100,
+						sort:"lastName",
+						filter:{"filter":[{"type":"ARRAY","field":"projects","value":[{"name":""+$scope.currentProject.id+"","label":"","ticked":true}]}]}
+					},function(data) {
+						$scope.employeesByProject=data.result;
+			});
+		});
+		
+		EmployeesREST.get(
+				{
+					page:0,
+					size:100,
+					sort:"lastName",
+					filter:{"filter":[{"type":"ARRAY","field":"company","value":[{"name":_userCompanyId,"label":"","ticked":true}]}]}
+				},function(data) {
+					$scope.companyEmployees=data.result;
+		});
+		
+	};
+	$scope.reset();
+	$scope.format=function(employee){
+		return employee.firstName +' '+employee.lastName;
+	};
+	$scope.addSelectedEmployees=function(currentTask,foundEmployees,hideFn){
+		var employeesList=[];
+		angular.forEach(foundEmployees,function(employee){
+			employeesList.push(employee.id);
+		});
+		
+		TasksREST.assignEmployeeToTask({companyId:_userCompanyId,taskId:currentTask.id,employeesIds:employeesList},null,function(result){
+			$scope.reset();
+			hideFn();
+		});
+	};
+	$scope.unAssignEmploye=function(task,employee){
+		TasksREST.unAssignEmployeeToTask({companyId:_userCompanyId,taskId:task.id,employeesIds:[employee.id]},null,
+			function(result){
+			$scope.reset();
+			});
+	}
+	$scope.selectActiveTask =function(task){
+		$scope.activeTask=task;
+	}
 }
 /*COMPANY-PROJECT End of section*/
 

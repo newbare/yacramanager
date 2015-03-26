@@ -1,7 +1,14 @@
 <div class="panel panel-default sub-panel">
 	<div class="panel-body">
 	    <p translate="logs.nbloggers" translate-values="{total: '{{ totalLoggersCount }}'}">There are {{ totalLoggersCount }} loggers.</p>
-	    {{'logs.filter' | translate}} <input type="text" ng-change="doFilter()" data-ng-model="filter" data-ng-model-options="{ debounce: 1000 }" class="form-control">
+	    <div class="row">
+			<div class="">
+				<div class="input-group input-group-sm">
+					<span class="input-group-addon "><i class="fa fa-search"></i></span>
+					<input type="text" ng-change="doFilter()" data-ng-model="filter" class="form-control input-sm" data-ng-model-options="{ debounce: 1000 }" placeholder="{{'logs.filter' | translate}}">
+				</div>
+			</div>
+		</div>
 	    <hr>
 	    <div class="table-responsive">
 		    <table class="table table-condensed table-striped table-bordered" data-ng-table="tableParams">

@@ -33,6 +33,7 @@ import fr.wati.yacramanager.beans.Company;
 import fr.wati.yacramanager.beans.Employe;
 import fr.wati.yacramanager.beans.Project;
 import fr.wati.yacramanager.beans.Task;
+import fr.wati.yacramanager.dao.repository.EmployeDto;
 import fr.wati.yacramanager.services.CompanyService;
 import fr.wati.yacramanager.services.EmployeService;
 import fr.wati.yacramanager.services.ProjectService;
@@ -97,6 +98,52 @@ public class TaskRestController {
 		return new ResponseWrapper<List<TaskDTO>>(null);
 	}
 
+	@RequestMapping(value = "/{taskId}/assigned/{employeId}", method = RequestMethod.GET)
+	@Timed
+	public ResponseWrapper<List<EmployeDto>> getAssigedEmployeesByTask(
+			@PathVariable("companyId") Long companyId,
+			@PathVariable("taskId") Long taskId,
+			@PathVariable("employeId") Long employeId) throws RestServiceException{
+		Company company=companyService.findOne(companyId);
+		if(company==null){
+			throw new RestServiceException("The given company doesn't exist");
+		}
+		
+		Employe employe = employeService.findOne(employeId);
+		if(employe==null){
+			throw new RestServiceException("The given employe doesn't exist");
+		}
+		if(!company.getId().equals(employe.getCompany().getId())){
+			throw new RestServiceException("The given employe is not member of the given company");
+		}
+		Task task=taskService.findOne(taskId);
+		if(task==null){
+			throw new RestServiceException("The given task doesn't exist");
+		}
+		List<Employe> employees=employeService.getEmployeesAssignedToTask(employeId, taskId);
+		if(employees!=null && !employees.isEmpty()){
+			ResponseWrapper<List<EmployeDto>> responseWrapper = new ResponseWrapper<>(
+					dtoMapper.mapEmployees(employees), employees.size());
+			return responseWrapper;
+		}
+		return new ResponseWrapper<List<EmployeDto>>(null);
+	}
+	
+	@RequestMapping(value="/{taskId}/assign-employees", method = RequestMethod.POST)
+	@Timed
+	public void assignEmployeesToTask(@PathVariable("companyId") Long companyId,@PathVariable(value="taskId") Long taskId, @RequestParam(value="employeesIds",required=true) List<Long> employeesIds){
+		for (Long employeeId : employeesIds) {
+			taskService.assignEmployeToTask(employeeId, taskId);
+		}
+	}
+	
+	@RequestMapping(value="/{taskId}/unassign-employees", method = RequestMethod.POST)
+	@Timed
+	public void unAssignEmployeesToTask(@PathVariable("companyId") Long companyId,@PathVariable(value="taskId") Long taskId, @RequestParam(value="employeesIds",required=true) List<Long> employeesIds){
+		for (Long employeeId : employeesIds) {
+			taskService.unAssignEmployeToTask(employeeId, taskId);
+		}
+	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="/{projectId}/{employeId}/all", method = RequestMethod.GET)

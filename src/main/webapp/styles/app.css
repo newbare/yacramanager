@@ -11,6 +11,17 @@
     background-repeat: no-repeat;
 }
 
+.list-inline.with-separator li.divider-vertical{
+	height: inherit;
+	margin: 0 9px;
+	border-right: 2px solid #222222;
+	border-left: 2px solid #111111;
+}
+
+.jumbotron.description-jumbotron{
+	padding: 10px;
+}
+
 .margin-bottom-lg {
   margin-bottom: 22px !important;
 }
@@ -443,7 +454,7 @@ fieldset.collapsible.collapsed>div {
 }
 
 fieldset.collapsible>div {
-	display: block;
+	/* display: block; */
 	padding-left: 20px;
 }
 

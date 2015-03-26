@@ -84,9 +84,8 @@
 			</div>
 		</div>
 	</fieldset>
-	<fieldset data-collapsible-fieldset="Change password">
-		<div class="row">
-			<div class="col-md-6">
+	<fieldset class="col-md-9 col-md-offset-3" data-collapsible-fieldset="Change password" data-collapsible-fieldset-collapsed="">
+		<div class="">
 				<form role="form">
 					<div class="form-group" >
 						<label for="password">Current password</label>
@@ -104,7 +103,6 @@
 					</div>
 					<button type="submit" class="btn btn-success btn-block" data-ng-disabled="!canChangePassword()" data-ng-click="changePassword()">Change</button>
 				</form>
-			</div>
 		</div>
 	</fieldset>
 </div>
