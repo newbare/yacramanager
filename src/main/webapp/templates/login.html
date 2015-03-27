@@ -1,67 +1,101 @@
 
 <div class="row">
-	<div class=" auth-form col-xs-10 col-xs-offset-1 col-md-4 col-md-offset-4 col-lg-6 col-lg-offset-3">
-			<div class="row">
-				<form id="githubSignin" action="../signin/github" method="post">
-					<a href="#" onclick='document.getElementById("githubSignin").submit()' ><i class="fa fa-github"></i></a>
-				</form>
-			</div>
-		<form class="" role="form" method="post" action="authentication">
-			<h3 class="form-signin-heading" style="text-align: center;">
-				<span class="icon-yacra-single"></span> Acces your account
-			</h3>
-			<hr>
-			<div class="alert alert-danger alert-dismissable" role="alert"
-				data-ng-show="error && errorMessage">
-				<button type="button" class="close" data-dismiss="alert">
-					<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
-				</button>
-				{{errorMessage}}
-			</div>
-			<div class="alert alert-danger alert-dismissable" role="alert"
-				data-ng-show="activationFailed">
-				<button type="button" class="close" data-dismiss="alert">
-					<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
-				</button>
-				{{activationMessage}}
-			</div>
-			<div class="alert alert-success alert-dismissable" role="alert"
-				data-ng-show="activationSuccess">
-				<button type="button" class="close" data-dismiss="alert">
-					<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
-				</button>
-				{{activationMessage}}
-			</div>
-			<div class="margin-bottom">
-				<div class="input-group margin-bottom-lg">
-					<span class="input-group-addon"><i class="fa fa-user fa-fw"></i></span>
-					<input class="form-control" type="text" name="username"
-						placeholder="Username" required autofocus>
+	<div
+		class=" auth-form col-xs-10 col-xs-offset-1 col-md-4 col-md-offset-4 col-lg-6 col-lg-offset-3">
+		<div class="row">
+			<form class="" role="form" method="post" action="authentication">
+				<h3 class="form-signin-heading" style="text-align: center;">
+					<span class="icon-yacra-single"></span> Acces your account
+				</h3>
+				<hr>
+				<div class="alert alert-danger alert-dismissable" role="alert"
+					data-ng-show="error && errorMessage">
+					<button type="button" class="close" data-dismiss="alert">
+						<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+					</button>
+					{{errorMessage}}
 				</div>
-				<div class="input-group">
-					<span class="input-group-addon"><i class="fa fa-key fa-fw"></i></span>
-					<input class="form-control" type="password" name="password"
-						placeholder="Password" required>
+				<div class="alert alert-danger alert-dismissable" role="alert"
+					data-ng-show="activationFailed">
+					<button type="button" class="close" data-dismiss="alert">
+						<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+					</button>
+					{{activationMessage}}
 				</div>
-			</div>
-			<!-- <input type="text" class="form-control" placeholder="Username"
+				<div class="alert alert-success alert-dismissable" role="alert"
+					data-ng-show="activationSuccess">
+					<button type="button" class="close" data-dismiss="alert">
+						<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+					</button>
+					{{activationMessage}}
+				</div>
+				<div class="margin-bottom">
+					<div class="input-group margin-bottom-lg">
+						<span class="input-group-addon"><i class="fa fa-user fa-fw"></i></span>
+						<input class="form-control" type="text" name="username"
+							placeholder="Username" required autofocus>
+					</div>
+					<div class="input-group">
+						<span class="input-group-addon"><i class="fa fa-key fa-fw"></i></span>
+						<input class="form-control" type="password" name="password"
+							placeholder="Password" required>
+					</div>
+				</div>
+				<!-- <input type="text" class="form-control" placeholder="Username"
 				name="username" required autofocus> <input type="password"
 				class="form-control" placeholder="Password" name="password" required> -->
-			<div class="checkbox">
-				<label> <input type="checkbox" id="remember-me"
-					name="remember-me"> Remember me
-				</label>
-			</div>
-			<button class="btn btn-lg btn-primary btn-block" type="submit">
-				<span class="bigger-110"> Login</span>
-			</button>
-			<hr>
-			<div class="row">
-				<a data-ui-sref="forgot-password"><span
-					class="text-muted pull-left">Forgot password</span></a> <a 
-					data-ui-sref="register"><span
-					class="text-muted pull-right">Regiter a new account</span></a>
-			</div>
-		</form>
+				<div class="checkbox">
+					<label> <input type="checkbox" id="remember-me"
+						name="remember-me"> Remember me
+					</label>
+				</div>
+				<button class="btn btn-lg btn-primary btn-block" type="submit">
+					<span class="bigger-110"> Login</span>
+				</button>
+			</form>
+		</div>
+		<div class="social-or-login center">
+			<span class="bigger-110">Or Login Using</span>
+		</div>
+		<div class="row">
+			<ul class="list-inline center">
+				<li>
+					<form id="facebookSignin" action="../signin/facebook" method="post">
+						<a href="#"	onclick='document.getElementById("facebookSignin").submit()'>
+							<span class="fa-stack fa-lg">
+							  <i class="fa fa-circle fa-stack-2x"></i>
+							  <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+							</span>
+						</a>
+					</form>
+				</li>
+				<li>
+					<form id="githubSignin" action="../signin/github" method="post">
+						<a href="#"	onclick='document.getElementById("githubSignin").submit()'>
+							<span class="fa-stack fa-lg">
+							  <i class="fa fa-circle fa-stack-2x"></i>
+							  <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+							</span>
+						</a>
+					</form>
+				</li>
+				<li>
+					<form id="twitterSignin" action="../signin/twitter" method="post">
+						<a href="#"	onclick='document.getElementById("twitterSignin").submit()'>
+							<span class="fa-stack fa-lg">
+							  <i class="fa fa-circle fa-stack-2x"></i>
+							  <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+							</span>
+						</a>
+					</form>
+				</li>
+			</ul>
+		</div>
+		<div class="row">
+			<a data-ui-sref="forgot-password"><span
+				class="text-muted pull-left">Forgot password</span></a> <a
+				data-ui-sref="register"><span class="text-muted pull-right">Regiter
+					a new account</span></a>
+		</div>
 	</div>
 </div>

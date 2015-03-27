@@ -21,8 +21,12 @@ import org.springframework.social.connect.UsersConnectionRepository;
 import org.springframework.social.connect.jdbc.JdbcUsersConnectionRepository;
 import org.springframework.social.connect.web.ConnectController;
 import org.springframework.social.connect.web.ProviderSignInController;
+import org.springframework.social.facebook.api.Facebook;
+import org.springframework.social.facebook.connect.FacebookConnectionFactory;
 import org.springframework.social.github.api.GitHub;
 import org.springframework.social.github.connect.GitHubConnectionFactory;
+import org.springframework.social.twitter.api.Twitter;
+import org.springframework.social.twitter.connect.TwitterConnectionFactory;
 
 import fr.wati.yacramanager.config.social.DefaultConnectionSignUp;
 import fr.wati.yacramanager.config.social.SimpleSignInAdapter;
@@ -52,8 +56,9 @@ public class SocialConfig implements SocialConfigurer {
 	
 	@Override
 	public void addConnectionFactories(ConnectionFactoryConfigurer cfConfig, Environment env) {
-		//cfConfig.addConnectionFactory(new FacebookConnectionFactory(env.getProperty("facebook.appKey"), env.getProperty("facebook.appSecret")));
+		cfConfig.addConnectionFactory(new FacebookConnectionFactory(env.getProperty("facebook.client.id"), env.getProperty("facebook.client.secret")));
 		cfConfig.addConnectionFactory(new GitHubConnectionFactory(env.getProperty("git.client.id"), env.getProperty("git.client.secret")));
+		cfConfig.addConnectionFactory(new TwitterConnectionFactory(env.getProperty("twitter.client.id"), env.getProperty("twitter.client.secret")));
 	}
 
 
@@ -81,12 +86,19 @@ public class SocialConfig implements SocialConfigurer {
 		};
 	}
 
-//	@Bean
-//	@Scope(value="request", proxyMode=ScopedProxyMode.INTERFACES)
-//	public Facebook facebook(ConnectionRepository repository) {
-//		Connection<Facebook> connection = repository.findPrimaryConnection(Facebook.class);
-//		return connection != null ? connection.getApi() : null;
-//	}
+	@Bean
+	@Scope(value="request", proxyMode=ScopedProxyMode.INTERFACES)
+	public Facebook facebook(ConnectionRepository repository) {
+		Connection<Facebook> connection = repository.findPrimaryConnection(Facebook.class);
+		return connection != null ? connection.getApi() : null;
+	}
+	
+	@Bean
+	@Scope(value="request", proxyMode=ScopedProxyMode.INTERFACES)
+	public Twitter twitter(ConnectionRepository repository) {
+		Connection<Twitter> connection = repository.findPrimaryConnection(Twitter.class);
+		return connection != null ? connection.getApi() : null;
+	}
 	
 	@Bean
 	@Scope(value="request", proxyMode=ScopedProxyMode.INTERFACES)

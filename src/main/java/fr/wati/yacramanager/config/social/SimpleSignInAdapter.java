@@ -8,6 +8,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.social.connect.Connection;
 import org.springframework.social.connect.web.SignInAdapter;
+import org.springframework.social.security.SocialUser;
 import org.springframework.web.context.request.NativeWebRequest;
 
 import fr.wati.yacramanager.beans.Users;
@@ -40,8 +41,9 @@ public final class SimpleSignInAdapter implements SignInAdapter {
 	public String signIn(String userId, Connection<?> connection, NativeWebRequest request) {
 		Users existingUser = userService.findByUsername(userId);
 		if(existingUser!=null){
-			UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken
-			=new UsernamePasswordAuthenticationToken(existingUser.getUsername(), null, CustomUserDetails.getGrantedAuthorities(existingUser.getRoles()));
+			existingUser.setPassword("");
+			CustomUserDetails customUserDetails=new CustomUserDetails(existingUser);
+			UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken=new UsernamePasswordAuthenticationToken(customUserDetails, null, CustomUserDetails.getGrantedAuthorities(existingUser.getRoles()));
 			SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
 			return defaultLoginSuccessUrl;
 		}

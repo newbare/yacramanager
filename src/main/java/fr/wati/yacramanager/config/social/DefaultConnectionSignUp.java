@@ -1,8 +1,11 @@
 package fr.wati.yacramanager.config.social;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.social.connect.Connection;
 import org.springframework.social.connect.ConnectionSignUp;
 import org.springframework.social.connect.UserProfile;
+import org.springframework.social.github.api.GitHub;
+import org.springframework.social.github.api.GitHubUserProfile;
 
 import fr.wati.yacramanager.beans.Employe;
 import fr.wati.yacramanager.beans.Users;
@@ -33,15 +36,15 @@ public class DefaultConnectionSignUp implements ConnectionSignUp {
 
 
 	public String execute(Connection<?> connection) {
-		UserProfile userProfile = connection.fetchUserProfile();
-		Users existingUser = userService.findByUsername(userProfile.getUsername());
+		Users existingUser = userService.findByUsername(connection.getDisplayName());
 		if(existingUser==null){
+			GitHubUserProfile userProfile = ((GitHub)connection.getApi()).userOperations().getUserProfile() ;
 			RegistrationDTO registrationDTO=new RegistrationDTO();
 			registrationDTO.setUsername(userProfile.getUsername());
-			registrationDTO.setFirstName(userProfile.getFirstName());
-			registrationDTO.setLastName(userProfile.getLastName());
+			registrationDTO.setFirstName(userProfile.getName());
+			registrationDTO.setLastName(userProfile.getName());
 			registrationDTO.setEmail(userProfile.getEmail());
-			registrationDTO.setCompanyName(userProfile.getUsername().toUpperCase());
+			registrationDTO.setCompanyName(StringUtils.isEmpty(userProfile.getCompany())? userProfile.getUsername().toUpperCase():userProfile.getCompany());
 			Employe registerEmploye = employeService.registerEmploye(registrationDTO,true);
 			return registerEmploye.getUsername();
 		}
