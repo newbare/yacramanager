@@ -176,12 +176,18 @@ public class EmployeServiceImpl implements EmployeService {
 		employe.setUsername(registrationDTO.getUsername());
 		if(isSocialRegistration){
 			employe.setEnabled(true);
+			employe.setSocialUser(true);
+			employe.setSocialUserId(registrationDTO.getSocialUserId());
+			employe.setSocialProviderId(registrationDTO.getSocialProviderId());
 		}else {
 			employe.setPassword(passwordEncoder.encode(registrationDTO.getPassword()));
 			employe.setActivationKey(RandomUtil.generateActivationKey());
 		}
 		employe.setLastName(registrationDTO.getLastName());
 		employe.setFirstName(registrationDTO.getFirstName());
+		employe.setGender(registrationDTO.getGender());
+		employe.setProfileImageUrl(registrationDTO.getProfileImageUrl());
+		employe.setProfileUrl(registrationDTO.getProfileUrl());
 		Contact contact=new Contact();
 		contact.setEmail(registrationDTO.getEmail());
 		contactRepository.save(contact);

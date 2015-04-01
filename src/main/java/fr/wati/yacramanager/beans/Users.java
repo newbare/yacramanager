@@ -43,6 +43,11 @@ public class Users extends AuditableEntity  {
 	private String password;
 	private boolean enabled;
 	private String activationKey;
+	private boolean socialUser;
+	private String socialUserId;
+	private String socialProviderId;
+	private String profileImageUrl;
+	private String profileUrl;
 	@ManyToMany(fetch=FetchType.EAGER,cascade = CascadeType.ALL)
 	@JoinTable(name = "users_roles", joinColumns = { @JoinColumn(name = "userId") }, inverseJoinColumns = { @JoinColumn(name = "roleId") })
 	private Set<Role> roles = new HashSet<>();
@@ -144,6 +149,48 @@ public class Users extends AuditableEntity  {
 	 */
 	public void setActivationKey(String activationKey) {
 		this.activationKey = activationKey;
+	}
+
+	
+	
+	public boolean isSocialUser() {
+		return socialUser;
+	}
+
+	public void setSocialUser(boolean socialUser) {
+		this.socialUser = socialUser;
+	}
+
+	public String getSocialUserId() {
+		return socialUserId;
+	}
+
+	public void setSocialUserId(String socialUserId) {
+		this.socialUserId = socialUserId;
+	}
+
+	public String getSocialProviderId() {
+		return socialProviderId;
+	}
+
+	public void setSocialProviderId(String socialProviderId) {
+		this.socialProviderId = socialProviderId;
+	}
+
+	public String getProfileImageUrl() {
+		return profileImageUrl;
+	}
+
+	public void setProfileImageUrl(String profileImageUrl) {
+		this.profileImageUrl = profileImageUrl;
+	}
+
+	public String getProfileUrl() {
+		return profileUrl;
+	}
+
+	public void setProfileUrl(String profileUrl) {
+		this.profileUrl = profileUrl;
 	}
 
 	@Override

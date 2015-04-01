@@ -3,6 +3,10 @@
  */
 package fr.wati.yacramanager.web.dto;
 
+import org.joda.time.DateTime;
+
+import fr.wati.yacramanager.beans.Gender;
+
 /**
  * @author Rachid Ouattara
  *
@@ -15,6 +19,13 @@ public class RegistrationDTO {
 	private String firstName;
 	private String lastName;
 	private String companyName;
+	private DateTime birthDay;
+	private Gender gender;
+	private boolean socialUser;
+	private String socialUserId;
+	private String socialProviderId;
+	private String profileImageUrl;
+	private String profileUrl;
 	/**
 	 * @return the username
 	 */
@@ -86,6 +97,48 @@ public class RegistrationDTO {
 	 */
 	public void setCompanyName(String companyName) {
 		this.companyName = companyName;
+	}
+	public Gender getGender() {
+		return gender;
+	}
+	public void setGender(Gender gender) {
+		this.gender = gender;
+	}
+	public boolean isSocialUser() {
+		return socialUser;
+	}
+	public void setSocialUser(boolean socialUser) {
+		this.socialUser = socialUser;
+	}
+	public String getSocialUserId() {
+		return socialUserId;
+	}
+	public void setSocialUserId(String socialUserId) {
+		this.socialUserId = socialUserId;
+	}
+	public String getSocialProviderId() {
+		return socialProviderId;
+	}
+	public void setSocialProviderId(String socialProviderId) {
+		this.socialProviderId = socialProviderId;
+	}
+	public String getProfileImageUrl() {
+		return profileImageUrl;
+	}
+	public void setProfileImageUrl(String profileImageUrl) {
+		this.profileImageUrl = profileImageUrl;
+	}
+	public String getProfileUrl() {
+		return profileUrl;
+	}
+	public void setProfileUrl(String profileUrl) {
+		this.profileUrl = profileUrl;
+	}
+	public DateTime getBirthDay() {
+		return birthDay;
+	}
+	public void setBirthDay(DateTime birthDay) {
+		this.birthDay = birthDay;
 	}
 	
 	

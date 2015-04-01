@@ -25,6 +25,8 @@ import org.springframework.social.facebook.api.Facebook;
 import org.springframework.social.facebook.connect.FacebookConnectionFactory;
 import org.springframework.social.github.api.GitHub;
 import org.springframework.social.github.connect.GitHubConnectionFactory;
+import org.springframework.social.google.api.Google;
+import org.springframework.social.google.connect.GoogleConnectionFactory;
 import org.springframework.social.twitter.api.Twitter;
 import org.springframework.social.twitter.connect.TwitterConnectionFactory;
 
@@ -59,6 +61,9 @@ public class SocialConfig implements SocialConfigurer {
 		cfConfig.addConnectionFactory(new FacebookConnectionFactory(env.getProperty("facebook.client.id"), env.getProperty("facebook.client.secret")));
 		cfConfig.addConnectionFactory(new GitHubConnectionFactory(env.getProperty("git.client.id"), env.getProperty("git.client.secret")));
 		cfConfig.addConnectionFactory(new TwitterConnectionFactory(env.getProperty("twitter.client.id"), env.getProperty("twitter.client.secret")));
+		GoogleConnectionFactory googleConnectionFactory = new GoogleConnectionFactory(env.getProperty("google.client.id"), env.getProperty("google.client.secret"));
+		googleConnectionFactory.setScope(env.getProperty("google.client.scope"));
+		cfConfig.addConnectionFactory(googleConnectionFactory);
 	}
 
 
@@ -106,6 +111,15 @@ public class SocialConfig implements SocialConfigurer {
 		Connection<GitHub> connection = repository.findPrimaryConnection(GitHub.class);
 		return connection != null ? connection.getApi() : null;
 	}
+	
+	@Bean
+	@Scope(value="request", proxyMode=ScopedProxyMode.INTERFACES)
+	public Google google(ConnectionRepository repository) {
+		Connection<Google> connection = repository.findPrimaryConnection(Google.class);
+		return connection != null ? connection.getApi() : null;
+	}
+	
+	
 
 	@Bean
 	public ProviderSignInController providerSignInController(ConnectionFactoryLocator connectionFactoryLocator, UsersConnectionRepository usersConnectionRepository) {
