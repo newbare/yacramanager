@@ -48,7 +48,7 @@ public class ActivityReportTest extends
 		findByEmployeAndStartDateBetweenOrEndDateDateBetween = activityReportService.findByEmployeAndStartDateBetweenAndEndDateBetween(employe, new LocalDate(2014,9,1), new LocalDate(2014,9,29));
 		Assert.assertTrue(findByEmployeAndStartDateBetweenOrEndDateDateBetween!=null && findByEmployeAndStartDateBetweenOrEndDateDateBetween.size()==0);
 		
-		ActivityReport findByEmployeAndStartDateAndEndDate = activityReportRepository.findByEmployeAndStartDateAndEndDate(employe, new LocalDate(2014,9,01), new LocalDate(2014,9,30));
+		ActivityReport findByEmployeAndStartDateAndEndDate = activityReportRepository.findByEmployeIdAndStartDateAndEndDate(employe.getId(), new LocalDate(2014,9,01), new LocalDate(2014,9,30));
 		Assert.assertNotNull(findByEmployeAndStartDateAndEndDate);
 	}
 

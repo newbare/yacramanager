@@ -261,7 +261,7 @@ public class AbsenceServiceImpl implements AbsenceService {
 		TypeAbsence typeAbsence = absence.getTypeAbsence();
 		AbsencePortfolio absencePortfolio = absencePortfolioService.findByUserAndType(employe.getId(), typeAbsence);
 		if(absencePortfolio==null){
-			throw new ServiceException("No absence portfolio found for user "+employe.getId());
+			absencePortfolioService.initAbsencePortfolioForEmploye(employe.getId());
 		}
 		if((absence.getDaysBetween()+absencePortfolio.getWaiting())>absencePortfolio.getRemaining()){
 			throw new ServiceException("You do not have enought remainnig days for "+typeAbsence.getLabel()+" Remaining: "+absencePortfolio.getRemaining()+" Waiting: "+absencePortfolio.getWaiting());
@@ -274,6 +274,7 @@ public class AbsenceServiceImpl implements AbsenceService {
 	@Scheduled(cron="0 0/15 * * * *")
 	@Override
 	public void periodicalyIncrementAbsence() {
+		//TODO Do not increment for all employe - implement a strategy for that
 		Iterable<Employe> employes=employeService.findAll();
 		for (Employe employe : employes) {
 			for(TypeAbsence typeAbsence:TypeAbsence.values()){

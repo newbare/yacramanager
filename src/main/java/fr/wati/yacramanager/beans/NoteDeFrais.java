@@ -7,6 +7,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -37,7 +38,7 @@ public class NoteDeFrais extends AuditableEntity implements Valideable{
 	private DateTime date;
 	private BigDecimal amount;
 	private String description;
-	@OneToMany(mappedBy="noteDeFrais")
+	@OneToMany(mappedBy="noteDeFrais",cascade={CascadeType.REMOVE})
 	private List<Attachement> attachements=new ArrayList<>();
 	@ManyToOne
 	private Employe employe;

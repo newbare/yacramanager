@@ -36,13 +36,13 @@ public class ActivityReportServiceImpl implements ActivityReportService {
 	public void submitNewActivityReport(Employe employe, LocalDate startDate,
 			LocalDate endDate) throws ServiceException {
 		ActivityReport activityReport=null;
-		ActivityReport existingActivityReport = activityReportRepository.findByEmployeAndStartDateAndEndDate(employe, startDate, endDate);
+		ActivityReport existingActivityReport = activityReportRepository.findByEmployeIdAndStartDateAndEndDate(employe.getId(), startDate, endDate);
 		if(existingActivityReport!=null){
 			activityReport=existingActivityReport;
 		}else {
 			activityReport=new ActivityReport();
 			activityReport.setEmployeId(employe.getId());
-			activityReport.setEmploye(employe);
+//			activityReport.setEmploye(employe);
 			activityReport.setStartDate(startDate);
 			activityReport.setEndDate(endDate);
 		}
@@ -54,7 +54,7 @@ public class ActivityReportServiceImpl implements ActivityReportService {
 	public List<ActivityReport> findByEmployeAndStartDateBetweenAndEndDateBetween(
 			Employe employe, LocalDate startDate, LocalDate endDate)
 			throws ServiceException {
-		return activityReportRepository.findByEmployeAndStartDateBetweenAndEndDateBetween(employe, startDate, endDate,startDate,endDate);
+		return activityReportRepository.findByEmployeIdAndStartDateBetweenAndEndDateBetween(employe.getId(), startDate, endDate,startDate,endDate);
 	}
 
 	@Override
@@ -126,11 +126,11 @@ public class ActivityReportServiceImpl implements ActivityReportService {
 
 	@Override
 	public void cancelSubmittedActivityReport(Employe employe,LocalDate startDate,LocalDate endDate) throws ServiceException {
-		ActivityReport activityReport = activityReportRepository.findByEmployeAndStartDateAndEndDate(employe, startDate, endDate);
+		ActivityReport activityReport = activityReportRepository.findByEmployeIdAndStartDateAndEndDate(employe.getId(), startDate, endDate);
 		if(activityReport==null){
 			throw new ServiceException("Activity report not found");
 		}
-		if(employeService.isManager(employe.getId(), activityReport.getEmploye().getId()) || employe.getId().equals(activityReport.getEmploye().getId())){
+		if(employeService.isManager(employe.getId(), activityReport.getEmployeId()) || employe.getId().equals(activityReport.getEmployeId())){
 			if(ValidationStatus.WAIT_FOR_APPROVEMENT.equals(activityReport.getValidationStatus())){
 				activityReport.setValidationStatus(ValidationStatus.SAVED);
 				activityReportRepository.save(activityReport);
@@ -150,7 +150,7 @@ public class ActivityReportServiceImpl implements ActivityReportService {
 		if(activityReport!=null && !ValidationStatus.WAIT_FOR_APPROVEMENT.equals(activityReport.getValidationStatus())){
 			throw new ServiceException("The activity report should be in a right status");
 		}
-		if(employeService.isManager(employeManager.getId(), activityReport.getEmploye().getId())){
+		if(employeService.isManager(employeManager.getId(), activityReport.getEmployeId())){
 			if(ValidationStatus.WAIT_FOR_APPROVEMENT.equals(activityReport.getValidationStatus())){
 				activityReport.setValidationStatus(ValidationStatus.APPROVED);
 				activityReportRepository.save(activityReport);
@@ -166,7 +166,7 @@ public class ActivityReportServiceImpl implements ActivityReportService {
 	@Override
 	public ActivityReport findByEmployeAndStartDateAndEndDate(Employe employe,
 			LocalDate startDate, LocalDate endDate) {
-		return activityReportRepository.findByEmployeAndStartDateAndEndDate(employe, startDate, endDate);
+		return activityReportRepository.findByEmployeIdAndStartDateAndEndDate(employe.getId(), startDate, endDate);
 	}
 
 }

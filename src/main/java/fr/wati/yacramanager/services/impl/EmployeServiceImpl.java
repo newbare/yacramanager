@@ -135,12 +135,21 @@ public class EmployeServiceImpl implements EmployeService {
 
 	@Override
 	public void delete(Long id) {
-		employeRepository.delete(id);
+		delete(employeRepository.findOne(id));
 	}
 
 	@Override
+	@Transactional
 	public void delete(Employe entity) {
-		employeRepository.delete(entity);
+		for (Project project: entity.getProjects()) {
+			if(project.getAssignedEmployees().contains(entity)){
+				project.getAssignedEmployees().remove(entity);
+				projectService.save(project);
+			}
+		}
+		entity.getProjects().clear();
+		Employe savedEmploye = employeRepository.save(entity);
+		employeRepository.delete(savedEmploye);
 	}
 
 	@Override

@@ -124,6 +124,7 @@ public class PersistenceConfig
 		databasePopulator.setContinueOnError(true);
 		databasePopulator.addScript(new ClassPathResource("sql/spring-security-persistent-login.sql"));
 		databasePopulator.addScript(new ClassPathResource("sql/roles-initialization.sql"));
+		databasePopulator.addScript(new ClassPathResource("sql/spring-social-userconnection.sql"));
 		dataSourceInitializer.setDatabasePopulator(databasePopulator);
 		dataSourceInitializer.setEnabled(env.getProperty("init-db",Boolean.class,false));
 		return dataSourceInitializer;

@@ -22,4 +22,6 @@ public interface AbsencePortfolioService extends
 			@Param("typeAbsence") TypeAbsence typeAbsence);
 
 	List<AbsencePortfolio> findByUser(@Param("userId") Long userId);
+	
+	void initAbsencePortfolioForEmploye(Long employeId);
 }

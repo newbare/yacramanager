@@ -6,6 +6,7 @@ package fr.wati.yacramanager.beans;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
@@ -26,11 +27,14 @@ public class Employe extends Personne {
 
 	@ManyToOne
 	private Company company;
-	@OneToMany(mappedBy="employe")
+	@OneToMany(mappedBy="employe",cascade={CascadeType.REMOVE})
 	private List<Absence> absences=new ArrayList<>();
 	
-	@OneToMany(mappedBy="employe")
+	@OneToMany(mappedBy="employe" ,cascade={CascadeType.REMOVE})
 	private List<NoteDeFrais> noteDeFrais=new ArrayList<>();
+	
+	@OneToMany(mappedBy="employe" ,cascade={CascadeType.REMOVE})
+	private List<WorkLog> workLogs=new ArrayList<>();
 
 	@ManyToOne
 	private Employe manager;
@@ -112,6 +116,11 @@ public class Employe extends Personne {
 	public void setActiveProject(Project activeProject) {
 		this.activeProject = activeProject;
 	}
-	
+	public List<WorkLog> getWorkLogs() {
+		return workLogs;
+	}
+	public void setWorkLogs(List<WorkLog> workLogs) {
+		this.workLogs = workLogs;
+	}
 	
 }

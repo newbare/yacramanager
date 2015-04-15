@@ -275,6 +275,9 @@ public class DtoMapper {
 		dto.setAdress(employe.getContact().getAdresse().getAdress());
 		dto.setBirthDay(employe.getBirthDay());
 		dto.setPhoneNumbers(employe.getContact().getPhoneNumbers());
+		dto.setProfileImageUrl(employe.getProfileImageUrl());
+		dto.setProfileUrl(employe.getProfileUrl());
+		dto.setSocialUser(employe.isSocialUser());
 		mapAuditableEntityToDTO(dto, employe);
 		if(employe.getManager()!=null){
 			dto.setManager(map(employe.getManager()));

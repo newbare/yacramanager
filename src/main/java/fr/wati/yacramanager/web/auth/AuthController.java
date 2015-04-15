@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-public class LoginController {
+public class AuthController {
 
-	@RequestMapping(value = "/auth/**")
+	@RequestMapping(value = "/auth/login")
 	public ModelAndView login(
 			@RequestParam(value = "error", defaultValue = "false", required = false) boolean error,
 			HttpSession httpSession) {
@@ -30,6 +30,23 @@ public class LoginController {
 
 			}
 		}
+		return modelAndView;
+	}
+
+	@RequestMapping(value = "/auth/register")
+	public ModelAndView register(
+			@RequestParam(value = "oauth_user", defaultValue = "false", required = false) boolean oauthUser,
+			HttpSession httpSession) {
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.addObject("oauthUser", oauthUser);
+		modelAndView.setViewName("auth/register");
+		return modelAndView;
+	}
+
+	@RequestMapping(value = "/auth/forgot-password")
+	public ModelAndView recoverPassword(HttpSession httpSession) {
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("auth/forgot-password");
 		return modelAndView;
 	}
 }

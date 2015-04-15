@@ -155,4 +155,16 @@ public class AbsencePortfolioServiceImpl implements AbsencePortfolioService {
 		return absencePortfolioRepository.findByUser(userId);
 	}
 
+	@Override
+	public void initAbsencePortfolioForEmploye(Long employeId) {
+		for(TypeAbsence typeAbsence:TypeAbsence.values()){
+			AbsencePortfolio absencePortfolio = findByUserAndType(employeId, typeAbsence);
+			if(absencePortfolio==null){
+				absencePortfolio=new AbsencePortfolio();
+				absencePortfolio.setAbsencePortfolioPK(new AbsencePortfolioPK(employeId, typeAbsence));
+				save(absencePortfolio);
+			}
+		}
+	}
+
 }

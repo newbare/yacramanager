@@ -5,14 +5,11 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
-import javax.persistence.OneToOne;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Type;
 import org.joda.time.LocalDate;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @SuppressWarnings("serial")
 @Entity
@@ -28,27 +25,11 @@ public class ActivityReport extends AuditableEntity implements Valideable {
 	private LocalDate endDate;
 	@Id
 	private Long employeId;
-	@JsonIgnore
-	@OneToOne
-	private Employe employe;
 	@Enumerated(EnumType.STRING)
 	private ValidationStatus validationStatus=ValidationStatus.SAVED;
 
 	public ActivityReport() {
 	}
-
-	
-	
-	public Employe getEmploye() {
-		return employe;
-	}
-
-
-
-	public void setEmploye(Employe employe) {
-		this.employe = employe;
-	}
-
 
 	public LocalDate getStartDate() {
 		return startDate;
