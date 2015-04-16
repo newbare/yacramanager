@@ -3,7 +3,11 @@
  */
 package fr.wati.yacramanager.web.dto;
 
+import java.util.Locale;
+
 import org.joda.time.DateTime;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import fr.wati.yacramanager.beans.Gender;
 
@@ -26,6 +30,8 @@ public class RegistrationDTO {
 	private String socialProviderId;
 	private String profileImageUrl;
 	private String profileUrl;
+	@JsonIgnore
+	private Locale locale;
 	/**
 	 * @return the username
 	 */
@@ -139,6 +145,12 @@ public class RegistrationDTO {
 	}
 	public void setBirthDay(DateTime birthDay) {
 		this.birthDay = birthDay;
+	}
+	public Locale getLocale() {
+		return locale;
+	}
+	public void setLocale(Locale locale) {
+		this.locale = locale;
 	}
 	
 	

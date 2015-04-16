@@ -80,7 +80,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.authorizeRequests()
 				.antMatchers("/")
 				.permitAll()
-				.antMatchers("/auth/api/**")
+				.antMatchers("/auth/**","/auth/api/**")
 				.permitAll()
 				.antMatchers("/signin/**","/signup/**","/connect/**")
 				.permitAll()

@@ -38,6 +38,7 @@ import fr.wati.yacramanager.dao.specifications.EmployeSpecifications;
 import fr.wati.yacramanager.listeners.ActivityEvent;
 import fr.wati.yacramanager.services.CompanyService;
 import fr.wati.yacramanager.services.EmployeService;
+import fr.wati.yacramanager.services.MailService;
 import fr.wati.yacramanager.services.ProjectService;
 import fr.wati.yacramanager.services.ServiceException;
 import fr.wati.yacramanager.services.TaskService;
@@ -78,6 +79,9 @@ public class EmployeServiceImpl implements EmployeService {
 	
 	@Autowired
 	private TaskService  taskService;
+	
+	@Autowired
+	private MailService mailService;
 	
 	@Autowired
 	private CompanyAccountInfoRepository companyAccountInfoRepository;
@@ -189,9 +193,9 @@ public class EmployeServiceImpl implements EmployeService {
 			employe.setSocialUserId(registrationDTO.getSocialUserId());
 			employe.setSocialProviderId(registrationDTO.getSocialProviderId());
 		}else {
-			employe.setPassword(passwordEncoder.encode(registrationDTO.getPassword()));
 			employe.setActivationKey(RandomUtil.generateActivationKey());
 		}
+		employe.setPassword(passwordEncoder.encode(registrationDTO.getPassword()));
 		employe.setLastName(registrationDTO.getLastName());
 		employe.setFirstName(registrationDTO.getFirstName());
 		employe.setGender(registrationDTO.getGender());
@@ -379,6 +383,7 @@ public class EmployeServiceImpl implements EmployeService {
 		return employeRepository.findByTasksIn(findOneTask);
 	}
 
+	
 	@Override
 	@Transactional
 	public void updateManager(Long employeeId, Long managerId) throws ServiceException {

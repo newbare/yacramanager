@@ -15,11 +15,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.social.connect.web.ProviderSignInAttempt;
+import org.springframework.social.connect.web.ProviderSignInUtils;
+import org.springframework.social.connect.web.SignInAdapter;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.request.NativeWebRequest;
+import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 import org.springframework.web.servlet.ModelAndView;
 import org.thymeleaf.context.IWebContext;
@@ -51,7 +58,10 @@ public class AuthenticationController {
 
 	@Autowired
 	private MailService mailService;
-
+	
+	@Autowired
+	private SignInAdapter signInAdapter;
+	
 	@Resource(name="appTemplateEngine")
 	private SpringTemplateEngine templateEngine;
 
@@ -59,14 +69,26 @@ public class AuthenticationController {
 	@Timed
 	public ResponseEntity<String> register(
 			@RequestBody RegistrationDTO registrationDTO,
-			HttpServletRequest request, HttpServletResponse response,
+			HttpServletRequest request,NativeWebRequest webRequest, HttpServletResponse response,
 			Locale locale) {
+		registrationDTO.setLocale(locale);
 		Employe registerEmploye = employeService
-				.registerEmploye(registrationDTO,false);
-		String content = createHtmlContentFromTemplate(registerEmploye, locale,
-				request, response);
-		mailService.sendActivationEmail(
-				registerEmploye.getContact().getEmail(), content, locale);
+				.registerEmploye(registrationDTO,registrationDTO.isSocialUser());
+		if(!registrationDTO.isSocialUser()){
+			String content = createHtmlContentFromTemplate(registerEmploye, locale,
+					request, response);
+			mailService.sendActivationEmail(
+					registerEmploye.getContact().getEmail(), content, locale);
+		}else {
+			if(SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken){
+				ProviderSignInAttempt providerSignInAttempt=(ProviderSignInAttempt) webRequest.getAttribute(ProviderSignInAttempt.SESSION_ATTRIBUTE, RequestAttributes.SCOPE_SESSION);
+				if(providerSignInAttempt!=null){
+					new ProviderSignInUtils().doPostSignUp(registrationDTO.getSocialUserId(), webRequest);
+					signInAdapter.signIn(registerEmploye.getUsername(), providerSignInAttempt.getConnection(), webRequest);
+				}
+				
+			}
+		}
 		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
 

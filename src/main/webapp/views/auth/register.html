@@ -1,140 +1,163 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en" data-ng-app="yaCRAApp">
+<html xmlns:th="http://www.thymeleaf.org" lang="en"
+	data-ng-app="yaCRAApp">
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <!-- <base th:href="@{/auth/}" /> -->
 <title>Sign in &middot; Yacra Manager</title>
 <!-- build:css @{/dist/css/yacra-login.min.css} -->
-<link th:href="@{/styles/site.css}" rel="stylesheet"/>
-<link th:href="@{/bower_components/bootstrap/dist/css/bootstrap.min.css}"
-	rel="stylesheet"/>
-<link th:href="@{/styles/signin.css}" rel="stylesheet"/>
+<link th:href="@{/styles/site.css}" rel="stylesheet" />
+<link
+	th:href="@{/bower_components/bootstrap/dist/css/bootstrap.min.css}"
+	rel="stylesheet" />
+<link th:href="@{/styles/signin.css}" rel="stylesheet" />
 <link rel="stylesheet"
-	th:href="@{/bower_components/angular-motion/dist/angular-motion.css}"/>
+	th:href="@{/bower_components/angular-motion/dist/angular-motion.css}" />
 <link rel="stylesheet"
-	th:href="@{/bower_components/fontawesome/css/font-awesome.min.css}"/>
-<link rel="stylesheet" th:href="@{/styles/yacra-fonts.css}"/>
+	th:href="@{/bower_components/fontawesome/css/font-awesome.min.css}" />
+<link rel="stylesheet" th:href="@{/styles/app.css}" />
+<link rel="stylesheet" th:href="@{/styles/yacra-fonts.css}" />
 <!-- endbuild -->
 </head>
 <script th:inline="javascript" type="text/javascript">
     var _contextPath = [[@{/}]] ;
 </script>
-<script th:if=" ${error} !=null" th:inline="javascript" type="text/javascript">
+<script th:if=" ${error} !=null" th:inline="javascript"
+	type="text/javascript">
 			var error = [[${error}]];
 			var errorMessage = [[${errorMessage}]];
 </script>
-<script th:if=" ${activationFailed} !=null" th:inline="javascript" type="text/javascript">
+<script th:if=" ${activationFailed} !=null" th:inline="javascript"
+	type="text/javascript">
 			var activationFailed = [[${activationFailed}]];
 			var errorMessage = [[${activationMessage}]];
 </script>
-<script th:if=" ${activationSuccess} !=null" th:inline="javascript" type="text/javascript">
+<script th:if=" ${activationSuccess} !=null" th:inline="javascript"
+	type="text/javascript">
 			var activationSuccess = [[${activationSuccess}]];
 			var activationMessage = [[${activationMessage}]];
+</script>
+<script th:if=" ${preFillRegistrationDTO} !=null" th:inline="javascript"
+	type="text/javascript">
+			var preFillRegistrationDTO = [[${preFillRegistrationDTO}]];
 </script>
 <body>
 	<div class="container">
 		<div id="alerts-container"></div>
-		<div class="row">
-	<div
-		class=" auth-form col-md-6 col-md-offset-3 col-xs-10 col-xs-offset-1 col-lg-8 col-lg-offset-2">
-		<form class="form-signin form-horizontal" role="form" name="registrationForm">
-			<h3 class="form-signin-heading" style="text-align: center;">
-				<i class="ace-icon fa fa-user"></i> Register new account
-			</h3>
-			<hr>
-			<div class="alert alert-danger alert-dismissable" role="alert"
-				data-ng-show="error">
-				<button type="button" class="close" data-dismiss="alert">
-					<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
-				</button>
-				{{errorMessage}}
-			</div>
-			<div class="form-group required">
-				<label for="username" class="col-sm-4 control-label">User
-					name</label>
-				<div class="col-sm-8">
-					<input type="text" class="form-control" id="username"
-						data-ng-model="user.username" placeholder="Your user name"
-						required autofocus="autofocus">
-				</div>
-			</div>
-			<div class="form-group required">
-				<label for="email" class="col-sm-4 control-label">Email</label>
-				<div class="col-sm-8">
-					<input type="email" class="form-control" id="email"
-						data-ng-model="user.email" placeholder="Email" required="required">
-				</div>
-			</div>
-			<div class="form-group required">
-				<label for="password" class="col-sm-4 control-label">Password</label>
-				<div class="col-sm-8">
-					<input type="password" class="form-control" id="password"
-						data-ng-model="user.password" placeholder="Password"
-						required="required">
-				</div>
-			</div>
-			<div class="form-group required">
-				<label for="confirm-password" class="col-sm-4 control-label">Confirm
-					password</label>
-				<div class="col-sm-8">
-					<input type="password" class="form-control" id="confirmpassword"
-						data-ng-model="confirmPassword" placeholder="Confirm password"
-						required="required">
-				</div>
-			</div>
-
-			<div class="form-group required">
-				<label for="companyname" class="col-sm-4 control-label">Company
-					name</label>
-				<div class="col-sm-8">
-					<input type="text" class="form-control" id="companyname"
-						data-ng-model="user.companyName" placeholder="Your company name"
-						required="required">
-				</div>
-			</div>
-			<fieldset>
-				<legend>Personal informations</legend>
-				<div class="form-group">
-					<label for="firstname" class="col-sm-4 control-label">First
-						name</label>
-					<div class="col-sm-8">
-						<input type="text" class="form-control" id="firstname"
-							data-ng-model="user.firstName" placeholder="Your first name">
+		<div class="row" data-ng-controller="RegisterController">
+			<div
+				class=" auth-form col-md-6 col-md-offset-3 col-xs-10 col-xs-offset-1 col-lg-8 col-lg-offset-2">
+				<form class="form-signin form-horizontal" role="form"
+					name="registrationForm">
+					<div class="form-signin-heading row" style="text-align: center;">
+						 <span class="icon-yacra-full pull-left"></span>
+						<label data-ng-if="!user.socialUser">Register new account</label>
+						<label data-ng-if="user.socialUser">Complete registration</label>
+						 <img data-ng-src="{{preFillRegistrationDTO.profileImageUrl}}" class="img-thumbnail profile-picture pull-right" height="60" width="60"
+			          data-ng-show="user.socialUser"/>
+						<i class="ace-icon fa fa-user pull-right" data-ng-show="!user.socialUser"></i> 
 					</div>
-				</div>
-				<div class="form-group">
-					<label for="lastname" class="col-sm-4 control-label">Last
-						name</label>
-					<div class="col-sm-8">
-						<input type="text" class="form-control" id="lastname"
-							data-ng-model="user.lastName" placeholder="Last name">
+					<div class="alert alert-danger alert-dismissable" role="alert"
+						data-ng-show="error">
+						<button type="button" class="close" data-dismiss="alert">
+							<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+						</button>
+						{{errorMessage}}
 					</div>
-				</div>
-			</fieldset>
-			<div class="form-group ">
-				<div class="col-sm-offset-2 col-sm-10">
-					<div class="pull-right">
-						<button type="submit" class="btn btn-primary"
-							data-ng-click="register()" ng-disabled="registrationForm.$invalid">Register</button>
-						<button type="button" data-ng-click="loadLogin()"
-							class="btn btn-link">Cancel</button>
+					
+					<fieldset>
+						<legend>Account informations</legend>
+					
+					<div class="form-group required">
+						<label for="username" class="col-sm-4 control-label">User
+							name</label>
+						<div class="col-sm-8">
+							<input type="text" class="form-control" id="username"
+								data-ng-model="user.username" placeholder="Your user name"
+								required="required" autofocus="autofocus"/>
+						</div>
 					</div>
-				</div>
+					<div class="form-group required">
+						<label for="email" class="col-sm-4 control-label">Email</label>
+						<div class="col-sm-8">
+							<input type="email" class="form-control" id="email"
+								data-ng-model="user.email" placeholder="Email"
+								required="required"/>
+						</div>
+					</div>
+					<div class="form-group required">
+						<label for="password" class="col-sm-4 control-label">Password</label>
+						<div class="col-sm-8">
+							<input type="password" class="form-control" id="password"
+								data-ng-model="user.password" placeholder="Password"
+								required="required"/>
+								<password-strength-bar password-to-check="user.password"/>
+						</div>
+					</div>
+					<div class="form-group required">
+						<label for="confirm-password" class="col-sm-4 control-label">Confirm
+							password</label>
+						<div class="col-sm-8">
+							<input type="password" class="form-control" id="confirmpassword"
+								data-ng-model="confirmPassword" placeholder="Confirm password"
+								required="required"/>
+						</div>
+					</div>
+					</fieldset>
+					<fieldset>
+						<legend>Company informations</legend>
+						<div class="form-group required">
+							<label for="companyname" class="col-sm-4 control-label">Company
+								name</label>
+							<div class="col-sm-8">
+								<input type="text" class="form-control" id="companyname"
+									data-ng-model="user.companyName" placeholder="Your company name"
+									required="required"/>
+							</div>
+						</div>
+					</fieldset>
+					
+					<fieldset>
+						<legend>Personal informations</legend>
+						<div class="form-group">
+							<label for="firstname" class="col-sm-4 control-label">First
+								name</label>
+							<div class="col-sm-8">
+								<input type="text" class="form-control" id="firstname"
+									data-ng-model="user.firstName" placeholder="Your first name"/>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="lastname" class="col-sm-4 control-label">Last
+								name</label>
+							<div class="col-sm-8">
+								<input type="text" class="form-control" id="lastname"
+									data-ng-model="user.lastName" placeholder="Last name"/>
+							</div>
+						</div>
+					</fieldset>
+					<div class="form-group ">
+						<div class="col-sm-offset-2 col-sm-10">
+							<div class="pull-right">
+								<button type="submit" class="btn btn-primary"
+									data-ng-click="register()"
+									ng-disabled="registrationForm.$invalid">Register</button>
+								<button type="button" data-ng-click="loadLogin()"
+									class="btn btn-link">Cancel</button>
+							</div>
+						</div>
+					</div>
+					<hr />
+					<a href="login" ><span
+						class="text-muted pull-right">Back to login page</span></a>
+				</form>
 			</div>
-			<hr>
-			<a href="" data-ng-click="loadLogin()"><span
-				class="text-muted pull-right">Back to login page</span></a>
-		</form>
-	</div>
-</div>
-		
 		</div>
-		<!-- <div data-ng-view="" class="am-fade"></div> -->
+
 	</div>
 	<!-- build:css @{/dist/js/yacra-login.js} -->
-	<script
-		th:src="@{/bower_components/jquery/dist/jquery.min.js}"></script>
+	<script th:src="@{/bower_components/jquery/dist/jquery.min.js}"></script>
 	<script
 		th:src="@{/bower_components/bootstrap/dist/js/bootstrap.min.js}"></script>
 	<script th:src="@{/bower_components/angular/angular.js}"></script>
@@ -152,17 +175,18 @@
 		th:src="@{/bower_components/angular-strap/dist/modules/alert.min.js}"></script>
 	<script
 		th:src="@{/bower_components/angular-ui-router/release/angular-ui-router.js}"></script>
-	<script 
+	<script
 		th:src="@{/bower_components/angular-cookies/angular-cookies.js}"></script>
-	<script 
+	<script
 		th:src="@{/bower_components/angular-dynamic-locale/src/tmhDynamicLocale.js}"></script>
-		<script
+	<script
 		th:src="@{/bower_components/angular-translate/angular-translate.min.js}"></script>
 	<script
 		th:src="@{/bower_components/angular-translate-loader-static-files/angular-translate-loader-static-files.min.js}"></script>
 	<script
 		th:src="@{/bower_components/angular-translate-storage-cookie/angular-translate-storage-cookie.min.js}"></script>
 	<script th:src="@{/scripts/app/login.js}"></script>
+	<script th:src="@{/scripts/app/directives/commons-directives.js}"></script>
 	<!-- endbuild -->
 </body>
 </html>

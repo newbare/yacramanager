@@ -10,6 +10,9 @@ import org.springframework.social.github.api.GitHub;
 import org.springframework.social.github.api.GitHubUserProfile;
 import org.springframework.social.google.api.Google;
 import org.springframework.social.google.api.userinfo.GoogleUserInfo;
+import org.springframework.social.linkedin.api.CompanyOperations;
+import org.springframework.social.linkedin.api.LinkedIn;
+import org.springframework.social.linkedin.api.LinkedInProfileFull;
 import org.springframework.social.twitter.api.Twitter;
 import org.springframework.social.twitter.api.TwitterProfile;
 
@@ -30,10 +33,11 @@ public class DefaultConnectionSignUp implements ConnectionSignUp {
 	
 	private EmployeService employeService;
 	private UserService userService;
-	private ConnectionSignUp gitHubDelegate=new GitHubConnectionSignUp();
-	private ConnectionSignUp facebookDelegate=new FacebookConnectionSignUp();
-	private ConnectionSignUp twitterDelegate=new TwitterConnectionSignUp();
-	private ConnectionSignUp googleDelegate=new GoogleConnectionSignUp();
+	private SignUpDelegate gitHubDelegate=new GitHubConnectionSignUp();
+	private SignUpDelegate facebookDelegate=new FacebookConnectionSignUp();
+	private SignUpDelegate twitterDelegate=new TwitterConnectionSignUp();
+	private SignUpDelegate googleDelegate=new GoogleConnectionSignUp();
+	private SignUpDelegate linkedInDelegate=new LinkedinConnectionSignUp();
 	
 	
 	
@@ -42,6 +46,48 @@ public class DefaultConnectionSignUp implements ConnectionSignUp {
 		super();
 		this.employeService = employeService;
 		this.userService = userService;
+	}
+
+
+
+	public EmployeService getEmployeService() {
+		return employeService;
+	}
+
+
+
+	public UserService getUserService() {
+		return userService;
+	}
+
+
+
+	public ConnectionSignUp getGitHubDelegate() {
+		return gitHubDelegate;
+	}
+
+
+
+	public ConnectionSignUp getFacebookDelegate() {
+		return facebookDelegate;
+	}
+
+
+
+	public ConnectionSignUp getTwitterDelegate() {
+		return twitterDelegate;
+	}
+
+
+
+	public ConnectionSignUp getGoogleDelegate() {
+		return googleDelegate;
+	}
+
+
+
+	public ConnectionSignUp getLinkedInDelegate() {
+		return linkedInDelegate;
 	}
 
 
@@ -58,6 +104,8 @@ public class DefaultConnectionSignUp implements ConnectionSignUp {
 				return twitterDelegate.execute(connection);
 			case "google":
 				return googleDelegate.execute(connection);
+			case "linkedin":
+				return linkedInDelegate.execute(connection);
 			default:
 				return null;
 			}
@@ -65,7 +113,24 @@ public class DefaultConnectionSignUp implements ConnectionSignUp {
 		return existingUser.getUsername();
 	}
 	
-	private class GitHubConnectionSignUp implements ConnectionSignUp{
+	public SignUpDelegate fromConnection(Connection<?> connection){
+		switch (connection.getKey().getProviderId()) {
+		case "facebook":
+			return facebookDelegate;
+		case "github":
+			return gitHubDelegate;
+		case "twitter":
+			return twitterDelegate;
+		case "google":
+			return googleDelegate;
+		case "linkedin":
+			return linkedInDelegate;
+		default:
+			return null;
+		}
+	}
+	
+	private class GitHubConnectionSignUp implements SignUpDelegate{
 
 		@Override
 		public String execute(Connection<?> connection) {
@@ -83,10 +148,16 @@ public class DefaultConnectionSignUp implements ConnectionSignUp {
 			Employe registerEmploye = employeService.registerEmploye(registrationDTO,true);
 			return registerEmploye.getUsername();
 		}
+
+		@Override
+		public RegistrationDTO fromConnection(Connection<?> connection) {
+			// TODO Auto-generated method stub
+			return null;
+		}
 		
 	}
 	
-	private class FacebookConnectionSignUp implements ConnectionSignUp{
+	private class FacebookConnectionSignUp implements SignUpDelegate{
 
 		@Override
 		public String execute(Connection<?> connection) {
@@ -105,13 +176,26 @@ public class DefaultConnectionSignUp implements ConnectionSignUp {
 			Employe registerEmploye = employeService.registerEmploye(registrationDTO,true);
 			return registerEmploye.getUsername();
 		}
+
+		@Override
+		public RegistrationDTO fromConnection(Connection<?> connection) {
+			// TODO Auto-generated method stub
+			return null;
+		}
 		
 	}
 	
-	private class GoogleConnectionSignUp implements ConnectionSignUp{
+	private class GoogleConnectionSignUp implements SignUpDelegate{
 
 		@Override
 		public String execute(Connection<?> connection) {
+			
+			Employe registerEmploye = employeService.registerEmploye(fromConnection(connection),true);
+			return registerEmploye.getUsername();
+		}
+
+		@Override
+		public RegistrationDTO fromConnection(Connection<?> connection) {
 			GoogleUserInfo googleUserInfo = ((Google)connection.getApi()).userOperations().getUserInfo() ;
 			RegistrationDTO registrationDTO=new RegistrationDTO();
 			registrationDTO.setUsername(googleUserInfo.getId());
@@ -124,16 +208,55 @@ public class DefaultConnectionSignUp implements ConnectionSignUp {
 			registrationDTO.setProfileUrl(googleUserInfo.getLink());
 			registrationDTO.setProfileImageUrl(googleUserInfo.getProfilePictureUrl());
 			registrationDTO.setCompanyName(googleUserInfo.getName().toUpperCase());
-			Employe registerEmploye = employeService.registerEmploye(registrationDTO,true);
-			return registerEmploye.getUsername();
+			return registrationDTO;
 		}
 		
 	}
 	
-	private class TwitterConnectionSignUp implements ConnectionSignUp{
+	private class LinkedinConnectionSignUp implements SignUpDelegate{
 
 		@Override
 		public String execute(Connection<?> connection) {
+			Employe registerEmploye = employeService.registerEmploye(fromConnection(connection),true);
+			return registerEmploye.getUsername();
+		}
+
+		@Override
+		public RegistrationDTO fromConnection(Connection<?> connection) {
+			LinkedInProfileFull linkedInProfileFull = ((LinkedIn)connection.getApi()).profileOperations().getUserProfileFull();
+			CompanyOperations companyOperations = ((LinkedIn)connection.getApi()).companyOperations() ;
+			RegistrationDTO registrationDTO=new RegistrationDTO();
+			registrationDTO.setUsername(linkedInProfileFull.getId());
+			registrationDTO.setFirstName(linkedInProfileFull.getFirstName());
+			registrationDTO.setLastName(linkedInProfileFull.getLastName());
+			registrationDTO.setEmail(linkedInProfileFull.getEmailAddress());
+			//registrationDTO.setGender("male".equals(googleUserInfo.getGender())?Gender.HOMME:Gender.FEMME);
+			registrationDTO.setSocialProviderId(connection.getKey().getProviderId());
+			registrationDTO.setSocialUser(true);
+			registrationDTO.setSocialUserId(connection.getKey().getProviderUserId());
+			registrationDTO.setProfileUrl(linkedInProfileFull.getPublicProfileUrl());
+			registrationDTO.setProfileImageUrl(linkedInProfileFull.getProfilePictureUrl());
+			if(linkedInProfileFull.getDateOfBirth()!=null){
+				registrationDTO.setBirthDay(new DateTime(linkedInProfileFull.getDateOfBirth().getYear(), linkedInProfileFull.getDateOfBirth().getMonth(), linkedInProfileFull.getDateOfBirth().getDay(), 0, 0));
+			}
+			
+			//registrationDTO.setCompanyName(linkedInProfileFull.get);
+			return registrationDTO;
+		}
+		
+	}
+	
+	private class TwitterConnectionSignUp implements SignUpDelegate{
+
+		@Override
+		public String execute(Connection<?> connection) {
+			
+			Employe registerEmploye = employeService.registerEmploye(fromConnection(connection),true);
+			return registerEmploye.getUsername();
+		}
+
+		@Override
+		public RegistrationDTO fromConnection(Connection<?> connection) {
 			Twitter twitter=((Twitter)connection.getApi());
 			TwitterProfile userProfile = twitter.userOperations().getUserProfile() ;
 			RegistrationDTO registrationDTO=new RegistrationDTO();
@@ -142,10 +265,13 @@ public class DefaultConnectionSignUp implements ConnectionSignUp {
 			registrationDTO.setLastName(userProfile.getName());
 //			registrationDTO.setEmail(userProfile.get);
 //			registrationDTO.setCompanyName(userProfile.getUsername().toUpperCase());
-			Employe registerEmploye = employeService.registerEmploye(registrationDTO,true);
-			return registerEmploye.getUsername();
+			return registrationDTO;
 		}
 		
+	}
+	
+	public interface SignUpDelegate extends ConnectionSignUp{
+		RegistrationDTO fromConnection(Connection<?> connection);
 	}
 
 }

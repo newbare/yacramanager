@@ -86,6 +86,16 @@ function RegisterController($scope, $location,RegistrationRest,alertService) {
 		$location.url('/');
 	};
 	$scope.user={};
+	if(typeof preFillRegistrationDTO !== 'undefined'){
+//		$scope.preFillRegistrationDTO=preFillRegistrationDTO;
+//		$scope.user.username=preFillRegistrationDTO.username;
+//		$scope.user.firstName=preFillRegistrationDTO.firstName;
+//		$scope.user.lastName=preFillRegistrationDTO.lastName;
+//		$scope.user.email=preFillRegistrationDTO.email;
+//		$scope.user.socialUser=preFillRegistrationDTO.socialUser;
+//		$scope.user.profileImageUrl=preFillRegistrationDTO.profileImageUrl;
+		$scope.user=preFillRegistrationDTO;
+	}
 	$scope.register=function(){
 		RegistrationRest.save($scope.user)
 			.$promise.then(function(result) {
@@ -112,32 +122,45 @@ App.config([ '$stateProvider', '$urlRouterProvider','$locationProvider','$transl
      		function($stateProvider, $urlRouterProvider,$locationProvider,$translateProvider,tmhDynamicLocaleProvider) {
 
 //	$locationProvider.html5Mode(true).hashPrefix('!');
-	$urlRouterProvider.when('','/login')
-	.otherwise('/login');
+//	$urlRouterProvider.when('','/login')
+//	.otherwise('/login');
+//	
+//	$stateProvider
+//	.state('login', {
+//		url : "/login",
+//		templateUrl : _contextPath+'/templates/login.html',
+//		controller : LoginController,
+//		data: {
+//	        pageTitle: 'Login page'
+//	      }
+//	})
+//	.state('register', {
+//		url : "/register",
+//		templateUrl : _contextPath+'/templates/register.html',
+//		controller : RegisterController,
+//		data: {
+//	        pageTitle: 'Registration'
+//	      }
+//	})
+//	.state('forgot-password', {
+//		url : "/forgot-password",
+//		templateUrl : _contextPath+'/templates/forgot-password.html',
+//		controller : PasswordRecoveryController,
+//		data: {
+//	        pageTitle: 'Registration'
+//	      }
+//	});
+	$translateProvider.determinePreferredLanguage();
 	
-	$stateProvider
-	.state('login', {
-		url : "/login",
-		templateUrl : _contextPath+'/templates/login.html',
-		controller : LoginController,
-		data: {
-	        pageTitle: 'Login page'
-	      }
-	})
-	.state('register', {
-		url : "/register",
-		templateUrl : _contextPath+'/templates/register.html',
-		controller : RegisterController,
-		data: {
-	        pageTitle: 'Registration'
-	      }
-	})
-	.state('forgot-password', {
-		url : "/forgot-password",
-		templateUrl : _contextPath+'/templates/forgot-password.html',
-		controller : PasswordRecoveryController,
-		data: {
-	        pageTitle: 'Registration'
-	      }
+	$translateProvider.useStaticFilesLoader({
+	      prefix: _contextPath+'/i18n/',
+	      suffix: '.json'
 	});
+
+	$translateProvider.useCookieStorage();
+
+	tmhDynamicLocaleProvider
+			.localeLocationPattern(_contextPath+'/bower_components/angular-i18n/angular-locale_{{locale}}.js');
+	tmhDynamicLocaleProvider
+			.useCookieStorage('NG_TRANSLATE_LANG_KEY');
 }]);

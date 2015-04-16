@@ -11,6 +11,11 @@
     background-repeat: no-repeat;
 }
 
+img.profile-picture{
+	max-width: 140px;
+	max-height: 140px;
+}
+
 .list-inline.with-separator li.divider-vertical{
 	height: inherit;
 	margin: 0 9px;

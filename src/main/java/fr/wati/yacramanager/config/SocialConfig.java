@@ -21,12 +21,14 @@ import org.springframework.social.connect.UsersConnectionRepository;
 import org.springframework.social.connect.jdbc.JdbcUsersConnectionRepository;
 import org.springframework.social.connect.web.ConnectController;
 import org.springframework.social.connect.web.ProviderSignInController;
+import org.springframework.social.connect.web.SignInAdapter;
 import org.springframework.social.facebook.api.Facebook;
 import org.springframework.social.facebook.connect.FacebookConnectionFactory;
 import org.springframework.social.github.api.GitHub;
 import org.springframework.social.github.connect.GitHubConnectionFactory;
 import org.springframework.social.google.api.Google;
 import org.springframework.social.google.connect.GoogleConnectionFactory;
+import org.springframework.social.linkedin.connect.LinkedInConnectionFactory;
 import org.springframework.social.twitter.api.Twitter;
 import org.springframework.social.twitter.connect.TwitterConnectionFactory;
 
@@ -64,6 +66,7 @@ public class SocialConfig implements SocialConfigurer {
 		GoogleConnectionFactory googleConnectionFactory = new GoogleConnectionFactory(env.getProperty("google.client.id"), env.getProperty("google.client.secret"));
 		googleConnectionFactory.setScope(env.getProperty("google.client.scope"));
 		cfConfig.addConnectionFactory(googleConnectionFactory);
+		cfConfig.addConnectionFactory(new LinkedInConnectionFactory(env.getProperty("linkedin.client.id"), env.getProperty("linkedin.client.secret")));
 	}
 
 
@@ -71,9 +74,10 @@ public class SocialConfig implements SocialConfigurer {
 	 * Singleton data access object providing access to connections across all users.
 	 */
 	@Override
+	@Bean
 	public UsersConnectionRepository getUsersConnectionRepository(ConnectionFactoryLocator connectionFactoryLocator) {
 		JdbcUsersConnectionRepository repository = new JdbcUsersConnectionRepository(dataSource, connectionFactoryLocator, Encryptors.noOpText());
-		repository.setConnectionSignUp(defaultConnectionSignUp());
+		//repository.setConnectionSignUp(defaultConnectionSignUp());
 		return repository;
 	}
 	
@@ -123,7 +127,14 @@ public class SocialConfig implements SocialConfigurer {
 
 	@Bean
 	public ProviderSignInController providerSignInController(ConnectionFactoryLocator connectionFactoryLocator, UsersConnectionRepository usersConnectionRepository) {
-		return new ProviderSignInController(connectionFactoryLocator, usersConnectionRepository, new SimpleSignInAdapter(userService,WebSecurityConfig.DEFAULT_LOGIN_SUCCESS_PATH));
+		ProviderSignInController providerSignInController = new ProviderSignInController(connectionFactoryLocator, usersConnectionRepository, signInAdapter());
+		providerSignInController.setSignUpUrl("/auth/register?oauth_user=true");
+		return providerSignInController;
+	}
+	
+	@Bean
+	public SignInAdapter signInAdapter(){
+		return new SimpleSignInAdapter(userService,WebSecurityConfig.DEFAULT_LOGIN_SUCCESS_PATH);
 	}
 	
 	@Bean
