@@ -53,7 +53,7 @@
     <logger name="org.dozer" level="warn"/>
     <logger name="reactor" level="warn"/>
     <logger name="io.netty" level="warn"/>
-    
+   	<logger name="org.springframework.jdbc.datasource.init.ResourceDatabasePopulator" level="DEBUG"/> 
     
 
     <contextListener class="ch.qos.logback.classic.jul.LevelChangePropagator">

@@ -59,38 +59,6 @@ function AdminCompaniesController($scope,$rootScope,CompanyREST,ngTableParams,al
 	};
 	
 	$scope.reset();
-	
-	
-	$scope.tableParams = new ngTableParams({
-		page : 1, // show first page
-		count : 10, // count per page
-		sorting : {
-			registeredDate : 'desc' // initial sorting
-		}
-	}, {
-		total : 0, // length of data
-		getData : function($defer, params) {
-			
-			CompanyREST.get(
-					{
-						page:params.$params.page-1,
-						size:params.$params.count,
-						sort:params.$params.sorting,
-						filter:$scope.tableFilter
-					},function(data) {
-				params.total(data.totalCount);
-				$scope.startIndex=data.startIndex;
-				$scope.endIndex=data.endIndex;
-				if(data.totalCount>=1){
-					$scope.hasDatas=true;
-				}else {
-					$scope.hasDatas=false;
-				}
-				allCompany=data.result;
-				// set new data
-				$defer.resolve(data.result);
-			});
-		}});
 }
 
 
@@ -152,6 +120,37 @@ function AdminCompanyViewController($scope, $rootScope,$http,CompanyREST,ngTable
 	$scope.refreshDatas=function(){
 		$scope.tableParams.reload();
 	};
+	
+	$scope.tableParams = new ngTableParams({
+		page : 1, // show first page
+		count : 10, // count per page
+		sorting : {
+			registeredDate : 'desc' // initial sorting
+		}
+	}, {
+		total : 0, // length of data
+		getData : function($defer, params) {
+			
+			CompanyREST.get(
+					{
+						page:params.$params.page-1,
+						size:params.$params.count,
+						sort:params.$params.sorting,
+						filter:$scope.tableFilter
+					},function(data) {
+				params.total(data.totalCount);
+				$scope.startIndex=data.startIndex;
+				$scope.endIndex=data.endIndex;
+				if(data.totalCount>=1){
+					$scope.hasDatas=true;
+				}else {
+					$scope.hasDatas=false;
+				}
+				allCompany=data.result;
+				// set new data
+				$defer.resolve(data.result);
+			});
+		}});
 }
 
 

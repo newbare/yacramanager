@@ -10,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.PreRemove;
 
 import org.hibernate.annotations.Cache;
@@ -32,8 +33,8 @@ public class Company extends AuditableEntity {
 	private List<Client> clients=new ArrayList<>();
 	@Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
 	private DateTime registeredDate;
-	@Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
-	private DateTime licenseEndDate;
+	@OneToOne
+	private CompanyAccountInfo companyAccountInfo;
 	@OneToMany(cascade=CascadeType.ALL)
 	@JoinColumn(name="companyId")
 	private List<Contact> contacts=new ArrayList<>();
@@ -70,17 +71,13 @@ public class Company extends AuditableEntity {
 	public void preRemove(){
 		setClients(null);
 	}
-	/**
-	 * @return the licenseEndDate
-	 */
-	public DateTime getLicenseEndDate() {
-		return licenseEndDate;
+	
+	public CompanyAccountInfo getCompanyAccountInfo() {
+		return companyAccountInfo;
 	}
-	/**
-	 * @param licenseEndDate the licenseEndDate to set
-	 */
-	public void setLicenseEndDate(DateTime licenseEndDate) {
-		this.licenseEndDate = licenseEndDate;
+	
+	public void setCompanyAccountInfo(CompanyAccountInfo companyAccountInfo) {
+		this.companyAccountInfo = companyAccountInfo;
 	}
 	/**
 	 * @return the registeredDate

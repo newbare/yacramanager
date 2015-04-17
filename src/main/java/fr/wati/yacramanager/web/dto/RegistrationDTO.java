@@ -30,6 +30,7 @@ public class RegistrationDTO {
 	private String socialProviderId;
 	private String profileImageUrl;
 	private String profileUrl;
+	private String captchaToken;
 	@JsonIgnore
 	private Locale locale;
 	/**
@@ -151,6 +152,12 @@ public class RegistrationDTO {
 	}
 	public void setLocale(Locale locale) {
 		this.locale = locale;
+	}
+	public String getCaptchaToken() {
+		return captchaToken;
+	}
+	public void setCaptchaToken(String captchaToken) {
+		this.captchaToken = captchaToken;
 	}
 	
 	

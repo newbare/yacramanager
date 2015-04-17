@@ -1,20 +1,25 @@
 package fr.wati.yacramanager.services.impl;
 
-import javax.annotation.security.RolesAllowed;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 
+import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import fr.wati.yacramanager.beans.Activities.ActivityOperation;
 import fr.wati.yacramanager.beans.Client;
 import fr.wati.yacramanager.beans.Company;
+import fr.wati.yacramanager.beans.CompanyAccountInfo;
 import fr.wati.yacramanager.beans.Company_;
-import fr.wati.yacramanager.beans.Role;
 import fr.wati.yacramanager.dao.repository.CompanyRepository;
 import fr.wati.yacramanager.dao.repository.ContactRepository;
 import fr.wati.yacramanager.dao.specifications.CommonSpecifications;
@@ -25,6 +30,7 @@ import fr.wati.yacramanager.utils.Filter;
 import fr.wati.yacramanager.utils.Filter.FilterDate;
 import fr.wati.yacramanager.utils.Filter.FilterText;
 import fr.wati.yacramanager.utils.Filter.FilterType;
+import fr.wati.yacramanager.web.dto.CompanyAccountInfoDTO;
 import fr.wati.yacramanager.web.dto.CompanyDTO;
 
 @Service
@@ -43,8 +49,8 @@ public class CompanyServiceImpl implements CompanyService {
 
 	@Override
 	public <S extends Company> S save(S entity) {
-		S entityFound=(S) findOne(entity.getId());
-		//contactRepository.save(entity.getContacts());
+		S entityFound = (S) findOne(entity.getId());
+		// contactRepository.save(entity.getContacts());
 		S save = companyRepository.save(entity);
 		applicationEventPublisher.publishEvent(ActivityEvent
 				.createWithSource(this).user()
@@ -104,7 +110,7 @@ public class CompanyServiceImpl implements CompanyService {
 	}
 
 	@Override
-//	@RolesAllowed(Role.ADMIN)
+	// @RolesAllowed(Role.ADMIN)
 	public Company createCompany(Company company) {
 		Company saveCompany = companyRepository.save(company);
 		/*
@@ -124,7 +130,10 @@ public class CompanyServiceImpl implements CompanyService {
 		companyDTO.setName(company.getName());
 		companyDTO.setRegisteredDate(company.getRegisteredDate());
 		companyDTO.setContacts(dtoMapper.mapContacts(company));
-		companyDTO.setLicenseEndDate(company.getLicenseEndDate());
+		CompanyAccountInfoDTO companyAccountInfoDTO=new CompanyAccountInfoDTO();
+		companyAccountInfoDTO.setExpiredDate(company.getCompanyAccountInfo().getExpiredDate());
+		companyAccountInfoDTO.setLocked(company.getCompanyAccountInfo().isLocked());
+		companyDTO.setCompanyAccountInfo(companyAccountInfoDTO);
 		return companyDTO;
 	}
 
@@ -159,7 +168,7 @@ public class CompanyServiceImpl implements CompanyService {
 				break;
 			case DATE:
 			case DATE_RANGE:
-				FilterDate filterDate = (FilterDate) filter;
+				final FilterDate filterDate = (FilterDate) filter;
 				if ("registeredDate".equals(filter.getField())) {
 					if (filterDate.isRangedDate()) {
 						return CommonSpecifications.betweenDate(filterDate
@@ -176,8 +185,24 @@ public class CompanyServiceImpl implements CompanyService {
 								.getValue().getStart(), filterDate.getValue()
 								.getEnd(), Company.class, "licenseEndDate");
 					} else {
-						return CommonSpecifications.equals(filterDate
-								.getValue().getDate(), Company_.licenseEndDate);
+						return Specifications
+								.where(new Specification<Company>() {
+
+									@Override
+									public Predicate toPredicate(
+											Root<Company> root,
+											CriteriaQuery<?> query,
+											CriteriaBuilder cb) {
+										return cb
+												.equal(root
+														.<CompanyAccountInfo> get(
+																"companyAccountInfo")
+														.<LocalDate> get(
+																"expiredDate"),
+														filterDate.getValue()
+																.getDate().toLocalDate());
+									}
+								});
 					}
 				}
 				break;

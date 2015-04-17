@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 
 import fr.wati.yacramanager.beans.Company;
 import fr.wati.yacramanager.beans.Contact;
@@ -12,8 +13,9 @@ public class CompanyDTO {
 
 	private Long id;
 	private String name;
-	private DateTime licenseEndDate;
+	private LocalDate licenseEndDate;
 	private DateTime registeredDate;
+	private CompanyAccountInfoDTO companyAccountInfo;
 	private List<ContactDTO> contacts=new ArrayList<>();
 	public Long getId() {
 		return id;
@@ -29,7 +31,7 @@ public class CompanyDTO {
 	}
 	public Company toCompany(Company company) {
 		company.setName(getName());
-		company.setLicenseEndDate(getLicenseEndDate());
+		company.getCompanyAccountInfo().setExpiredDate(getLicenseEndDate());
 		company.setRegisteredDate(getRegisteredDate());
 		List<Contact> contacts=new ArrayList<>();
 		for(ContactDTO contactDTO: getContacts()){
@@ -46,13 +48,13 @@ public class CompanyDTO {
 	/**
 	 * @return the licenseEndDate
 	 */
-	public DateTime getLicenseEndDate() {
+	public LocalDate getLicenseEndDate() {
 		return licenseEndDate;
 	}
 	/**
 	 * @param licenseEndDate the licenseEndDate to set
 	 */
-	public void setLicenseEndDate(DateTime licenseEndDate) {
+	public void setLicenseEndDate(LocalDate licenseEndDate) {
 		this.licenseEndDate = licenseEndDate;
 	}
 	/**
@@ -78,6 +80,12 @@ public class CompanyDTO {
 	 */
 	public void setRegisteredDate(DateTime registeredDate) {
 		this.registeredDate = registeredDate;
+	}
+	public CompanyAccountInfoDTO getCompanyAccountInfo() {
+		return companyAccountInfo;
+	}
+	public void setCompanyAccountInfo(CompanyAccountInfoDTO companyAccountInfo) {
+		this.companyAccountInfo = companyAccountInfo;
 	}
 	
 	

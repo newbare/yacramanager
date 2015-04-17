@@ -1,7 +1,7 @@
 var yaCRAApp = {};
 
 var App = angular.module('yaCRAApp', [ 'ngResource',
-                               		'ui.router','pascalprecht.translate','ngCookies','tmh.dynamicLocale','mgcrea.ngStrap']);
+                               		'ui.router','pascalprecht.translate','ngCookies','tmh.dynamicLocale','mgcrea.ngStrap','vcRecaptcha']);
 
 App.run(function($rootScope) {
 	$rootScope.appContextPath=_contextPath;
@@ -81,10 +81,27 @@ function LoginController($scope, $location) {
 	}
 }
 
-function RegisterController($scope, $location,RegistrationRest,alertService) {
+function RegisterController($scope, $location,RegistrationRest,alertService,vcRecaptchaService) {
 	$scope.loadLogin = function() {
 		$location.url('/');
 	};
+	$scope.response = null;
+    $scope.widgetId = null;
+	$scope.captcha={
+			model : {
+				key: '6LeHhQUTAAAAAO4m-IuE3KnLfGK061bzTBZhlxik'
+				}
+    };
+	 
+	$scope.setResponse = function (response) {
+         console.info('Response available');
+         $scope.response = response;
+     };
+     $scope.setWidgetId = function (widgetId) {
+         console.info('Created widget ID: %s', widgetId);
+         $scope.widgetId = widgetId;
+     };
+
 	$scope.user={};
 	if(typeof preFillRegistrationDTO !== 'undefined'){
 //		$scope.preFillRegistrationDTO=preFillRegistrationDTO;
@@ -97,10 +114,16 @@ function RegisterController($scope, $location,RegistrationRest,alertService) {
 		$scope.user=preFillRegistrationDTO;
 	}
 	$scope.register=function(){
+		$scope.user.captchaToken=$scope.response;
 		RegistrationRest.save($scope.user)
 			.$promise.then(function(result) {
 				alertService.show('success','Saved','Account has been created !');
 				$scope.loadLogin();
+		},function(reason){
+			console.log('Failed validation');
+            // In case of a failed validation you need to reload the captcha
+            // because each response can be checked just once
+            vcRecaptchaService.reload($scope.widgetId);
 		});
 	};
 }

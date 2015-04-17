@@ -20,6 +20,8 @@
 <link rel="stylesheet" th:href="@{/styles/yacra-fonts.css}" />
 <!-- endbuild -->
 </head>
+<!-- Include the JS ReCaptcha API -->
+<script src="https://www.google.com/recaptcha/api.js?render=explicit&onload=vcRecaptchaApiLoaded" data-async="" data-defer=""></script>
 <script th:inline="javascript" type="text/javascript">
     var _contextPath = [[@{/}]] ;
 </script>
@@ -104,6 +106,13 @@
 								required="required"/>
 						</div>
 					</div>
+					<div class="form-group required">
+						<label class="col-sm-4 control-label">Captcha check</label>
+						<div data-vc-recaptcha="" class="col-sm-8" theme="'light'" data-key="captcha.model.key"
+							data-on-create="setWidgetId(widgetId)"
+							data-on-success="setResponse(response)"/>
+					</div>
+					
 					</fieldset>
 					<fieldset>
 						<legend>Company informations</legend>
@@ -181,6 +190,8 @@
 		th:src="@{/bower_components/angular-dynamic-locale/src/tmhDynamicLocale.js}"></script>
 	<script
 		th:src="@{/bower_components/angular-translate/angular-translate.min.js}"></script>
+	<script
+		th:src="@{/bower_components/angular-recaptcha/release/angular-recaptcha.js}"></script>
 	<script
 		th:src="@{/bower_components/angular-translate-loader-static-files/angular-translate-loader-static-files.min.js}"></script>
 	<script

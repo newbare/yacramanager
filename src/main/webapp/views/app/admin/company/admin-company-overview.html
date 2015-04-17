@@ -5,7 +5,7 @@
 <h5><strong>General informations</strong></h5>
 <hr>
 
-License end date: <a href="#" onaftersave="updateCompany()"  editable-date="company.licenseEndDate">{{ company.licenseEndDate || 'License end date' | date:'longDate'  }}</a>
+License end date: <a href="#" onaftersave="updateCompany()"  editable-date="company.companyAccountInfo.expiredDate">{{ company.companyAccountInfo.expiredDate || 'License end date' | date:'longDate'  }}</a>
 <hr>
 <h5><strong>{{company.contacts.length}} Contacs for {{ company.name || 'Name' }}</strong></h5>
 <hr>

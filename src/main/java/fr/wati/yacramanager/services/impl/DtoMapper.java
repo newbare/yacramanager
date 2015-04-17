@@ -29,6 +29,7 @@ import fr.wati.yacramanager.services.CompanyService;
 import fr.wati.yacramanager.services.ProjectService;
 import fr.wati.yacramanager.web.dto.AbsenceDTO;
 import fr.wati.yacramanager.web.dto.ClientDTO;
+import fr.wati.yacramanager.web.dto.CompanyAccountInfoDTO;
 import fr.wati.yacramanager.web.dto.CompanyDTO;
 import fr.wati.yacramanager.web.dto.ContactDTO;
 import fr.wati.yacramanager.web.dto.NoteDeFraisDTO;
@@ -193,9 +194,12 @@ public class DtoMapper {
 		CompanyDTO dto = new CompanyDTO();
 		dto.setId(company.getId());
 		dto.setName(company.getName());
-		dto.setLicenseEndDate(company.getLicenseEndDate());
 		dto.setContacts(mapContacts(company));
 		dto.setRegisteredDate(company.getRegisteredDate());
+		CompanyAccountInfoDTO companyAccountInfoDTO=new CompanyAccountInfoDTO();
+		companyAccountInfoDTO.setLocked(company.getCompanyAccountInfo().isLocked());
+		companyAccountInfoDTO.setExpiredDate(company.getCompanyAccountInfo().getExpiredDate());
+		dto.setCompanyAccountInfo(companyAccountInfoDTO);
 		return dto;
 	}
 	

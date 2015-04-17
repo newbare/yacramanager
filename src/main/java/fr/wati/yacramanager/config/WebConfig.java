@@ -80,7 +80,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 		ServletContextTemplateResolver webTemplateResolver = new ServletContextTemplateResolver();
 		webTemplateResolver.setPrefix("/views/");
 		webTemplateResolver.setSuffix(".html");
-		webTemplateResolver.setTemplateMode("HTML5");
+		webTemplateResolver.setTemplateMode("LEGACYHTML5");
 		webTemplateResolver.setCharacterEncoding(CharEncoding.UTF_8);
 		webTemplateResolver.setCacheable(environment.getProperty(
 				"web.template.resolver.cache", Boolean.class, false));

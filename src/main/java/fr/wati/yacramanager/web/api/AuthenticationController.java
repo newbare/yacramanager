@@ -40,6 +40,8 @@ import fr.wati.yacramanager.beans.Users;
 import fr.wati.yacramanager.services.EmployeService;
 import fr.wati.yacramanager.services.MailService;
 import fr.wati.yacramanager.services.UserService;
+import fr.wati.yacramanager.services.security.GoogleReCaptchaService;
+import fr.wati.yacramanager.services.security.GoogleReCaptchaService.GoogleReCaptchaResponse;
 import fr.wati.yacramanager.web.dto.RegistrationDTO;
 
 /**
@@ -62,6 +64,9 @@ public class AuthenticationController {
 	@Autowired
 	private SignInAdapter signInAdapter;
 	
+	@Autowired
+	private GoogleReCaptchaService reCaptchaService;
+	
 	@Resource(name="appTemplateEngine")
 	private SpringTemplateEngine templateEngine;
 
@@ -71,6 +76,11 @@ public class AuthenticationController {
 			@RequestBody RegistrationDTO registrationDTO,
 			HttpServletRequest request,NativeWebRequest webRequest, HttpServletResponse response,
 			Locale locale) {
+		//Google ReCaptcha check first
+		GoogleReCaptchaResponse captchaResponse = reCaptchaService.validateCaptcha(registrationDTO.getCaptchaToken());
+		if(!captchaResponse.isSuccess()){
+			return new ResponseEntity<String>(captchaResponse.getErrorCodes().toString(), HttpStatus.FORBIDDEN);
+		}
 		registrationDTO.setLocale(locale);
 		Employe registerEmploye = employeService
 				.registerEmploye(registrationDTO,registrationDTO.isSocialUser());
