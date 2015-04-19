@@ -5,11 +5,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.inject.Inject;
+
 import org.dozer.Mapper;
 import org.dozer.spring.DozerBeanMapperFactoryBean;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Page;
@@ -56,37 +57,37 @@ import fr.wati.yacramanager.web.dto.UserInfoDTO;
 @Service
 public class EmployeServiceImpl implements EmployeService {
 
-	@Autowired
+	@Inject
 	private EmployeRepository employeRepository;
 	
-	@Autowired
+	@Inject
 	private ContactRepository contactRepository;
 
-	@Autowired
+	@Inject
 	private DozerBeanMapperFactoryBean dozerBeanMapper;
 	
-	@Autowired
+	@Inject
 	private PasswordEncoder passwordEncoder;
 	
-	@Autowired
+	@Inject
 	private CompanyService companyService;
 	
-	@Autowired
+	@Inject
 	private ProjectService  projectService;
 	
-	@Autowired
+	@Inject
 	private RoleRepository roleRepository;
 	
-	@Autowired
+	@Inject
 	private TaskService  taskService;
 	
-	@Autowired
+	@Inject
 	private MailService mailService;
 	
-	@Autowired
+	@Inject
 	private CompanyAccountInfoRepository companyAccountInfoRepository;
 	
-	@Autowired
+	@Inject
 	private Environment environment;
 
 	private ApplicationEventPublisher applicationEventPublisher;

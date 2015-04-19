@@ -2,6 +2,8 @@ package fr.wati.yacramanager.services.impl;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
@@ -27,10 +29,10 @@ import fr.wati.yacramanager.utils.Filter;
 @Transactional
 public class WorkLogServiceImpl implements WorkLogService,SpecificationFactory<WorkLog> {
 
-	@Autowired
+	@Inject
 	private WorkLogRepository workLogRepository;
 	
-	@Autowired
+	@Inject
 	private EmployeService employeService;
 
 	private ApplicationEventPublisher applicationEventPublisher;

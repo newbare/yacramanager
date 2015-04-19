@@ -6,12 +6,12 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.annotation.security.RolesAllowed;
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -53,16 +53,16 @@ import fr.wati.yacramanager.web.dto.UserInfoDTO.ManagedEmployeInfoDTO;
 public class UserRestController implements RestCrudController<EmployeDto> {
 
 	private static final Log LOG = LogFactory.getLog(UserRestController.class);
-	@Autowired
+	@Inject
 	private EmployeService employeService;
 	
-	@Autowired
+	@Inject
 	private UserService userService;
 	
-	@Autowired
+	@Inject
 	private DtoMapper dtoMapper;
 	
-	@Autowired
+	@Inject
 	private EmployeRepository employeRepository;
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)

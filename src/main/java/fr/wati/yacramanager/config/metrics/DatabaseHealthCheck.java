@@ -5,10 +5,10 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.inject.Inject;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.ConnectionCallback;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -19,7 +19,7 @@ import com.codahale.metrics.health.HealthCheck;
 
 @Component
 public class DatabaseHealthCheck extends HealthCheck implements InitializingBean {
-	@Autowired
+	@Inject
 	private DataSource dataSource;
 
 	private JdbcTemplate jdbcTemplate;

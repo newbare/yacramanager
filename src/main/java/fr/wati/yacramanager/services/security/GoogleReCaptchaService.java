@@ -8,7 +8,8 @@ import java.util.Map;
 
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.bind.RelaxedPropertyResolver;
+import org.springframework.context.EnvironmentAware;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -29,12 +30,18 @@ import org.springframework.web.util.UriComponentsBuilder;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service
-public class GoogleReCaptchaService implements InitializingBean {
+public class GoogleReCaptchaService implements InitializingBean,EnvironmentAware {
 
 	private RestOperations restOperations;
 	private String serviceUrl;
-	@Autowired
-	private Environment env;
+	private RelaxedPropertyResolver propertyResolver;
+
+
+	@Override
+	public void setEnvironment(Environment env) {
+		this.propertyResolver = new RelaxedPropertyResolver(env,
+				"google.recaptcha.");
+	}
 
 	public GoogleReCaptchaService() {
 		List<HttpMessageConverter<?>> converters = new ArrayList<>();
@@ -47,7 +54,7 @@ public class GoogleReCaptchaService implements InitializingBean {
 		HttpHeaders headers = new HttpHeaders();
 		headers.set("Accept", "application/json");
 		UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(this.serviceUrl)
-		        .queryParam("secret", env.getProperty("google.recaptcha.secretKey"))
+		        .queryParam("secret", propertyResolver.getProperty("secretKey"))
 		        .queryParam("response", clientResponseToken);
 		HttpEntity<?> entity = new HttpEntity<>(headers);
 		HttpEntity<GoogleReCaptchaResponse> response = restOperations.exchange(builder.build().toUri(), HttpMethod.POST, null, GoogleReCaptchaResponse.class);
@@ -127,7 +134,7 @@ public class GoogleReCaptchaService implements InitializingBean {
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		this.serviceUrl = env.getProperty("google.recaptcha.url");
+		this.serviceUrl = propertyResolver.getProperty("url");
 	}
 
 	public static class GoogleReCaptchaResponseMessageConverter extends
@@ -183,13 +190,4 @@ public class GoogleReCaptchaService implements InitializingBean {
 
 	}
 
-	public static void main(String[] args) {
-		GoogleReCaptchaService service = new GoogleReCaptchaService();
-		service.setServiceUrl("https://www.google.com/recaptcha/api/siteverify");
-		service.getRestOperations().postForObject(
-				service.getServiceUrl(),
-				new GoogleReCaptchaRequest(
-						"6LeHhQUTAAAAABZrel9yr-Dj_W9U_lDlrk-m01-L", "toto"),
-				GoogleReCaptchaResponse.class);
-	}
 }

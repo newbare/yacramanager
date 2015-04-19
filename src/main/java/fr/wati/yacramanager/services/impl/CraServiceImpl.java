@@ -6,10 +6,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.inject.Inject;
+
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeComparator;
 import org.joda.time.LocalDate;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
@@ -43,22 +44,22 @@ import fr.wati.yacramanager.web.dto.ProjectDTO;
 @Service
 public class CraServiceImpl implements CraService {
 
-	@Autowired
+	@Inject
 	private AbsenceService absenceService;
 
-	@Autowired
+	@Inject
 	private WorkLogService workLogService;
 	
-	@Autowired
+	@Inject
 	private ActivityReportService activityReportService;
 	
-	@Autowired
+	@Inject
 	private ClientService clientService;
 
-	@Autowired
+	@Inject
 	private DtoMapper dtoMapper;
 	
-	@Autowired
+	@Inject
 	private EmployeService employeService;
 
 	private ApplicationEventPublisher applicationEventPublisher;

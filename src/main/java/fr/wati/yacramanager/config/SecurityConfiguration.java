@@ -15,9 +15,11 @@
  */
 package fr.wati.yacramanager.config;
 
+import javax.inject.Inject;
 import javax.sql.DataSource;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.bind.RelaxedPropertyResolver;
+import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
@@ -30,15 +32,15 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsChecker;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.access.ExceptionTranslationFilter;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.security.web.header.writers.frameoptions.XFrameOptionsHeaderWriter;
 
-import fr.wati.yacramanager.beans.Role;
-import fr.wati.yacramanager.services.security.PreAuthenticationChecker;
 import fr.wati.yacramanager.web.filter.AjaxTimeoutRedirectFilter;
 
 /**
@@ -48,21 +50,19 @@ import fr.wati.yacramanager.web.filter.AjaxTimeoutRedirectFilter;
  */
 @Configuration
 @EnableWebSecurity
-public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+public class SecurityConfiguration extends WebSecurityConfigurerAdapter implements EnvironmentAware {
 
 	public static final String DEFAULT_LOGIN_SUCCESS_PATH = "/app/view/";
-	@Autowired
-	private Environment env;
-	@Autowired
+	
+	private RelaxedPropertyResolver propertyResolver;
+	@Inject
 	private DataSource dataSource;
-	@Autowired
-	private PasswordEncoder passwordEncoder;
 
-	@Autowired
+	@Inject
 	private UserDetailsService userDetailsService;
 	
-	@Autowired
-	private PreAuthenticationChecker preAuthenticationChecker;
+	@Inject
+	private UserDetailsChecker userDetailsChecker;
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
@@ -115,14 +115,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.rememberMe()
 				.tokenRepository(persistentTokenRepository())
 				.tokenValiditySeconds(
-						env.getProperty("rememberme.token.validity",
+						propertyResolver.getProperty("rememberme.token.validity",
 								Integer.class))
 				.userDetailsService(userDetailsService)
 				.and()
 				.sessionManagement()
 				// .invalidSessionUrl("/auth/login/?invalid-session=true")
 				.maximumSessions(
-						env.getProperty("max.sessions", Integer.class, 5))
+						propertyResolver.getProperty("max.sessions", Integer.class, 5))
 				.expiredUrl("/auth/?expired-session=true")
 				.and()
 				.and()
@@ -166,7 +166,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Bean
 	public AjaxTimeoutRedirectFilter ajaxTimeoutRedirectFilter() {
 		AjaxTimeoutRedirectFilter ajaxTimeoutRedirectFilter = new AjaxTimeoutRedirectFilter();
-		ajaxTimeoutRedirectFilter.setCustomSessionExpiredErrorCode(env
+		ajaxTimeoutRedirectFilter.setCustomSessionExpiredErrorCode(propertyResolver
 				.getProperty("customSessionExpiredErrorCode", Integer.class));
 		return ajaxTimeoutRedirectFilter;
 	}
@@ -182,11 +182,26 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			GlobalMethodSecurityConfiguration {
 	}
 
+	@Bean
 	public DaoAuthenticationProvider authenticationProvider() {
 		DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
-		authenticationProvider.setPasswordEncoder(passwordEncoder);
+		authenticationProvider.setPasswordEncoder(passwordEncoder());
 		authenticationProvider.setUserDetailsService(userDetailsService);
-		authenticationProvider.setPreAuthenticationChecks(preAuthenticationChecker);
+		authenticationProvider.setPreAuthenticationChecks(userDetailsChecker);
 		return authenticationProvider;
+	}
+
+	@Bean
+	public PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder(propertyResolver.getProperty(
+				"bcrypt.encoder.strength", Integer.class));
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.springframework.context.EnvironmentAware#setEnvironment(org.springframework.core.env.Environment)
+	 */
+	@Override
+	public void setEnvironment(Environment environment) {
+		this.propertyResolver = new RelaxedPropertyResolver(environment, "spring.security.");
 	}
 }

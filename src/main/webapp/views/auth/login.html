@@ -38,7 +38,7 @@
 			var activationMessage = [[${activationMessage}]];
 </script>
 <body>
-	<div class="container">
+	<div class="container" data-ng-cloak="">
 		<div id="alerts-container"></div>
 
 		<div class="row" data-ng-cloak="" data-ng-controller="LoginController">
@@ -195,6 +195,8 @@
 		th:src="@{/bower_components/angular-dynamic-locale/src/tmhDynamicLocale.js}"></script>
 	<script
 		th:src="@{/bower_components/angular-translate/angular-translate.min.js}"></script>
+	<script
+		th:src="@{/bower_components/angular-recaptcha/release/angular-recaptcha.js}"></script>
 	<script
 		th:src="@{/bower_components/angular-translate-loader-static-files/angular-translate-loader-static-files.min.js}"></script>
 	<script

@@ -2,15 +2,12 @@ package fr.wati.yacramanager.services;
 
 import javax.annotation.PostConstruct;
 
-import org.springframework.stereotype.Component;
-
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.joda.JodaModule;
 
 @SuppressWarnings("serial")
-@Component
 public class CustomObjectMapper extends ObjectMapper {
     public CustomObjectMapper() {
     	configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS , false);          

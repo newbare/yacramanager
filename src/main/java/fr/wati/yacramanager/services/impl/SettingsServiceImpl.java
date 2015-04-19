@@ -2,7 +2,8 @@ package fr.wati.yacramanager.services.impl;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.inject.Inject;
+
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,13 +23,13 @@ import fr.wati.yacramanager.services.SettingsService;
 @Transactional
 public class SettingsServiceImpl implements SettingsService {
 
-	@Autowired
+	@Inject
 	private SettingsRepository settingsRepository;
 	
-	@Autowired
+	@Inject
 	private UserRepository usersRepository;
 	
-	@Autowired
+	@Inject
 	private CompanyRepository companyRepository;
 
 	private ApplicationEventPublisher applicationEventPublisher;

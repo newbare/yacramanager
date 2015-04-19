@@ -134,25 +134,25 @@ public class DefaultConnectionSignUp implements ConnectionSignUp {
 
 		@Override
 		public String execute(Connection<?> connection) {
+			Employe registerEmploye = employeService.registerEmploye(fromConnection(connection),true);
+			return registerEmploye.getUsername();
+		}
+
+		@Override
+		public RegistrationDTO fromConnection(Connection<?> connection) {
 			GitHubUserProfile userProfile = ((GitHub)connection.getApi()).userOperations().getUserProfile() ;
 			RegistrationDTO registrationDTO=new RegistrationDTO();
 			registrationDTO.setUsername(userProfile.getUsername());
 			registrationDTO.setFirstName(userProfile.getName());
 			registrationDTO.setLastName(userProfile.getName());
 			registrationDTO.setEmail(userProfile.getEmail());
+			registrationDTO.setSocialUser(true);
 			registrationDTO.setSocialProviderId(connection.getKey().getProviderId());
 			registrationDTO.setSocialUserId(connection.getKey().getProviderUserId());
 			registrationDTO.setProfileUrl(userProfile.getBlog());
 			registrationDTO.setProfileImageUrl(userProfile.getProfileImageUrl());
 			registrationDTO.setCompanyName(StringUtils.isEmpty(userProfile.getCompany())? userProfile.getUsername().toUpperCase():userProfile.getCompany());
-			Employe registerEmploye = employeService.registerEmploye(registrationDTO,true);
-			return registerEmploye.getUsername();
-		}
-
-		@Override
-		public RegistrationDTO fromConnection(Connection<?> connection) {
-			// TODO Auto-generated method stub
-			return null;
+			return registrationDTO;
 		}
 		
 	}
@@ -161,6 +161,12 @@ public class DefaultConnectionSignUp implements ConnectionSignUp {
 
 		@Override
 		public String execute(Connection<?> connection) {
+			Employe registerEmploye = employeService.registerEmploye(fromConnection(connection),true);
+			return registerEmploye.getUsername();
+		}
+
+		@Override
+		public RegistrationDTO fromConnection(Connection<?> connection) {
 			FacebookProfile userProfile = ((Facebook)connection.getApi()).userOperations().getUserProfile() ;
 			RegistrationDTO registrationDTO=new RegistrationDTO();
 			registrationDTO.setUsername(userProfile.getUsername());
@@ -173,14 +179,7 @@ public class DefaultConnectionSignUp implements ConnectionSignUp {
 			registrationDTO.setSocialUserId(connection.getKey().getProviderUserId());
 			registrationDTO.setProfileUrl(userProfile.getLink());
 			registrationDTO.setCompanyName(userProfile.getUsername().toUpperCase());
-			Employe registerEmploye = employeService.registerEmploye(registrationDTO,true);
-			return registerEmploye.getUsername();
-		}
-
-		@Override
-		public RegistrationDTO fromConnection(Connection<?> connection) {
-			// TODO Auto-generated method stub
-			return null;
+			return registrationDTO;
 		}
 		
 	}
@@ -189,7 +188,6 @@ public class DefaultConnectionSignUp implements ConnectionSignUp {
 
 		@Override
 		public String execute(Connection<?> connection) {
-			
 			Employe registerEmploye = employeService.registerEmploye(fromConnection(connection),true);
 			return registerEmploye.getUsername();
 		}
@@ -250,7 +248,6 @@ public class DefaultConnectionSignUp implements ConnectionSignUp {
 
 		@Override
 		public String execute(Connection<?> connection) {
-			
 			Employe registerEmploye = employeService.registerEmploye(fromConnection(connection),true);
 			return registerEmploye.getUsername();
 		}

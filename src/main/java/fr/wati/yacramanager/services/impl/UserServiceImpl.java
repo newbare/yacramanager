@@ -3,9 +3,10 @@ package fr.wati.yacramanager.services.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -36,13 +37,13 @@ public class UserServiceImpl implements UserService{
 
 	private Logger logger=LoggerFactory.getLogger(UserServiceImpl.class);
 	
-	@Autowired
+	@Inject
 	private UserRepository userRepository;
 	
-	@Autowired
+	@Inject
 	private PasswordEncoder passwordEncoder;
 	
-	@Autowired
+	@Inject
 	private CompanyService companyService;
 
 	private ApplicationEventPublisher applicationEventPublisher;

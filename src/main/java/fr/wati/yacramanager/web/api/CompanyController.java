@@ -6,11 +6,11 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.annotation.security.RolesAllowed;
+import javax.inject.Inject;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -46,9 +46,9 @@ import fr.wati.yacramanager.web.dto.ResponseWrapper;
 public class CompanyController implements RestCrudController<CompanyDTO> {
 
 	private static final Log LOG=LogFactory.getLog(CompanyController.class); 
-	@Autowired
+	@Inject
 	private CompanyService companyService;
-	@Autowired
+	@Inject
 	private DtoMapper dtoMapper;
 	
 	

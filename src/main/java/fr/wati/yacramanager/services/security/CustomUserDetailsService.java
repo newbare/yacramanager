@@ -7,7 +7,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.inject.Inject;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -27,7 +28,7 @@ import fr.wati.yacramanager.dao.repository.UserRepository;
 @Transactional(readOnly = true)
 public class CustomUserDetailsService implements UserDetailsService {
 
-	@Autowired
+	@Inject
 	private UserRepository usersRepository;
 	
 	/* (non-Javadoc)

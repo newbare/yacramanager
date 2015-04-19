@@ -5,7 +5,8 @@ package fr.wati.yacramanager.services.impl;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.inject.Inject;
+
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -27,9 +28,9 @@ import fr.wati.yacramanager.web.dto.AbsenceDTO.TypeAbsence;
 @Service
 public class AbsencePortfolioServiceImpl implements AbsencePortfolioService {
 
-	@Autowired
+	@Inject
 	private AbsencePortfolioRepository absencePortfolioRepository;
-	@Autowired
+	@Inject
 	private ApplicationEventPublisher applicationEventPublisher;
 	
 	/* (non-Javadoc)

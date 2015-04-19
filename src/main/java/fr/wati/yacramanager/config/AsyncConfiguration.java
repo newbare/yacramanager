@@ -4,9 +4,13 @@ import java.util.concurrent.Executor;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
+import org.springframework.aop.interceptor.SimpleAsyncUncaughtExceptionHandler;
+import org.springframework.boot.bind.RelaxedPropertyResolver;
+import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.core.env.Environment;
 import org.springframework.scheduling.annotation.AsyncConfigurer;
 import org.springframework.scheduling.annotation.EnableAsync;
@@ -18,12 +22,17 @@ import fr.wati.yacramanager.async.ExceptionHandlingAsyncTaskExecutor;
 @Configuration
 @EnableAsync
 @EnableScheduling
-public class AsyncConfiguration implements AsyncConfigurer {
+@Profile("!" + Constants.SPRING_PROFILE_FAST)
+public class AsyncConfiguration implements AsyncConfigurer, EnvironmentAware{
 
     private final Logger log = LoggerFactory.getLogger(AsyncConfiguration.class);
 
-    @Autowired
-    private Environment environment;
+    private RelaxedPropertyResolver propertyResolver;
+
+    @Override
+    public void setEnvironment(Environment environment) {
+        this.propertyResolver = new RelaxedPropertyResolver(environment, "async.");
+    }
 
 
     @Override
@@ -31,10 +40,19 @@ public class AsyncConfiguration implements AsyncConfigurer {
     public Executor getAsyncExecutor() {
         log.debug("Creating Async Task Executor");
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-        executor.setCorePoolSize(environment.getProperty("spring.async.corePoolSize", Integer.class, 2));
-        executor.setMaxPoolSize(environment.getProperty("spring.async.maxPoolSize", Integer.class, 50));
-        executor.setQueueCapacity(environment.getProperty("spring.async.queueCapacity", Integer.class, 10000));
+        executor.setCorePoolSize(propertyResolver.getProperty("corePoolSize", Integer.class, 2));
+        executor.setMaxPoolSize(propertyResolver.getProperty("maxPoolSize", Integer.class, 50));
+        executor.setQueueCapacity(propertyResolver.getProperty("queueCapacity", Integer.class, 10000));
         executor.setThreadNamePrefix("yacra-executor-");
         return new ExceptionHandlingAsyncTaskExecutor(executor);
     }
+
+
+	/* (non-Javadoc)
+	 * @see org.springframework.scheduling.annotation.AsyncConfigurer#getAsyncUncaughtExceptionHandler()
+	 */
+	@Override
+	public AsyncUncaughtExceptionHandler getAsyncUncaughtExceptionHandler() {
+		return new SimpleAsyncUncaughtExceptionHandler();
+	}
 }

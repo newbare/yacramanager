@@ -2,7 +2,8 @@ package fr.wati.yacramanager.web.elfinder;
 
 import java.io.File;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.inject.Inject;
+
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
@@ -15,10 +16,10 @@ import fr.wati.yacramanager.services.CompanyService;
 @Component("UserFsVolumeProvider")
 public class UserFsVolumeProvider extends SharedFsVolumeProvider {
 
-	@Autowired
+	@Inject
 	private Environment environment;
 
-	@Autowired
+	@Inject
 	private CompanyService companyService;
 
 	@Override

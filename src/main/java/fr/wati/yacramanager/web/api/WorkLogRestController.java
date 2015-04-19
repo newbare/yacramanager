@@ -5,11 +5,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javax.inject.Inject;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.joda.time.DateTime;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -49,15 +50,15 @@ public class WorkLogRestController implements RestCrudController<WorkLogDTO>{
 
 	private static final Log LOG=LogFactory.getLog(WorkLogRestController.class); 
 	
-	@Autowired
+	@Inject
 	private WorkLogService workLogService;
 	
-	@Autowired
+	@Inject
 	private DtoMapper dtoMapper;
 	
-	@Autowired
+	@Inject
 	private EmployeService employeService;
-	@Autowired
+	@Inject
 	private TaskService taskService;
 
 	@RequestMapping(value="/calendar",method = RequestMethod.GET)

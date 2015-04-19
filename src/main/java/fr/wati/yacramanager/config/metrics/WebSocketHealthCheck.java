@@ -1,8 +1,9 @@
 package fr.wati.yacramanager.config.metrics;
 
+import javax.inject.Inject;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Component;
 
@@ -14,7 +15,7 @@ import fr.wati.yacramanager.utils.SecurityUtils;
 public class WebSocketHealthCheck extends HealthCheck {
 
 	private Logger logger = LoggerFactory.getLogger(WebSocketHealthCheck.class);
-	@Autowired
+	@Inject
 	private SimpMessageSendingOperations messagingTemplate;
 
 	@Override

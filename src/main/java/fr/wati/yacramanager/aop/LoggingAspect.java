@@ -10,8 +10,6 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
 
 /**
  * Aspect for logging execution of service and repository Spring components.
@@ -20,9 +18,6 @@ import org.springframework.core.env.Environment;
 public class LoggingAspect {
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
-
-    @Autowired
-    private Environment env;
 
     @Pointcut("within(fr.wati.yacramanager.dao..*) || within(fr.wati.yacramanager.services..*) || within(fr.wati.yacramanager.web.api..*)")
     public void loggingPoincut() {}

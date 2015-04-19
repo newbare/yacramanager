@@ -12,7 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.google.common.base.Throwables;
 
-@Controller
+//@Controller
 public class ErrorController {
 
 	@RequestMapping("/error")

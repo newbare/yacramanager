@@ -6,9 +6,11 @@ import javax.annotation.PostConstruct;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.bind.RelaxedPropertyResolver;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.core.env.Environment;
 
 import com.codahale.metrics.JmxReporter;
@@ -28,9 +30,11 @@ import fr.wati.yacramanager.config.metrics.WebSocketHealthCheck;
 
 @Configuration
 @EnableMetrics(proxyTargetClass = true)
+@Profile("!" + Constants.SPRING_PROFILE_FAST)
 public class MetricsConfiguration extends MetricsConfigurerAdapter implements
 		EnvironmentAware {
 
+	private static final String ENV_METRICS = "metrics.";
 	private static final String PROP_JMX_ENABLED = "metrics.jmx.enabled";
 	private static final String PROP_METRIC_REG_JVM_MEMORY = "jvm.memory";
 	private static final String PROP_METRIC_REG_JVM_GARBAGE = "jvm.garbage";
@@ -45,11 +49,11 @@ public class MetricsConfiguration extends MetricsConfigurerAdapter implements
 
 	public static final HealthCheckRegistry HEALTH_CHECK_REGISTRY = new HealthCheckRegistry();
 
-	private Environment environment;
+	private RelaxedPropertyResolver propertyResolver;
 
 	@Override
 	public void setEnvironment(Environment environment) {
-		this.environment = environment;
+		this.propertyResolver = new RelaxedPropertyResolver(environment, ENV_METRICS);
 	}
 
 	@Override
@@ -94,7 +98,7 @@ public class MetricsConfiguration extends MetricsConfigurerAdapter implements
 				PROP_METRIC_REG_JVM_BUFFERS,
 				new BufferPoolMetricSet(ManagementFactory
 						.getPlatformMBeanServer()));
-		if (environment.getProperty(PROP_JMX_ENABLED, Boolean.class, false)) {
+		if (propertyResolver.getProperty(PROP_JMX_ENABLED, Boolean.class, false)) {
 			log.info("Initializing Metrics JMX reporting");
 			final JmxReporter jmxReporter = JmxReporter.forRegistry(
 					METRIC_REGISTRY).build();

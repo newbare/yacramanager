@@ -3,8 +3,9 @@ package fr.wati.yacramanager.services.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import org.joda.time.DateTime;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -39,9 +40,9 @@ import fr.wati.yacramanager.web.dto.NoteDeFraisDTO;
 @Service
 public class NoteDeFraisServiceImpl implements NoteDeFraisService {
 
-	@Autowired
+	@Inject
 	private NoteDeFraisRepository noteDeFraisRepository;
-	@Autowired
+	@Inject
 	private EmployeService employeService;
 	private ApplicationEventPublisher applicationEventPublisher;
 	

@@ -7,11 +7,11 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.messaging.simp.annotation.SendToUser;
@@ -23,10 +23,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import fr.wati.yacramanager.web.api.AbsenceController;
+import fr.wati.yacramanager.web.api.ActivityReportController;
 import fr.wati.yacramanager.web.api.AuthenticationController;
 import fr.wati.yacramanager.web.api.ClientController;
 import fr.wati.yacramanager.web.api.CompanyController;
-import fr.wati.yacramanager.web.api.ActivityReportController;
 import fr.wati.yacramanager.web.api.CustomMapEditor;
 import fr.wati.yacramanager.web.api.NoteDeFraisController;
 import fr.wati.yacramanager.web.api.ProjectController;
@@ -47,7 +47,7 @@ import fr.wati.yacramanager.web.api.WorkLogRestController;
 public class RestControllerAdvice {
 
 	private Logger logger=LoggerFactory.getLogger(RestControllerAdvice.class);
-	@Autowired
+	@Inject
 	private SimpMessagingTemplate messagingTemplate;
 
 	@InitBinder

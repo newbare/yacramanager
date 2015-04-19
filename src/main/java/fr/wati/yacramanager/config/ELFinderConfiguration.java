@@ -2,9 +2,9 @@ package fr.wati.yacramanager.config;
 
 import java.util.HashMap;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.bind.RelaxedPropertyResolver;
+import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 
@@ -14,11 +14,16 @@ import cn.bluejoe.elfinder.controller.executor.DefaultCommandExecutorFactory;
 import cn.bluejoe.elfinder.impl.DefaultFsServiceConfig;
 
 @Configuration
-@ComponentScan(basePackages = {"fr.wati.yacramanager.web.elfinder"})
-public class ELFinderConfig {
+public class ELFinderConfiguration  implements EnvironmentAware{
 
-	@Autowired
-	private Environment env;
+	private RelaxedPropertyResolver propertyResolver;
+
+
+	@Override
+	public void setEnvironment(Environment env) {
+		this.propertyResolver = new RelaxedPropertyResolver(env,
+				"elfinder.");
+	}
 
 	@Bean
 	public CommandExecutorFactory commandExecutorFactory() {
@@ -33,7 +38,7 @@ public class ELFinderConfig {
 	@Bean
 	public DefaultFsServiceConfig defaultFsServiceConfig() {
 		DefaultFsServiceConfig config = new DefaultFsServiceConfig();
-		config.setTmbWidth(env.getProperty("tmbWidth", Integer.class));
+		config.setTmbWidth(propertyResolver.getProperty("tmbWidth", Integer.class));
 		return config;
 	}
 }

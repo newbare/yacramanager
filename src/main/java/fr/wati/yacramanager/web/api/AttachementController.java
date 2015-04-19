@@ -8,13 +8,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.joda.time.DateTime;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -39,7 +39,7 @@ public class AttachementController {
 
 	private static final Log LOG = LogFactory
 			.getLog(AttachementController.class);
-	@Autowired
+	@Inject
 	private AttachementService attachementService;
 
 	@RequestMapping(method = RequestMethod.POST)

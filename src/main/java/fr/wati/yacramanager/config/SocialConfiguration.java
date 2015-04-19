@@ -4,6 +4,8 @@ package fr.wati.yacramanager.config;
 import javax.inject.Inject;
 import javax.sql.DataSource;
 
+import org.springframework.boot.bind.RelaxedPropertyResolver;
+import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
@@ -44,7 +46,7 @@ import fr.wati.yacramanager.utils.SecurityUtils;
  */
 @Configuration
 @EnableSocial
-public class SocialConfig implements SocialConfigurer {
+public class SocialConfiguration implements SocialConfigurer , EnvironmentAware{
 
 	@Inject
 	private DataSource dataSource;
@@ -54,19 +56,28 @@ public class SocialConfig implements SocialConfigurer {
 	@Inject
 	private UserService userService;
 
+	private RelaxedPropertyResolver propertyResolver;
+
+
+	@Override
+	public void setEnvironment(Environment env) {
+		this.propertyResolver = new RelaxedPropertyResolver(env,
+				"spring.social.");
+	}
+	
 	//
 	// SocialConfigurer implementation methods
 	//
 	
 	@Override
 	public void addConnectionFactories(ConnectionFactoryConfigurer cfConfig, Environment env) {
-		cfConfig.addConnectionFactory(new FacebookConnectionFactory(env.getProperty("facebook.client.id"), env.getProperty("facebook.client.secret")));
-		cfConfig.addConnectionFactory(new GitHubConnectionFactory(env.getProperty("git.client.id"), env.getProperty("git.client.secret")));
-		cfConfig.addConnectionFactory(new TwitterConnectionFactory(env.getProperty("twitter.client.id"), env.getProperty("twitter.client.secret")));
-		GoogleConnectionFactory googleConnectionFactory = new GoogleConnectionFactory(env.getProperty("google.client.id"), env.getProperty("google.client.secret"));
-		googleConnectionFactory.setScope(env.getProperty("google.client.scope"));
+		cfConfig.addConnectionFactory(new FacebookConnectionFactory(propertyResolver.getProperty("facebook.client.id"), propertyResolver.getProperty("facebook.client.secret")));
+		cfConfig.addConnectionFactory(new GitHubConnectionFactory(propertyResolver.getProperty("git.client.id"), propertyResolver.getProperty("git.client.secret")));
+		cfConfig.addConnectionFactory(new TwitterConnectionFactory(propertyResolver.getProperty("twitter.client.id"), propertyResolver.getProperty("twitter.client.secret")));
+		GoogleConnectionFactory googleConnectionFactory = new GoogleConnectionFactory(propertyResolver.getProperty("google.client.id"), propertyResolver.getProperty("google.client.secret"));
+		googleConnectionFactory.setScope(propertyResolver.getProperty("google.client.scope"));
 		cfConfig.addConnectionFactory(googleConnectionFactory);
-		cfConfig.addConnectionFactory(new LinkedInConnectionFactory(env.getProperty("linkedin.client.id"), env.getProperty("linkedin.client.secret")));
+		cfConfig.addConnectionFactory(new LinkedInConnectionFactory(propertyResolver.getProperty("linkedin.client.id"), propertyResolver.getProperty("linkedin.client.secret")));
 	}
 
 
@@ -134,7 +145,7 @@ public class SocialConfig implements SocialConfigurer {
 	
 	@Bean
 	public SignInAdapter signInAdapter(){
-		return new SimpleSignInAdapter(userService,WebSecurityConfig.DEFAULT_LOGIN_SUCCESS_PATH);
+		return new SimpleSignInAdapter(userService,SecurityConfiguration.DEFAULT_LOGIN_SUCCESS_PATH);
 	}
 	
 	@Bean

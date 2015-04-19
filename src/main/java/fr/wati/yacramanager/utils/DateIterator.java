@@ -40,19 +40,4 @@ public class DateIterator
     {
         return this;
     }
-
-    public static void main(String[] args)
-    {
-    	Date d1 = new Date();
-    	Calendar cal = Calendar.getInstance();
-    	cal.add(Calendar.DATE, 20);
-    	Date d2 = cal.getTime();
-
-    	Iterator<Date> i = new DateIterator(d1, d2);
-    	while(i.hasNext())
-    	{
-    		Date date = i.next();
-    		System.out.println(date);
-    	}
-    }
 } 

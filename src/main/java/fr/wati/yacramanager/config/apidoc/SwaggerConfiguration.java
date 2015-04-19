@@ -1,6 +1,7 @@
 package fr.wati.yacramanager.config.apidoc;
 
 import org.apache.commons.lang.StringUtils;
+import org.springframework.boot.bind.RelaxedPropertyResolver;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,11 +19,11 @@ public class SwaggerConfiguration implements EnvironmentAware {
     public static final String DEFAULT_INCLUDE_PATTERN = "/app/api/.*";
 
 
-	private Environment environment;
+    private RelaxedPropertyResolver propertyResolver;
 
     @Override
     public void setEnvironment(Environment environment) {
-        this.environment = environment;
+        this.propertyResolver = new RelaxedPropertyResolver(environment, "swagger.");
     }
 
     /**
@@ -33,7 +34,7 @@ public class SwaggerConfiguration implements EnvironmentAware {
         return new SwaggerSpringMvcPlugin(springSwaggerConfig)
                 .apiInfo(apiInfo())
                 .genericModelSubstitutes(ResponseEntity.class)
-                .includePatterns(StringUtils.split(environment.getProperty("swagger.include.patterns", DEFAULT_INCLUDE_PATTERN),","));
+                .includePatterns(StringUtils.split(propertyResolver.getProperty("includePatterns", DEFAULT_INCLUDE_PATTERN),","));
     }
 
     /**
@@ -41,11 +42,11 @@ public class SwaggerConfiguration implements EnvironmentAware {
      */
     private ApiInfo apiInfo() {
         return new ApiInfo(
-        		environment.getProperty("swagger.title"),
-        		environment.getProperty("swagger.description"),
-        		environment.getProperty("swagger.termsOfServiceUrl"),
-        		environment.getProperty("swagger.contact"),
-        		environment.getProperty("swagger.license"),
-        		environment.getProperty("swagger.licenseUrl"));
+        		propertyResolver.getProperty("title"),
+        		propertyResolver.getProperty("description"),
+        		propertyResolver.getProperty("termsOfServiceUrl"),
+        		propertyResolver.getProperty("contact"),
+        		propertyResolver.getProperty("license"),
+        		propertyResolver.getProperty("licenseUrl"));
     }
 }

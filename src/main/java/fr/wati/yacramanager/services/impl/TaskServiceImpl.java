@@ -3,8 +3,9 @@ package fr.wati.yacramanager.services.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -27,11 +28,11 @@ import fr.wati.yacramanager.utils.Filter;
 @Service
 public class TaskServiceImpl implements TaskService {
 
-	@Autowired
+	@Inject
 	private TaskRepository taskRepository;
-	@Autowired
+	@Inject
 	private ProjectRepository  projectRepository;
-	@Autowired
+	@Inject
 	private EmployeService employeService;
 	
 	private ApplicationEventPublisher applicationEventPublisher;

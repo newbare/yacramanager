@@ -1,0 +1,40 @@
+# Disable the spring security default configuration from spring-boot-actuator
+management.security.enabled: true
+security.basic.enabled: false
+
+# Disable Jolokia - An http/json bridge for remote JMX access
+endpoints.jolokia.enabled: false
+
+# security configuration (this key should be unique for your application, and kept secret)
+jhipster.security.rememberme.key: 6b1ae782ce6656b46b579b85514ca0e832cc62b7
+
+async:
+    corePoolSize: 2
+    maxPoolSize: 50
+    queueCapacity: 10000
+
+spring:
+    mail:
+        host: smtp.wati.fr
+        port: 587
+        user: rachid.ouattara@wati.fr
+        password: "@Singes85"
+        protocol: smtp
+        tls: false
+        auth: true
+        from: rachid.ouattara@wati.fr
+
+    messageSource:
+        cacheSeconds: 1
+
+elfinder:
+    tmbWidth: 80
+
+swagger:
+    title: YACRA API
+    description: YACRA applications and beyond!
+    termsOfServiceUrl: http://jhipster.github.io/
+    contact:
+    license: Apache 2.0
+    licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.html
+    includePatterns: /app/api/.*,/app/report/.*

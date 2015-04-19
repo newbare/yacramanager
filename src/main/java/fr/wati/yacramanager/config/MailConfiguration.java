@@ -4,15 +4,17 @@ import java.util.Properties;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.bind.RelaxedPropertyResolver;
+import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 
 @Configuration
-public class MailConfiguration {
+public class MailConfiguration implements EnvironmentAware {
 
+	private static final String ENV_SPRING_MAIL = "spring.mail.";
     private static final String DEFAULT_HOST = "127.0.0.1";
     private static final String PROP_HOST = "spring.mail.host";
     private static final String DEFAULT_PROP_HOST = "localhost";
@@ -28,21 +30,23 @@ public class MailConfiguration {
 
     private final Logger log = LoggerFactory.getLogger(MailConfiguration.class);
 
-    @Autowired
-    private Environment environment;
+    private RelaxedPropertyResolver propertyResolver;
 
-    
+    @Override
+    public void setEnvironment(Environment environment) {
+        this.propertyResolver = new RelaxedPropertyResolver(environment, ENV_SPRING_MAIL);
+    }
 
     @Bean
     public JavaMailSenderImpl javaMailSender() {
         log.debug("Configuring mail server");
-        String host = environment.getProperty(PROP_HOST, DEFAULT_PROP_HOST);
-        int port = environment.getProperty(PROP_PORT, Integer.class, 0);
-        String user = environment.getProperty(PROP_USER);
-        String password = environment.getProperty(PROP_PASSWORD);
-        String protocol = environment.getProperty(PROP_PROTO,"smtp");
-        Boolean tls = environment.getProperty(PROP_TLS, Boolean.class, false);
-        Boolean auth = environment.getProperty(PROP_AUTH, Boolean.class, false);
+        String host = propertyResolver.getProperty(PROP_HOST, DEFAULT_PROP_HOST);
+        int port = propertyResolver.getProperty(PROP_PORT, Integer.class, 0);
+        String user = propertyResolver.getProperty(PROP_USER);
+        String password = propertyResolver.getProperty(PROP_PASSWORD);
+        String protocol = propertyResolver.getProperty(PROP_PROTO,"smtp");
+        Boolean tls = propertyResolver.getProperty(PROP_TLS, Boolean.class, false);
+        Boolean auth = propertyResolver.getProperty(PROP_AUTH, Boolean.class, false);
 
         JavaMailSenderImpl sender = new JavaMailSenderImpl();
         if (host != null && !host.isEmpty()) {

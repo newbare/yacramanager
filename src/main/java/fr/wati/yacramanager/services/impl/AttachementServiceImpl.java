@@ -5,7 +5,8 @@ package fr.wati.yacramanager.services.impl;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.inject.Inject;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,10 +24,10 @@ import fr.wati.yacramanager.services.EmployeService;
 @Service
 public class AttachementServiceImpl implements AttachementService {
 
-	@Autowired
+	@Inject
 	private AttachementRepository attachementRepository;
 	
-	@Autowired
+	@Inject
 	private EmployeService employeService;
 
 	/*

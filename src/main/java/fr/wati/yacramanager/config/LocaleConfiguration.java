@@ -1,5 +1,6 @@
 package fr.wati.yacramanager.config;
 
+import org.springframework.boot.bind.RelaxedPropertyResolver;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
@@ -16,11 +17,11 @@ import fr.wati.yacramanager.config.locale.AngularCookieLocaleResolver;
 @Configuration
 public class LocaleConfiguration extends WebMvcConfigurerAdapter implements EnvironmentAware {
 
-	private Environment environment;
+	private RelaxedPropertyResolver propertyResolver;
 
     @Override
     public void setEnvironment(Environment environment) {
-        this.environment = environment;
+    	this.propertyResolver = new RelaxedPropertyResolver(environment, "spring.messageSource.");
     }
 
     @Bean(name = "localeResolver")
@@ -35,7 +36,7 @@ public class LocaleConfiguration extends WebMvcConfigurerAdapter implements Envi
         final ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
         messageSource.setBasename("classpath:/i18n/messages");
         messageSource.setDefaultEncoding("UTF-8");
-        messageSource.setCacheSeconds(environment.getProperty("cacheSeconds", Integer.class, 1));
+        messageSource.setCacheSeconds(propertyResolver.getProperty("cacheSeconds", Integer.class, 1));
         return messageSource;
     }
 
@@ -43,7 +44,6 @@ public class LocaleConfiguration extends WebMvcConfigurerAdapter implements Envi
     public void addInterceptors(InterceptorRegistry registry) {
         final LocaleChangeInterceptor localeChangeInterceptor = new LocaleChangeInterceptor();
         localeChangeInterceptor.setParamName("language");
-
         registry.addInterceptor(localeChangeInterceptor);
     }
 }

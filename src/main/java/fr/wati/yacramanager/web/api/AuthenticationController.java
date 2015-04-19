@@ -8,10 +8,10 @@ import java.util.Locale;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -52,22 +52,22 @@ import fr.wati.yacramanager.web.dto.RegistrationDTO;
 @RequestMapping("/auth/api")
 public class AuthenticationController {
 
-	@Autowired
+	@Inject
 	private EmployeService employeService;
 
-	@Autowired
+	@Inject
 	private UserService userService;
 
-	@Autowired
+	@Inject
 	private MailService mailService;
 	
-	@Autowired
+	@Inject
 	private SignInAdapter signInAdapter;
 	
-	@Autowired
+	@Inject
 	private GoogleReCaptchaService reCaptchaService;
 	
-	@Resource(name="appTemplateEngine")
+	@Resource(name="templateEngine")
 	private SpringTemplateEngine templateEngine;
 
 	@RequestMapping(value = "/register", method = RequestMethod.POST)

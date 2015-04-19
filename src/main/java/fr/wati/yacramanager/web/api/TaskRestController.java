@@ -8,10 +8,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javax.inject.Inject;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -54,17 +55,17 @@ public class TaskRestController {
 
 	private static final Log LOG = LogFactory.getLog(TaskRestController.class);
 	
-	@Autowired
+	@Inject
 	private CompanyService companyService;
 	
-	@Autowired
+	@Inject
 	private DtoMapper dtoMapper;
 	
-	@Autowired
+	@Inject
 	private TaskService taskService;
-	@Autowired
+	@Inject
 	private EmployeService  employeService;
-	@Autowired
+	@Inject
 	private ProjectService  projectService;
 	
 	@RequestMapping(value = "/{projectId}/{employeId}", method = RequestMethod.GET)

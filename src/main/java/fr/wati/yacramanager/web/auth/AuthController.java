@@ -1,8 +1,8 @@
 package fr.wati.yacramanager.web.auth;
 
+import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.social.connect.Connection;
@@ -20,7 +20,7 @@ import fr.wati.yacramanager.web.dto.RegistrationDTO;
 @Controller
 public class AuthController {
 
-	@Autowired
+	@Inject
 	private DefaultConnectionSignUp connectionSignUp;
 	
 	@RequestMapping(value = "/auth/login")

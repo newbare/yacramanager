@@ -6,11 +6,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javax.inject.Inject;
+
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -54,19 +55,19 @@ import fr.wati.yacramanager.web.dto.ResponseWrapper;
 public class AbsenceController  {
 
 	private final Logger log = LoggerFactory.getLogger(AbsenceController.class);
-	@Autowired
+	@Inject
 	private AbsenceService absenceService;
 
-	@Autowired
+	@Inject
 	private AbsencePortfolioService absencePortfolioService;
 
-	@Autowired
+	@Inject
 	private DtoMapper dtoMapper;
 
-	@Autowired
+	@Inject
 	private EmployeService employeService;
 
-	@Autowired
+	@Inject
 	private CompanyService companyService;
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)

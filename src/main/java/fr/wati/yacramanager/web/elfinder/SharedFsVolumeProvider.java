@@ -4,7 +4,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.inject.Inject;
+
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
@@ -16,10 +17,10 @@ import fr.wati.yacramanager.services.AttachementService;
 @Component
 public abstract class SharedFsVolumeProvider implements VolumeProvider<Employe> {
 
-	@Autowired
+	@Inject
 	private Environment environment;
 	
-	@Autowired
+	@Inject
 	private AttachementService attachementService;
 	
 	@Override

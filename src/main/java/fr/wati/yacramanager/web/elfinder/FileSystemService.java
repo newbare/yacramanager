@@ -3,9 +3,10 @@ package fr.wati.yacramanager.web.elfinder;
 import java.io.IOException;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import cn.bluejoe.elfinder.service.FsItem;
@@ -22,10 +23,10 @@ public class FileSystemService implements FsService, InitializingBean {
 
 	private VolumeProvider volumeProvider;
 	
-	@Autowired
+	@Inject
 	private FsSecurityChecker securityChecker;
 	
-	@Autowired
+	@Inject
 	private FsServiceConfig fsServiceConfig;
 	
 	String[][] escapes = { { "+", "_P" }, { "-", "_M" }, { "/", "_S" }, { ".", "_D" }, { "=", "_E" } };

@@ -2,8 +2,9 @@ package fr.wati.yacramanager.services.impl;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import org.joda.time.LocalDate;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,10 +23,10 @@ import fr.wati.yacramanager.services.ServiceException;
 @Service
 @Transactional
 public class ActivityReportServiceImpl implements ActivityReportService {
-	@Autowired
+	@Inject
 	private ActivityReportRepository activityReportRepository;
 	
-	@Autowired
+	@Inject
 	private EmployeService employeService;
 	private ApplicationEventPublisher applicationEventPublisher;
 

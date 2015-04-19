@@ -2,10 +2,11 @@ package fr.wati.yacramanager.web.api;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import org.joda.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.http.HttpStatus;
@@ -35,13 +36,13 @@ public class ActivityReportController {
 
 	private Logger logger = LoggerFactory
 			.getLogger(ActivityReportController.class);
-	@Autowired
+	@Inject
 	private CraService craService;
 
-	@Autowired
+	@Inject
 	private EmployeService employeService;
 
-	@Autowired
+	@Inject
 	private ActivityReportService activityReportService;
 
 	@InitBinder

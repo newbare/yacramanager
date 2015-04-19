@@ -3,8 +3,9 @@ package fr.wati.yacramanager.services.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import org.joda.time.LocalDate;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -40,13 +41,13 @@ import fr.wati.yacramanager.web.dto.AbsenceDTO.TypeAbsence;
 @Service
 public class AbsenceServiceImpl implements AbsenceService {
 
-	@Autowired
+	@Inject
 	private AbsenceRepository absenceRepository;
 	
-	@Autowired
+	@Inject
 	private EmployeService employeService;
 	
-	@Autowired
+	@Inject
 	private AbsencePortfolioService absencePortfolioService;
 
 	private ApplicationEventPublisher applicationEventPublisher;

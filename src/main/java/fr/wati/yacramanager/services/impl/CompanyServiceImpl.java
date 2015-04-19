@@ -1,12 +1,12 @@
 package fr.wati.yacramanager.services.impl;
 
+import javax.inject.Inject;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import org.joda.time.LocalDate;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -37,13 +37,13 @@ import fr.wati.yacramanager.web.dto.CompanyDTO;
 @Transactional
 public class CompanyServiceImpl implements CompanyService {
 
-	@Autowired
+	@Inject
 	private CompanyRepository companyRepository;
-	@Autowired
+	@Inject
 	private ContactRepository contactRepository;
-	@Autowired
+	@Inject
 	private ClientService clientService;
-	@Autowired
+	@Inject
 	private DtoMapper dtoMapper;
 	private ApplicationEventPublisher applicationEventPublisher;
 

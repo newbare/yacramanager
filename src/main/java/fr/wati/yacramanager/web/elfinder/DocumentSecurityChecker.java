@@ -2,7 +2,8 @@ package fr.wati.yacramanager.web.elfinder;
 
 import java.io.IOException;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.inject.Inject;
+
 import org.springframework.stereotype.Component;
 
 import cn.bluejoe.elfinder.service.FsItem;
@@ -13,7 +14,7 @@ import fr.wati.yacramanager.services.EmployeService;
 @Component
 public class DocumentSecurityChecker implements FsSecurityChecker {
 
-	@Autowired
+	@Inject
 	private EmployeService employeService;
 	
 	@Override

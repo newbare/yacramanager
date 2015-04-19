@@ -3,7 +3,8 @@ package fr.wati.yacramanager.services.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.inject.Inject;
+
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -35,22 +36,22 @@ import fr.wati.yacramanager.web.dto.ClientDTO;
 @Service
 public class ClientServiceImpl implements ClientService {
 
-	@Autowired
+	@Inject
 	private ClientRepository clientRepository;
 	
-	@Autowired
+	@Inject
 	private ContactRepository contactRepository;
 	
-	@Autowired
+	@Inject
 	private DtoMapper dtoMapper;
 	
-	@Autowired
+	@Inject
 	private CompanyRepository companyRepository;
 	
-	@Autowired
+	@Inject
 	private CompanyService companyService;
 	
-	@Autowired
+	@Inject
 	private ProjectService projectService;
 
 	private ApplicationEventPublisher applicationEventPublisher;

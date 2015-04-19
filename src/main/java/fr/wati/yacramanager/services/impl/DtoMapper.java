@@ -3,7 +3,8 @@ package fr.wati.yacramanager.services.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.inject.Inject;
+
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,12 +45,12 @@ import fr.wati.yacramanager.web.dto.WorkLogDTO;
 @Service
 public class DtoMapper {
 
-	@Autowired
+	@Inject
 	private ClientService clientService;
-	@Autowired
+	@Inject
 	private CompanyService companyService;
 	
-	@Autowired
+	@Inject
 	private ProjectService projectService;
 	
 	public  UserDto map(Users user) {

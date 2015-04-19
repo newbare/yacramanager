@@ -81,9 +81,10 @@ function LoginController($scope, $location) {
 	}
 }
 
-function RegisterController($scope, $location,RegistrationRest,alertService,vcRecaptchaService) {
+function RegisterController($scope, $location,$window,RegistrationRest,alertService,vcRecaptchaService) {
 	$scope.loadLogin = function() {
 		$location.url('/');
+		$window.location.href='/app/view/';
 	};
 	$scope.response = null;
     $scope.widgetId = null;
@@ -121,9 +122,10 @@ function RegisterController($scope, $location,RegistrationRest,alertService,vcRe
 				$scope.loadLogin();
 		},function(reason){
 			console.log('Failed validation');
-            // In case of a failed validation you need to reload the captcha
+			$window.location.reload();
+			// In case of a failed validation you need to reload the captcha
             // because each response can be checked just once
-            vcRecaptchaService.reload($scope.widgetId);
+            //vcRecaptchaService.reload($scope.widgetId);
 		});
 	};
 }

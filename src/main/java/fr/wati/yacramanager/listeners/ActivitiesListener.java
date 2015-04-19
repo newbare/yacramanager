@@ -1,6 +1,7 @@
 package fr.wati.yacramanager.listeners;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.inject.Inject;
+
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
@@ -9,7 +10,7 @@ import fr.wati.yacramanager.dao.repository.ActivityRepository;
 @Component
 public class ActivitiesListener implements ApplicationListener<ActivityEvent>{
 
-	@Autowired
+	@Inject
 	private ActivityRepository activityRepository;
 	
 	public ActivitiesListener() {

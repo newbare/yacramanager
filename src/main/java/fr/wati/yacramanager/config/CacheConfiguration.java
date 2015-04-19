@@ -4,25 +4,30 @@ import java.util.Set;
 import java.util.SortedSet;
 
 import javax.annotation.PreDestroy;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.metamodel.EntityType;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.ehcache.EhCacheCacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.core.env.Environment;
 import org.springframework.util.Assert;
 
+import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.ehcache.InstrumentedEhcache;
 
 @Configuration
 @EnableCaching
+@AutoConfigureAfter(value = {MetricsConfiguration.class, DatabaseConfiguration.class})
+@Profile("!" + Constants.SPRING_PROFILE_FAST)
 public class CacheConfiguration {
 
     private final Logger log = LoggerFactory.getLogger(CacheConfiguration.class);
@@ -30,17 +35,20 @@ public class CacheConfiguration {
     @PersistenceContext
     private EntityManager entityManager;
 
-    @Autowired
+    @Inject
     private Environment env;
+    
+    @Inject
+    private MetricRegistry metricRegistry;
 
     private net.sf.ehcache.CacheManager cacheManager;
 
     @PreDestroy
     public void destroy() {
-        log.info("Remove Cache Manager metrics");
-        SortedSet<String> names = MetricsConfiguration.METRIC_REGISTRY.getNames();
+    	log.info("Remove Cache Manager metrics");
+        SortedSet<String> names = metricRegistry.getNames();
         for (String name : names) {
-        	MetricsConfiguration.METRIC_REGISTRY.remove(name);
+            metricRegistry.remove(name);
         }
         log.info("Closing Cache Manager");
         cacheManager.shutdown();

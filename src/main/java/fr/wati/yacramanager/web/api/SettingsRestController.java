@@ -2,9 +2,10 @@ package fr.wati.yacramanager.web.api;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,16 +29,16 @@ public class SettingsRestController {
 
 	private static final Log LOG=LogFactory.getLog(SettingsRestController.class);
 	
-	@Autowired
+	@Inject
 	private SettingsService settingsService;
 	
-	@Autowired
+	@Inject
 	private DtoMapper dtoMapper;
 	
-	@Autowired
+	@Inject
 	private UserService userService;
 	
-	@Autowired
+	@Inject
 	private CompanyService companyService;
 	
 	@RequestMapping(value = "/company/{companyId}/{settingsId}", method = RequestMethod.GET)

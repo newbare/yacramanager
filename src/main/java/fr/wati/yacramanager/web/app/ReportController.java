@@ -5,11 +5,11 @@ package fr.wati.yacramanager.web.app;
 
 import java.security.Principal;
 
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.joda.time.LocalDate;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.stereotype.Controller;
@@ -33,10 +33,10 @@ import fr.wati.yacramanager.services.ServiceException;
 @RequestMapping(value = "/app/report")
 public class ReportController {
 
-	@Autowired
+	@Inject
 	private EmployeService employeService;
 	
-	@Autowired
+	@Inject
 	private CraService craService;
 	
 	@RequestMapping(value = "/activityReport/{employeId}")

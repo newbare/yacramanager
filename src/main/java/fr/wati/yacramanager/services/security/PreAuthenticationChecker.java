@@ -1,9 +1,10 @@
 package fr.wati.yacramanager.services.security;
 
+import javax.inject.Inject;
+
 import org.joda.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.security.authentication.AccountExpiredException;
 import org.springframework.security.authentication.DisabledException;
@@ -27,7 +28,7 @@ public class PreAuthenticationChecker implements UserDetailsChecker {
 	protected MessageSourceAccessor messages = SpringSecurityMessageSource
 			.getAccessor();
 
-	@Autowired
+	@Inject
 	private CompanyAccountInfoRepository companyAccountInfoRepository;
 
 	public PreAuthenticationChecker() {
