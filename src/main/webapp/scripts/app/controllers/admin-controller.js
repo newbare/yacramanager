@@ -256,7 +256,7 @@ function MetricsController($scope, MetricsService,HealthCheckService) {
     $scope.refresh = function() {
     	
     	HealthCheckService.check().then(function(promise) {
-            $scope.healthCheck = promise;
+            $scope.healthCheck = promise.data;
         },function(promise) {
             $scope.healthCheck = promise.data;
         });

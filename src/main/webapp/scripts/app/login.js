@@ -105,14 +105,20 @@ function RegisterController($scope, $location,$window,RegistrationRest,alertServ
 
 	$scope.user={};
 	if(typeof preFillRegistrationDTO !== 'undefined'){
-//		$scope.preFillRegistrationDTO=preFillRegistrationDTO;
-//		$scope.user.username=preFillRegistrationDTO.username;
-//		$scope.user.firstName=preFillRegistrationDTO.firstName;
-//		$scope.user.lastName=preFillRegistrationDTO.lastName;
-//		$scope.user.email=preFillRegistrationDTO.email;
-//		$scope.user.socialUser=preFillRegistrationDTO.socialUser;
-//		$scope.user.profileImageUrl=preFillRegistrationDTO.profileImageUrl;
-		$scope.user=preFillRegistrationDTO;
+		$scope.preFillRegistrationDTO=preFillRegistrationDTO;
+		$scope.user.username=preFillRegistrationDTO.username;
+		$scope.user.password=preFillRegistrationDTO.password;
+		$scope.user.companyName=preFillRegistrationDTO.companyName;
+		$scope.user.firstName=preFillRegistrationDTO.firstName;
+		$scope.user.lastName=preFillRegistrationDTO.lastName;
+		$scope.user.email=preFillRegistrationDTO.email;
+		$scope.user.birthDay=preFillRegistrationDTO.birthDay;
+		$scope.user.socialUser=preFillRegistrationDTO.socialUser;
+		$scope.user.socialUserId=preFillRegistrationDTO.socialUserId;
+		$scope.user.profileImageUrl=preFillRegistrationDTO.profileImageUrl;
+		$scope.user.profileUrl=preFillRegistrationDTO.profileUrl;
+		$scope.user.gender=preFillRegistrationDTO.gender.$name;
+		//$scope.user=preFillRegistrationDTO;
 	}
 	$scope.register=function(){
 		$scope.user.captchaToken=$scope.response;

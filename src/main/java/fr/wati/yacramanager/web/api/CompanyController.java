@@ -43,7 +43,7 @@ import fr.wati.yacramanager.web.dto.ResponseWrapper;
 @RestController
 @ApiIgnore
 @RequestMapping("/app/api/company")
-public class CompanyController implements RestCrudController<CompanyDTO> {
+public class CompanyController {
 
 	private static final Log LOG=LogFactory.getLog(CompanyController.class); 
 	@Inject
@@ -52,7 +52,6 @@ public class CompanyController implements RestCrudController<CompanyDTO> {
 	private DtoMapper dtoMapper;
 	
 	
-	@Override
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	@Timed
 	public @ResponseBody ResponseEntity<CompanyDTO> read(@PathVariable("id") Long id) {
@@ -62,7 +61,6 @@ public class CompanyController implements RestCrudController<CompanyDTO> {
 		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
 
-	@Override
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@Timed
@@ -72,7 +70,6 @@ public class CompanyController implements RestCrudController<CompanyDTO> {
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@Override
 	@RequestMapping(method = RequestMethod.GET)
 	@Timed
 	public ResponseWrapper<List<CompanyDTO>> getAll(@RequestParam(required=false) Integer page,@RequestParam(required=false) Integer size,@RequestParam(value="sort", required=false) Map<String, String> sort,@RequestParam(value="filter", required=false) String filter) throws RestServiceException {
@@ -123,7 +120,6 @@ public class CompanyController implements RestCrudController<CompanyDTO> {
 		return responseWrapper;
 	}
 
-	@Override
 	@RequestMapping(method = RequestMethod.POST)
 	@Timed
 	@RolesAllowed(Role.ADMIN)
@@ -132,7 +128,6 @@ public class CompanyController implements RestCrudController<CompanyDTO> {
 		return new ResponseEntity<String>(HttpStatus.CREATED);
 	}
 
-	@Override
 	@RolesAllowed({Role.ADMIN})
 	@RequestMapping(value = "/{id}",method=RequestMethod.DELETE)
 	@Timed

@@ -5,6 +5,7 @@ import org.springframework.boot.bind.RelaxedPropertyResolver;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.core.env.Environment;
 import org.springframework.http.ResponseEntity;
 
@@ -13,8 +14,11 @@ import com.mangofactory.swagger.plugin.EnableSwagger;
 import com.mangofactory.swagger.plugin.SwaggerSpringMvcPlugin;
 import com.wordnik.swagger.model.ApiInfo;
 
+import fr.wati.yacramanager.config.Constants;
+
 @Configuration
 @EnableSwagger
+@Profile("!" + Constants.SPRING_PROFILE_FAST)
 public class SwaggerConfiguration implements EnvironmentAware {
     public static final String DEFAULT_INCLUDE_PATTERN = "/app/api/.*";
 

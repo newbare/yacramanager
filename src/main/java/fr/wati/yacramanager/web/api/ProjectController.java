@@ -56,9 +56,6 @@ public class ProjectController {
 	
 	@Inject
 	private EmployeService  employeService;
-	
-	@Inject
-	private ClientService clientService;
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ProjectDTO read(@PathVariable("companyId") Long companyId,@PathVariable("id") Long id) {

@@ -6,17 +6,17 @@
 				| translate}}
 			</button>
 		</p>
-	<h3 translate="metrics.health.title">Health Checks</h3>
+	<h3 translate="health.title">Health Checks</h3>
 	<div id="healthCheck" class="row" >
-	    <div  class="col-md-4"  data-ng-repeat="(key, value) in healthCheck">
-	        <div class="alert" data-ng-class="{'alert-success' : healthCheck[key].healthy,'alert-danger' : !healthCheck[key].healthy}">
+	    <div  class="col-md-4"  data-ng-if="key !== 'status'" data-ng-repeat="(key, value) in healthCheck">
+	        <div class="alert"  data-ng-class="{'alert-success' : healthCheck[key].status==='UP','alert-danger' : healthCheck[key].status!=='UP'}">
 	        	<strong >{{key | uppercase}} </strong>
-	        	<span class="pull-right"><i class="fa fa-2x" data-ng-class="{'fa-thumbs-o-up' : healthCheck[key].healthy,'fa-thumbs-o-down' : !healthCheck[key].healthy}"></i></span>
-	        	<br data-ng-show="healthCheck[key].message"/>
-	        	<span data-ng-show="healthCheck[key].message">{{healthCheck[key].message}}</span>
-	        	<button type="button" class="btn btn-link btn-xs" data-ng-show="healthCheck[key].error.message" data-ng-click="setStackTrace(key,healthCheck[key].error)" data-trigger="focus" data-placement="right" title="{{key | uppercase}} {{healthCheck[key].error.message}}" data-template="healthCheck/stacktrace/popover.html" data-bs-popover="">
+	        	<span class="pull-right"><i class="fa fa-2x" data-ng-class="{'fa-thumbs-o-up' : healthCheck[key].status==='UP','fa-thumbs-o-down' : healthCheck[key].status!=='UP'}"></i></span>
+	        	<br data-ng-show="healthCheck[key].error"/>
+	        	<span data-ng-show="healthCheck[key].error">{{healthCheck[key].error}}</span>
+	        	<!-- <button type="button" class="btn btn-link btn-xs" data-ng-show="healthCheck[key].error.message" data-ng-click="setStackTrace(key,healthCheck[key].error)" data-trigger="focus" data-placement="right" title="{{key | uppercase}} {{healthCheck[key].error.message}}" data-template="healthCheck/stacktrace/popover.html" data-bs-popover="">
 	        		<i class="fa fa-eye"></i>Stacktrace
-	        	</button>
+	        	</button> -->
 	        </div>
 	    </div>
     </div>

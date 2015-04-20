@@ -4,8 +4,7 @@ server:
         enabled: true
         key-store:  classpath:tomcat-ssl.keystore
         key-store-password: tomcat7
-    context-path: yacramanager
-    servlet-path: yacramanager
+    context-path: /yacramanager
 
 spring:
     profiles:

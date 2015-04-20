@@ -1,14 +1,14 @@
 App.factory("AuthenticationREST", function($resource) {
-	return $resource(_contextPath + "/app/api/company/:id", {}, {
+	return $resource(_contextPath + "app/api/company/:id", {}, {
 		activateAccount : {
-			url : _contextPath + "/auth/api/activate:key",
+			url : _contextPath + "auth/api/activate:key",
 			method : 'GET',
 			params : {
 				key : '@key'
 			}
 		},
 		recoverPassword : {
-			url : _contextPath + "auth/api//password-recovery:email",
+			url : _contextPath + "auth/api/password-recovery:email",
 			method : 'POST'
 			
 		}
@@ -16,7 +16,7 @@ App.factory("AuthenticationREST", function($resource) {
 });
 
 App.factory("AbsenceREST", function($resource) {
-	return $resource(_contextPath + "/app/api/absences/:id", {}, {
+	return $resource(_contextPath + "app/api/absences/:id", {}, {
 		update : {
 			method : 'PUT',
 			params : {
@@ -24,19 +24,19 @@ App.factory("AbsenceREST", function($resource) {
 			}
 		},
 		getTypes : {
-			url : _contextPath + "/app/api/absences/types",
+			url : _contextPath + "app/api/absences/types",
 			method : 'GET',
 			isArray : true
 
 		},
 		getApprovals : {
-			url : _contextPath + "/app/api/absences/approval",
+			url : _contextPath + "app/api/absences/approval",
 			method : 'GET',
 			isArray : false
 
 		},
 		getPortfolio : {
-			url : _contextPath + "/app/api/absences/portfolio",
+			url : _contextPath + "app/api/absences/portfolio",
 			method : 'GET',
 			isArray : false
 
@@ -51,7 +51,7 @@ App.factory('LanguageService', function ($http, $translate, LANGUAGES) {
                 language = $translate.storage().get('NG_TRANSLATE_LANG_KEY') || window.navigator.language;
             }
 
-            var promise =  $http.get( _contextPath+'/i18n/' + language + '.json').then(function(response) {
+            var promise =  $http.get( _contextPath+'i18n/' + language + '.json').then(function(response) {
                 return LANGUAGES;
             });
             return promise;
@@ -60,7 +60,7 @@ App.factory('LanguageService', function ($http, $translate, LANGUAGES) {
 });
 
 App.factory("CompanyREST", function($resource) {
-	return $resource(_contextPath + "/app/api/company/:id", {}, {
+	return $resource(_contextPath + "app/api/company/:id", {}, {
 		update : {
 			method : 'PUT',
 			params : {
@@ -71,7 +71,7 @@ App.factory("CompanyREST", function($resource) {
 });
 
 App.factory('LogsService', function($resource) {
-	return $resource(_contextPath + "/app/admin/logs", {}, {
+	return $resource(_contextPath + "app/admin/logs", {}, {
 		'findAll' : {
 			method : 'GET',
 			isArray : false
@@ -83,7 +83,7 @@ App.factory('LogsService', function($resource) {
 });
 
 App.factory('MetricsService', function($resource) {
-	return $resource(_contextPath + "/app/admin/metrics", {}, {
+	return $resource(_contextPath + "app/admin/metrics", {}, {
 		'get' : {
 			method : 'GET'
 		}
@@ -93,7 +93,7 @@ App.factory('MetricsService', function($resource) {
 App.factory('HealthCheckService', function($rootScope, $http) {
 	return {
 		check : function() {
-			var promise = $http.get(_contextPath + '/app/admin/health').then(function(response) {
+			var promise = $http.get(_contextPath + 'app/admin/management/health').then(function(response) {
 				return response.data;
 			});
 			return promise;
@@ -102,7 +102,7 @@ App.factory('HealthCheckService', function($rootScope, $http) {
 });
 
 App.factory("EmployeesREST", function($resource) {
-	return $resource(_contextPath + "/app/api/users/:id", {}, {
+	return $resource(_contextPath + "app/api/users/:id", {}, {
 		update : {
 			method : 'PUT',
 			params : {
@@ -177,30 +177,30 @@ App.factory("CompanySettingsREST", function($resource) {
 });
 
 App.factory("ActivityReportREST", function($resource) {
-	return $resource(_contextPath + "/app/api/activity-report",{},{
+	return $resource(_contextPath + "app/api/activity-report",{},{
 		getDetails : {
-			url : _contextPath + "/app/api/activity-report/details",
+			url : _contextPath + "app/api/activity-report/details",
 			method : 'GET',
 			isArray : false
 
 		},
 		submit : {
-			url : _contextPath + "/app/api/activity-report/submit",
+			url : _contextPath + "app/api/activity-report/submit",
 			method : 'POST'
 		},
 		approve : {
-			url : _contextPath + "/app/api/activity-report/approve",
+			url : _contextPath + "app/api/activity-report/approve",
 			method : 'POST'
 		},
 		cancel : {
-			url : _contextPath + "/app/api/activity-report/cancel",
+			url : _contextPath + "app/api/activity-report/cancel",
 			method : 'POST'
 		}
 	});
 });
 
 App.factory("NoteREST", function($resource) {
-	return $resource(_contextPath + "/app/api/frais/:id", {}, {
+	return $resource(_contextPath + "app/api/frais/:id", {}, {
 		update : {
 			method : 'PUT',
 			params : {
@@ -211,9 +211,9 @@ App.factory("NoteREST", function($resource) {
 });
 
 App.factory("UsersREST", function($resource) {
-	return $resource(_contextPath + "/app/api/users/:service",{},{
+	return $resource(_contextPath + "app/api/users/:service",{},{
 		changePassword:{
-			url:_contextPath + "/app/api/users/change-password",
+			url:_contextPath + "app/api/users/change-password",
 			method : 'POST',
 		}
 	});

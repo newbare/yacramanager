@@ -24,10 +24,6 @@ import com.codahale.metrics.jvm.ThreadStatesGaugeSet;
 import com.ryantenney.metrics.spring.config.annotation.EnableMetrics;
 import com.ryantenney.metrics.spring.config.annotation.MetricsConfigurerAdapter;
 
-import fr.wati.yacramanager.config.metrics.DatabaseHealthCheck;
-import fr.wati.yacramanager.config.metrics.MailHealthCheck;
-import fr.wati.yacramanager.config.metrics.WebSocketHealthCheck;
-
 @Configuration
 @EnableMetrics(proxyTargetClass = true)
 @Profile("!" + Constants.SPRING_PROFILE_FAST)
@@ -67,22 +63,7 @@ public class MetricsConfiguration extends MetricsConfigurerAdapter implements
 	public HealthCheckRegistry getHealthCheckRegistry() {
 		return HEALTH_CHECK_REGISTRY;
 	}
-
-	@Bean
-	public DatabaseHealthCheck databaseHealthCheck() {
-		return new DatabaseHealthCheck();
-	}
-
-	@Bean
-	public MailHealthCheck mailHealthCheck() {
-		return new MailHealthCheck();
-	}
 	
-	@Bean
-	public WebSocketHealthCheck webSocketHealthCheck() {
-		return new WebSocketHealthCheck();
-	}
-
 	@PostConstruct
 	public void init() {
 		log.debug("Registring JVM gauges");
@@ -104,8 +85,5 @@ public class MetricsConfiguration extends MetricsConfigurerAdapter implements
 					METRIC_REGISTRY).build();
 			jmxReporter.start();
 		}
-		HEALTH_CHECK_REGISTRY.register("database", databaseHealthCheck());
-		HEALTH_CHECK_REGISTRY.register("mailService", mailHealthCheck());
-		HEALTH_CHECK_REGISTRY.register("webSocketBrokerService", webSocketHealthCheck());
 	}
 }

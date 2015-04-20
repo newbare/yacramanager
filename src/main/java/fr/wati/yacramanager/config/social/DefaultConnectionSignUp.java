@@ -173,6 +173,7 @@ public class DefaultConnectionSignUp implements ConnectionSignUp {
 			registrationDTO.setFirstName(userProfile.getName());
 			registrationDTO.setLastName(userProfile.getName());
 			registrationDTO.setEmail(userProfile.getEmail());
+			registrationDTO.setSocialUser(true);
 			registrationDTO.setGender("male".equals(userProfile.getGender())?Gender.HOMME:Gender.FEMME);
 			registrationDTO.setBirthDay(DateTime.parse(userProfile.getBirthday()));
 			registrationDTO.setSocialProviderId(connection.getKey().getProviderId());
@@ -200,6 +201,7 @@ public class DefaultConnectionSignUp implements ConnectionSignUp {
 			registrationDTO.setFirstName(googleUserInfo.getFirstName());
 			registrationDTO.setLastName(googleUserInfo.getLastName());
 			registrationDTO.setEmail(googleUserInfo.getEmail());
+			registrationDTO.setSocialUser(true);
 			registrationDTO.setGender("male".equals(googleUserInfo.getGender())?Gender.HOMME:Gender.FEMME);
 			registrationDTO.setSocialProviderId(connection.getKey().getProviderId());
 			registrationDTO.setSocialUserId(connection.getKey().getProviderUserId());
@@ -260,6 +262,7 @@ public class DefaultConnectionSignUp implements ConnectionSignUp {
 			registrationDTO.setUsername(userProfile.getName());
 			registrationDTO.setFirstName(userProfile.getScreenName());
 			registrationDTO.setLastName(userProfile.getName());
+			registrationDTO.setSocialUser(true);
 //			registrationDTO.setEmail(userProfile.get);
 //			registrationDTO.setCompanyName(userProfile.getUsername().toUpperCase());
 			return registrationDTO;

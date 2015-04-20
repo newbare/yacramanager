@@ -34,7 +34,6 @@ import fr.wati.yacramanager.beans.Contact;
 import fr.wati.yacramanager.beans.Role;
 import fr.wati.yacramanager.services.ClientService;
 import fr.wati.yacramanager.services.CompanyService;
-import fr.wati.yacramanager.services.impl.DtoMapper;
 import fr.wati.yacramanager.utils.Filter.FilterBuilder;
 import fr.wati.yacramanager.utils.SpecificationBuilder;
 import fr.wati.yacramanager.web.dto.ClientDTO;
@@ -51,8 +50,6 @@ public class ClientController {
 	private ClientService clientService;
 	@Inject
 	private CompanyService companyService;
-	@Inject
-	private DtoMapper dtoMapper;
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	@Timed

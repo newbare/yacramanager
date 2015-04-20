@@ -37,7 +37,6 @@ import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.servlet.InstrumentedFilter;
 import com.codahale.metrics.servlets.MetricsServlet;
 
-import fr.wati.yacramanager.config.metrics.HealthCheckCustomServlet;
 import fr.wati.yacramanager.services.CustomObjectMapper;
 import fr.wati.yacramanager.web.filter.CachingHttpHeadersFilter;
 import fr.wati.yacramanager.web.filter.StaticResourcesProductionFilter;

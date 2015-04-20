@@ -46,7 +46,7 @@ import fr.wati.yacramanager.web.dto.WorkLogDTO;
 
 @RestController
 @RequestMapping(value = "/app/api/worklog")
-public class WorkLogRestController implements RestCrudController<WorkLogDTO>{
+public class WorkLogRestController {
 
 	private static final Log LOG=LogFactory.getLog(WorkLogRestController.class); 
 	
@@ -92,7 +92,6 @@ public class WorkLogRestController implements RestCrudController<WorkLogDTO>{
 	}
 
 
-	@Override
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	@Timed
 	public @ResponseBody
@@ -104,7 +103,6 @@ public class WorkLogRestController implements RestCrudController<WorkLogDTO>{
 	}
 
 
-	@Override
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@Timed
@@ -115,7 +113,6 @@ public class WorkLogRestController implements RestCrudController<WorkLogDTO>{
 
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@Override
 	@RequestMapping(method = RequestMethod.GET)
 	@Timed
 	public @ResponseBody ResponseWrapper<List<WorkLogDTO>> getAll(
@@ -172,7 +169,6 @@ public class WorkLogRestController implements RestCrudController<WorkLogDTO>{
 	}
 
 
-	@Override
 	@RequestMapping(method = RequestMethod.POST)
 	@Timed
 	public ResponseEntity<String> create(@RequestBody WorkLogDTO dto) throws RestServiceException{
@@ -195,7 +191,6 @@ public class WorkLogRestController implements RestCrudController<WorkLogDTO>{
 	}
 
 
-	@Override
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	@Timed
 	public void delete(@PathVariable("id") Long id) {

@@ -57,8 +57,7 @@ import fr.wati.yacramanager.web.dto.ResponseWrapper;
  */
 @RestController()
 @RequestMapping("/app/api/frais")
-public class NoteDeFraisController extends
-		RestCrudControllerAdapter<NoteDeFraisDTO> implements ApprovalRestService<ApprovalDTO<NoteDeFraisDTO>> {
+public class NoteDeFraisController {
 
 	private static final Log LOG = LogFactory
 			.getLog(NoteDeFraisController.class);
@@ -72,7 +71,6 @@ public class NoteDeFraisController extends
 	@Inject
 	private AttachementService attachementService;
 
-	@Override
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	@Timed
 	public @ResponseBody
@@ -83,7 +81,6 @@ public class NoteDeFraisController extends
 		return new ResponseEntity<NoteDeFraisDTO>(HttpStatus.NOT_FOUND);
 	}
 
-	@Override
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@Timed
@@ -94,7 +91,6 @@ public class NoteDeFraisController extends
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@Override
 	@RequestMapping(method = RequestMethod.GET)
 	@Timed
 	public ResponseWrapper<List<NoteDeFraisDTO>> getAll(
@@ -187,7 +183,6 @@ public class NoteDeFraisController extends
 
 	}
 
-	@Override
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	@Timed
 	public void delete(@PathVariable("id") Long id) {
@@ -205,7 +200,6 @@ public class NoteDeFraisController extends
 		return absenceDTOs;
 	}
 
-	@Override
 	@RequestMapping(value = "/approval", method = RequestMethod.GET)
 	@Timed
 	public @ResponseBody ResponseWrapper<List<ApprovalDTO<NoteDeFraisDTO>>> getApproval(
@@ -234,7 +228,6 @@ public class NoteDeFraisController extends
 		return response;
 	}
 	
-	@Override
 	@RequestMapping(value = "/approval/approve/{requesterId}/{entityId}", method = RequestMethod.PUT)
 	@ResponseStatus(value=HttpStatus.OK)
 	@Timed
@@ -255,7 +248,6 @@ public class NoteDeFraisController extends
 		}
 	}
 
-	@Override
 	@RequestMapping(value = "/approval/reject/{requesterId}/{entityId}", method = RequestMethod.PUT)
 	@Timed
 	public void reject(@PathVariable(value="requesterId") Long requesterId, @PathVariable(value="entityId") Long entityId) throws RestServiceException {
