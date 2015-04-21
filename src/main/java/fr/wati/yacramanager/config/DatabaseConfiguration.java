@@ -143,7 +143,7 @@ public class DatabaseConfiguration implements EnvironmentAware {
 		return new HikariDataSource(config);
 	}
 
-	@Bean
+	@Bean(name="customDataSourceInitializer")
 	public DataSourceInitializer dataSourceInitializer(DataSource dataSource) {
 		DataSourceInitializer dataSourceInitializer = new DataSourceInitializer();
 		dataSourceInitializer.setDataSource(dataSource);

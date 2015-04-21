@@ -16,6 +16,10 @@ spring:
         serverName: localhost
         username: yacra
         password: yacra
+#        schema: classpath:/sql/spring-security-persistent-login.sql,classpath:/sql/spring-social-userconnection.sql
+#        data: classpath:/sql/create-admin-user.sql,classpath:/sql/roles-initialization.sql
+        continueOnError: true
+        init-db: true
 
     jpa:
         database-platform: org.hibernate.dialect.PostgreSQL82Dialect
@@ -24,13 +28,14 @@ spring:
         show_sql: true
         generate-ddl: false
         hibernate:
-            ddl-auto: none
+            ddl-auto: create
             naming-strategy: org.hibernate.cfg.EJB3NamingStrategy
         properties:
             hibernate.cache.use_second_level_cache: true
             hibernate.cache.use_query_cache: false
             hibernate.generate_statistics: true
             hibernate.cache.region.factory_class: org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory
+#            hibernate.hbm2ddl.import_files: /sql/roles-initialization.sql,/sql/create-admin-user.sql
 
     mail:
         baseUrl: http://localhost:8080
