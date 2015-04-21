@@ -101,7 +101,7 @@ public class SocialConfiguration implements SocialConfigurer , EnvironmentAware{
 		return new UserIdSource() {
 			@Override
 			public String getUserId() {
-				return SecurityUtils.getConnectedUser()!=null?SecurityUtils.getConnectedUser().getUsername():null;
+				return SecurityUtils.getConnectedUser()!=null?SecurityUtils.getConnectedUser().getUserName():null;
 			}
 		};
 	}

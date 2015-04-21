@@ -35,10 +35,10 @@ public class CustomUserDetailsService implements UserDetailsService {
 	 * @see org.springframework.security.core.userdetails.UserDetailsService#loadUserByUsername(java.lang.String)
 	 */
 	@Override
-	public CustomUserDetails loadUserByUsername(String username)
+	public CustomUserDetails loadUserByUsername(String email)
 			throws UsernameNotFoundException {
 		
-		Users user = usersRepository.findByUsername(username);
+		Users user = usersRepository.findByEmail(email);
 		if(user==null){
 			throw new UsernameNotFoundException("The given username does not exist.");
 		}
@@ -51,7 +51,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 		private Users domainUser;
 		
 		public CustomUserDetails(Users domainUser){
-			this(domainUser.getUsername(), domainUser.getPassword(), domainUser.isEnabled(),true,true,true,getGrantedAuthorities(domainUser.getRoles()));
+			this(domainUser.getUserName(), domainUser.getPassword(), domainUser.isEnabled(),true,true,true,getGrantedAuthorities(domainUser.getRoles()));
 			this.domainUser=domainUser;
 		}
 		

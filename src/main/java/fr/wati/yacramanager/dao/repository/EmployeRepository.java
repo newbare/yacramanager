@@ -12,7 +12,7 @@ import fr.wati.yacramanager.beans.Task;
 
 public interface EmployeRepository extends JpaRepository<Employe, Long> ,JpaSpecificationExecutor<Employe>{
 
-	Employe findByUsername(String username);
+	Employe findByEmail(String email);
 	
 	Employe findByContact_Email(String email);
 

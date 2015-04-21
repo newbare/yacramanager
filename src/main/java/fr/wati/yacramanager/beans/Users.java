@@ -21,9 +21,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.validator.constraints.Email;
 
 /**
  * @author Rachid Ouattara
@@ -38,8 +40,9 @@ public class Users extends AuditableEntity  {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
+	@Email
 	@Column(unique=true)
-	private String username;
+	private String email;;
 	private String password;
 	private boolean enabled;
 	private String activationKey;
@@ -68,21 +71,6 @@ public class Users extends AuditableEntity  {
 	 */
 	public void setPassword(String password) {
 		this.password = password;
-	}
-
-	/**
-	 * @return the username
-	 */
-	public String getUsername() {
-		return username;
-	}
-
-	/**
-	 * @param username
-	 *            the username to set
-	 */
-	public void setUsername(String username) {
-		this.username = username;
 	}
 
 	/**
@@ -193,6 +181,27 @@ public class Users extends AuditableEntity  {
 		this.profileUrl = profileUrl;
 	}
 
+	
+	
+	public String getEmail() {
+		return email;
+	}
+
+	@Transient
+	public String getUserName() {
+		return getEmail();
+	}
+	
+	public void setUserName(String userName) {
+		setEmail(userName);
+	}
+	
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -200,7 +209,7 @@ public class Users extends AuditableEntity  {
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((roles == null) ? 0 : roles.hashCode());
 		result = prime * result
-				+ ((username == null) ? 0 : username.hashCode());
+				+ ((email == null) ? 0 : email.hashCode());
 		return result;
 	}
 
@@ -223,10 +232,10 @@ public class Users extends AuditableEntity  {
 				return false;
 		} else if (!roles.equals(other.roles))
 			return false;
-		if (username == null) {
-			if (other.username != null)
+		if (email == null) {
+			if (other.email != null)
 				return false;
-		} else if (!username.equals(other.username))
+		} else if (!email.equals(other.email))
 			return false;
 		return true;
 	}

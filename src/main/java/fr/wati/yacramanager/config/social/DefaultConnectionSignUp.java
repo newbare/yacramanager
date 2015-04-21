@@ -93,7 +93,7 @@ public class DefaultConnectionSignUp implements ConnectionSignUp {
 
 
 	public String execute(Connection<?> connection) {
-		Users existingUser = userService.findByUsername(connection.getDisplayName());
+		Users existingUser = userService.findByEmail(connection.getDisplayName());
 		if(existingUser==null){
 			switch (connection.getKey().getProviderId()) {
 			case "facebook":
@@ -110,7 +110,7 @@ public class DefaultConnectionSignUp implements ConnectionSignUp {
 				return null;
 			}
 		}
-		return existingUser.getUsername();
+		return existingUser.getUserName();
 	}
 	
 	public SignUpDelegate fromConnection(Connection<?> connection){
@@ -135,7 +135,7 @@ public class DefaultConnectionSignUp implements ConnectionSignUp {
 		@Override
 		public String execute(Connection<?> connection) {
 			Employe registerEmploye = employeService.registerEmploye(fromConnection(connection),true);
-			return registerEmploye.getUsername();
+			return registerEmploye.getUserName();
 		}
 
 		@Override
@@ -162,14 +162,14 @@ public class DefaultConnectionSignUp implements ConnectionSignUp {
 		@Override
 		public String execute(Connection<?> connection) {
 			Employe registerEmploye = employeService.registerEmploye(fromConnection(connection),true);
-			return registerEmploye.getUsername();
+			return registerEmploye.getUserName();
 		}
 
 		@Override
 		public RegistrationDTO fromConnection(Connection<?> connection) {
 			FacebookProfile userProfile = ((Facebook)connection.getApi()).userOperations().getUserProfile() ;
 			RegistrationDTO registrationDTO=new RegistrationDTO();
-			registrationDTO.setUsername(userProfile.getUsername());
+			registrationDTO.setUsername(userProfile.getEmail());
 			registrationDTO.setFirstName(userProfile.getName());
 			registrationDTO.setLastName(userProfile.getName());
 			registrationDTO.setEmail(userProfile.getEmail());
@@ -190,14 +190,14 @@ public class DefaultConnectionSignUp implements ConnectionSignUp {
 		@Override
 		public String execute(Connection<?> connection) {
 			Employe registerEmploye = employeService.registerEmploye(fromConnection(connection),true);
-			return registerEmploye.getUsername();
+			return registerEmploye.getUserName();
 		}
 
 		@Override
 		public RegistrationDTO fromConnection(Connection<?> connection) {
 			GoogleUserInfo googleUserInfo = ((Google)connection.getApi()).userOperations().getUserInfo() ;
 			RegistrationDTO registrationDTO=new RegistrationDTO();
-			registrationDTO.setUsername(googleUserInfo.getId());
+			registrationDTO.setUsername(googleUserInfo.getEmail());
 			registrationDTO.setFirstName(googleUserInfo.getFirstName());
 			registrationDTO.setLastName(googleUserInfo.getLastName());
 			registrationDTO.setEmail(googleUserInfo.getEmail());
@@ -218,7 +218,7 @@ public class DefaultConnectionSignUp implements ConnectionSignUp {
 		@Override
 		public String execute(Connection<?> connection) {
 			Employe registerEmploye = employeService.registerEmploye(fromConnection(connection),true);
-			return registerEmploye.getUsername();
+			return registerEmploye.getUserName();
 		}
 
 		@Override
@@ -226,7 +226,7 @@ public class DefaultConnectionSignUp implements ConnectionSignUp {
 			LinkedInProfileFull linkedInProfileFull = ((LinkedIn)connection.getApi()).profileOperations().getUserProfileFull();
 			CompanyOperations companyOperations = ((LinkedIn)connection.getApi()).companyOperations() ;
 			RegistrationDTO registrationDTO=new RegistrationDTO();
-			registrationDTO.setUsername(linkedInProfileFull.getId());
+			registrationDTO.setUsername(linkedInProfileFull.getEmailAddress());
 			registrationDTO.setFirstName(linkedInProfileFull.getFirstName());
 			registrationDTO.setLastName(linkedInProfileFull.getLastName());
 			registrationDTO.setEmail(linkedInProfileFull.getEmailAddress());
@@ -251,7 +251,7 @@ public class DefaultConnectionSignUp implements ConnectionSignUp {
 		@Override
 		public String execute(Connection<?> connection) {
 			Employe registerEmploye = employeService.registerEmploye(fromConnection(connection),true);
-			return registerEmploye.getUsername();
+			return registerEmploye.getUserName();
 		}
 
 		@Override
@@ -259,7 +259,7 @@ public class DefaultConnectionSignUp implements ConnectionSignUp {
 			Twitter twitter=((Twitter)connection.getApi());
 			TwitterProfile userProfile = twitter.userOperations().getUserProfile() ;
 			RegistrationDTO registrationDTO=new RegistrationDTO();
-			registrationDTO.setUsername(userProfile.getName());
+			//registrationDTO.setUsername(userProfile.getName());
 			registrationDTO.setFirstName(userProfile.getScreenName());
 			registrationDTO.setLastName(userProfile.getName());
 			registrationDTO.setSocialUser(true);

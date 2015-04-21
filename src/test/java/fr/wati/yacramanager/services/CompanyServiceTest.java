@@ -95,7 +95,7 @@ public class CompanyServiceTest extends
 	@Test
 	public void testCompanyFromEmploye(){
 		Employe employe=new Employe();
-		employe.setUsername("toto");
+		employe.setUserName("toto@toto.com");
 		employe.setPassword("fdsf");
 		Company company=new Company();
 		company.setName("Mock company");

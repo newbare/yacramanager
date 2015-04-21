@@ -115,7 +115,6 @@ public class NoteDeFraisController {
 		}
 		Specifications<NoteDeFrais> specifications = null;
 		if (!filters.isEmpty()) {
-			LOG.debug("Building Absence specification");
 			specifications = Specifications.where(SpecificationBuilder
 					.buildSpecification(filters, noteDeFraisService));
 		}

@@ -29,7 +29,7 @@ public class FileSystemService implements FsService, InitializingBean {
 	@Inject
 	private FsServiceConfig fsServiceConfig;
 	
-	String[][] escapes = { { "+", "_P" }, { "-", "_M" }, { "/", "_S" }, { ".", "_D" }, { "=", "_E" } };
+	public static String[][] escapes = { { "+", "_P" }, { "-", "_M" }, { "/", "_S" }, { ".", "_D" }, { "=", "_E" },{ "@", "_At" } };
 	
 	@Override
 	public FsItem fromHash(String hash) throws IOException {

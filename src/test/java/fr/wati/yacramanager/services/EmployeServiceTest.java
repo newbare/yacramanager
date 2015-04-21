@@ -43,7 +43,7 @@ public class EmployeServiceTest extends
 		Employe employe = new Employe();
 		employe.setLastName("name");
 		employe.setFirstName("prenom");
-		employe.setUsername("username");
+		employe.setUserName("username@username.com");
 		employe.setPassword("password");
 		employe.setBirthDay(new DateTime());
 		employe.setCompany(createCompany);

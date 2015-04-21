@@ -169,7 +169,7 @@ public class EmployeServiceImpl implements EmployeService {
 
 	@Transactional(readOnly = true)
 	public Employe findByUsername(String username) {
-		return employeRepository.findByUsername(username);
+		return employeRepository.findByEmail(username);
 	}
 
 	@Transactional
@@ -187,7 +187,7 @@ public class EmployeServiceImpl implements EmployeService {
 	@Override
 	public Employe registerEmploye(RegistrationDTO registrationDTO,boolean isSocialRegistration) {
 		Employe employe=new Employe();
-		employe.setUsername(registrationDTO.getUsername());
+		employe.setUserName(registrationDTO.getEmail());
 		if(isSocialRegistration){
 			employe.setEnabled(true);
 			employe.setSocialUser(true);
@@ -214,7 +214,9 @@ public class EmployeServiceImpl implements EmployeService {
 		CompanyAccountInfo companyAccountInfo=new CompanyAccountInfo();
 		companyAccountInfo.setLocked(false);
 		companyAccountInfo.setExpiredDate(new LocalDate().plusDays(environment.getProperty("yacra.trial.period.days", Integer.class, 30)));
-		companyAccountInfoRepository.save(companyAccountInfo);
+		companyAccountInfo.setCompany(createCompany);
+		CompanyAccountInfo savedCompanyAccountInfo = companyAccountInfoRepository.save(companyAccountInfo);
+		createCompany.setCompanyAccountInfo(savedCompanyAccountInfo);
 		Set<Role> roles=new HashSet<>();
 		roles.add(roleRepository.findByRole(Role.SSII_ADMIN));
 		roles.add(roleRepository.findByRole(Role.INDEP));
@@ -321,7 +323,7 @@ public class EmployeServiceImpl implements EmployeService {
 		Employe employe = new Employe();
 		employe.setFirstName(employeDto.getFirstName());
 		employe.setLastName(employeDto.getLastName());
-		employe.setUsername(getDefaultUsername(employeDto.getFirstName(), employeDto.getLastName()));
+		employe.setUserName(employeDto.getEmail());
 		employe.setPassword(employeDto.getPassword());
 		employe.setGender(employeDto.getGender());
 		employe.setBirthDay(employeDto.getBirthDay());

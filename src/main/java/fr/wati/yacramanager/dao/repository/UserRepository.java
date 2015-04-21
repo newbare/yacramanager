@@ -16,8 +16,9 @@ import fr.wati.yacramanager.beans.Users;
  */
 public interface UserRepository extends JpaRepository<Users, Long>,JpaSpecificationExecutor<Users>{
 
-	Users findByUsername(String username);
-	Page<Users> findByUsernameLike(String username, Pageable pageable);
+//	Users findByUsername(String username);
+	Users findByEmail(String email);
+	Page<Users> findByEmailLike(String email, Pageable pageable);
 	/**
 	 * @param key
 	 * @return

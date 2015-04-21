@@ -111,8 +111,8 @@ public class UserServiceImpl implements UserService{
 		userRepository.deleteAll();
 	}
 
-	public Users findByUsername(String username){
-		return userRepository.findByUsername(username);
+	public Users findByEmail(String email){
+		return userRepository.findByEmail(email);
 	}
 
 	@Override
@@ -173,7 +173,7 @@ public class UserServiceImpl implements UserService{
         String encryptedPassword = passwordEncoder.encode(password);
         currentUser.setPassword(encryptedPassword);
         userRepository.save(currentUser);
-        logger.debug("Changed password for User: {}", currentUser.getUsername());
+        logger.debug("Changed password for User: {}", currentUser.getUserName());
     }
 	
 	public Users activateRegistration(String key) {

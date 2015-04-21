@@ -26,7 +26,7 @@ public class WebSocketHealthIndicator  extends AbstractHealthIndicator {
 	@Override
 	protected void doHealthCheck(Builder builder) throws Exception {
 		try {
-			messagingTemplate.convertAndSendToUser(SecurityUtils.getConnectedUser().getUsername(),"/queue/errors", "ServiceCheck");
+			messagingTemplate.convertAndSendToUser(SecurityUtils.getConnectedUser().getUserName(),"/queue/errors", "ServiceCheck");
 			builder.up();
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);

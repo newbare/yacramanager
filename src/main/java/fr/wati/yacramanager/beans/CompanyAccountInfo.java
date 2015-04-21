@@ -59,4 +59,12 @@ public class CompanyAccountInfo extends AuditableEntity{
 		this.expiredDate = expiredDate;
 	}
 
+	public Company getCompany() {
+		return company;
+	}
+
+	public void setCompany(Company company) {
+		this.company = company;
+	}
+
 }

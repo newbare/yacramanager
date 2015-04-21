@@ -56,7 +56,7 @@
 						 <span class="icon-yacra-full pull-left"></span>
 						<label data-ng-if="!user.socialUser">Register new account</label>
 						<label data-ng-if="user.socialUser">Complete registration</label>
-						 <img data-ng-src="{{preFillRegistrationDTO.profileImageUrl}}" class="img-thumbnail profile-picture pull-right" height="60" width="60"
+						 <img data-ng-src="{{user.profileImageUrl}}" class="img-thumbnail profile-picture pull-right" height="60" width="60"
 			          data-ng-show="user.socialUser"/>
 						<i class="ace-icon fa fa-user pull-right" data-ng-show="!user.socialUser"></i> 
 					</div>

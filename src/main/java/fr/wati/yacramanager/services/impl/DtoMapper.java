@@ -56,7 +56,7 @@ public class DtoMapper {
 	public  UserDto map(Users user) {
 		UserDto dto = new UserDto();
 		dto.setId(Integer.valueOf(user.getId().toString()));
-		dto.setUsername(user.getUsername());
+		dto.setUsername(user.getUserName());
 		return dto;
 	}
 	
@@ -271,7 +271,7 @@ public class DtoMapper {
 	public  EmployeDto map(Employe employe) {
 		EmployeDto dto = new EmployeDto();
 		dto.setId(Long.valueOf(employe.getId().toString()));
-		dto.setUsername(employe.getUsername());
+		dto.setUsername(employe.getUserName());
 		dto.setLastName(employe.getLastName());
 		dto.setFirstName(employe.getFirstName());
 		dto.setGender(employe.getGender());

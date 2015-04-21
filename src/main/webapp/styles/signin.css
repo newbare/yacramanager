@@ -24,6 +24,9 @@ body {
 .form-signin .form-signin-heading,.form-signin .checkbox {
 	margin-bottom: 10px;
 }
+.form-signin-heading{
+	font-size: large;
+}
 
 .margin-bottom {
 	margin-bottom: 10px !important;

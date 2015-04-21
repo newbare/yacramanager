@@ -94,7 +94,7 @@ public class AuthenticationController {
 				ProviderSignInAttempt providerSignInAttempt=(ProviderSignInAttempt) webRequest.getAttribute(ProviderSignInAttempt.SESSION_ATTRIBUTE, RequestAttributes.SCOPE_SESSION);
 				if(providerSignInAttempt!=null){
 					new ProviderSignInUtils().doPostSignUp(registrationDTO.getSocialUserId(), webRequest);
-					signInAdapter.signIn(registerEmploye.getUsername(), providerSignInAttempt.getConnection(), webRequest);
+					signInAdapter.signIn(registerEmploye.getUserName(), providerSignInAttempt.getConnection(), webRequest);
 				}
 				
 			}

@@ -34,7 +34,7 @@ public class WebSockectClientConectedListener implements
 		Principal user = StompHeaderAccessor.getUser(headers.getMessageHeaders());
 		if(user instanceof UsernamePasswordAuthenticationToken){
 			CustomUserDetails customUserDetails= (CustomUserDetails) (((UsernamePasswordAuthenticationToken)user).getPrincipal());
-			log.debug(customUserDetails.getDomainUser().getUsername()+" just log in...");
+			log.debug(customUserDetails.getDomainUser().getUserName()+" just log in...");
 		}
 	}
 

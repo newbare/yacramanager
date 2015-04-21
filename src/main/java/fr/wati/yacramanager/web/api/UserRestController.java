@@ -43,7 +43,6 @@ import fr.wati.yacramanager.services.impl.DtoMapper;
 import fr.wati.yacramanager.utils.Filter.FilterBuilder;
 import fr.wati.yacramanager.utils.SecurityUtils;
 import fr.wati.yacramanager.utils.SpecificationBuilder;
-import fr.wati.yacramanager.web.dto.Navigation;
 import fr.wati.yacramanager.web.dto.ResponseWrapper;
 import fr.wati.yacramanager.web.dto.UserInfoDTO;
 import fr.wati.yacramanager.web.dto.UserInfoDTO.ManagedEmployeInfoDTO;
@@ -85,7 +84,7 @@ public class UserRestController {
 		Employe employe = employeRepository.findOne(id.longValue());
 		employe.setFirstName(employeDto.getFirstName());
 		employe.setLastName(employeDto.getLastName());
-		employe.setUsername(employeDto. getUsername());
+		employe.setUserName(employeDto. getEmail());
 		employe.setGender(employeDto.getGender());
 		employe.setBirthDay(employeDto.getBirthDay());
 		employe.getContact().setEmail(employeDto.getEmail());
@@ -208,11 +207,8 @@ public class UserRestController {
 			throws Exception {
 		try {
 			Employe connectedUser = SecurityUtils.getConnectedUser();
-			String contextPath = request.getContextPath();
 			UserInfoDTO userInfoDTO = employeService
 					.toUserInfoDTO(connectedUser.getId());
-			userInfoDTO.setNavigation(Navigation.buildNavigationDefault(
-					userInfoDTO, contextPath));
 			return userInfoDTO;
 		} catch (Exception e) {
 			LOG.error(e.getMessage(), e);

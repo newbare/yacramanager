@@ -83,8 +83,7 @@ function LoginController($scope, $location) {
 
 function RegisterController($scope, $location,$window,RegistrationRest,alertService,vcRecaptchaService) {
 	$scope.loadLogin = function() {
-		$location.url('/');
-		$window.location.href='/app/view/';
+		$window.location.href=_contextPath+'/app/view/';
 	};
 	$scope.response = null;
     $scope.widgetId = null;
@@ -117,7 +116,10 @@ function RegisterController($scope, $location,$window,RegistrationRest,alertServ
 		$scope.user.socialUserId=preFillRegistrationDTO.socialUserId;
 		$scope.user.profileImageUrl=preFillRegistrationDTO.profileImageUrl;
 		$scope.user.profileUrl=preFillRegistrationDTO.profileUrl;
-		$scope.user.gender=preFillRegistrationDTO.gender.$name;
+		if(preFillRegistrationDTO.gender!=null && preFillRegistrationDTO.gender!=undefined){
+			$scope.user.gender=preFillRegistrationDTO.gender.$name;
+		}
+		
 		//$scope.user=preFillRegistrationDTO;
 	}
 	$scope.register=function(){
