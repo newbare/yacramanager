@@ -34,12 +34,12 @@ function CompanyEmployeesController($scope,$state) {
 	$scope.birthDay=new Date();
 }
 
-function CompanyEmployeesViewController($scope, $rootScope,$http,EmployeesREST,ngTableParams,$state,alertService){
+function CompanyEmployeesViewController($scope, $rootScope,$http,EmployeesREST,CompanyREST,ngTableParams,$state,alertService){
 	$scope.$state=$state;
 	$scope.hasDatas=false;
 	$scope.viewStyle=undefined;
 	$scope.employe={};
-	
+	$scope.employeToInvite={};
 	$scope.companyCriteriaConfig={
 			name:"company",
 			defaultButtonLabel:"Company",
@@ -179,6 +179,13 @@ function CompanyEmployeesViewController($scope, $rootScope,$http,EmployeesREST,n
 		EmployeesREST.save($scope.employe).$promise.then(function(result) {
    		 hideFn();
    		 alertService.show('info','Confirmation', 'Employe created');
+		});
+	};
+	$scope.inviteEmploye=function(hideFn){
+		$scope.employe.companyId=_userCompanyId;
+		CompanyREST.inviteEmployee({"id": _userCompanyId},$scope.employeToInvite.email).$promise.then(function(result) {
+   		 hideFn();
+   		 alertService.show('info','Confirmation', 'Employe has been invited ');
 		});
 	};
 }

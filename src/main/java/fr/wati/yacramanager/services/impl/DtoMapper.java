@@ -275,11 +275,13 @@ public class DtoMapper {
 		dto.setLastName(employe.getLastName());
 		dto.setFirstName(employe.getFirstName());
 		dto.setGender(employe.getGender());
-		dto.setPostCode(employe.getContact().getAdresse().getPostCode());
-		dto.setEmail(employe.getContact().getEmail());
-		dto.setAdress(employe.getContact().getAdresse().getAdress());
+		if(employe.getContact()!=null){
+			dto.setPostCode(employe.getContact().getAdresse().getPostCode());
+			dto.setEmail(employe.getContact().getEmail());
+			dto.setAdress(employe.getContact().getAdresse().getAdress());
+			dto.setPhoneNumbers(employe.getContact().getPhoneNumbers());
+		}
 		dto.setBirthDay(employe.getBirthDay());
-		dto.setPhoneNumbers(employe.getContact().getPhoneNumbers());
 		dto.setProfileImageUrl(employe.getProfileImageUrl());
 		dto.setProfileUrl(employe.getProfileUrl());
 		dto.setSocialUser(employe.isSocialUser());

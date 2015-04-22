@@ -38,8 +38,6 @@ public class Company extends AuditableEntity {
 	@OneToMany(cascade=CascadeType.ALL)
 	@JoinColumn(name="companyId")
 	private List<Contact> contacts=new ArrayList<>();
-	@OneToMany(mappedBy="company")
-	private List<CompanyTempInvitation> companyTempInvitations=new ArrayList<>();
 	@OneToMany
 	@JoinColumn(name="companyId", referencedColumnName="id")
 	private List<Settings> settings=new ArrayList<>();
@@ -115,13 +113,6 @@ public class Company extends AuditableEntity {
 	 */
 	public void setSettings(List<Settings> settings) {
 		this.settings = settings;
-	}
-	public List<CompanyTempInvitation> getCompanyTempInvitations() {
-		return companyTempInvitations;
-	}
-	public void setCompanyTempInvitations(
-			List<CompanyTempInvitation> companyTempInvitations) {
-		this.companyTempInvitations = companyTempInvitations;
 	}
 	
 }

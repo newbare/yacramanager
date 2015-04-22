@@ -13,6 +13,8 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Type;
 import org.joda.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @SuppressWarnings("serial")
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -26,6 +28,7 @@ public class CompanyAccountInfo extends AuditableEntity{
 	private boolean locked=true;
 	
 	@OneToOne
+	@JsonIgnore
 	private Company company;
 	
 	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDate")

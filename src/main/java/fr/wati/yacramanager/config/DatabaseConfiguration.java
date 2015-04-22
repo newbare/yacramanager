@@ -28,6 +28,8 @@ import com.fasterxml.jackson.datatype.hibernate4.Hibernate4Module;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
+import fr.wati.yacramanager.dao.JdbcCompanyInvitationRepository;
+
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories(basePackages = "fr.wati.yacramanager.dao")
@@ -143,6 +145,11 @@ public class DatabaseConfiguration implements EnvironmentAware {
 		return new HikariDataSource(config);
 	}
 
+	@Bean
+	public JdbcCompanyInvitationRepository companyInvitationRepository(){
+		return new JdbcCompanyInvitationRepository(dataSource());
+	}
+	
 	@Bean(name="customDataSourceInitializer")
 	public DataSourceInitializer dataSourceInitializer(DataSource dataSource) {
 		DataSourceInitializer dataSourceInitializer = new DataSourceInitializer();
@@ -153,6 +160,8 @@ public class DatabaseConfiguration implements EnvironmentAware {
 				"sql/spring-security-persistent-login.sql"));
 		databasePopulator.addScript(new ClassPathResource(
 				"sql/roles-initialization.sql"));
+		databasePopulator.addScript(new ClassPathResource(
+				"sql/company-invitation-create.sql"));
 		databasePopulator.addScript(new ClassPathResource(
 				"sql/spring-social-userconnection.sql"));
 		databasePopulator.addScript(new ClassPathResource(

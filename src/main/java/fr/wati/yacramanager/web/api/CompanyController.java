@@ -32,7 +32,9 @@ import com.codahale.metrics.annotation.Timed;
 import com.mangofactory.swagger.annotations.ApiIgnore;
 
 import fr.wati.yacramanager.beans.Company;
+import fr.wati.yacramanager.beans.CompanyTempInvitation;
 import fr.wati.yacramanager.beans.Role;
+import fr.wati.yacramanager.dao.JdbcCompanyInvitationRepository;
 import fr.wati.yacramanager.services.CompanyService;
 import fr.wati.yacramanager.services.impl.DtoMapper;
 import fr.wati.yacramanager.utils.Filter.FilterBuilder;
@@ -51,6 +53,8 @@ public class CompanyController {
 	@Inject
 	private DtoMapper dtoMapper;
 	
+	@Inject
+	private JdbcCompanyInvitationRepository companyInvitationRepository;
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	@Timed
@@ -135,4 +139,15 @@ public class CompanyController {
 		companyService.delete(id);
 	}
 
+	@RequestMapping(value = "/{id}/invite",method=RequestMethod.POST)
+	@Timed
+	public ResponseEntity<String> inviteEmploye(@PathVariable("id") Long companyId,@RequestBody(required=true) String userEmail){
+		CompanyTempInvitation findInvitation = companyInvitationRepository.findInvitation(userEmail, String.valueOf(companyId));
+		if(findInvitation==null){
+			CompanyTempInvitation addInvitation = companyInvitationRepository.addInvitation(userEmail, String.valueOf(companyId));
+			//TODO Send invitation by mail
+			return new ResponseEntity<String>(HttpStatus.OK);
+		}
+		return new ResponseEntity<String>("Invitation already exist !!",HttpStatus.OK);
+	}
 }

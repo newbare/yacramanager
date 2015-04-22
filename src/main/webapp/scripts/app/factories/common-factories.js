@@ -66,6 +66,10 @@ App.factory("CompanyREST", function($resource) {
 			params : {
 				id : '@id'
 			}
+		},
+		inviteEmployee : {
+			url : _contextPath + "/app/api/company/:id/invite",
+			method : 'POST'			
 		}
 	});
 });

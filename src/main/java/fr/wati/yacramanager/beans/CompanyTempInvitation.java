@@ -8,6 +8,7 @@ public class CompanyTempInvitation {
 	private String userId;
 	private String companyId;
 	private String token;
+	private Date createdDate;
 	private Date expiryDate;
 	
 	public CompanyTempInvitation() {
@@ -46,5 +47,15 @@ public class CompanyTempInvitation {
 		this.expiryDate = expiryDate;
 	}
 
-	
+	public Date getCreatedDate() {
+		return createdDate;
+	}
+
+	public void setCreatedDate(Date createdDate) {
+		this.createdDate = createdDate;
+	}
+
+	public boolean isStillValid(){
+		return expiryDate.after(createdDate);
+	}
 }
