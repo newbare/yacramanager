@@ -1,10 +1,13 @@
 server:
-    port: 9090
-    ssl:
-        enabled: true
-        key-store:  classpath:tomcat-ssl.keystore
-        key-store-password: tomcat7
-    context-path: /yacramanager
+    port: 8082
+#    ssl:
+#        enabled: true
+#        key-store:  classpath:tomcat-ssl.keystore
+#        key-store-password: tomcat7
+#    context-path: /yacramanager
+    tomcat: 
+        protocolHeader: x-forwarded-proto
+        remoteIpHeader: x-forwarded-for
 
 spring:
     profiles:
@@ -28,7 +31,7 @@ spring:
         show_sql: false
         generate-ddl: false
         hibernate:
-            ddl-auto: validate#create
+            ddl-auto: create
             naming-strategy: org.hibernate.cfg.EJB3NamingStrategy
         properties:
             hibernate.cache.use_second_level_cache: true

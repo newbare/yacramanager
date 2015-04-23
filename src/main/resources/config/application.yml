@@ -8,6 +8,7 @@ endpoints.jolokia.enabled: false
 # security configuration (this key should be unique for your application, and kept secret)
 jhipster.security.rememberme.key: 6b1ae782ce6656b46b579b85514ca0e832cc62b7
 
+
 management:
     context-path: /app/admin/management
 async:

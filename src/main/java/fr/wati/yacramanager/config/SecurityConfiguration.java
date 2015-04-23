@@ -50,19 +50,22 @@ import fr.wati.yacramanager.web.filter.AjaxTimeoutRedirectFilter;
  */
 @Configuration
 @EnableWebSecurity
-public class SecurityConfiguration extends WebSecurityConfigurerAdapter implements EnvironmentAware {
+public class SecurityConfiguration extends WebSecurityConfigurerAdapter
+		implements EnvironmentAware {
 
 	public static final String DEFAULT_LOGIN_SUCCESS_PATH = "/app/view/";
-	
+
 	private RelaxedPropertyResolver propertyResolver;
 	@Inject
 	private DataSource dataSource;
 
 	@Inject
 	private UserDetailsService userDetailsService;
-	
+
 	@Inject
 	private UserDetailsChecker userDetailsChecker;
+
+	private Environment environment;
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
@@ -80,30 +83,27 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter implemen
 				.authorizeRequests()
 				.antMatchers("/")
 				.permitAll()
-				.antMatchers("/auth/**","/auth/api/**")
+				.antMatchers("/auth/**", "/auth/api/**")
 				.permitAll()
-				.antMatchers("/signin/**","/signup/**","/connect/**")
+				.antMatchers("/signin/**", "/signup/**", "/connect/**")
 				.permitAll()
 				.antMatchers("/app/admin/**")
 				.hasAnyRole("ADMIN")
 				.antMatchers("/app/**")
 				.hasAnyRole(
 						new String[] { "ADMIN", "SSII_ADMIN", "SALARIE",
-								"INDEP" })
-				.anyRequest()
-				.authenticated()
+								"INDEP" }).anyRequest().authenticated();
+		if (environment.acceptsProfiles(Constants.SPRING_PROFILE_CLOUD,
+				Constants.SPRING_PROFILE_PRODUCTION)) {
+			http.requiresChannel().antMatchers("/**").requiresSecure();
+		}
+		http.formLogin()
+				.defaultSuccessUrl(DEFAULT_LOGIN_SUCCESS_PATH)
+				.loginProcessingUrl("/auth/authentication")
+				.loginPage("/auth/login")
+				.failureUrl("/auth/login?error=true")
+				.permitAll()
 				.and()
-				.requiresChannel()
-				.antMatchers("/**")
-				.requiresSecure()
-				.and()
-				.formLogin()
-					.defaultSuccessUrl(DEFAULT_LOGIN_SUCCESS_PATH)
-					.loginProcessingUrl("/auth/authentication")
-					.loginPage("/auth/login")
-					.failureUrl("/auth/login?error=true")
-					.permitAll()
-					.and()
 				.logout()
 				.logoutUrl("/auth/logout")
 				.logoutSuccessUrl("/?logout")
@@ -115,14 +115,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter implemen
 				.rememberMe()
 				.tokenRepository(persistentTokenRepository())
 				.tokenValiditySeconds(
-						propertyResolver.getProperty("rememberme.token.validity",
-								Integer.class))
+						propertyResolver.getProperty(
+								"rememberme.token.validity", Integer.class))
 				.userDetailsService(userDetailsService)
 				.and()
 				.sessionManagement()
 				// .invalidSessionUrl("/auth/login/?invalid-session=true")
 				.maximumSessions(
-						propertyResolver.getProperty("max.sessions", Integer.class, 5))
+						propertyResolver.getProperty("max.sessions",
+								Integer.class, 5))
 				.expiredUrl("/auth/?expired-session=true")
 				.and()
 				.and()
@@ -140,18 +141,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter implemen
 		}
 	}
 
-	
 	@Override
 	public void configure(WebSecurity web) throws Exception {
-		 web.ignoring()
-         .antMatchers("/bower_components/**")
-         .antMatchers("/fonts/**")
-         .antMatchers("/templates/**")
-         .antMatchers("/images/**")
-         .antMatchers("/scripts/**")
-         .antMatchers("/styles/**")
-         .antMatchers("/i18n/**")
-         .antMatchers("/swagger-ui/**");
+		web.ignoring().antMatchers("/bower_components/**")
+				.antMatchers("/fonts/**").antMatchers("/templates/**")
+				.antMatchers("/images/**").antMatchers("/scripts/**")
+				.antMatchers("/styles/**").antMatchers("/i18n/**")
+				.antMatchers("/swagger-ui/**");
 	}
 
 	@Bean
@@ -161,13 +157,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter implemen
 		return jdbcTokenRepositoryImpl;
 	}
 
-	
-
 	@Bean
 	public AjaxTimeoutRedirectFilter ajaxTimeoutRedirectFilter() {
 		AjaxTimeoutRedirectFilter ajaxTimeoutRedirectFilter = new AjaxTimeoutRedirectFilter();
-		ajaxTimeoutRedirectFilter.setCustomSessionExpiredErrorCode(propertyResolver
-				.getProperty("customSessionExpiredErrorCode", Integer.class));
+		ajaxTimeoutRedirectFilter
+				.setCustomSessionExpiredErrorCode(propertyResolver.getProperty(
+						"customSessionExpiredErrorCode", Integer.class));
 		return ajaxTimeoutRedirectFilter;
 	}
 
@@ -196,12 +191,17 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter implemen
 		return new BCryptPasswordEncoder(propertyResolver.getProperty(
 				"bcrypt.encoder.strength", Integer.class));
 	}
-	
-	/* (non-Javadoc)
-	 * @see org.springframework.context.EnvironmentAware#setEnvironment(org.springframework.core.env.Environment)
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.springframework.context.EnvironmentAware#setEnvironment(org.
+	 * springframework.core.env.Environment)
 	 */
 	@Override
 	public void setEnvironment(Environment environment) {
-		this.propertyResolver = new RelaxedPropertyResolver(environment, "spring.security.");
+		this.environment = environment;
+		this.propertyResolver = new RelaxedPropertyResolver(environment,
+				"spring.security.");
 	}
 }
