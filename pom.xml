@@ -28,6 +28,7 @@
 		<!-- log configuration -->
 		<logback.loglevel>DEBUG</logback.loglevel>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<spring-cloud.version>1.1.0.RELEASE</spring-cloud.version>
 		<spring.social.version>1.1.0.RELEASE</spring.social.version>
 		<thymeleaf.version>2.1.4.RELEASE</thymeleaf.version>
 	</properties>
@@ -169,11 +170,6 @@
 			<!--<version>1.0.1.RELEASE</version> -->
 			<artifactId>reactor-net</artifactId>
 			<!--<version>1.1.0.RELEASE</version> -->
-		</dependency>
-		<dependency>
-			<groupId>org.hibernate.javax.persistence</groupId>
-			<artifactId>hibernate-jpa-2.0-api</artifactId>
-			<version>1.0.1.Final</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.data</groupId>
@@ -466,7 +462,27 @@
 			<artifactId>nekohtml</artifactId>
 			<version>1.9.21</version>
 		</dependency>
-
+		<!-- Spring Cloud -->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-core</artifactId>
+			<version>${spring-cloud.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-cloudfoundry-connector</artifactId>
+			<version>${spring-cloud.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-spring-service-connector</artifactId>
+			<version>${spring-cloud.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-localconfig-connector</artifactId>
+			<version>${spring-cloud.version}</version>
+		</dependency>
 	</dependencies>
 
 	<repositories>

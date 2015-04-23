@@ -105,9 +105,7 @@ public class DatabaseConfiguration implements EnvironmentAware {
 	}
 
 	@Bean(destroyMethod = "shutdown")
-	@Profile(value = { Constants.SPRING_PROFILE_DEVELOPMENT,
-			Constants.SPRING_PROFILE_PRODUCTION,
-			"!" + Constants.SPRING_PROFILE_CLOUD })
+	@Profile(value = {"!" + Constants.SPRING_PROFILE_CLOUD })
 	@ConditionalOnMissingClass(name = "fr.wati.payme.webapp.config.HerokuDatabaseConfiguration")
 	public DataSource dataSource() {
 		log.debug("Configuring Datasource");
@@ -146,6 +144,7 @@ public class DatabaseConfiguration implements EnvironmentAware {
 	}
 
 	@Bean
+	@Profile(value = {"!" + Constants.SPRING_PROFILE_CLOUD })
 	public JdbcCompanyInvitationRepository companyInvitationRepository(){
 		return new JdbcCompanyInvitationRepository(dataSource());
 	}

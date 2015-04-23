@@ -1,0 +1,7 @@
+---
+path: .
+instances: 1
+applications:
+- name: yacramanager
+  buildpack: https://github.com/orachid/java-buildpack.git
+  path: ../../target/yacramanager.war
