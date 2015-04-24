@@ -39,6 +39,7 @@ import fr.wati.yacramanager.beans.Employe;
 import fr.wati.yacramanager.beans.Users;
 import fr.wati.yacramanager.services.EmployeService;
 import fr.wati.yacramanager.services.MailService;
+import fr.wati.yacramanager.services.ServiceException;
 import fr.wati.yacramanager.services.UserService;
 import fr.wati.yacramanager.services.security.GoogleReCaptchaService;
 import fr.wati.yacramanager.services.security.GoogleReCaptchaService.GoogleReCaptchaResponse;
@@ -75,7 +76,7 @@ public class AuthenticationController {
 	public ResponseEntity<String> register(
 			@RequestBody RegistrationDTO registrationDTO,
 			HttpServletRequest request,NativeWebRequest webRequest, HttpServletResponse response,
-			Locale locale) {
+			Locale locale) throws ServiceException {
 		//Google ReCaptcha check first
 		GoogleReCaptchaResponse captchaResponse = reCaptchaService.validateCaptcha(registrationDTO.getCaptchaToken());
 		if(!captchaResponse.isSuccess()){

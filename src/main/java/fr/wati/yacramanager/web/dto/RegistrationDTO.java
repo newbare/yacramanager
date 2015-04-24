@@ -9,6 +9,7 @@ import org.joda.time.DateTime;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import fr.wati.yacramanager.beans.CompanyTempInvitation;
 import fr.wati.yacramanager.beans.Gender;
 
 /**
@@ -31,6 +32,7 @@ public class RegistrationDTO {
 	private String profileImageUrl;
 	private String profileUrl;
 	private String captchaToken;
+	private CompanyTempInvitation companyInvitation;
 	@JsonIgnore
 	private Locale locale;
 	/**
@@ -158,6 +160,12 @@ public class RegistrationDTO {
 	}
 	public void setCaptchaToken(String captchaToken) {
 		this.captchaToken = captchaToken;
+	}
+	public CompanyTempInvitation getCompanyInvitation() {
+		return companyInvitation;
+	}
+	public void setCompanyTempInvitation(CompanyTempInvitation companyInvitation) {
+		this.companyInvitation = companyInvitation;
 	}
 	
 	

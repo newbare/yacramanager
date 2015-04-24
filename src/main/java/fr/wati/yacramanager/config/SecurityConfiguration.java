@@ -83,7 +83,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter
 				.authorizeRequests()
 				.antMatchers("/")
 				.permitAll()
-				.antMatchers("/auth/**", "/auth/api/**")
+				.antMatchers("/auth/**", "/auth/api/**","/conf/**")
 				.permitAll()
 				.antMatchers("/signin/**", "/signup/**", "/connect/**")
 				.permitAll()
@@ -94,7 +94,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter
 						new String[] { "ADMIN", "SSII_ADMIN", "SALARIE",
 								"INDEP" }).anyRequest().authenticated();
 		if (environment.acceptsProfiles(Constants.SPRING_PROFILE_CLOUD,
-				Constants.SPRING_PROFILE_PRODUCTION)) {
+				Constants.SPRING_PROFILE_PRODUCTION,Constants.SPRING_PROFILE_TEST)) {
 			http.requiresChannel().antMatchers("/**").requiresSecure();
 		}
 		http.formLogin()

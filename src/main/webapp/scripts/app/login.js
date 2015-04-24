@@ -8,13 +8,21 @@ App.run(function($rootScope) {
 });
 
 App.factory("RegistrationRest", function($resource) {
-	return $resource(_contextPath+"/auth/api/register" , {}, {});
+	return $resource(_contextPath+"auth/api/register" , {}, {});
+});
+
+App.factory("AppConfigREST", function($resource) {
+	return $resource(_contextPath + "conf/env/", {}, {
+		getConf: {
+			url : _contextPath + "conf/env/"
+		}
+	});
 });
 
 App.factory("AuthenticationREST", function($resource) {
-	return $resource(_contextPath + "/app/api/company/:id", {}, {
+	return $resource(_contextPath + "app/api/company/:id", {}, {
 		activateAccount : {
-			url : _contextPath + "/auth/api/activate:key",
+			url : _contextPath + "auth/api/activate:key",
 			method : 'GET',
 			params : {
 				key : '@key'
@@ -37,7 +45,7 @@ App.service('alertService', function($alert) {
 			keyboard : true,
 			show : false,
 			duration: 5,
-			template:  _contextPath+'/templates/alert/alert.tpl.html',
+			template:  _contextPath+'templates/alert/alert.tpl.html',
 			container: '#alerts-container'
 		});
 		myAlert.$promise.then(myAlert.show);
@@ -81,18 +89,24 @@ function LoginController($scope, $location) {
 	}
 }
 
-function RegisterController($scope, $location,$window,RegistrationRest,alertService,vcRecaptchaService) {
-	$scope.loadLogin = function() {
-		$window.location.href=_contextPath+'/app/view/';
+function RegisterController($scope, $location,$window,RegistrationRest,AppConfigREST,CompanyREST,alertService,vcRecaptchaService) {
+	$scope.postLogin = function() {
+		$window.location.href=_contextPath+'app/view/';
 	};
 	$scope.response = null;
     $scope.widgetId = null;
-	$scope.captcha={
-			model : {
-				key: '6LeHhQUTAAAAAO4m-IuE3KnLfGK061bzTBZhlxik'
-				}
-    };
-	 
+    var captchaKey=null;
+    AppConfigREST.getConf()
+	.$promise.then(function(result) {
+		captchaKey=result;
+		$scope.captcha={
+				model : {
+					key: captchaKey['google.recaptcha.publicKey']
+					}
+	    };
+	}, function(error) {
+	});
+    
 	$scope.setResponse = function (response) {
          console.info('Response available');
          $scope.response = response;
@@ -103,11 +117,12 @@ function RegisterController($scope, $location,$window,RegistrationRest,alertServ
      };
 
 	$scope.user={};
+	
 	if(typeof preFillRegistrationDTO !== 'undefined'){
 		$scope.preFillRegistrationDTO=preFillRegistrationDTO;
-		$scope.user.username=preFillRegistrationDTO.username;
+		$scope.user.username=preFillRegistrationDTO.email;
 		$scope.user.password=preFillRegistrationDTO.password;
-		$scope.user.companyName=preFillRegistrationDTO.companyName;
+		$scope.user.companyName=preFillRegistrationDTO.companyName;	
 		$scope.user.firstName=preFillRegistrationDTO.firstName;
 		$scope.user.lastName=preFillRegistrationDTO.lastName;
 		$scope.user.email=preFillRegistrationDTO.email;
@@ -119,15 +134,18 @@ function RegisterController($scope, $location,$window,RegistrationRest,alertServ
 		if(preFillRegistrationDTO.gender!=null && preFillRegistrationDTO.gender!=undefined){
 			$scope.user.gender=preFillRegistrationDTO.gender.$name;
 		}
-		
-		//$scope.user=preFillRegistrationDTO;
 	}
+	$scope.invitation=undefined;
+	if(typeof invitation !== 'undefined'){
+		$scope.invitation=invitation;
+		$scope.user.companyName=$scope.invitation.companyName;
+	};
 	$scope.register=function(){
 		$scope.user.captchaToken=$scope.response;
 		RegistrationRest.save($scope.user)
 			.$promise.then(function(result) {
 				alertService.show('success','Saved','Account has been created !');
-				$scope.loadLogin();
+				$scope.postLogin();
 		},function(reason){
 			console.log('Failed validation');
 			$window.location.reload();
@@ -161,7 +179,7 @@ App.config([ '$stateProvider', '$urlRouterProvider','$locationProvider','$transl
 //	$stateProvider
 //	.state('login', {
 //		url : "/login",
-//		templateUrl : _contextPath+'/templates/login.html',
+//		templateUrl : _contextPath+'templates/login.html',
 //		controller : LoginController,
 //		data: {
 //	        pageTitle: 'Login page'
@@ -169,7 +187,7 @@ App.config([ '$stateProvider', '$urlRouterProvider','$locationProvider','$transl
 //	})
 //	.state('register', {
 //		url : "/register",
-//		templateUrl : _contextPath+'/templates/register.html',
+//		templateUrl : _contextPath+'templates/register.html',
 //		controller : RegisterController,
 //		data: {
 //	        pageTitle: 'Registration'
@@ -177,7 +195,7 @@ App.config([ '$stateProvider', '$urlRouterProvider','$locationProvider','$transl
 //	})
 //	.state('forgot-password', {
 //		url : "/forgot-password",
-//		templateUrl : _contextPath+'/templates/forgot-password.html',
+//		templateUrl : _contextPath+'templates/forgot-password.html',
 //		controller : PasswordRecoveryController,
 //		data: {
 //	        pageTitle: 'Registration'
@@ -186,14 +204,14 @@ App.config([ '$stateProvider', '$urlRouterProvider','$locationProvider','$transl
 	$translateProvider.determinePreferredLanguage();
 	
 	$translateProvider.useStaticFilesLoader({
-	      prefix: _contextPath+'/i18n/',
+	      prefix: _contextPath+'i18n/',
 	      suffix: '.json'
 	});
 
 	$translateProvider.useCookieStorage();
 
 	tmhDynamicLocaleProvider
-			.localeLocationPattern(_contextPath+'/bower_components/angular-i18n/angular-locale_{{locale}}.js');
+			.localeLocationPattern(_contextPath+'bower_components/angular-i18n/angular-locale_{{locale}}.js');
 	tmhDynamicLocaleProvider
 			.useCookieStorage('NG_TRANSLATE_LANG_KEY');
 }]);

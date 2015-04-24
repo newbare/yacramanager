@@ -23,7 +23,7 @@ function FraisController($scope, $rootScope, NoteREST, alertService,
 	var allNote = [];
 	
 	$scope.refreshApproval=function(){
-		$http.get(_contextPath+"/app/api/frais/approval",{params:{"requesterId":_userId} })
+		$http.get(_contextPath+"app/api/frais/approval",{params:{"requesterId":_userId} })
 		.success(function(data, status) {
 			$scope.approvementTotal=data.totalCount;
 			$scope.approvements=data.result;
@@ -32,14 +32,14 @@ function FraisController($scope, $rootScope, NoteREST, alertService,
 	
 	$scope.refreshApproval();
 	$scope.approve=function(id){
-		$http.put(_contextPath+"/app/api/frais/approval/approve/"+parseInt(_userId)+"/"+id)
+		$http.put(_contextPath+"app/api/frais/approval/approve/"+parseInt(_userId)+"/"+id)
 		.success(function(data, status) {
 			alertService.show('success','Updated', 'Data has been updated');
 			$scope.refreshApproval();
 		});
 	};
 	$scope.reject=function(id){
-		$http.put(_contextPath+"/app/api/frais/approval/reject/"+parseInt(_userId)+"/"+id)
+		$http.put(_contextPath+"app/api/frais/approval/reject/"+parseInt(_userId)+"/"+id)
 		.success(function(data, status) {
 			alertService.show('success','Updated', 'Data has been updated');
 			$scope.refreshApproval();
@@ -69,7 +69,7 @@ function FraisController($scope, $rootScope, NoteREST, alertService,
 				return items;
 			},
 			getData:function($defer){
-				$http.get(_contextPath+"/app/api/users/managed/"+_userId,{params:{"me":true} })
+				$http.get(_contextPath+"app/api/users/managed/"+_userId,{params:{"me":true} })
 					.success(function(data, status) {
 						$defer.resolve(data);
 					});
@@ -196,7 +196,7 @@ function FraisController($scope, $rootScope, NoteREST, alertService,
 	$scope.postAttachement = function(hideFn) {
 		if($scope.selectedFile){
 			$scope.upload = $upload.upload({
-				url : _contextPath+'/app/api/attachements', // upload.php script, node.js route, or
+				url : _contextPath+'app/api/attachements', // upload.php script, node.js route, or
 											// servlet url
 				file : $scope.selectedFile, // or list of files: $files for html5
 											// only

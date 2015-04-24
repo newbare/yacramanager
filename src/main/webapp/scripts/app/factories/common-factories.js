@@ -1,3 +1,10 @@
+App.factory("AppConfigREST", function($resource) {
+	return $resource(_contextPath + "conf/env/", {}, {
+		getConf: {
+			url : _contextPath + "conf/env/"
+		}
+	});
+});
 App.factory("AuthenticationREST", function($resource) {
 	return $resource(_contextPath + "app/api/company/:id", {}, {
 		activateAccount : {
@@ -68,7 +75,7 @@ App.factory("CompanyREST", function($resource) {
 			}
 		},
 		inviteEmployee : {
-			url : _contextPath + "/app/api/company/:id/invite",
+			url : _contextPath + "app/api/company/:id/invite",
 			method : 'POST'			
 		}
 	});
@@ -114,14 +121,14 @@ App.factory("EmployeesREST", function($resource) {
 			}
 		},
 		updateManager:{
-			url:_contextPath + "/app/api/users/update-manager/:employeeId",
+			url:_contextPath + "app/api/users/update-manager/:employeeId",
 			method : 'POST',
 		}
 	});
 });
 
 App.factory("ClientsREST", function($resource) {
-	return $resource(_contextPath + "/app/api/:companyId/client/:id", {
+	return $resource(_contextPath + "app/api/:companyId/client/:id", {
 		companyId : '@companyId'
 	}, {
 		update : {
@@ -134,7 +141,7 @@ App.factory("ClientsREST", function($resource) {
 });
 
 App.factory("ProjectsREST", function($resource) {
-	return $resource(_contextPath + "/app/api/:companyId/project/:id", {
+	return $resource(_contextPath + "app/api/:companyId/project/:id", {
 		companyId : '@companyId'
 	}, {
 		update : {
@@ -147,7 +154,7 @@ App.factory("ProjectsREST", function($resource) {
 });
 
 App.factory("TasksREST", function($resource) {
-	return $resource(_contextPath + "/app/api/:companyId/task/:id", {
+	return $resource(_contextPath + "app/api/:companyId/task/:id", {
 		companyId : '@companyId'
 	}, {
 		update : {
@@ -157,23 +164,23 @@ App.factory("TasksREST", function($resource) {
 			}
 		},
 		getAssignedEmployee:{
-			url : _contextPath + "/app/api/:companyId/task/:taskId/assigned/:employeId",
+			url : _contextPath + "app/api/:companyId/task/:taskId/assigned/:employeId",
 			method : 'GET',
 			isArray : false
 		},
 		assignEmployeeToTask:{
-			url : _contextPath + "/app/api/:companyId/task/:taskId/assign-employees",
+			url : _contextPath + "app/api/:companyId/task/:taskId/assign-employees",
 			method : 'POST'
 		},
 		unAssignEmployeeToTask:{
-			url : _contextPath + "/app/api/:companyId/task/:taskId/unassign-employees",
+			url : _contextPath + "app/api/:companyId/task/:taskId/unassign-employees",
 			method : 'POST'
 		}
 	});
 });
 
 App.factory("CompanySettingsREST", function($resource) {
-	return $resource(_contextPath + "/app/api/settings/company/"+ _userCompanyId + "/:id", {}, {
+	return $resource(_contextPath + "app/api/settings/company/"+ _userCompanyId + "/:id", {}, {
 		update : {
 			method : 'PUT'
 		}
@@ -224,7 +231,7 @@ App.factory("UsersREST", function($resource) {
 });
 
 App.factory("UserSettingsREST", function($resource) {
-	return $resource(_contextPath + "/app/api/settings/user/" + _userId	+ "/:id", {}, {
+	return $resource(_contextPath + "app/api/settings/user/" + _userId	+ "/:id", {}, {
 		update : {
 			method : 'PUT'
 		}
@@ -232,7 +239,7 @@ App.factory("UserSettingsREST", function($resource) {
 });
 
 App.factory("WorkLogREST", function($resource) {
-	return $resource(_contextPath + "/app/api/worklog/:id", {}, {
+	return $resource(_contextPath + "app/api/worklog/:id", {}, {
 		update : {
 			method : 'PUT',
 			params : {

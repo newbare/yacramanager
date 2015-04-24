@@ -34,7 +34,7 @@ function TasksController($scope, $rootScope,ngTableParams, alertService,Projects
 				return items;
 			},
 			getData:function($defer){
-				$http.get(_contextPath+"/app/api/"+_userCompanyId+"/project/employe/"+_userId)
+				$http.get(_contextPath+"app/api/"+_userCompanyId+"/project/employe/"+_userId)
 					.success(function(data, status) {
 						var value=[];
 						if(data.totalCount>0){
@@ -94,7 +94,7 @@ function TasksController($scope, $rootScope,ngTableParams, alertService,Projects
 
 
 	$scope.refreshProjects = function() {
-		$http.get(_contextPath+"/app/api/"+_userCompanyId+"/project/employe/"+_userId)
+		$http.get(_contextPath+"app/api/"+_userCompanyId+"/project/employe/"+_userId)
 		.success(function(data, status) {
 			$scope.projects = data.result;
 		});

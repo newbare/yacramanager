@@ -1,28 +1,42 @@
 package fr.wati.yacramanager.web.auth;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.social.connect.Connection;
 import org.springframework.social.connect.web.ProviderSignInUtils;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
+import fr.wati.yacramanager.beans.CompanyTempInvitation;
 import fr.wati.yacramanager.config.social.DefaultConnectionSignUp;
+import fr.wati.yacramanager.dao.JdbcCompanyInvitationRepository;
+import fr.wati.yacramanager.web.ResourceNotFoundException;
 import fr.wati.yacramanager.web.dto.RegistrationDTO;
 
 @Controller
 public class AuthController {
 
+	private final Logger log = LoggerFactory.getLogger(AuthController.class);
+
 	@Inject
 	private DefaultConnectionSignUp connectionSignUp;
-	
+
+	@Inject
+	private JdbcCompanyInvitationRepository companyInvitationRepository;
+
 	@RequestMapping(value = "/auth/login")
 	public ModelAndView login(
 			@RequestParam(value = "error", defaultValue = "false", required = false) boolean error,
@@ -48,25 +62,51 @@ public class AuthController {
 
 	@RequestMapping(value = "/auth/")
 	public RedirectView redirectToLogin() {
-		RedirectView redirectView = new RedirectView("login",false);
+		RedirectView redirectView = new RedirectView("login", false);
 		return redirectView;
 	}
-	
+
 	@RequestMapping(value = "/auth/register")
 	public ModelAndView register(
 			@RequestParam(value = "oauth_user", defaultValue = "false", required = false) boolean oauthUser,
-			HttpSession httpSession,WebRequest request) {
-		
+			HttpSession httpSession, WebRequest webRequest,HttpServletRequest request,Model model ) {
+
 		ModelAndView modelAndView = new ModelAndView();
-		if(oauthUser && SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken){
-			Connection<?> connection = ProviderSignInUtils.getConnection(request);
-			RegistrationDTO registrationDTO=connectionSignUp.fromConnection(connection).fromConnection(connection);
+		if (oauthUser
+				&& SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken) {
+			Connection<?> connection = ProviderSignInUtils
+					.getConnection(webRequest);
+			RegistrationDTO registrationDTO = connectionSignUp.fromConnection(
+					connection).fromConnection(connection);
 			modelAndView.addObject("preFillRegistrationDTO", registrationDTO);
 		}
-		
+		if (model !=null && model.containsAttribute("invitation")) {
+			CompanyTempInvitation invitation = (CompanyTempInvitation) model.asMap().get("invitation");
+			log.debug("Registration after invitation"+invitation);
+			modelAndView.addObject("invitation", invitation);
+		}
 		modelAndView.addObject("oauthUser", oauthUser);
 		modelAndView.setViewName("auth/register");
 		return modelAndView;
+	}
+
+	@RequestMapping(value = "/auth/invitation/accept", method = RequestMethod.GET)
+	public RedirectView  acceptInvitation(
+			@RequestParam(value = "token", required = true) String token,
+			@RequestParam(value = "user", required = true) String user,
+			@RequestParam(value = "company", required = true) String company,
+			final RedirectAttributes redirectAttrs) {
+		CompanyTempInvitation invitation = companyInvitationRepository
+				.findInvitationWithToken(user, company, token);
+		RedirectView  redirectView  = new RedirectView ();
+		if (invitation != null) {
+			redirectView.setUrl("/auth/register");
+			redirectAttrs.addFlashAttribute("invitation", invitation);
+			return redirectView;
+		}
+		// Redirect to not found
+		throw new ResourceNotFoundException("Invalid acceptation request");
+
 	}
 
 	@RequestMapping(value = "/auth/forgot-password")

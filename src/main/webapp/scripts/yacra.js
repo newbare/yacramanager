@@ -34,14 +34,14 @@ App
 						$translateProvider, tmhDynamicLocaleProvider) {
 					$translateProvider.determinePreferredLanguage();
 					$translateProvider.useStaticFilesLoader({
-						prefix : _contextPath + '/i18n/',
+						prefix : _contextPath + 'i18n/',
 						suffix : '.json'
 					});
 
 					$translateProvider.useCookieStorage();
 
 					tmhDynamicLocaleProvider
-							.localeLocationPattern(_contextPath	+ '/bower_components/angular-i18n/angular-locale_{{locale}}.js');
+							.localeLocationPattern(_contextPath	+ 'bower_components/angular-i18n/angular-locale_{{locale}}.js');
 					tmhDynamicLocaleProvider
 							.useCookieStorage('NG_TRANSLATE_LANG_KEY');
 
@@ -55,7 +55,7 @@ App.factory('LanguageService', function ($http, $translate, LANGUAGES) {
                 language = $translate.storage().get('NG_TRANSLATE_LANG_KEY') || window.navigator.language;
             }
 
-            var promise =  $http.get( _contextPath+'/i18n/' + language + '.json').then(function(response) {
+            var promise =  $http.get( _contextPath+'i18n/' + language + '.json').then(function(response) {
                 return LANGUAGES;
             });
             return promise;

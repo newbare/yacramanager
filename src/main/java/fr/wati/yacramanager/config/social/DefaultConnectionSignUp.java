@@ -2,6 +2,8 @@ package fr.wati.yacramanager.config.social;
 
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.social.connect.Connection;
 import org.springframework.social.connect.ConnectionSignUp;
 import org.springframework.social.facebook.api.Facebook;
@@ -20,27 +22,30 @@ import fr.wati.yacramanager.beans.Employe;
 import fr.wati.yacramanager.beans.Gender;
 import fr.wati.yacramanager.beans.Users;
 import fr.wati.yacramanager.services.EmployeService;
+import fr.wati.yacramanager.services.ServiceException;
 import fr.wati.yacramanager.services.UserService;
 import fr.wati.yacramanager.web.dto.RegistrationDTO;
 
 /**
- * Simple little {@link ConnectionSignUp} command that allocates new userIds in memory.
- * Doesn't bother storing a user record in any local database, since this quickstart just stores the user id in a cookie.
+ * Simple little {@link ConnectionSignUp} command that allocates new userIds in
+ * memory. Doesn't bother storing a user record in any local database, since
+ * this quickstart just stores the user id in a cookie.
+ * 
  * @author Keith Donald
  */
 public class DefaultConnectionSignUp implements ConnectionSignUp {
 
-	
+	private final Logger log = LoggerFactory
+			.getLogger(DefaultConnectionSignUp.class);
+
 	private EmployeService employeService;
 	private UserService userService;
-	private SignUpDelegate gitHubDelegate=new GitHubConnectionSignUp();
-	private SignUpDelegate facebookDelegate=new FacebookConnectionSignUp();
-	private SignUpDelegate twitterDelegate=new TwitterConnectionSignUp();
-	private SignUpDelegate googleDelegate=new GoogleConnectionSignUp();
-	private SignUpDelegate linkedInDelegate=new LinkedinConnectionSignUp();
-	
-	
-	
+	private SignUpDelegate gitHubDelegate = new GitHubConnectionSignUp();
+	private SignUpDelegate facebookDelegate = new FacebookConnectionSignUp();
+	private SignUpDelegate twitterDelegate = new TwitterConnectionSignUp();
+	private SignUpDelegate googleDelegate = new GoogleConnectionSignUp();
+	private SignUpDelegate linkedInDelegate = new LinkedinConnectionSignUp();
+
 	public DefaultConnectionSignUp(EmployeService employeService,
 			UserService userService) {
 		super();
@@ -48,53 +53,38 @@ public class DefaultConnectionSignUp implements ConnectionSignUp {
 		this.userService = userService;
 	}
 
-
-
 	public EmployeService getEmployeService() {
 		return employeService;
 	}
-
-
 
 	public UserService getUserService() {
 		return userService;
 	}
 
-
-
 	public ConnectionSignUp getGitHubDelegate() {
 		return gitHubDelegate;
 	}
-
-
 
 	public ConnectionSignUp getFacebookDelegate() {
 		return facebookDelegate;
 	}
 
-
-
 	public ConnectionSignUp getTwitterDelegate() {
 		return twitterDelegate;
 	}
-
-
 
 	public ConnectionSignUp getGoogleDelegate() {
 		return googleDelegate;
 	}
 
-
-
 	public ConnectionSignUp getLinkedInDelegate() {
 		return linkedInDelegate;
 	}
 
-
-
 	public String execute(Connection<?> connection) {
-		Users existingUser = userService.findByEmail(connection.getDisplayName());
-		if(existingUser==null){
+		Users existingUser = userService.findByEmail(connection
+				.getDisplayName());
+		if (existingUser == null) {
 			switch (connection.getKey().getProviderId()) {
 			case "facebook":
 				return facebookDelegate.execute(connection);
@@ -112,8 +102,8 @@ public class DefaultConnectionSignUp implements ConnectionSignUp {
 		}
 		return existingUser.getUserName();
 	}
-	
-	public SignUpDelegate fromConnection(Connection<?> connection){
+
+	public SignUpDelegate fromConnection(Connection<?> connection) {
 		switch (connection.getKey().getProviderId()) {
 		case "facebook":
 			return facebookDelegate;
@@ -129,149 +119,162 @@ public class DefaultConnectionSignUp implements ConnectionSignUp {
 			return null;
 		}
 	}
-	
-	private class GitHubConnectionSignUp implements SignUpDelegate{
 
-		@Override
-		public String execute(Connection<?> connection) {
-			Employe registerEmploye = employeService.registerEmploye(fromConnection(connection),true);
-			return registerEmploye.getUserName();
-		}
+	private class GitHubConnectionSignUp extends SignUpDelegate {
 
 		@Override
 		public RegistrationDTO fromConnection(Connection<?> connection) {
-			GitHubUserProfile userProfile = ((GitHub)connection.getApi()).userOperations().getUserProfile() ;
-			RegistrationDTO registrationDTO=new RegistrationDTO();
+			GitHubUserProfile userProfile = ((GitHub) connection.getApi())
+					.userOperations().getUserProfile();
+			RegistrationDTO registrationDTO = new RegistrationDTO();
 			registrationDTO.setUsername(userProfile.getUsername());
 			registrationDTO.setFirstName(userProfile.getName());
 			registrationDTO.setLastName(userProfile.getName());
 			registrationDTO.setEmail(userProfile.getEmail());
 			registrationDTO.setSocialUser(true);
-			registrationDTO.setSocialProviderId(connection.getKey().getProviderId());
-			registrationDTO.setSocialUserId(connection.getKey().getProviderUserId());
+			registrationDTO.setSocialProviderId(connection.getKey()
+					.getProviderId());
+			registrationDTO.setSocialUserId(connection.getKey()
+					.getProviderUserId());
 			registrationDTO.setProfileUrl(userProfile.getBlog());
-			registrationDTO.setProfileImageUrl(userProfile.getProfileImageUrl());
-			registrationDTO.setCompanyName(StringUtils.isEmpty(userProfile.getCompany())? userProfile.getUsername().toUpperCase():userProfile.getCompany());
+			registrationDTO
+					.setProfileImageUrl(userProfile.getProfileImageUrl());
+			registrationDTO.setCompanyName(StringUtils.isEmpty(userProfile
+					.getCompany()) ? userProfile.getUsername().toUpperCase()
+					: userProfile.getCompany());
 			return registrationDTO;
 		}
-		
-	}
-	
-	private class FacebookConnectionSignUp implements SignUpDelegate{
 
-		@Override
-		public String execute(Connection<?> connection) {
-			Employe registerEmploye = employeService.registerEmploye(fromConnection(connection),true);
-			return registerEmploye.getUserName();
-		}
+	}
+
+	private class FacebookConnectionSignUp extends SignUpDelegate {
 
 		@Override
 		public RegistrationDTO fromConnection(Connection<?> connection) {
-			FacebookProfile userProfile = ((Facebook)connection.getApi()).userOperations().getUserProfile() ;
-			RegistrationDTO registrationDTO=new RegistrationDTO();
+			FacebookProfile userProfile = ((Facebook) connection.getApi())
+					.userOperations().getUserProfile();
+			RegistrationDTO registrationDTO = new RegistrationDTO();
 			registrationDTO.setUsername(userProfile.getEmail());
 			registrationDTO.setFirstName(userProfile.getName());
 			registrationDTO.setLastName(userProfile.getName());
 			registrationDTO.setEmail(userProfile.getEmail());
 			registrationDTO.setSocialUser(true);
-			registrationDTO.setGender("male".equals(userProfile.getGender())?Gender.HOMME:Gender.FEMME);
-			registrationDTO.setBirthDay(DateTime.parse(userProfile.getBirthday()));
-			registrationDTO.setSocialProviderId(connection.getKey().getProviderId());
-			registrationDTO.setSocialUserId(connection.getKey().getProviderUserId());
+			registrationDTO
+					.setGender("male".equals(userProfile.getGender()) ? Gender.HOMME
+							: Gender.FEMME);
+			registrationDTO.setBirthDay(DateTime.parse(userProfile
+					.getBirthday()));
+			registrationDTO.setSocialProviderId(connection.getKey()
+					.getProviderId());
+			registrationDTO.setSocialUserId(connection.getKey()
+					.getProviderUserId());
 			registrationDTO.setProfileUrl(userProfile.getLink());
-			registrationDTO.setCompanyName(userProfile.getUsername().toUpperCase());
+			registrationDTO.setCompanyName(userProfile.getUsername()
+					.toUpperCase());
 			return registrationDTO;
 		}
-		
-	}
-	
-	private class GoogleConnectionSignUp implements SignUpDelegate{
 
-		@Override
-		public String execute(Connection<?> connection) {
-			Employe registerEmploye = employeService.registerEmploye(fromConnection(connection),true);
-			return registerEmploye.getUserName();
-		}
+	}
+
+	private class GoogleConnectionSignUp extends SignUpDelegate {
 
 		@Override
 		public RegistrationDTO fromConnection(Connection<?> connection) {
-			GoogleUserInfo googleUserInfo = ((Google)connection.getApi()).userOperations().getUserInfo() ;
-			RegistrationDTO registrationDTO=new RegistrationDTO();
+			GoogleUserInfo googleUserInfo = ((Google) connection.getApi())
+					.userOperations().getUserInfo();
+			RegistrationDTO registrationDTO = new RegistrationDTO();
 			registrationDTO.setUsername(googleUserInfo.getEmail());
 			registrationDTO.setFirstName(googleUserInfo.getFirstName());
 			registrationDTO.setLastName(googleUserInfo.getLastName());
 			registrationDTO.setEmail(googleUserInfo.getEmail());
 			registrationDTO.setSocialUser(true);
-			registrationDTO.setGender("male".equals(googleUserInfo.getGender())?Gender.HOMME:Gender.FEMME);
-			registrationDTO.setSocialProviderId(connection.getKey().getProviderId());
-			registrationDTO.setSocialUserId(connection.getKey().getProviderUserId());
+			registrationDTO
+					.setGender("male".equals(googleUserInfo.getGender()) ? Gender.HOMME
+							: Gender.FEMME);
+			registrationDTO.setSocialProviderId(connection.getKey()
+					.getProviderId());
+			registrationDTO.setSocialUserId(connection.getKey()
+					.getProviderUserId());
 			registrationDTO.setProfileUrl(googleUserInfo.getLink());
-			registrationDTO.setProfileImageUrl(googleUserInfo.getProfilePictureUrl());
-			registrationDTO.setCompanyName(googleUserInfo.getName().toUpperCase());
+			registrationDTO.setProfileImageUrl(googleUserInfo
+					.getProfilePictureUrl());
+			registrationDTO.setCompanyName(googleUserInfo.getName()
+					.toUpperCase());
 			return registrationDTO;
 		}
-		
-	}
-	
-	private class LinkedinConnectionSignUp implements SignUpDelegate{
 
-		@Override
-		public String execute(Connection<?> connection) {
-			Employe registerEmploye = employeService.registerEmploye(fromConnection(connection),true);
-			return registerEmploye.getUserName();
-		}
+	}
+
+	private class LinkedinConnectionSignUp extends SignUpDelegate {
 
 		@Override
 		public RegistrationDTO fromConnection(Connection<?> connection) {
-			LinkedInProfileFull linkedInProfileFull = ((LinkedIn)connection.getApi()).profileOperations().getUserProfileFull();
-			CompanyOperations companyOperations = ((LinkedIn)connection.getApi()).companyOperations() ;
-			RegistrationDTO registrationDTO=new RegistrationDTO();
+			LinkedInProfileFull linkedInProfileFull = ((LinkedIn) connection
+					.getApi()).profileOperations().getUserProfileFull();
+			CompanyOperations companyOperations = ((LinkedIn) connection
+					.getApi()).companyOperations();
+			RegistrationDTO registrationDTO = new RegistrationDTO();
 			registrationDTO.setUsername(linkedInProfileFull.getEmailAddress());
 			registrationDTO.setFirstName(linkedInProfileFull.getFirstName());
 			registrationDTO.setLastName(linkedInProfileFull.getLastName());
 			registrationDTO.setEmail(linkedInProfileFull.getEmailAddress());
-			//registrationDTO.setGender("male".equals(googleUserInfo.getGender())?Gender.HOMME:Gender.FEMME);
-			registrationDTO.setSocialProviderId(connection.getKey().getProviderId());
+			// registrationDTO.setGender("male".equals(googleUserInfo.getGender())?Gender.HOMME:Gender.FEMME);
+			registrationDTO.setSocialProviderId(connection.getKey()
+					.getProviderId());
 			registrationDTO.setSocialUser(true);
-			registrationDTO.setSocialUserId(connection.getKey().getProviderUserId());
-			registrationDTO.setProfileUrl(linkedInProfileFull.getPublicProfileUrl());
-			registrationDTO.setProfileImageUrl(linkedInProfileFull.getProfilePictureUrl());
-			if(linkedInProfileFull.getDateOfBirth()!=null){
-				registrationDTO.setBirthDay(new DateTime(linkedInProfileFull.getDateOfBirth().getYear(), linkedInProfileFull.getDateOfBirth().getMonth(), linkedInProfileFull.getDateOfBirth().getDay(), 0, 0));
+			registrationDTO.setSocialUserId(connection.getKey()
+					.getProviderUserId());
+			registrationDTO.setProfileUrl(linkedInProfileFull
+					.getPublicProfileUrl());
+			registrationDTO.setProfileImageUrl(linkedInProfileFull
+					.getProfilePictureUrl());
+			if (linkedInProfileFull.getDateOfBirth() != null) {
+				registrationDTO.setBirthDay(new DateTime(linkedInProfileFull
+						.getDateOfBirth().getYear(), linkedInProfileFull
+						.getDateOfBirth().getMonth(), linkedInProfileFull
+						.getDateOfBirth().getDay(), 0, 0));
 			}
-			
-			//registrationDTO.setCompanyName(linkedInProfileFull.get);
+
+			// registrationDTO.setCompanyName(linkedInProfileFull.get);
 			return registrationDTO;
 		}
-		
-	}
-	
-	private class TwitterConnectionSignUp implements SignUpDelegate{
 
-		@Override
-		public String execute(Connection<?> connection) {
-			Employe registerEmploye = employeService.registerEmploye(fromConnection(connection),true);
-			return registerEmploye.getUserName();
-		}
+	}
+
+	private class TwitterConnectionSignUp extends SignUpDelegate {
 
 		@Override
 		public RegistrationDTO fromConnection(Connection<?> connection) {
-			Twitter twitter=((Twitter)connection.getApi());
-			TwitterProfile userProfile = twitter.userOperations().getUserProfile() ;
-			RegistrationDTO registrationDTO=new RegistrationDTO();
-			//registrationDTO.setUsername(userProfile.getName());
+			Twitter twitter = ((Twitter) connection.getApi());
+			TwitterProfile userProfile = twitter.userOperations()
+					.getUserProfile();
+			RegistrationDTO registrationDTO = new RegistrationDTO();
+			// registrationDTO.setUsername(userProfile.getName());
 			registrationDTO.setFirstName(userProfile.getScreenName());
 			registrationDTO.setLastName(userProfile.getName());
 			registrationDTO.setSocialUser(true);
-//			registrationDTO.setEmail(userProfile.get);
-//			registrationDTO.setCompanyName(userProfile.getUsername().toUpperCase());
+			// registrationDTO.setEmail(userProfile.get);
+			// registrationDTO.setCompanyName(userProfile.getUsername().toUpperCase());
 			return registrationDTO;
 		}
-		
+
 	}
-	
-	public interface SignUpDelegate extends ConnectionSignUp{
-		RegistrationDTO fromConnection(Connection<?> connection);
+
+	public abstract class SignUpDelegate implements ConnectionSignUp {
+		@Override
+		public String execute(Connection<?> connection) {
+			Employe registerEmploye;
+			try {
+				registerEmploye = employeService.registerEmploye(
+						fromConnection(connection), true);
+				return registerEmploye.getUserName();
+			} catch (ServiceException e) {
+				log.error(e.getMessage(), e);
+			}
+			return null;
+		}
+
+		public abstract RegistrationDTO fromConnection(Connection<?> connection);
 	}
 
 }

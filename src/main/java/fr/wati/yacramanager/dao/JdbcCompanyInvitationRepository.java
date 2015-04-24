@@ -19,22 +19,22 @@ public class JdbcCompanyInvitationRepository {
 
 	private JdbcTemplate jdbcTemplate;
 	
-	private static final String insertSQL="insert into CompanyTempInvitation (userId,companyId,token,createdDate,expiryDate)"
-			+ " values (?,?,?,?,?)"; 
-	private static final String findInvitationWithTokenSQL="select userId,companyId,token,createdDate,expiryDate from CompanyTempInvitation where userId= :userId and companyId= :companyId and token= :token";
-	private static final String findInvitationSQL="select userId,companyId,token,createdDate,expiryDate from CompanyTempInvitation where userId= :userId and companyId= :companyId";
+	private static final String insertSQL="insert into CompanyTempInvitation (userId,companyId,token,createdDate,expiryDate,companyName)"
+			+ " values (?,?,?,?,?,?)"; 
+	private static final String findInvitationWithTokenSQL="select userId,companyId,token,createdDate,expiryDate,companyName from CompanyTempInvitation where userId= :userId and companyId= :companyId and token= :token";
+	private static final String findInvitationSQL="select userId,companyId,token,createdDate,expiryDate,companyName from CompanyTempInvitation where userId= :userId and companyId= :companyId";
 	private static final String deleteSql = "DELETE FROM CompanyTempInvitation WHERE userId = ? and companyId = ?";
 	
 	public JdbcCompanyInvitationRepository(DataSource dataSource) {
 		this.jdbcTemplate=new JdbcTemplate(dataSource);
 	}
 
-	public CompanyTempInvitation addInvitation(String userId, String companyId){
+	public CompanyTempInvitation addInvitation(String userId, String companyId,String companyName){
 		String token=RandomStringUtils.randomAlphanumeric(30);
 		// define query arguments
 		Date expiryDate=new LocalDate().plusDays(3).toDate();
-		Object[] params = new Object[] { userId, companyId, token, new Date(), expiryDate};
-		int[] types = new int[] { Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.DATE,Types.DATE}; 
+		Object[] params = new Object[] { userId, companyId, token, new Date(), expiryDate,companyName};
+		int[] types = new int[] { Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.DATE,Types.DATE,Types.VARCHAR}; 
 		jdbcTemplate.update(insertSQL, params,types);
 		return findInvitationWithToken(userId,companyId,token);
 	}

@@ -486,7 +486,7 @@ function CompanyProjectsViewController($scope, $rootScope,$http,ProjectsREST,ngT
 				return "["+data.label+"]";
 			},
 			getData:function($defer){
-				$http.get(_contextPath+"/app/api/"+_userCompanyId+"/client",
+				$http.get(_contextPath+"app/api/"+_userCompanyId+"/client",
 						{
 							params:
 								{	
@@ -711,7 +711,7 @@ function CompanyProjectsController($scope, $rootScope,$http,ngTableParams,Projec
 	
 	var fetchClients = function(queryParams) {
 		return $http.get(
-				_contextPath + "/app/api/" + _userCompanyId + "/client", {
+				_contextPath + "app/api/" + _userCompanyId + "/client", {
 					params : {}
 				}).then(function(response) {
 					$scope.clients=response.data.result;
@@ -763,7 +763,7 @@ function CompanyProjectsController($scope, $rootScope,$http,ngTableParams,Projec
 				return "["+data.label+"]";
 			},
 			getData:function($defer){
-				$http.get(_contextPath+"/app/api/"+_userCompanyId+"/client",
+				$http.get(_contextPath+"app/api/"+_userCompanyId+"/client",
 						{
 							params:
 								{	

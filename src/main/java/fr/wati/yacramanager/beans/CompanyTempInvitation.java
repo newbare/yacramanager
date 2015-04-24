@@ -8,6 +8,7 @@ public class CompanyTempInvitation {
 	private String userId;
 	private String companyId;
 	private String token;
+	private String companyName;
 	private Date createdDate;
 	private Date expiryDate;
 	
@@ -58,4 +59,13 @@ public class CompanyTempInvitation {
 	public boolean isStillValid(){
 		return expiryDate.after(createdDate);
 	}
+
+	public String getCompanyName() {
+		return companyName;
+	}
+
+	public void setCompanyName(String companyName) {
+		this.companyName = companyName;
+	}
+	
 }

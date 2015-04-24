@@ -12,7 +12,7 @@ App.service('alertService', function($alert) {
 			keyboard : true,
 			show : false,
 			duration: 10,
-			template:  _contextPath+'/templates/alert/alert.tpl.html',
+			template:  _contextPath+'templates/alert/alert.tpl.html',
 			container: '#alerts-container'
 			//container: 'body'
 			//container: '#main-view'
@@ -64,7 +64,7 @@ App.service('WebSocketService', function($timeout,notifService) {
 	};
 	
 	this.connect = function connect() {
-			var socket = new SockJS('/yacramanager/yacra');
+			var socket = new SockJS('/yacra');
 			stompClient = Stomp.over(socket);
 			stompClient.debug=function(){
 				//do nothing

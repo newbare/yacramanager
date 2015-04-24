@@ -2,7 +2,7 @@ function TimeSheetController($scope,$rootScope,$http,$sce,WorkLogREST,alertServi
 	$rootScope.page={"title":"Timesheet","description":"View and manage timesheet"};
 	$scope.timeType="duration";
 	$scope.timesheetCalendarTitle=undefined;
-	var editWorklogModal = $modal({scope: $scope, template: _contextPath+'/views/app/templates/edit-worklog.tpl.html', show: false});
+	var editWorklogModal = $modal({scope: $scope, template: _contextPath+'views/app/templates/edit-worklog.tpl.html', show: false});
 	$scope.showEditWorkLogModal = function() {
 		editWorklogModal.$promise.then(editWorklogModal.show);
 	};
@@ -22,7 +22,7 @@ function TimeSheetController($scope,$rootScope,$http,$sce,WorkLogREST,alertServi
 	
 	
 	var fetchProjects = function(queryParams) {
-		return $http.get(_contextPath + "/app/api/" + _userCompanyId + "/project/employe/"+ _userId, {
+		return $http.get(_contextPath + "app/api/" + _userCompanyId + "/project/employe/"+ _userId, {
 					params : {}
 				}).then(function(response) {
 					$scope.projects=response.data.result;
@@ -48,7 +48,7 @@ function TimeSheetController($scope,$rootScope,$http,$sce,WorkLogREST,alertServi
 	
 	
 	var fetchTasks = function(queryParams) {
-		return $http.get(_contextPath + "/app/api/" + _userCompanyId + "/task/"+$scope.project.id+"/"+ _userId, {
+		return $http.get(_contextPath + "app/api/" + _userCompanyId + "/task/"+$scope.project.id+"/"+ _userId, {
 					params : {}
 				}).then(function(response) {
 					$scope.tasks=response.data.result;
@@ -85,7 +85,7 @@ function TimeSheetController($scope,$rootScope,$http,$sce,WorkLogREST,alertServi
 				return items;
 			},
 			getData:function($defer){
-				$http.get(_contextPath+"/app/api/users/managed/"+_userId,{params:{"me":true} })
+				$http.get(_contextPath+"app/api/users/managed/"+_userId,{params:{"me":true} })
 					.success(function(data, status) {
 						$defer.resolve(data);
 					});
@@ -148,7 +148,7 @@ function TimeSheetController($scope,$rootScope,$http,$sce,WorkLogREST,alertServi
     };
     
     $scope.eventRender=function(event, element,view) {
-    	popover=$popover(element, {title: event.title,placement:'top',trigger:'click',html:true,template: _contextPath+'/views/app/templates/worklog.popover.tpl.html',container:'body' });
+    	popover=$popover(element, {title: event.title,placement:'top',trigger:'click',html:true,template: _contextPath+'views/app/templates/worklog.popover.tpl.html',container:'body' });
     	popover.$scope.event = event;
     	popover.$scope.isValidated=$scope.isValidated;
     	popover.$scope.isWaiting=$scope.isWaiting;
@@ -156,7 +156,7 @@ function TimeSheetController($scope,$rootScope,$http,$sce,WorkLogREST,alertServi
     };
     
     $scope.eventSource = {
-            url: _contextPath+"/app/api/worklog/calendar",
+            url: _contextPath+"app/api/worklog/calendar",
             type : 'GET'
     };
     $scope.eventSources = [$scope.eventSource];

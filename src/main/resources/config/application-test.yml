@@ -1,26 +1,19 @@
 server:
     port: 8082
-#    ssl:
-#        enabled: true
-#        key-store:  classpath:tomcat-ssl.keystore
-#        key-store-password: tomcat7
-#    context-path: /yacramanager
     tomcat: 
         protocolHeader: x-forwarded-proto
         remoteIpHeader: x-forwarded-for
 
 spring:
     profiles:
-        active: dev
+        active: test
     datasource:
         dataSourceClassName: org.postgresql.ds.PGSimpleDataSource
-        url: jdbc:postgresql://localhost:5432/yacra
+        url: 
         databaseName: yacra
         serverName: localhost
         username: yacra
-        password: yacra
-#        schema: classpath:/sql/spring-security-persistent-login.sql,classpath:/sql/spring-social-userconnection.sql
-#        data: classpath:/sql/create-admin-user.sql,classpath:/sql/roles-initialization.sql
+        password: 
         continueOnError: true
         init-db: true
 
@@ -31,14 +24,13 @@ spring:
         show_sql: false
         generate-ddl: false
         hibernate:
-            ddl-auto: update
+            ddl-auto: create-drop
             naming-strategy: org.hibernate.cfg.EJB3NamingStrategy
         properties:
             hibernate.cache.use_second_level_cache: true
             hibernate.cache.use_query_cache: false
             hibernate.generate_statistics: true
             hibernate.cache.region.factory_class: org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory
-#            hibernate.hbm2ddl.import_files: /sql/roles-initialization.sql,/sql/create-admin-user.sql
 
     mail:
         baseUrl: http://localhost:8080
@@ -75,8 +67,8 @@ spring:
                 secret: vV8FqVcgA0z6HTAt		
 google:
     recaptcha:
-        secretKey: 6LeHhQUTAAAAABZrel9yr-Dj_W9U_lDlrk-m01-L
-        publicKey: 6LeHhQUTAAAAAO4m-IuE3KnLfGK061bzTBZhlxik
+        secretKey: 6Lfz2QUTAAAAAHnzr1pRLxF5YMNJkRZYk_rA_D9c
+        publicKey: 6Lfz2QUTAAAAANdOFaf-OQvNs2ie2kmD5P6Yb5AX
         url: https://www.google.com/recaptcha/api/siteverify
 metrics:
     jmx.enabled: true

@@ -24,12 +24,14 @@ import org.springframework.transaction.annotation.Transactional;
 import fr.wati.yacramanager.beans.Activities.ActivityOperation;
 import fr.wati.yacramanager.beans.Company;
 import fr.wati.yacramanager.beans.CompanyAccountInfo;
+import fr.wati.yacramanager.beans.CompanyTempInvitation;
 import fr.wati.yacramanager.beans.Contact;
 import fr.wati.yacramanager.beans.Employe;
 import fr.wati.yacramanager.beans.Gender;
 import fr.wati.yacramanager.beans.Project;
 import fr.wati.yacramanager.beans.Role;
 import fr.wati.yacramanager.beans.Task;
+import fr.wati.yacramanager.dao.JdbcCompanyInvitationRepository;
 import fr.wati.yacramanager.dao.repository.CompanyAccountInfoRepository;
 import fr.wati.yacramanager.dao.repository.ContactRepository;
 import fr.wati.yacramanager.dao.repository.EmployeDto;
@@ -89,6 +91,9 @@ public class EmployeServiceImpl implements EmployeService {
 	
 	@Inject
 	private Environment environment;
+	
+	@Inject
+	private JdbcCompanyInvitationRepository companyInvitationRepository;
 
 	private ApplicationEventPublisher applicationEventPublisher;
 
@@ -185,7 +190,7 @@ public class EmployeServiceImpl implements EmployeService {
 	 * @see fr.wati.yacramanager.services.EmployeService#registerEmploye(fr.wati.yacramanager.web.dto.RegistrationDTO)
 	 */
 	@Override
-	public Employe registerEmploye(RegistrationDTO registrationDTO,boolean isSocialRegistration) {
+	public Employe registerEmploye(RegistrationDTO registrationDTO,boolean isSocialRegistration) throws ServiceException{
 		Employe employe=new Employe();
 		employe.setUserName(registrationDTO.getEmail());
 		if(isSocialRegistration){
@@ -209,22 +214,37 @@ public class EmployeServiceImpl implements EmployeService {
 		Company company=new Company();
 		company.setName(registrationDTO.getCompanyName());
 		company.setRegisteredDate(new DateTime());
-		Company createCompany = companyService.createCompany(company);
-		employe.setCompany(createCompany);
-		CompanyAccountInfo companyAccountInfo=new CompanyAccountInfo();
-		companyAccountInfo.setLocked(false);
-		companyAccountInfo.setExpiredDate(new LocalDate().plusDays(environment.getProperty("yacra.trial.period.days", Integer.class, 30)));
-		companyAccountInfo.setCompany(createCompany);
-		CompanyAccountInfo savedCompanyAccountInfo = companyAccountInfoRepository.save(companyAccountInfo);
-		createCompany.setCompanyAccountInfo(savedCompanyAccountInfo);
+		if(registrationDTO.getCompanyInvitation()!=null){
+			//check invitation validity
+			CompanyTempInvitation givenInvitation = registrationDTO.getCompanyInvitation();
+			CompanyTempInvitation invitation = companyInvitationRepository.findInvitationWithToken(givenInvitation.getUserId(), givenInvitation.getCompanyId(), givenInvitation.getToken());
+			if(invitation!=null && invitation.isStillValid()){
+				Company company2 = companyService.findOne(Long.valueOf(invitation.getCompanyId()));
+				employe.setCompany(company2);
+			}else {
+				throw new ServiceException("The given invitation is not valid");
+			}
+			
+		}else {
+			//initialize company
+			Company createCompany = companyService.createCompany(company);
+			employe.setCompany(createCompany);
+			CompanyAccountInfo companyAccountInfo=new CompanyAccountInfo();
+			companyAccountInfo.setLocked(false);
+			companyAccountInfo.setExpiredDate(new LocalDate().plusDays(environment.getProperty("yacra.trial.period.days", Integer.class, 30)));
+			companyAccountInfo.setCompany(createCompany);
+			CompanyAccountInfo savedCompanyAccountInfo = companyAccountInfoRepository.save(companyAccountInfo);
+			createCompany.setCompanyAccountInfo(savedCompanyAccountInfo);
+			createCompany.getClients().get(0).getProjects().get(0).getAssignedEmployees().add(employe);
+			employe.getProjects().add(createCompany.getClients().get(0).getProjects().get(0));
+			createCompany.getClients().get(0).getProjects().get(0).getTasks().get(0).getAssignedEmployees().add(employe);
+			employe.getTasks().add(createCompany.getClients().get(0).getProjects().get(0).getTasks().get(0));
+		}
+		
 		Set<Role> roles=new HashSet<>();
 		roles.add(roleRepository.findByRole(Role.SSII_ADMIN));
 		roles.add(roleRepository.findByRole(Role.INDEP));
 		employe.setRoles(roles);
-		createCompany.getClients().get(0).getProjects().get(0).getAssignedEmployees().add(employe);
-		employe.getProjects().add(createCompany.getClients().get(0).getProjects().get(0));
-		createCompany.getClients().get(0).getProjects().get(0).getTasks().get(0).getAssignedEmployees().add(employe);
-		employe.getTasks().add(createCompany.getClients().get(0).getProjects().get(0).getTasks().get(0));
 		Employe saveEmploye = employeRepository.save(employe);
 		return saveEmploye;
 	}

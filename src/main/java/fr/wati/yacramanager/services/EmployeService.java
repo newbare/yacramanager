@@ -11,7 +11,7 @@ public interface EmployeService extends CrudService<Employe, Long>,Specification
 
 	UserInfoDTO toUserInfoDTO(Long idPersonne) throws Exception;
 	
-	Employe registerEmploye(RegistrationDTO registrationDTO,boolean isSocialRegistration);
+	Employe registerEmploye(RegistrationDTO registrationDTO,boolean isSocialRegistration) throws ServiceException;
 
 	List<Employe> getManagedEmployees(Long requesterId);
 	

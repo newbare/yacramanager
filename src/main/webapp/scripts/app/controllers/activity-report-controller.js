@@ -150,7 +150,7 @@ function ActivityReportController($scope,$rootScope,ActivityReportREST,$filter,$
 				return items;
 			},
 			getData:function($defer){
-				$http.get(_contextPath+"/app/api/users/managed/"+_userId,{params:{"me":true} })
+				$http.get(_contextPath+"app/api/users/managed/"+_userId,{params:{"me":true} })
 					.success(function(data, status) {
 						$defer.resolve(data);
 					});

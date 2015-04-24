@@ -144,7 +144,8 @@ public class CompanyController {
 	public ResponseEntity<String> inviteEmploye(@PathVariable("id") Long companyId,@RequestBody(required=true) String userEmail){
 		CompanyTempInvitation findInvitation = companyInvitationRepository.findInvitation(userEmail, String.valueOf(companyId));
 		if(findInvitation==null){
-			CompanyTempInvitation addInvitation = companyInvitationRepository.addInvitation(userEmail, String.valueOf(companyId));
+			Company company = companyService.findOne(companyId);
+			CompanyTempInvitation addInvitation = companyInvitationRepository.addInvitation(userEmail, String.valueOf(companyId),company.getName());
 			//TODO Send invitation by mail
 			return new ResponseEntity<String>(HttpStatus.OK);
 		}

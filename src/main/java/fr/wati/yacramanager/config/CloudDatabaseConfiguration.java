@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Profile;
 import fr.wati.yacramanager.dao.JdbcCompanyInvitationRepository;
 
 @Configuration
-@Profile(Constants.SPRING_PROFILE_CLOUD)
+@Profile({Constants.SPRING_PROFILE_CLOUD,Constants.SPRING_PROFILE_TEST})
 public class CloudDatabaseConfiguration extends AbstractCloudConfig {
 
     private final Logger log = LoggerFactory.getLogger(CloudDatabaseConfiguration.class);

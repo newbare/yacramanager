@@ -21,7 +21,7 @@ App.config(function($datepickerProvider) {
 	angular.extend($datepickerProvider.defaults, {
 		dateFormat : 'dd/MM/yyyy',
 		startWeek : 1,
-		template : _contextPath+'/templates/datepicker/datepicker.tpl.html',
+		template : _contextPath+'templates/datepicker/datepicker.tpl.html',
 		autoclose : true,
 		modelDateFormat : 'dd/MM/yyyy',
 		todayHighlight : true
@@ -52,7 +52,7 @@ App.config(function(ngQuickDateDefaultsProvider) {
 
 App.config(function($timepickerProvider) {
 	angular.extend($timepickerProvider.defaults, {
-		template : _contextPath+'/templates/timepicker/timepicker.tpl.html'
+		template : _contextPath+'templates/timepicker/timepicker.tpl.html'
 	});
 });
 
@@ -60,7 +60,7 @@ App.config(function($tooltipProvider) {
   angular.extend($tooltipProvider.defaults, {
     animation: 'am-flip-x',
     trigger: 'hover',
-    template: _contextPath+'/templates/tooltip/tooltip.tpl.html'
+    template: _contextPath+'templates/tooltip/tooltip.tpl.html'
   });
 });
 
@@ -158,7 +158,7 @@ App.controller('WorkLogCtrl',['$scope','$http','WorkLogREST','alertService',func
      
      var fetchProjects = function(queryParams) {
  		return $http.get(
- 				_contextPath + "/app/api/" + _userCompanyId + "/project/employe/"+ _userId, {
+ 				_contextPath + "app/api/" + _userCompanyId + "/project/employe/"+ _userId, {
  					params : {}
  				}).then(function(response) {
  					$scope.projects=response.data.result;
@@ -179,7 +179,7 @@ App.controller('WorkLogCtrl',['$scope','$http','WorkLogREST','alertService',func
  	
  	var fetchTasks = function(queryParams) {
  		return $http.get(
- 				_contextPath + "/app/api/" + _userCompanyId + "/task/"+$scope.project.id+"/"+ _userId, {
+ 				_contextPath + "app/api/" + _userCompanyId + "/task/"+$scope.project.id+"/"+ _userId, {
  					params : {}
  				}).then(function(response) {
  					$scope.tasks=response.data.result;
@@ -207,7 +207,7 @@ App.controller('LoginCtrl', [ '$scope','$http','authService',function($scope,$ht
 	$scope.submit = function() {
 	      $http({
 	    	  method: 'POST',
-	    	  url: _contextPath+'/auth/authentication',
+	    	  url: _contextPath+'auth/authentication',
 	    	  transformRequest: function( data, getHeaders){
 	    		  var headers = getHeaders();
 	    		  headers["Content-Type"] = "application/x-www-form-urlencoded; charset=utf-8";
@@ -260,7 +260,7 @@ var stateConfig =[ '$stateProvider','$locationProvider','$translateProvider','tm
 			$stateProvider
 			.state('error404', {
 				url : "/error404",
-				templateUrl : _contextPath+'/views/app/templates/error-404.tpl.html',
+				templateUrl : _contextPath+'views/app/templates/error-404.tpl.html',
 				controller : HomeController,
 				data: {
 			        pageTitle: 'Error 404'
@@ -268,7 +268,7 @@ var stateConfig =[ '$stateProvider','$locationProvider','$translateProvider','tm
 			})
 			.state('home', {
 				url : "/home",
-				templateUrl : _contextPath+'/views/app/home.html',
+				templateUrl : _contextPath+'views/app/home.html',
 				controller : HomeController,
 				data: {
 			        pageTitle: 'Home',
@@ -276,7 +276,7 @@ var stateConfig =[ '$stateProvider','$locationProvider','$translateProvider','tm
 			      }
 			}).state('tasks', {
 				url : "/tasks",
-				templateUrl : _contextPath+'/views/app/tasks.html',
+				templateUrl : _contextPath+'views/app/tasks.html',
 				controller : TasksController,
 				data: {
 			        pageTitle: 'Tasks',
@@ -285,7 +285,7 @@ var stateConfig =[ '$stateProvider','$locationProvider','$translateProvider','tm
 			})
 			.state('frais', {
 				url : "/frais",
-				templateUrl : _contextPath+'/views/app/frais.html',
+				templateUrl : _contextPath+'views/app/frais.html',
 				controller : FraisController,
 				data: {
 			        pageTitle: 'Frais',
@@ -293,7 +293,7 @@ var stateConfig =[ '$stateProvider','$locationProvider','$translateProvider','tm
 			      }
 			}).state('activity-report', {
 				url : "/activity-report",
-				templateUrl : _contextPath+'/views/app/activity-report.html',
+				templateUrl : _contextPath+'views/app/activity-report.html',
 				controller : ActivityReportController,
 				data: {
 			        pageTitle: 'Activity report',
@@ -301,7 +301,7 @@ var stateConfig =[ '$stateProvider','$locationProvider','$translateProvider','tm
 			      }
 			}).state('absences', {
 				url : "/absences",
-				templateUrl : _contextPath+'/views/app/absences.html',
+				templateUrl : _contextPath+'views/app/absences.html',
 				controller : AbsencesController,
 				data: {
 			        pageTitle: 'Absences',
@@ -309,7 +309,7 @@ var stateConfig =[ '$stateProvider','$locationProvider','$translateProvider','tm
 			      }
 			}).state('timesheet', {
 				url : "/timesheet",
-				templateUrl : _contextPath+'/views/app/timesheet.html',
+				templateUrl : _contextPath+'views/app/timesheet.html',
 				controller : TimeSheetController,
 				data: {
 			        pageTitle: 'Timesheet',
@@ -317,7 +317,7 @@ var stateConfig =[ '$stateProvider','$locationProvider','$translateProvider','tm
 			      }
 			}).state('files', {
 				url : "/files",
-				templateUrl : _contextPath+'/views/app/files.html',
+				templateUrl : _contextPath+'views/app/files.html',
 				controller : 'FilesController',
 				data: {
 			        pageTitle: 'Files',
@@ -327,7 +327,7 @@ var stateConfig =[ '$stateProvider','$locationProvider','$translateProvider','tm
 			
 			.state('messages', {
 				url : "/messages",
-				templateUrl : _contextPath+'/views/app/messages.html',
+				templateUrl : _contextPath+'views/app/messages.html',
 				controller : MessagesController,
 				data: {
 			        pageTitle: 'Messages',
@@ -336,25 +336,25 @@ var stateConfig =[ '$stateProvider','$locationProvider','$translateProvider','tm
 			})
 			.state('notifications', {
 				url : "/notifications",
-				templateUrl : _contextPath+'/views/app/notifications.html',
+				templateUrl : _contextPath+'views/app/notifications.html',
 				controller : NotificationsController,
 				data: {
 			        pageTitle: 'Notifications'
 			      }
 			}).state('user-settings', {
 				url : "/user-settings",
-				templateUrl : _contextPath+'/views/app/user-settings.html',
+				templateUrl : _contextPath+'views/app/user-settings.html',
 				controller : UserSettingsController
 			}).state('user-profile', {
 				url : "/user-profile",
-				templateUrl : _contextPath+'/views/app/user-profile.html',
+				templateUrl : _contextPath+'views/app/user-profile.html',
 				controller : UserProfileController,
 				data: {
 			        ncyBreadcrumbLabel: 'User profile'
 			      }
 			}).state('api-docs', {
 				url : "/api-docs",
-				templateUrl : _contextPath+'/views/app/api-docs.html',
+				templateUrl : _contextPath+'views/app/api-docs.html',
 				controller : ApiDocsController,
 				data: {
 			        ncyBreadcrumbLabel: 'Yacra API'
@@ -362,7 +362,7 @@ var stateConfig =[ '$stateProvider','$locationProvider','$translateProvider','tm
 			})
 			.state('company', {
 				url : "/company",
-				templateUrl : _contextPath+'/views/app/company.html',
+				templateUrl : _contextPath+'views/app/company.html',
 				controller : CompanyController,
 				data: {
 			        pageTitle: 'Company management',
@@ -370,14 +370,14 @@ var stateConfig =[ '$stateProvider','$locationProvider','$translateProvider','tm
 			      }
 			}).state('company.home', {
 				url : "/home",
-				templateUrl : _contextPath+'/views/app/company/company-home.html',
+				templateUrl : _contextPath+'views/app/company/company-home.html',
 				data: {
 				    ncyBreadcrumbSkip: true 
 				  }
 				//controller : EntrepriseController,
 			}).state('company.employees', {
 				url : "/employees",
-				templateUrl : _contextPath+'/views/app/templates/partials/panel-view.html',
+				templateUrl : _contextPath+'views/app/templates/partials/panel-view.html',
 				controller : CompanyEmployeesController,
 				data: {
 					pageTitle: 'Employe view',
@@ -385,7 +385,7 @@ var stateConfig =[ '$stateProvider','$locationProvider','$translateProvider','tm
 				  }
 			}).state('company.employees.details', {
 				url : "/details/:id",
-				templateUrl : _contextPath+'/views/app/company/employees/company-employees-overview.html',
+				templateUrl : _contextPath+'views/app/company/employees/company-employees-overview.html',
 				controller : CompanyEmployeesOverviewController,
 				resolve : {
 					employe :function(EmployeesREST,$stateParams) {
@@ -399,20 +399,20 @@ var stateConfig =[ '$stateProvider','$locationProvider','$translateProvider','tm
 			})
 			.state('company.employees.view', {
 				url : "/view",
-				templateUrl : _contextPath+'/views/app/company/employees/company-employees-view.html',
+				templateUrl : _contextPath+'views/app/company/employees/company-employees-view.html',
 				controller : CompanyEmployeesViewController,
 				data: {ncyBreadcrumbSkip: true}
 			})
 			.state('company.employees.view.list', {
 				url : "/list",
-				templateUrl : _contextPath+'/views/app/company/employees/company-employees-list.html',
+				templateUrl : _contextPath+'views/app/company/employees/company-employees-list.html',
 				controller : CompanyEmployeesListController,
 				data : {
 					ncyBreadcrumbLabel : 'List View'
 				}
 			}).state('company.employees.view.quick', {
 				url : "/quickview",
-				templateUrl : _contextPath+'/views/app/company/employees/company-employees-quickview.html',
+				templateUrl : _contextPath+'views/app/company/employees/company-employees-quickview.html',
 				controller : CompanyEmployeesQuickViewController,
 				data : {
 					ncyBreadcrumbLabel : 'QuickView'
@@ -420,7 +420,7 @@ var stateConfig =[ '$stateProvider','$locationProvider','$translateProvider','tm
 			})
 			.state('company.employees.view.quick.overview', {
 				url : "/:id",
-				templateUrl : _contextPath+'/views/app/company/employees/company-employees-overview.html',
+				templateUrl : _contextPath+'views/app/company/employees/company-employees-overview.html',
 				controller : CompanyEmployeesOverviewController,
 				resolve : {
 					employe :function(EmployeesREST,$stateParams) {
@@ -433,14 +433,14 @@ var stateConfig =[ '$stateProvider','$locationProvider','$translateProvider','tm
 			})
 			.state('company.clients', {
 				url : "/clients",
-				templateUrl : _contextPath+'/views/app/templates/partials/panel-view.html',
+				templateUrl : _contextPath+'views/app/templates/partials/panel-view.html',
 				//controller : CompanyEmployeesController
 				data: {
 					ncyBreadcrumbLabel : 'Clients'
 				  }
 			}).state('company.clients.details', {
 				url : "/details/:id",
-				templateUrl : _contextPath+'/views/app/company/clients/company-clients-overview.html',
+				templateUrl : _contextPath+'views/app/company/clients/company-clients-overview.html',
 				controller : CompanyClientsOverviewController,
 				resolve : {
 					client :function(ClientsREST,$stateParams) {
@@ -454,20 +454,20 @@ var stateConfig =[ '$stateProvider','$locationProvider','$translateProvider','tm
 			})
 			.state('company.clients.view', {
 				url : "/view",
-				templateUrl : _contextPath+'/views/app/company/clients/company-clients-view.html',
+				templateUrl : _contextPath+'views/app/company/clients/company-clients-view.html',
 				controller : CompanyClientsViewController,
 				data: {ncyBreadcrumbSkip: true}
 			})
 			.state('company.clients.view.list', {
 				url : "/list",
-				templateUrl : _contextPath+'/views/app/company/clients/company-clients-list.html',
+				templateUrl : _contextPath+'views/app/company/clients/company-clients-list.html',
 				controller : CompanyClientsListController,
 				data : {
 					ncyBreadcrumbLabel : 'List View'
 				}
 			}).state('company.clients.view.quick', {
 				url : "/quickview",
-				templateUrl : _contextPath+'/views/app/company/clients/company-clients-quickview.html',
+				templateUrl : _contextPath+'views/app/company/clients/company-clients-quickview.html',
 				controller : CompanyClientsQuickViewController,
 				data : {
 					ncyBreadcrumbLabel : 'QuickView'
@@ -475,7 +475,7 @@ var stateConfig =[ '$stateProvider','$locationProvider','$translateProvider','tm
 			})
 			.state('company.clients.view.quick.overview', {
 				url : "/:id",
-				templateUrl : _contextPath+'/views/app/company/clients/company-clients-overview.html',
+				templateUrl : _contextPath+'views/app/company/clients/company-clients-overview.html',
 				controller : CompanyClientsOverviewController,
 				resolve : {
 					client :function(ClientsREST,$stateParams) {
@@ -489,14 +489,14 @@ var stateConfig =[ '$stateProvider','$locationProvider','$translateProvider','tm
 			})
 			.state('company.projects', {
 				url : "/projects",
-				templateUrl : _contextPath+'/views/app/templates/partials/panel-view.html',
+				templateUrl : _contextPath+'views/app/templates/partials/panel-view.html',
 				controller : CompanyProjectsController,
 				data: {
 					ncyBreadcrumbLabel : 'Projects'
 				  }
 			}).state('company.projects.details', {
 				url : "/details/:id",
-				templateUrl : _contextPath+'/views/app/company/projects/company-projects-overview.html',
+				templateUrl : _contextPath+'views/app/company/projects/company-projects-overview.html',
 				controller : CompanyProjectsOverviewController,
 				resolve : {
 					project :function(ProjectsREST,$stateParams) {
@@ -510,20 +510,20 @@ var stateConfig =[ '$stateProvider','$locationProvider','$translateProvider','tm
 			})
 			.state('company.projects.view', {
 				url : "/view",
-				templateUrl : _contextPath+'/views/app/company/projects/company-projects-view.html',
+				templateUrl : _contextPath+'views/app/company/projects/company-projects-view.html',
 				controller : CompanyProjectsViewController,
 				data: {ncyBreadcrumbSkip: true}
 			})
 			.state('company.projects.view.list', {
 				url : "/list",
-				templateUrl : _contextPath+'/views/app/company/projects/company-projects-list.html',
+				templateUrl : _contextPath+'views/app/company/projects/company-projects-list.html',
 				controller : CompanyProjectsListController,
 				data : {
 					ncyBreadcrumbLabel : 'List View'
 				}
 			}).state('company.projects.view.quick', {
 				url : "/quickview",
-				templateUrl : _contextPath+'/views/app/company/projects/company-projects-quickview.html',
+				templateUrl : _contextPath+'views/app/company/projects/company-projects-quickview.html',
 				controller : CompanyProjectsQuickViewController,
 				data : {
 					ncyBreadcrumbLabel : 'QuickView'
@@ -531,7 +531,7 @@ var stateConfig =[ '$stateProvider','$locationProvider','$translateProvider','tm
 			})
 			.state('company.projects.view.quick.overview', {
 				url : "/:id",
-				templateUrl : _contextPath+'/views/app/company/projects/company-projects-overview.html',
+				templateUrl : _contextPath+'views/app/company/projects/company-projects-overview.html',
 				controller : CompanyProjectsOverviewController,
 				resolve : {
 					project :function(ProjectsREST,$stateParams) {
@@ -545,21 +545,21 @@ var stateConfig =[ '$stateProvider','$locationProvider','$translateProvider','tm
 			})
 			.state('company.organigram', {
 				url : "/organigram",
-				templateUrl : _contextPath+'/views/app/company/company-organigram.html'
+				templateUrl : _contextPath+'views/app/company/company-organigram.html'
 				//controller : EntrepriseController,
 			})
 			.state('company.messages', {
 				url : "/messages",
-				templateUrl : _contextPath+'/views/app/company/company-messages.html'
+				templateUrl : _contextPath+'views/app/company/company-messages.html'
 				//controller : EntrepriseController,
 			})
 			.state('company.settings', {
 				url : "/settings",
-				templateUrl : _contextPath+'/views/app/company/company-settings.html',
+				templateUrl : _contextPath+'views/app/company/company-settings.html',
 				controller : CompanySettingsController,
 			}).state('admin', {
 				url : "/admin",
-				templateUrl : _contextPath+'/views/app/admin.html',
+				templateUrl : _contextPath+'views/app/admin.html',
 				controller : AdminController,
 				abstract : true,
 				data: {
@@ -567,7 +567,7 @@ var stateConfig =[ '$stateProvider','$locationProvider','$translateProvider','tm
 				  }
 			}).state('admin.home', {
 				url : "/home",
-				templateUrl : _contextPath+'/views/app/admin/admin-home.html',
+				templateUrl : _contextPath+'views/app/admin/admin-home.html',
 				controller : AdminHomeController,
 				data: {
 					ncyBreadcrumbSkip: true
@@ -575,14 +575,14 @@ var stateConfig =[ '$stateProvider','$locationProvider','$translateProvider','tm
 			})
 			.state('admin.company', {
 				url : "/company",
-				templateUrl : _contextPath+'/views/app/templates/partials/panel-view.html',
+				templateUrl : _contextPath+'views/app/templates/partials/panel-view.html',
 				controller : AdminCompaniesController,
 				data: {
 					ncyBreadcrumbLabel : 'Company'
 				  }
 			}).state('admin.company.details', {
 				url : "/details/:id",
-				templateUrl : _contextPath+'/views/app/admin/company/admin-company-overview.html',
+				templateUrl : _contextPath+'views/app/admin/company/admin-company-overview.html',
 				controller : AdminCompanyOverviewController,
 				resolve : {
 					company :function(CompanyREST,$stateParams,$state) {
@@ -600,7 +600,7 @@ var stateConfig =[ '$stateProvider','$locationProvider','$translateProvider','tm
 			})
 			.state('admin.company.view', {
 				url : "/view",
-				templateUrl : _contextPath+'/views/app/admin/company/admin-company-view.html',
+				templateUrl : _contextPath+'views/app/admin/company/admin-company-view.html',
 				controller : AdminCompanyViewController,
 				data: {
 				    ncyBreadcrumbSkip: true 
@@ -608,14 +608,14 @@ var stateConfig =[ '$stateProvider','$locationProvider','$translateProvider','tm
 			})
 			.state('admin.company.view.list', {
 				url : "/list",
-				templateUrl : _contextPath+'/views/app/admin/company/admin-company-list.html',
+				templateUrl : _contextPath+'views/app/admin/company/admin-company-list.html',
 				controller : AdminCompanyListController,
 				data: {
 					ncyBreadcrumbLabel : 'List view'
 				  }
 			}).state('admin.company.view.quick', {
 				url : "/quickview",
-				templateUrl : _contextPath+'/views/app/admin/company/admin-company-quickview.html',
+				templateUrl : _contextPath+'views/app/admin/company/admin-company-quickview.html',
 				controller : AdminCompanyQuickViewController,
 				data: {
 					ncyBreadcrumbLabel : 'Quick view'
@@ -624,7 +624,7 @@ var stateConfig =[ '$stateProvider','$locationProvider','$translateProvider','tm
 			})
 			.state('admin.company.view.quick.overview', {
 				url : "/:id",
-				templateUrl : _contextPath+'/views/app/admin/company/admin-company-overview.html',
+				templateUrl : _contextPath+'views/app/admin/company/admin-company-overview.html',
 				controller : AdminCompanyOverviewController,
 				resolve : {
 					company :function(CompanyREST,$stateParams) {
@@ -640,7 +640,7 @@ var stateConfig =[ '$stateProvider','$locationProvider','$translateProvider','tm
 			})
 			.state('admin.logs', {
 				url : "/logs",
-				templateUrl : _contextPath+'/views/app/admin/admin-logs.html',
+				templateUrl : _contextPath+'views/app/admin/admin-logs.html',
 				controller : LogsController,
                  data: {
  					ncyBreadcrumbLabel: 'Logs'
@@ -648,7 +648,7 @@ var stateConfig =[ '$stateProvider','$locationProvider','$translateProvider','tm
 			})
 			.state('admin.metrics', {
 				url : "/metrics",
-				templateUrl : _contextPath+'/views/app/admin/admin-metrics.html',
+				templateUrl : _contextPath+'views/app/admin/admin-metrics.html',
 				controller : MetricsController,
 				data: {
 					ncyBreadcrumbLabel: 'Metrics'
@@ -656,14 +656,14 @@ var stateConfig =[ '$stateProvider','$locationProvider','$translateProvider','tm
 			})
 			.state('admin.messages', {
 				url : "/messages",
-				templateUrl : _contextPath+'/views/app/admin/admin-messages.html',
+				templateUrl : _contextPath+'views/app/admin/admin-messages.html',
 				//controller : AdminController
 				data: {
 					ncyBreadcrumbLabel: 'Messages'
 				  }
 			}).state('admin.settings', {
 				url : "/settings",
-				templateUrl : _contextPath+'/views/app/admin/admin-settings.html',
+				templateUrl : _contextPath+'views/app/admin/admin-settings.html',
 				controller : AdminSettingsController
 			});
 			
@@ -671,14 +671,14 @@ var stateConfig =[ '$stateProvider','$locationProvider','$translateProvider','tm
 			$translateProvider.determinePreferredLanguage();
 			
 			$translateProvider.useStaticFilesLoader({
-			      prefix: _contextPath+'/i18n/',
+			      prefix: _contextPath+'i18n/',
 			      suffix: '.json'
 			});
 
 			$translateProvider.useCookieStorage();
 
 			tmhDynamicLocaleProvider
-					.localeLocationPattern(_contextPath+'/bower_components/angular-i18n/angular-locale_{{locale}}.js');
+					.localeLocationPattern(_contextPath+'bower_components/angular-i18n/angular-locale_{{locale}}.js');
 			tmhDynamicLocaleProvider
 					.useCookieStorage('NG_TRANSLATE_LANG_KEY');
 

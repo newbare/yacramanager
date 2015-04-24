@@ -44,6 +44,11 @@
 	type="text/javascript">
 			var preFillRegistrationDTO = [[${preFillRegistrationDTO}]];
 </script>
+<script th:if=" ${invitation} !=null" th:inline="javascript"
+	type="text/javascript">
+			var invitation = [[${invitation}]];
+</script>
+
 <body>
 	<div class="container">
 		<div id="alerts-container"></div>
@@ -71,24 +76,15 @@
 					<fieldset>
 						<legend>Account informations</legend>
 					
-					<div class="form-group required">
-						<label for="username" class="col-sm-4 control-label">User
-							name</label>
-						<div class="col-sm-8">
-							<input type="text" class="form-control" id="username"
-								data-ng-model="user.username" placeholder="Your user name"
-								required="required" autofocus="autofocus"/>
-						</div>
-					</div>
-					<div class="form-group required">
+					<div class="form-group required form-group-sm">
 						<label for="email" class="col-sm-4 control-label">Email</label>
 						<div class="col-sm-8">
 							<input type="email" class="form-control" id="email"
 								data-ng-model="user.email" placeholder="Email"
-								required="required"/>
+								required="required" autofocus="autofocus"/>
 						</div>
 					</div>
-					<div class="form-group required">
+					<div class="form-group required form-group-sm">
 						<label for="password" class="col-sm-4 control-label">Password</label>
 						<div class="col-sm-8">
 							<input type="password" class="form-control" id="password"
@@ -97,7 +93,7 @@
 								<password-strength-bar password-to-check="user.password"/>
 						</div>
 					</div>
-					<div class="form-group required">
+					<div class="form-group required form-group-sm">
 						<label for="confirm-password" class="col-sm-4 control-label">Confirm
 							password</label>
 						<div class="col-sm-8">
@@ -116,20 +112,20 @@
 					</fieldset>
 					<fieldset>
 						<legend>Company informations</legend>
-						<div class="form-group required">
+						<div class="form-group required form-group-sm">
 							<label for="companyname" class="col-sm-4 control-label">Company
 								name</label>
 							<div class="col-sm-8">
 								<input type="text" class="form-control" id="companyname"
 									data-ng-model="user.companyName" placeholder="Your company name"
-									required="required"/>
+									required="required" data-ng-disabled="invitation!==undefined"/>
 							</div>
 						</div>
 					</fieldset>
 					
 					<fieldset>
 						<legend>Personal informations</legend>
-						<div class="form-group">
+						<div class="form-group form-group-sm">
 							<label for="firstname" class="col-sm-4 control-label">First
 								name</label>
 							<div class="col-sm-8">
@@ -137,7 +133,7 @@
 									data-ng-model="user.firstName" placeholder="Your first name"/>
 							</div>
 						</div>
-						<div class="form-group">
+						<div class="form-group form-group-sm">
 							<label for="lastname" class="col-sm-4 control-label">Last
 								name</label>
 							<div class="col-sm-8">
@@ -197,7 +193,9 @@
 	<script
 		th:src="@{/bower_components/angular-translate-storage-cookie/angular-translate-storage-cookie.min.js}"></script>
 	<script th:src="@{/scripts/app/login.js}"></script>
+	<script th:src="@{/scripts/app/common-app.js}"></script>
 	<script th:src="@{/scripts/app/directives/commons-directives.js}"></script>
+	<script th:src="@{/scripts/app/factories/common-factories.js}"></script>
 	<!-- endbuild -->
 </body>
 </html>

@@ -49,7 +49,7 @@ function AbsencesController($scope, $rootScope, AbsenceREST, alertService,ngTabl
 				return items;
 			},
 			getData:function($defer){
-				$http.get(_contextPath+"/app/api/users/managed/"+_userId,{params:{"me":true} })
+				$http.get(_contextPath+"app/api/users/managed/"+_userId,{params:{"me":true} })
 					.success(function(data, status) {
 						$defer.resolve(data);
 					});
@@ -270,14 +270,14 @@ function AbsencesController($scope, $rootScope, AbsenceREST, alertService,ngTabl
 	};
 	$scope.refreshApproval();
 	$scope.approve=function(id){
-		$http.put(_contextPath+"/app/api/absences/approval/approve/"+parseInt(_userId)+"/"+id)
+		$http.put(_contextPath+"app/api/absences/approval/approve/"+parseInt(_userId)+"/"+id)
 		.success(function(data, status) {
 			alertService.show('success','Updated', 'Data has been updated');
 			$scope.refreshApproval();
 		});
 	};
 	$scope.reject=function(id){
-		$http.put(_contextPath+"/app/api/absences/approval/reject/"+parseInt(_userId)+"/"+id)
+		$http.put(_contextPath+"app/api/absences/approval/reject/"+parseInt(_userId)+"/"+id)
 		.success(function(data, status) {
 			alertService.show('success','Updated', 'Data has been updated');
 			$scope.refreshApproval();
