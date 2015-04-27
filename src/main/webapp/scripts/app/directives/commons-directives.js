@@ -199,7 +199,7 @@ App.directive('authApplicationSupport', function($timeout,$modal) {
           var initModal=function(){
         	  loginModal = $modal({
   				scope : scope,
-  				template : _contextPath	+ 'views/app/templates/partials/login-modal-.tpl.html',
+  				template : _contextPath	+ 'views/app/components/templates/partials/login-modal-.tpl.html',
   				show : false,
   				backdrop : 'static',
   				placement : 'center'
@@ -344,7 +344,7 @@ App.directive('ngConfirm',function($modal) {
 							// scope.$on('application-loaded', function() {
 							var confirmModal = $modal({
 								scope : scope,
-								template : _contextPath	+ 'views/app/templates/partials/confirm-dialog.tpl.html',
+								template : _contextPath	+ 'views/app/components/templates/partials/confirm-dialog.tpl.html',
 								placement : 'center',
 								backdrop : 'static',
 								show : false

@@ -145,8 +145,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter
 	public void configure(WebSecurity web) throws Exception {
 		web.ignoring().antMatchers("/bower_components/**")
 				.antMatchers("/fonts/**").antMatchers("/templates/**")
-				.antMatchers("/images/**").antMatchers("/scripts/**")
-				.antMatchers("/styles/**").antMatchers("/i18n/**")
+				.antMatchers("/assets/images/**").antMatchers("/scripts/**")
+				.antMatchers("/assets/styles/**").antMatchers("/assets/fonts/**")
+				.antMatchers("/i18n/**")
 				.antMatchers("/swagger-ui/**");
 	}
 

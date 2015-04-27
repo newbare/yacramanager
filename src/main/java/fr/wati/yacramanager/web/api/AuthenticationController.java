@@ -139,7 +139,7 @@ public class AuthenticationController {
 			mailService.sendEmail(employe.getContact().getEmail(), "Password recovery", content, false, true);
 			return new ResponseEntity<>(HttpStatus.OK);
 		}
-		return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		return new ResponseEntity<>("No registered user found with this id",HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
 	private String createHtmlContentFromTemplate(final Users user,

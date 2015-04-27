@@ -141,11 +141,11 @@ public class CompanyController {
 
 	@RequestMapping(value = "/{id}/invite",method=RequestMethod.POST)
 	@Timed
-	public ResponseEntity<String> inviteEmploye(@PathVariable("id") Long companyId,@RequestBody(required=true) String userEmail){
-		CompanyTempInvitation findInvitation = companyInvitationRepository.findInvitation(userEmail, String.valueOf(companyId));
+	public ResponseEntity<String> inviteEmploye(@PathVariable("id") Long companyId,@RequestBody(required=true) CompanyTempInvitation invitation){
+		CompanyTempInvitation findInvitation = companyInvitationRepository.findInvitation(invitation.getUserId(), String.valueOf(companyId));
 		if(findInvitation==null){
 			Company company = companyService.findOne(companyId);
-			CompanyTempInvitation addInvitation = companyInvitationRepository.addInvitation(userEmail, String.valueOf(companyId),company.getName());
+			CompanyTempInvitation addInvitation = companyInvitationRepository.addInvitation(invitation.getUserId(), String.valueOf(companyId),company.getName(),invitation.getFirstName(),invitation.getLastName());
 			//TODO Send invitation by mail
 			return new ResponseEntity<String>(HttpStatus.OK);
 		}

@@ -9,14 +9,15 @@
 <link rel="icon" href="../../favicon.ico"/>
 
 <title>Yacra Manager</title>
-<!-- build:css @{/dist/css/yacra.min.css} -->
-<link rel="stylesheet"
-	th:href="@{/bower_components/bootstrap/dist/css/bootstrap.min.css}"/>
-<link rel="stylesheet"
-	th:href="@{/bower_components/fontawesome/css/font-awesome.min.css}"/>
-	<link rel="stylesheet" th:href="@{/styles/yacra-fonts.css}"/>
-	<link rel="stylesheet" th:href="@{/styles/yacranav.css}"/>
-	<link rel="stylesheet" th:href="@{/styles/yacrafooter.css}"/>
+ <!-- build:css assets/styles/vendor.css -->
+<!-- bower:css -->
+<link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.css" />
+<!-- endbower -->
+<!-- endbuild -->
+<!-- build:css({.tmp,src/main/webapp}) assets/styles/main.css -->
+	<link rel="stylesheet" href="assets/styles/yacra-fonts.css"/>
+	<link rel="stylesheet" href="assets/styles/yacranav.css"/>
+	<link rel="stylesheet" href="assets/styles/yacrafooter.css"/>
 <!-- endbuild -->
 <!-- Custom styles for this template -->
 
@@ -59,12 +60,12 @@
                          </ul>
 					</li>
 					<li th:if="${userName == null}">
-						<a href="auth/">
+						<a href="/auth/">
 							<i class="fa fa-sign-in"></i> Login 
 						</a>
 					</li>
 					<li th:if="${userName != null}">
-						<a href="app/view/">
+						<a href="/app/view/">
 							<i class="fa fa-user"></i>
 							 <span th:text="${userName.getFullName()}"></span>
 						</a>
@@ -85,7 +86,7 @@
 				supporting pieces of content. Use it as a starting point to create
 				something more unique.</p>
 			<p>
-				<a href="auth/login/register" class="btn btn-primary btn-lg" role="button">Get free account for contractor</a>
+				<a href="/auth/login/register" class="btn btn-primary btn-lg" role="button">Get free account for contractor</a>
 			</p>
 		</div>
 	</div>
@@ -170,31 +171,31 @@
 	<!-- Bootstrap core JavaScript
     ================================================== -->
 	<!-- Placed at the end of the document so the pages load faster -->
-	<!-- build:css @{/dist/js/yacra.js} -->
-	<script
-		th:src="@{/bower_components/jquery/dist/jquery.min.js}"></script>
-	<script
-		th:src="@{/bower_components/jquery-ui/jquery-ui.min.js}"></script>
-	<script
-		th:src="@{/bower_components/bootstrap/dist/js/bootstrap.min.js}"></script>
-	<script th:src="@{/bower_components/angular/angular.js}"></script>
-	<script
-		th:src="@{/scripts/yacra.js}"></script>
-	<script th:src="@{/scripts/app/constants.js}"></script>
-	<script
-		th:src="@{/bower_components/angular-resource/angular-resource.min.js}"></script>
-	<script
-		th:src="@{/bower_components/angular-ui-router/release/angular-ui-router.js}"></script>
-	<script 
-		th:src="@{/bower_components/angular-cookies/angular-cookies.js}"></script>
-	<script 
-		th:src="@{/bower_components/angular-dynamic-locale/src/tmhDynamicLocale.js}"></script>
-		<script
-		th:src="@{/bower_components/angular-translate/angular-translate.min.js}"></script>
-	<script
-		th:src="@{/bower_components/angular-translate-loader-static-files/angular-translate-loader-static-files.min.js}"></script>
-	<script
-		th:src="@{/bower_components/angular-translate-storage-cookie/angular-translate-storage-cookie.min.js}"></script>
+	<!-- build:js scripts/vendor.js -->
+    <!-- bower:js -->
+    <script src="../bower_components/modernizr/modernizr.js"></script>
+    <script src="../bower_components/jquery/dist/jquery.js"></script>
+    <script src="../bower_components/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="../bower_components/json3/lib/json3.js"></script>
+    <script src="../bower_components/angular/angular.js"></script>
+    <script src="../bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+    <script src="../bower_components/angular-resource/angular-resource.js"></script>
+    <script src="../bower_components/angular-cookies/angular-cookies.js"></script>
+    <script src="../bower_components/angular-sanitize/angular-sanitize.js"></script>
+    <script src="../bower_components/angular-translate/angular-translate.js"></script>
+    <script src="../bower_components/angular-translate-storage-cookie/angular-translate-storage-cookie.js"></script>
+    <script src="../bower_components/angular-translate-loader-partial/angular-translate-loader-partial.js"></script>
+    <script src="../bower_components/angular-dynamic-locale/src/tmhDynamicLocale.js"></script>
+    <script src="../bower_components/angular-local-storage/dist/angular-local-storage.js"></script>
+    <script src="../bower_components/angular-cache-buster/angular-cache-buster.js"></script>
+    <script src="../bower_components/ngInfiniteScroll/build/ng-infinite-scroll.js"></script>
+    <!-- endbower -->
+    <!-- endbuild -->
+    
+    <!-- build:js({.tmp,src/main/webapp}) scripts/app.js --> 
+    <script src="scripts/yacra.js"></script>
+	<script src="scripts/app/constants.js"></script>
 	<!-- endbuild -->
+	
 </body>
 </html>

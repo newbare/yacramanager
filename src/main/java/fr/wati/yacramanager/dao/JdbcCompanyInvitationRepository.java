@@ -18,53 +18,64 @@ import fr.wati.yacramanager.beans.CompanyTempInvitation;
 public class JdbcCompanyInvitationRepository {
 
 	private JdbcTemplate jdbcTemplate;
-	
-	private static final String insertSQL="insert into CompanyTempInvitation (userId,companyId,token,createdDate,expiryDate,companyName)"
-			+ " values (?,?,?,?,?,?)"; 
-	private static final String findInvitationWithTokenSQL="select userId,companyId,token,createdDate,expiryDate,companyName from CompanyTempInvitation where userId= :userId and companyId= :companyId and token= :token";
-	private static final String findInvitationSQL="select userId,companyId,token,createdDate,expiryDate,companyName from CompanyTempInvitation where userId= :userId and companyId= :companyId";
+
+	private static final String insertSQL = "insert into CompanyTempInvitation (userId,companyId,token,createdDate,expiryDate,companyName,firstName,lastName)"
+			+ " values (?,?,?,?,?,?,?,?)";
+	private static final String findInvitationWithTokenSQL = "select userId,companyId,token,createdDate,expiryDate,companyName,firstName,lastName from CompanyTempInvitation where userId= :userId and companyId= :companyId and token= :token";
+	private static final String findInvitationSQL = "select userId,companyId,token,createdDate,expiryDate,companyName,firstName,lastName from CompanyTempInvitation where userId= :userId and companyId= :companyId";
 	private static final String deleteSql = "DELETE FROM CompanyTempInvitation WHERE userId = ? and companyId = ?";
-	
+
 	public JdbcCompanyInvitationRepository(DataSource dataSource) {
-		this.jdbcTemplate=new JdbcTemplate(dataSource);
+		this.jdbcTemplate = new JdbcTemplate(dataSource);
 	}
 
-	public CompanyTempInvitation addInvitation(String userId, String companyId,String companyName){
-		String token=RandomStringUtils.randomAlphanumeric(30);
+	public CompanyTempInvitation addInvitation(String userId, String companyId,
+			String companyName, String firstName, String lastName) {
+		String token = RandomStringUtils.randomAlphanumeric(30);
 		// define query arguments
-		Date expiryDate=new LocalDate().plusDays(3).toDate();
-		Object[] params = new Object[] { userId, companyId, token, new Date(), expiryDate,companyName};
-		int[] types = new int[] { Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.DATE,Types.DATE,Types.VARCHAR}; 
-		jdbcTemplate.update(insertSQL, params,types);
-		return findInvitationWithToken(userId,companyId,token);
+		Date expiryDate = new LocalDate().plusDays(3).toDate();
+		Object[] params = new Object[] { userId, companyId, token, new Date(),
+				expiryDate, companyName, firstName, lastName };
+		int[] types = new int[] { Types.VARCHAR, Types.VARCHAR, Types.VARCHAR,
+				Types.DATE, Types.DATE, Types.VARCHAR, Types.VARCHAR,
+				Types.VARCHAR };
+		jdbcTemplate.update(insertSQL, params, types);
+		return findInvitationWithToken(userId, companyId, token);
 	}
-	
-	public CompanyTempInvitation findInvitationWithToken(String userId, String companyId,String token){
+
+	public CompanyTempInvitation findInvitationWithToken(String userId,
+			String companyId, String token) {
 		MapSqlParameterSource parameters = new MapSqlParameterSource();
 		parameters.addValue("userId", userId);
 		parameters.addValue("companyId", companyId);
 		parameters.addValue("token", token);
-		 List<CompanyTempInvitation> invitations = new NamedParameterJdbcTemplate(jdbcTemplate).query(findInvitationWithTokenSQL,parameters ,new BeanPropertyRowMapper<CompanyTempInvitation>(CompanyTempInvitation.class));
-		 if(invitations!=null && !invitations.isEmpty()){
-			 return invitations.get(0);
-		 }
-		 return null;
+		List<CompanyTempInvitation> invitations = new NamedParameterJdbcTemplate(
+				jdbcTemplate).query(findInvitationWithTokenSQL, parameters,
+				new BeanPropertyRowMapper<CompanyTempInvitation>(
+						CompanyTempInvitation.class));
+		if (invitations != null && !invitations.isEmpty()) {
+			return invitations.get(0);
+		}
+		return null;
 	}
-	
-	public CompanyTempInvitation findInvitation(String userId, String companyId){
+
+	public CompanyTempInvitation findInvitation(String userId, String companyId) {
 		MapSqlParameterSource parameters = new MapSqlParameterSource();
 		parameters.addValue("userId", userId);
 		parameters.addValue("companyId", companyId);
-		 List<CompanyTempInvitation> invitations = new NamedParameterJdbcTemplate(jdbcTemplate).query(findInvitationSQL,parameters ,new BeanPropertyRowMapper<CompanyTempInvitation>(CompanyTempInvitation.class));
-		 if(invitations!=null && !invitations.isEmpty()){
-			 return invitations.get(0);
-		 }
-		 return null;
+		List<CompanyTempInvitation> invitations = new NamedParameterJdbcTemplate(
+				jdbcTemplate).query(findInvitationSQL, parameters,
+				new BeanPropertyRowMapper<CompanyTempInvitation>(
+						CompanyTempInvitation.class));
+		if (invitations != null && !invitations.isEmpty()) {
+			return invitations.get(0);
+		}
+		return null;
 	}
-	
-	public void removeInvitation(String userId, String companyId){
-		Object[] params = new Object[] { userId, companyId};
-		int[] types = new int[] { Types.VARCHAR, Types.VARCHAR}; 
-		jdbcTemplate.update(deleteSql, params,types);
+
+	public void removeInvitation(String userId, String companyId) {
+		Object[] params = new Object[] { userId, companyId };
+		int[] types = new int[] { Types.VARCHAR, Types.VARCHAR };
+		jdbcTemplate.update(deleteSql, params, types);
 	}
 }

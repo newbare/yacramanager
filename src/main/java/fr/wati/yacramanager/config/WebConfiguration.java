@@ -74,17 +74,17 @@ public class WebConfiguration implements ServletContextInitializer, EmbeddedServ
 				registry.addResourceHandler("/bower_components/**")
 						.addResourceLocations("/bower_components/")
 						.setCachePeriod(cachePeriodInSecond);
-				registry.addResourceHandler("/fonts/**")
-						.addResourceLocations("/fonts/")
+				registry.addResourceHandler("/assets/fonts/**")
+						.addResourceLocations("/assets/fonts/")
 						.setCachePeriod(cachePeriodInSecond);
 				registry.addResourceHandler("/i18n/**")
 						.addResourceLocations("/i18n/")
 						.setCachePeriod(cachePeriodInSecond);
-				registry.addResourceHandler("/styles/**")
-						.addResourceLocations("/styles/")
+				registry.addResourceHandler("/assets/styles/**")
+						.addResourceLocations("/assets/styles/")
 						.setCachePeriod(cachePeriodInSecond);
-				registry.addResourceHandler("/images/**")
-						.addResourceLocations("/images/")
+				registry.addResourceHandler("/assets/images/**")
+						.addResourceLocations("/assets/images/")
 						.setCachePeriod(cachePeriodInSecond);
 				registry.addResourceHandler("/scripts/**")
 						.addResourceLocations("/scripts/")

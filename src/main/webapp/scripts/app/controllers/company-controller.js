@@ -183,7 +183,7 @@ function CompanyEmployeesViewController($scope, $rootScope,$http,EmployeesREST,C
 	};
 	$scope.inviteEmploye=function(hideFn){
 		$scope.employe.companyId=_userCompanyId;
-		CompanyREST.inviteEmployee({"id": _userCompanyId},$scope.employeToInvite.email).$promise.then(function(result) {
+		CompanyREST.inviteEmployee({"id": _userCompanyId},$scope.employeToInvite).$promise.then(function(result) {
    		 hideFn();
    		 alertService.show('info','Confirmation', 'Employe has been invited ');
 		});
