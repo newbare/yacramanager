@@ -8,20 +8,32 @@
 <!-- <base href="app/view/" /> -->
 
 <!-- build:css assets/styles/app/vendor.css -->
-<!-- bower:css -->
 <link rel="stylesheet" href="../../bower_components/bootstrap/dist/css/bootstrap.css" />
-<!-- endbower -->
+<link rel="stylesheet" href="../../bower_components/bootstrap-additions/dist/bootstrap-additions.min.css"/>
+<link rel="stylesheet" href="../../bower_components/angular-motion/dist/angular-motion.css"/>
+<link rel="stylesheet" href="../../bower_components/angular-loading-bar/build/loading-bar.css"/>
+<link rel="stylesheet" href="../../bower_components/bootstrap-daterangepicker/daterangepicker-bs3.css"/>
+<link rel="stylesheet" href="../../bower_components/ng-table/ng-table.min.css"/>
+<link rel="stylesheet" href="../../bower_components/angular-xeditable/dist/css/xeditable.css"/>
+<link rel="stylesheet" href="../../bower_components/angular-bootstrap-colorpicker/css/colorpicker.css"/>
+<link rel="stylesheet" href="../../bower_components/ngQuickDate/dist/ng-quick-date.css"/>
+<link rel="stylesheet" href="../../bower_components/ngQuickDate/dist/ng-quick-date-default-theme.css"/>
+<link rel="stylesheet" href="../../bower_components/fullcalendar/fullcalendar.css"/>
+<link rel="stylesheet" href="../../bower_components/ng-finder/examples/css/elfinder.css"/>
+<link rel="stylesheet" href="../../bower_components/chosen/chosen.min.css"/>
+<link rel="stylesheet" href="../../bower_components/jquery.gritter/css/jquery.gritter.css"/>
+<link rel="stylesheet" href="../../bower_components/fontawesome/css/font-awesome.min.css"/>
 <!-- endbuild -->
 
 <!-- build:css({.tmp,src/main/webapp}) assets/styles/app/main.css -->
-<link rel="stylesheet"	href="assets/styles/flags/flags.css"/>
-<link rel="stylesheet"	href="assets/styles/angular-criterias.css"/>
-<link rel="stylesheet"	href="assets/styles/jquery.jOrgChart.css"/>
-<link rel="stylesheet"	href="assets/styles/gritter.css"/>
-<link rel="stylesheet"	href="assets/styles/yacra-fonts.css"/>
-<link rel="stylesheet"	href="assets/styles/app.css"/>
-<link rel="stylesheet"	href="assets/styles/yacranav.css"/>
-<link rel="stylesheet"	href="assets/styles/yacrafooter.css"/>
+<link rel="stylesheet"	href="../../assets/styles/flags/flags.css"/>
+<link rel="stylesheet"	href="../../assets/styles/angular-criterias.css"/>
+<link rel="stylesheet"	href="../../assets/styles/jquery.jOrgChart.css"/>
+<link rel="stylesheet"	href="../../assets/styles/gritter.css"/>
+<link rel="stylesheet"	href="../../assets/styles/yacra-fonts.css"/>
+<link rel="stylesheet"	href="../../assets/styles/app.css"/>
+<link rel="stylesheet"	href="../../assets/styles/yacranav.css"/>
+<link rel="stylesheet"	href="../../assets/styles/yacrafooter.css"/>
 <!-- endbuild -->
 
 <script th:inline="javascript" type="text/javascript">
@@ -224,7 +236,6 @@
     ================================================== -->
 	<!-- Placed at the end of the document so the pages load faster -->
  	<!-- build:js scripts/app/vendor.js -->
- 	<!-- bower:js -->
  	<script src="../../bower_components/modernizr/modernizr.js"></script>
  	<script src="../../bower_components/jquery/dist/jquery.js"></script>
  	<script src="../../bower_components/bootstrap/dist/js/bootstrap.js"></script>
@@ -235,45 +246,70 @@
  	<script src="../../bower_components/angular-cookies/angular-cookies.js"></script>
  	<script src="../../bower_components/angular-sanitize/angular-sanitize.js"></script>
  	<script src="../../bower_components/angular-translate/angular-translate.js"></script>
+ 	<script src="../../bower_components/angular-route/angular-route.min.js"></script>
+ 	<script src="../../bower_components/angular-animate/angular-animate.min.js"></script>
+ 	<script src="../../bower_components/ng-table/ng-table.min.js"></script>
+ 	<script src="../../bower_components/ng-file-upload/angular-file-upload-shim.min.js"></script>
+	<script src="../../bower_components/ng-file-upload/angular-file-upload.js"></script>
+	<script src="../../bower_components/angular-chosen-localytics/chosen.js"></script>
+	<script src="../../bower_components/chosen/chosen.jquery.js"></script>
+	<script src="../../bower_components/angular-daterangepicker/js/angular-daterangepicker.js"></script>
+	<script src="../../bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
+	<script src="../../bower_components/angular-loading-bar/build/loading-bar.min.js"></script>
+	<script src="../../bower_components/ngQuickDate/dist/ng-quick-date.min.js"></script>
+	<script src="../../bower_components/angular-xeditable/dist/js/xeditable.min.js"></script>
+	<script src="../../bower_components/angular-bootstrap-colorpicker/js/bootstrap-colorpicker-module.js"></script>
+	<script src="../../bower_components/angular-filter/dist/angular-filter.min.js"></script>
+	<script src="../../bower_components/moment/moment.js"></script>
+	<script src="../../bower_components/jquery.gritter/js/jquery.gritter.min.js"></script>
+	<script src="../../bower_components/moment-range/lib/moment-range.js"></script>
+	<script src="../../bower_components/angular-breadcrumb/dist/angular-breadcrumb.min.js"></script>
+	<script src="../../bower_components/elfinder/js/elfinder.min.js"></script>
+	<script src="../../bower_components/ng-finder/ng-finder.src.js"></script>
  	<script src="../../bower_components/angular-translate-storage-cookie/angular-translate-storage-cookie.js"></script>
  	<script src="../../bower_components/angular-translate-loader-partial/angular-translate-loader-partial.js"></script>
  	<script src="../../bower_components/angular-dynamic-locale/src/tmhDynamicLocale.js"></script>
+ 	<script src="../../bower_components/angular-ui-calendar/src/calendar.js"></script>
  	<script src="../../bower_components/angular-local-storage/dist/angular-local-storage.js"></script>
+ 	<script src="../../bower_components/angular-strap/dist/angular-strap.min.js"></script>
+ 	<script src="../../bower_components/angular-strap/dist/angular-strap.tpl.min.js"></script>
  	<script src="../../bower_components/angular-cache-buster/angular-cache-buster.js"></script>
  	<script src="../../bower_components/ngInfiniteScroll/build/ng-infinite-scroll.js"></script>
- 	<!-- endbower -->
+ 	<script src="../../bower_components/angular-recaptcha/release/angular-recaptcha.js"></script>
+ 	<script src="../../bower_components/angular-translate-loader-static-files/angular-translate-loader-static-files.js"></script>
+ 	<script src="../../bower_components/angular-timer/dist/angular-timer.js"></script>
     <!-- endbuild -->
 	
 	<!-- build:js({.tmp,src/main/webapp}) scripts/app/app.js -->
-	<script src="scripts/app/application.js"></script>
-	<script src="scripts/app/app.constants.js"></script>
-	<script src="scripts/app/common-app.js"></script>
-	<script src="scripts/app/constants.js"></script>
-	<script src="scripts/jquery.jOrgChart.js"></script>
-	<script	src="scripts/app/controllers/app-controller.js"></script>
-	<script src="scripts/bootstrap.file-input.js"></script>
-	<script src="scripts/sockjs-0.3.4.js"></script>
-	<script src="scripts/stomp.js"></script>
-	<script src="scripts/http-auth-interceptor.js"></script>
-	<script src="scripts/colResizable-1.3.min.js"></script>
-	<script src="scripts/app/filters/commons-filters.js"></script>
-	<script	src="scripts/app/controllers/home-controller.js"></script>
-	<script	src="scripts/app/controllers/sidebar-controller.js"></script>
-	<script	src="scripts/app/controllers/admin-controller.js"></script>
-	<script	src="scripts/app/controllers/frais-controllers.js"></script>
-	<script	src="scripts/app/controllers/messages-controller.js"></script>
-	<script	src="scripts/app/controllers/company-controller.js"></script>
-	<script src="scripts/app/factories/common-factories.js"></script>
-	<script src="scripts/app/services/common-services.js"></script>
-	<script	src="scripts/app/directives/commons-directives.js"></script>
-	<script	src="scripts/app/directives/angular-criterias.js"></script>
-	<script	src="scripts/app/controllers/timesheet-controller.js"></script>
-	<script	src="scripts/app/controllers/users-controller.js"></script>
-	<script	src="scripts/app/controllers/absences-controller.js"></script>
-	<script	src="scripts/app/controllers/tasks-controller.js"></script>
-	<script	src="scripts/app/controllers/activity-report-controller.js"></script>
-	<script	src="scripts/app/controllers/user-settings-controller.js"></script>
-	<script	src="scripts/app/controllers/user-profile-controller.js"></script>
+	<script src="../../scripts/app/application.js"></script>
+	<script src="../../scripts/app/app.constants.js"></script>
+	<script src="../../scripts/app/common-app.js"></script>
+	<script src="../../scripts/app/constants.js"></script>
+	<script src="../../scripts/jquery.jOrgChart.js"></script>
+	<script	src="../../scripts/app/controllers/app-controller.js"></script>
+	<script src="../../scripts/bootstrap.file-input.js"></script>
+	<script src="../../scripts/sockjs-0.3.4.js"></script>
+	<script src="../../scripts/stomp.js"></script>
+	<script src="../../scripts/http-auth-interceptor.js"></script>
+	<script src="../../scripts/colResizable-1.3.min.js"></script>
+	<script src="../../scripts/app/filters/commons-filters.js"></script>
+	<script	src="../../scripts/app/controllers/home-controller.js"></script>
+	<script	src="../../scripts/app/controllers/sidebar-controller.js"></script>
+	<script	src="../../scripts/app/controllers/admin-controller.js"></script>
+	<script	src="../../scripts/app/controllers/frais-controllers.js"></script>
+	<script	src="../../scripts/app/controllers/messages-controller.js"></script>
+	<script	src="../../scripts/app/controllers/company-controller.js"></script>
+	<script src="../../scripts/app/factories/common-factories.js"></script>
+	<script src="../../scripts/app/services/common-services.js"></script>
+	<script	src="../../scripts/app/directives/commons-directives.js"></script>
+	<script	src="../../scripts/app/directives/angular-criterias.js"></script>
+	<script	src="../../scripts/app/controllers/timesheet-controller.js"></script>
+	<script	src="../../scripts/app/controllers/users-controller.js"></script>
+	<script	src="../../scripts/app/controllers/absences-controller.js"></script>
+	<script	src="../../scripts/app/controllers/tasks-controller.js"></script>
+	<script	src="../../scripts/app/controllers/activity-report-controller.js"></script>
+	<script	src="../../scripts/app/controllers/user-settings-controller.js"></script>
+	<script	src="../../scripts/app/controllers/user-profile-controller.js"></script>
 	<!-- endbuild -->
 </body>
 </html>

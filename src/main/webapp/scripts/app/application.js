@@ -66,7 +66,7 @@ var App = angular.module('yaCRAApp', [ 'ngResource', 'mgcrea.ngStrap',
 		'http-auth-interceptor', 'timer', 'localytics.directives',
 		'daterangepicker', 'pascalprecht.translate', 'angular-loading-bar',
 		'ngQuickDate', 'xeditable', 'colorpicker.module', 'angular.filter',
-		'truncate','ncy-angular-breadcrumb','ngCookies','tmh.dynamicLocale','ngFinder','dcbClearInput' ]);
+		'truncate','ncy-angular-breadcrumb','ngCookies','tmh.dynamicLocale','ngFinder' ]);
 
 
 App.config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {

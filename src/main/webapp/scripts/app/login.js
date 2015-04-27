@@ -52,7 +52,7 @@ App.service('alertService', function($alert) {
 	};
 });
 
-function LoginController($scope, $location) {
+App.controller('LoginController',function ($scope, $location) {
 	$scope.navClass = function(page) {
 		var currentRoute = $location.path().substring(1) || 'home';
 		return page === currentRoute ? 'active' : '';
@@ -87,9 +87,10 @@ function LoginController($scope, $location) {
 	if (typeof activationMessage !== 'undefined'){
 		$scope.activationMessage=activationMessage;
 	}
-}
+});
 
-function RegisterController($scope, $location,$window,RegistrationRest,AppConfigREST,CompanyREST,alertService,vcRecaptchaService) {
+
+App.controller('RegisterController',function ($scope, $location,$window,RegistrationRest,AppConfigREST,CompanyREST,alertService,vcRecaptchaService) {
 	$scope.postLogin = function() {
 		$window.location.href=_contextPath+'app/view/';
 	};
@@ -154,9 +155,10 @@ function RegisterController($scope, $location,$window,RegistrationRest,AppConfig
             //vcRecaptchaService.reload($scope.widgetId);
 		});
 	};
-}
+});
 
-function PasswordRecoveryController($scope, $location,AuthenticationREST) {
+
+App.controller('PasswordRecoveryController',function ($scope, $location,AuthenticationREST) {
 	$scope.loadLogin = function() {
 		$location.url('/');
 	};
@@ -167,7 +169,9 @@ function PasswordRecoveryController($scope, $location,AuthenticationREST) {
 			AuthenticationREST.recoverPassword(JSON.stringify($scope.email));
 		}
 	};
-}
+});
+
+
 
 App.config([ '$stateProvider', '$urlRouterProvider','$locationProvider','$translateProvider','tmhDynamicLocaleProvider',
      		function($stateProvider, $urlRouterProvider,$locationProvider,$translateProvider,tmhDynamicLocaleProvider) {
