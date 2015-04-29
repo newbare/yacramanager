@@ -604,3 +604,27 @@ App.directive('contactsManager',['$sce',
       };
     }]);
 
+App.directive('showValidation', function() {
+    return {
+        restrict: 'A',
+        require: 'form',
+        link: function (scope, element) {
+            element.find('.form-group').each(function() {
+                var $formGroup = $(this);
+                var $inputs = $formGroup.find('input[ng-model],input[data-ng-model],textarea[ng-model],textarea[data-ng-model],select[ng-model],select[data-ng-model]');
+
+                if ($inputs.length > 0) {
+                    $inputs.each(function() {
+                        var $input = $(this);
+                        scope.$watch(function() {
+                            return $input.hasClass('ng-invalid') && $input.hasClass('ng-dirty');
+                        }, function(isInvalid) {
+                            $formGroup.toggleClass('has-error', isInvalid);
+                        });
+                    });
+                }
+            });
+        }
+    };
+});
+

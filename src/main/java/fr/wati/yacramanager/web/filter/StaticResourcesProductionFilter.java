@@ -33,9 +33,9 @@ public class StaticResourcesProductionFilter implements Filter {
         String contextPath = ((HttpServletRequest) request).getContextPath();
         String requestURI = httpRequest.getRequestURI();
         requestURI = StringUtils.substringAfter(requestURI, contextPath);
-        if (StringUtils.equals("/", requestURI)) {
-            requestURI = "/index.html";
-        }
+//        if (StringUtils.equals("/", requestURI)) {
+//            requestURI = "/views/index.html";
+//        }
         String newURI = "/dist" + requestURI;
         request.getRequestDispatcher(newURI).forward(request, response);
     }

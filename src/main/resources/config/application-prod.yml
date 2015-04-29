@@ -1,16 +1,24 @@
 server:
-    port: 8080
+    port: 8083
+    tomcat: 
+        protocolHeader: x-forwarded-proto
+        remoteIpHeader: x-forwarded-for
+    ssl:
+        key-store: classpath:tomcat-ssl.keystore
+        key-store-password: tomcat7
 
 spring:
     profiles:
         active: prod
     datasource:
         dataSourceClassName: org.postgresql.ds.PGSimpleDataSource
-        url: 
-        databaseName: payme
+        url: jdbc:postgresql://localhost:5432/yacra
+        databaseName: yacra
         serverName: localhost
-        username: payme
-        password: 
+        username: yacra
+        password: yacra
+        continueOnError: true
+        init-db: true
 
     jpa:
         database-platform: org.hibernate.dialect.PostgreSQL82Dialect
@@ -19,22 +27,52 @@ spring:
         show_sql: false
         generate-ddl: false
         hibernate:
-            ddl-auto: none
+            ddl-auto: update
             naming-strategy: org.hibernate.cfg.EJB3NamingStrategy
         properties:
             hibernate.cache.use_second_level_cache: true
             hibernate.cache.use_query_cache: false
-            hibernate.generate_statistics: false
+            hibernate.generate_statistics: true
             hibernate.cache.region.factory_class: org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory
-            
 
     mail:
         baseUrl: http://localhost:8080
-
+        
+    security:
+        bcrypt.encoder.strength: 11
+        rememberme.token.validity: 1209600
+        customSessionExpiredErrorCode: 901
+    max.sessions: 2
     thymeleaf:
         mode: XHTML
-        cache: true
-
+        cache: false
+    social:
+        facebook:
+            client:
+                id: 699814763463496
+                secret: b7dcd00b95fd56aef659a9f95dbeb405
+        git:
+            client:
+                id: 2434e7df5157a95fab27
+                secret: fa2e016864b1c38986906a3282e9e663cd14e835
+        google:
+            client:
+                id: 805141202696-lhkqbmr6g7hdngk4u0hcn8cf0j0l7vp4.apps.googleusercontent.com
+                secret: Tw5Qu2MUIU8MmGnFtrsjGpKP
+                scope: openid profile email 
+        twitter:
+            client:
+                id: 2434e7df5157a95fab27
+                secret: fa2e016864b1c38986906a3282e9e663cd14e835
+        linkedin:
+            client:
+                id: 77j5axnzl1vuu1
+                secret: vV8FqVcgA0z6HTAt    
+google:
+    recaptcha:
+        secretKey: 6LeHhQUTAAAAABZrel9yr-Dj_W9U_lDlrk-m01-L
+        publicKey: 6LeHhQUTAAAAAO4m-IuE3KnLfGK061bzTBZhlxik
+        url: https://www.google.com/recaptcha/api/siteverify
 metrics:
     jmx.enabled: true
     spark:
@@ -50,4 +88,4 @@ metrics:
 cache:
     timeToLiveSeconds: 3600
     ehcache:
-        maxBytesLocalHeap: 256M
+        maxBytesLocalHeap: 16M

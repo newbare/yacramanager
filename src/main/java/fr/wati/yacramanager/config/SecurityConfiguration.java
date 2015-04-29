@@ -143,7 +143,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter
 
 	@Override
 	public void configure(WebSecurity web) throws Exception {
-		web.ignoring().antMatchers("/bower_components/**")
+		web.ignoring()
+				.antMatchers("/dist/**")
+				.antMatchers("/bower_components/**")
 				.antMatchers("/fonts/**").antMatchers("/templates/**")
 				.antMatchers("/assets/images/**").antMatchers("/scripts/**")
 				.antMatchers("/assets/styles/**").antMatchers("/assets/fonts/**")

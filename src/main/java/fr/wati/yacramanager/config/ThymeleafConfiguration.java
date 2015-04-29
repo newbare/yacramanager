@@ -3,6 +3,8 @@ package fr.wati.yacramanager.config;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.inject.Inject;
+
 import org.apache.commons.lang.CharEncoding;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +26,9 @@ import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 @Configuration
 public class ThymeleafConfiguration  implements EnvironmentAware{
 
+	@Inject
+	private Environment env;
+	
     private final Logger log = LoggerFactory.getLogger(ThymeleafConfiguration.class);
 
     private RelaxedPropertyResolver propertyResolver;
@@ -60,7 +65,12 @@ public class ThymeleafConfiguration  implements EnvironmentAware{
 	@Description("Thymeleaf template resolver serving HTML 5 app page")
 	public ServletContextTemplateResolver webTemplateResolver() {
 		ServletContextTemplateResolver webTemplateResolver = new ServletContextTemplateResolver();
-		webTemplateResolver.setPrefix("/views/");
+		if (env.acceptsProfiles(Constants.SPRING_PROFILE_PRODUCTION,Constants.SPRING_PROFILE_TEST)) {
+			webTemplateResolver.setPrefix("/dist/views/");
+		}else {
+			webTemplateResolver.setPrefix("/views/");
+		}
+		
 		webTemplateResolver.setSuffix(".html");
 		webTemplateResolver.setTemplateMode("LEGACYHTML5");
 		webTemplateResolver.setCharacterEncoding(CharEncoding.UTF_8);

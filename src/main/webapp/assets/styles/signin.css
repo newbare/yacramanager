@@ -71,3 +71,7 @@ body {
 .bigger-110 {
 	font-size: 110% !important;
 }
+
+.margin-bottom-lg {
+  margin-bottom: 22px !important;
+}
