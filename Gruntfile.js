@@ -171,8 +171,9 @@ module.exports = function(grunt) {
 	                        js: [
 	                            [/(assets\/images\/.*?\.(?:gif|jpeg|jpg|png|webp|svg))/gm, 'Update the JS to reference our revved images']
 	                        ]
-	                    },
-	                    dirs: ['<%= yeoman.dist %>']
+	                    }
+//	            ,
+//	                    dirs: ['<%= yeoman.dist %>']
 	                }
 	            },
 	            imagemin: {
@@ -399,7 +400,7 @@ module.exports = function(grunt) {
 
 	                         grunt.registerTask('build', [
 	                             'clean:dist',
-	                             'wiredep:app',
+//	                             'wiredep:app',
 	                             'ngconstant:prod',
 	                             'useminPrepare',
 	                             'ngtemplates',

@@ -15,15 +15,10 @@
 			{{/if}}
 		{{/if}}
 	{{else}}
-		{{#if isFile}}
-			<input type="file" name='{{name}}'/>
-			<div class="parameter-content-type" />
+		{{#if defaultValue}}
+			<input class='parameter' minlength='0' name='{{name}}' placeholder='' type='text' value='{{defaultValue}}'/>
 		{{else}}
-			{{#if defaultValue}}
-				<input class='parameter' minlength='0' name='{{name}}' placeholder='' type='text' value='{{defaultValue}}'/>
-			{{else}}
-				<input class='parameter' minlength='0' name='{{name}}' placeholder='' type='text' value=''/>
-			{{/if}}
+			<input class='parameter' minlength='0' name='{{name}}' placeholder='' type='text' value=''/>
 		{{/if}}
 	{{/if}}
 

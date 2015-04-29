@@ -58,18 +58,18 @@ $provide.value("$locale", {
       "l\u00f6r"
     ],
     "SHORTMONTH": [
-      "jan.",
-      "feb.",
-      "mars",
-      "apr.",
+      "jan",
+      "feb",
+      "mar",
+      "apr",
       "maj",
-      "juni",
-      "juli",
-      "aug.",
-      "sep.",
-      "okt.",
-      "nov.",
-      "dec."
+      "jun",
+      "jul",
+      "aug",
+      "sep",
+      "okt",
+      "nov",
+      "dec"
     ],
     "fullDate": "EEEE d MMMM y",
     "longDate": "d MMMM y",
@@ -81,13 +81,14 @@ $provide.value("$locale", {
     "shortTime": "HH:mm"
   },
   "NUMBER_FORMATS": {
-    "CURRENCY_SYM": "\u20ac",
+    "CURRENCY_SYM": "kr",
     "DECIMAL_SEP": ",",
     "GROUP_SEP": "\u00a0",
     "PATTERNS": [
       {
         "gSize": 3,
         "lgSize": 3,
+        "macFrac": 0,
         "maxFrac": 3,
         "minFrac": 0,
         "minInt": 1,
@@ -99,6 +100,7 @@ $provide.value("$locale", {
       {
         "gSize": 3,
         "lgSize": 3,
+        "macFrac": 0,
         "maxFrac": 2,
         "minFrac": 2,
         "minInt": 1,
@@ -110,6 +112,6 @@ $provide.value("$locale", {
     ]
   },
   "id": "sv-ax",
-  "pluralCat": function(n, opt_precision) {  var i = n | 0;  var vf = getVF(n, opt_precision);  if (i == 1 && vf.v == 0) {    return PLURAL_CATEGORY.ONE;  }  return PLURAL_CATEGORY.OTHER;}
+  "pluralCat": function (n, opt_precision) {  var i = n | 0;  var vf = getVF(n, opt_precision);  if (i == 1 && vf.v == 0) {    return PLURAL_CATEGORY.ONE;  }  return PLURAL_CATEGORY.OTHER;}
 });
 }]);

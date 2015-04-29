@@ -63,13 +63,14 @@ $provide.value("$locale", {
     "shortTime": "a h:mm"
   },
   "NUMBER_FORMATS": {
-    "CURRENCY_SYM": "\u20a9KP",
+    "CURRENCY_SYM": "\u20a9",
     "DECIMAL_SEP": ".",
     "GROUP_SEP": ",",
     "PATTERNS": [
       {
         "gSize": 3,
         "lgSize": 3,
+        "macFrac": 0,
         "maxFrac": 3,
         "minFrac": 0,
         "minInt": 1,
@@ -81,6 +82,7 @@ $provide.value("$locale", {
       {
         "gSize": 3,
         "lgSize": 3,
+        "macFrac": 0,
         "maxFrac": 2,
         "minFrac": 2,
         "minInt": 1,
@@ -92,6 +94,6 @@ $provide.value("$locale", {
     ]
   },
   "id": "ko-kp",
-  "pluralCat": function(n, opt_precision) {  return PLURAL_CATEGORY.OTHER;}
+  "pluralCat": function (n, opt_precision) {  return PLURAL_CATEGORY.OTHER;}
 });
 }]);
