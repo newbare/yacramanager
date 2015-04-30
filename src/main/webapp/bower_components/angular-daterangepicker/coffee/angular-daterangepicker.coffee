@@ -5,7 +5,7 @@ picker.value('dateRangePickerConfig',
     format: 'YYYY-MM-DD'
 )
 
-picker.directive('dateRangePicker', ['$compile', '$timeout', '$parse', 'dateRangePickerConfig', ($compile, $timeout, $parse, defaults) ->
+picker.directive('dateRangePicker', ($compile, $timeout, $parse, dateRangePickerConfig) ->
     require: 'ngModel'
     restrict: 'A'
     scope:
@@ -15,7 +15,7 @@ picker.directive('dateRangePicker', ['$compile', '$timeout', '$parse', 'dateRang
     link: ($scope, element, attrs, modelCtrl) ->
         el = $(element)
         customOpts = $parse(attrs.dateRangePicker)($scope, {})
-        opts = angular.extend(defaults, customOpts)
+        opts = angular.extend({}, dateRangePickerConfig, customOpts)
 
         _formatted = (viewVal) ->
             f = (date) ->
@@ -23,7 +23,10 @@ picker.directive('dateRangePicker', ['$compile', '$timeout', '$parse', 'dateRang
                     return moment(date).format(opts.format)
                 return date.format(opts.format)
 
-            [f(viewVal.startDate), f(viewVal.endDate)].join(opts.separator)
+            if opts.singleDatePicker
+                f(viewVal.startDate)
+            else
+                [f(viewVal.startDate), f(viewVal.endDate)].join(opts.separator)
 
         _validateMin = (min, start) ->
             min = moment(min)
@@ -39,7 +42,7 @@ picker.directive('dateRangePicker', ['$compile', '$timeout', '$parse', 'dateRang
             modelCtrl.$setValidity('max', valid)
             return valid
 
-        modelCtrl.$formatters.unshift((val) ->
+        modelCtrl.$formatters.push((val) ->
             if val and val.startDate and val.endDate
                 # Update datepicker dates according to val before rendering.
                 picker = _getPicker()
@@ -49,7 +52,7 @@ picker.directive('dateRangePicker', ['$compile', '$timeout', '$parse', 'dateRang
             return ''
         )
 
-        modelCtrl.$parsers.unshift((val) ->
+        modelCtrl.$parsers.push((val) ->
             # Check if input is valid.
             if not angular.isObject(val) or not (val.hasOwnProperty('startDate') and val.hasOwnProperty('endDate'))
                 return modelCtrl.$modelValue
@@ -73,13 +76,13 @@ picker.directive('dateRangePicker', ['$compile', '$timeout', '$parse', 'dateRang
             not val or (val.startDate == null or val.endDate == null)
 
         modelCtrl.$render = ->
-            if not modelCtrl.$viewValue
+            if not modelCtrl.$modelValue
                 return el.val('')
 
-            if modelCtrl.$viewValue.startDate == null
+            if modelCtrl.$modelValue.startDate == null
                 return el.val('')
 
-            return el.val(_formatted(modelCtrl.$viewValue))
+            return el.val(_formatted(modelCtrl.$modelValue))
 
 
         _init = ->
@@ -113,8 +116,8 @@ picker.directive('dateRangePicker', ['$compile', '$timeout', '$parse', 'dateRang
         if attrs.min
             $scope.$watch('dateMin', (date) ->
                 if date
-                    if not modelCtrl.$isEmpty(modelCtrl.$viewValue)
-                        _validateMin(date, modelCtrl.$viewValue.startDate)
+                    if not modelCtrl.$isEmpty(modelCtrl.$modelValue)
+                        _validateMin(date, modelCtrl.$modelValue.startDate)
 
                     opts['minDate'] = moment(date)
                 else
@@ -125,8 +128,8 @@ picker.directive('dateRangePicker', ['$compile', '$timeout', '$parse', 'dateRang
         if attrs.max
             $scope.$watch('dateMax', (date) ->
                 if date
-                    if not modelCtrl.$isEmpty(modelCtrl.$viewValue)
-                        _validateMax(date, modelCtrl.$viewValue.endDate)
+                    if not modelCtrl.$isEmpty(modelCtrl.$modelValue)
+                        _validateMax(date, modelCtrl.$modelValue.endDate)
 
                     opts['maxDate'] = moment(date)
                 else
@@ -140,4 +143,7 @@ picker.directive('dateRangePicker', ['$compile', '$timeout', '$parse', 'dateRang
                 opts = angular.extend(opts, newOpts)
                 _init()
             )
-])
+
+        $scope.$on '$destroy', ->
+            el.data('daterangepicker').remove()
+)

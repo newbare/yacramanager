@@ -7,6 +7,7 @@ import java.util.Set;
 
 import javax.inject.Inject;
 
+import org.apache.commons.lang3.StringUtils;
 import org.dozer.Mapper;
 import org.dozer.spring.DozerBeanMapperFactoryBean;
 import org.joda.time.DateTime;
@@ -191,6 +192,9 @@ public class EmployeServiceImpl implements EmployeService {
 	 */
 	@Override
 	public Employe registerEmploye(RegistrationDTO registrationDTO,boolean isSocialRegistration) throws ServiceException{
+		if(StringUtils.isEmpty(registrationDTO.getUsername()) || findByUsername(registrationDTO.getUsername())!=null){
+			throw new ServiceException("The username already exist");
+		}
 		Employe employe=new Employe();
 		employe.setUserName(registrationDTO.getEmail());
 		if(isSocialRegistration){

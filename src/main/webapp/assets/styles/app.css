@@ -1,3 +1,7 @@
+body.modal-open {
+overflow-y: visible!important;
+}
+
 .development-ribbon {
     position: absolute;
     width: 149px;

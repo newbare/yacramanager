@@ -12,6 +12,7 @@
 						<a data-ui-sref="admin.company.view.quick.overview({ id: company.id })">
 							{{company.name}}
 						</a>
+						<i data-ng-if="$state.is('admin.company.view.quick.overview',{ id: ''+company.id+'' })" class="fa fa-hand-o-right text-primary" style="float: right;"></i>
 					</td>
 				</tr>
 			</table>

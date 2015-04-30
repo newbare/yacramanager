@@ -38,7 +38,7 @@
 <hr>
 <div class="am-fade" data-ng-if="groupByTask" data-ng-repeat="task in project.tasks | searchField: 'name': 'description' | filter: tasksFilter">
 	<h5 ><strong>{{task.name | uppercase}} <span  class="text-muted" data-ng-if="employeeByTask[task.id].length>0">{{employeeByTask[task.id].length}} assigned employees</span></strong>
-	<button  type="button" class="btn btn-link btn-xs" data-ng-click="selectActiveTask(task)" data-title="Select employee ..." data-template="{{appContextPath}}views/app/templates/partials/search-employees-popover.tpl.html" data-animation="am-flip-x" data-auto-close="1" data-bs-popover><i class="fa fa-plus"></i> Add employe to {{task.name | uppercase | truncate: 10: '...'}}</button>
+	<button  type="button" class="btn btn-link btn-xs" data-ng-click="selectActiveTask(task)" data-title="Select employee ..." data-template="{{appContextPath}}views/app/components/templates/partials/search-employees-popover.tpl.html" data-animation="am-flip-x" data-auto-close="1" data-bs-popover><i class="fa fa-plus"></i> Add employe to {{task.name | uppercase | truncate: 10: '...'}}</button>
 	<span  style="float: right;">
 		 <ul class="list-inline">
 		 	<li>Task status <span class="label" data-ng-class="{'label-success' : task.taskStatus=='COMPLETED' , 'label-warning' : task.taskStatus=='OPEN'}">{{task.taskStatus}}</span></li>

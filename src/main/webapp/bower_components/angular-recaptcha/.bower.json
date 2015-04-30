@@ -1,6 +1,6 @@
 {
   "name": "angular-recaptcha",
-  "version": "2.2.2",
+  "version": "2.2.3",
   "keywords": [
     "angular",
     "captcha",
@@ -25,14 +25,14 @@
     "angular": "1.*"
   },
   "homepage": "https://github.com/VividCortex/angular-recaptcha",
-  "_release": "2.2.2",
+  "_release": "2.2.3",
   "_resolution": {
     "type": "version",
-    "tag": "2.2.2",
-    "commit": "731a55ffb1f58bef61f9b8da30a1e6e4564ab014"
+    "tag": "2.2.3",
+    "commit": "7feeed495c54c1ccfd590df52ad7f7defbce4c08"
   },
   "_source": "https://github.com/VividCortex/angular-recaptcha.git",
-  "_target": "~2.2.2",
+  "_target": "~2.2.3",
   "_originalSource": "angular-recaptcha",
   "_direct": true
 }

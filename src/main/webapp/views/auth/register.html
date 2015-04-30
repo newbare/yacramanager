@@ -67,8 +67,8 @@
 						</button>
 						{{errorMessage}}
 					</div>
-					<div class="alert alert-danger" data-ng-show="registrationForm.$dirty" >
-		                {{registrationForm.email.$touched}}
+					<div class="alert alert-danger" data-ng-show="registrationForm.$dirty && registrationForm.$invalid" >
+		                <strong>Invalid datas in registration form</strong>
 		            </div>
 					<fieldset>
 						<legend>Account informations</legend>
@@ -79,8 +79,8 @@
 							<input type="email" class="form-control" name="email" 
 								data-ng-model="user.email" placeholder="Email"
 								required="required" autofocus="autofocus" data-ng-focus/>
-							<p data-ng-show="registrationForm.email.$error.required && registrationForm.email.$dirty && !registrationForm.email.$focused" class="help-block">Your password is required.</p>
-							<p data-ng-show="registrationForm.email.$error.email && registrationForm.email.$dirty && !registrationForm.email.$focused" class="help-block">not an email format.</p>
+							<p data-ng-show="registrationForm.email.$error.required && registrationForm.email.$dirty " class="help-block">Your password is required.</p>
+							<p data-ng-show="registrationForm.email.$error.email && registrationForm.email.$dirty" class="help-block">not an email format.</p>
 						</div>
 					</div>
 					<div class="form-group required form-group-sm">

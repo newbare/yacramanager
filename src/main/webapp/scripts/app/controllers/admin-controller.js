@@ -27,7 +27,7 @@ function AdminCompaniesController($scope,$rootScope,CompanyREST,ngTableParams,al
 	
 	$scope.reset=function(){
 		$scope.company={};
-		$scope.company.registeredDate= $filter("date")(Date.now(), 'yyyy-MM-dd')
+		$scope.company.registeredDate= new Date(moment())
 		$scope.company.contacts=[];
 	};
 	

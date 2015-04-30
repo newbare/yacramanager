@@ -156,7 +156,7 @@ function FraisController($scope, $rootScope, NoteREST, alertService,
 		$scope.selectedActionLabel = $scope.initialActionLabel;
 		$scope.currentNote={};
 		$scope.currentNote.id=undefined;
-		$scope.currentNote.date = $filter("date")(Date.now(), 'yyyy-MM-dd');
+		$scope.currentNote.date = new Date(moment());
 		$scope.currentNote.description = undefined;
 		$scope.currentNote.amount = 0;
 		$scope.currentNote.attachements=undefined;

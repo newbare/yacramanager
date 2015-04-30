@@ -36,6 +36,7 @@ import fr.wati.yacramanager.beans.CompanyTempInvitation;
 import fr.wati.yacramanager.beans.Role;
 import fr.wati.yacramanager.dao.JdbcCompanyInvitationRepository;
 import fr.wati.yacramanager.services.CompanyService;
+import fr.wati.yacramanager.services.MailService;
 import fr.wati.yacramanager.services.impl.DtoMapper;
 import fr.wati.yacramanager.utils.Filter.FilterBuilder;
 import fr.wati.yacramanager.utils.SpecificationBuilder;
@@ -52,6 +53,9 @@ public class CompanyController {
 	private CompanyService companyService;
 	@Inject
 	private DtoMapper dtoMapper;
+	
+	@Inject
+	private MailService mailService;
 	
 	@Inject
 	private JdbcCompanyInvitationRepository companyInvitationRepository;
