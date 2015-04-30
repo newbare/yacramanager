@@ -149,10 +149,10 @@ App.controller('RegisterController',function ($scope, $location,$window,Registra
 				$scope.postLogin();
 		},function(reason){
 			console.log('Failed validation');
-			$window.location.reload();
+			//$window.location.reload();
 			// In case of a failed validation you need to reload the captcha
             // because each response can be checked just once
-            //vcRecaptchaService.reload($scope.widgetId);
+            vcRecaptchaService.reload($scope.widgetId);
 		});
 	};
 });

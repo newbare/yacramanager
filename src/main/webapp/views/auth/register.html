@@ -67,7 +67,7 @@
 						</button>
 						{{errorMessage}}
 					</div>
-					<div class="alert alert-danger" ng-show="registrationForm.$dirty" >
+					<div class="alert alert-danger" data-ng-show="registrationForm.$dirty" >
 		                {{registrationForm.email.$touched}}
 		            </div>
 					<fieldset>
@@ -78,9 +78,9 @@
 						<div class="col-sm-8">
 							<input type="email" class="form-control" name="email" 
 								data-ng-model="user.email" placeholder="Email"
-								required="required" autofocus="autofocus"/>
-							<p ng-show="registrationForm.email.$error.required && registrationForm.email.$dirty" class="help-block">Your password is required.</p>
-							<p ng-show="registrationForm.email.$error.email && registrationForm.email.$dirty && registrationForm.email.$touched" class="help-block">not an email format.</p>
+								required="required" autofocus="autofocus" data-ng-focus/>
+							<p data-ng-show="registrationForm.email.$error.required && registrationForm.email.$dirty && !registrationForm.email.$focused" class="help-block">Your password is required.</p>
+							<p data-ng-show="registrationForm.email.$error.email && registrationForm.email.$dirty && !registrationForm.email.$focused" class="help-block">not an email format.</p>
 						</div>
 					</div>
 					<div class="form-group required form-group-sm">

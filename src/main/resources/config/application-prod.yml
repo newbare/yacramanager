@@ -3,20 +3,16 @@ server:
     tomcat: 
         protocolHeader: x-forwarded-proto
         remoteIpHeader: x-forwarded-for
-    ssl:
-        key-store: classpath:tomcat-ssl.keystore
-        key-store-password: tomcat7
-
 spring:
     profiles:
         active: prod
     datasource:
         dataSourceClassName: org.postgresql.ds.PGSimpleDataSource
-        url: jdbc:postgresql://localhost:5432/yacra
-        databaseName: yacra
-        serverName: localhost
-        username: yacra
-        password: yacra
+        url: 
+        databaseName: 
+        serverName: 
+        username: 
+        password: 
         continueOnError: true
         init-db: true
 
