@@ -1,9 +1,9 @@
 server:
     port: 8083
-    ssl:
-        enabled: true
-        key-store:  classpath:tomcat-ssl.keystore
-        key-store-password: tomcat7
+#    ssl:
+#        enabled: true
+#        key-store:  classpath:tomcat-ssl.keystore
+#        key-store-password: tomcat7
     tomcat: 
         protocolHeader: x-forwarded-proto
         remoteIpHeader: x-forwarded-for

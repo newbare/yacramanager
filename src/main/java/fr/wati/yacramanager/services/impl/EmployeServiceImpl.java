@@ -306,7 +306,7 @@ public class EmployeServiceImpl implements EmployeService {
 					}
 					return EmployeSpecifications.forProjects(projects);
 				}
-				if("civilite".equals(filter.getField())){
+				if("gender".equals(filter.getField())){
 					List<Gender> civilities=new ArrayList<>();
 					for(FilterArrayValue filterArrayValue: filterArray.getValue()){
 						civilities.add(Gender.valueOf(filterArrayValue.getName()));

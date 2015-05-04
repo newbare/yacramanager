@@ -2,7 +2,7 @@ function TimeSheetController($scope,$rootScope,$http,$sce,WorkLogREST,alertServi
 	$rootScope.page={"title":"Timesheet","description":"View and manage timesheet"};
 	$scope.timeType="duration";
 	$scope.timesheetCalendarTitle=undefined;
-	var editWorklogModal = $modal({scope: $scope, template: _contextPath+'views/app/templates/edit-worklog.tpl.html', show: false});
+	var editWorklogModal = $modal({scope: $scope, template: _contextPath+'views/app/components/templates/edit-worklog.tpl.html', show: false});
 	$scope.showEditWorkLogModal = function() {
 		editWorklogModal.$promise.then(editWorklogModal.show);
 	};
@@ -126,11 +126,21 @@ function TimeSheetController($scope,$rootScope,$http,$sce,WorkLogREST,alertServi
     };
     /* alert on Drop */
      $scope.onEventDrop = function(event, dayDelta, minuteDelta, allDay, revertFunc, jsEvent, ui, view){
-       console.log('Event Droped to make dayDelta ' + dayDelta);
+       WorkLogREST.update(event).$promise.then(
+		        //success
+		        function( value ){},
+		        //error
+		        function( error ){/*Do something with error*/}
+		      );
     };
     /* alert on Resize */
     $scope.onEventResize = function(event, dayDelta, minuteDelta, revertFunc, jsEvent, ui, view ){
-       $scope.alertMessage = ('Event Resized to make dayDelta ' + minuteDelta);
+    	 WorkLogREST.update(event).$promise.then(
+ 		        //success
+ 		        function( value ){},
+ 		        //error
+ 		        function( error ){/*Do something with error*/}
+ 		      );
     };
     
     $scope.onSelection=function( start, end, jsEvent, view ){
@@ -148,7 +158,7 @@ function TimeSheetController($scope,$rootScope,$http,$sce,WorkLogREST,alertServi
     };
     
     $scope.eventRender=function(event, element,view) {
-    	popover=$popover(element, {title: event.title,placement:'top',trigger:'click',html:true,template: _contextPath+'views/app/templates/worklog.popover.tpl.html',container:'body' });
+    	popover=$popover(element, {title: event.title,placement:'top',trigger:'click',html:true,template: _contextPath+'views/app/components/templates/worklog.popover.tpl.html',container:'body' });
     	popover.$scope.event = event;
     	popover.$scope.isValidated=$scope.isValidated;
     	popover.$scope.isWaiting=$scope.isWaiting;
@@ -170,6 +180,7 @@ function TimeSheetController($scope,$rootScope,$http,$sce,WorkLogREST,alertServi
         firstDay:1,
         minTime:"06:00:00",
         maxTime:"22:00:00",
+        timezone:'local',
         header:{
           left: '',
           center: '',
@@ -190,21 +201,21 @@ function TimeSheetController($scope,$rootScope,$http,$sce,WorkLogREST,alertServi
     /* Change View */
     $scope.changeView = function(view,calendar) {
     	$scope.showTable(false);
-    	calendar.fullCalendar('changeView',view);
+    	$scope[calendar].fullCalendar('changeView',view);
     };
     $scope.showTable=function(visible){
     	$scope.tableVisible=visible;
     };
     
     $scope.next = function(calendar) {
-      calendar.fullCalendar('next');
+    	$scope[calendar].fullCalendar('next');
     };
     $scope.previous = function(calendar) {
-        calendar.fullCalendar('prev');
+    	$scope[calendar].fullCalendar('prev');
     };
     
     $scope.today = function(calendar) {
-        calendar.fullCalendar('today');
+    	$scope[calendar].fullCalendar('today');
     };
     
 //    $scope.today( $scope.uiConfig.calendar);
