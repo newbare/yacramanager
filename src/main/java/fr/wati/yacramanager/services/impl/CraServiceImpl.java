@@ -272,10 +272,10 @@ public class CraServiceImpl implements CraService {
 					}
 					break;
 				case TIME:
-					if (DateUtils.isDayBetween(currentDate, workLog.getStartDate(),
-							workLog.getEndDate())) {
-						currentDuration = (workLog.getEndDate().getMillis() - workLog
-								.getStartDate().getMillis()) / 1000 / 60;
+					if (DateUtils.isDayBetween(currentDate, workLog.getStartDate().toDateTime(),
+							workLog.getEndDate().toDateTime())) {
+						currentDuration = (workLog.getEndDate().toDateTime().getMillis() - workLog
+								.getStartDate().toDateTime().getMillis()) / 1000 / 60;
 					}
 					break;
 				default:

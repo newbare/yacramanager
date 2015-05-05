@@ -5,15 +5,24 @@ import javax.annotation.PostConstruct;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.util.ISO8601DateFormat;
 import com.fasterxml.jackson.datatype.joda.JodaModule;
 
 @SuppressWarnings("serial")
 public class CustomObjectMapper extends ObjectMapper {
-    public CustomObjectMapper() {
+    
+	
+	public CustomObjectMapper() {
     	configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS , false);  
     	configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        //setDateFormat(new ISO8601DateFormat());
-        registerModule(new JodaModule());
+        setDateFormat(new ISO8601DateFormat());
+    }
+	
+	public CustomObjectMapper(JodaModule jodaModule) {
+    	configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS , false);  
+    	configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        setDateFormat(new ISO8601DateFormat());
+        registerModule(jodaModule);
     }
     
     @PostConstruct

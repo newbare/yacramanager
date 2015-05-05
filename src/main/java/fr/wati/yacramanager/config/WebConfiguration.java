@@ -14,6 +14,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRegistration;
 
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.servlet.InstrumentedFilter;
 import com.codahale.metrics.servlets.MetricsServlet;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.joda.JodaModule;
 
 import fr.wati.yacramanager.services.CustomObjectMapper;
 import fr.wati.yacramanager.web.filter.CachingHttpHeadersFilter;
@@ -46,7 +49,8 @@ import fr.wati.yacramanager.web.filter.gzip.GZipServletFilter;
 
 @Configuration
 @AutoConfigureAfter(CacheConfiguration.class)
-public class WebConfiguration implements ServletContextInitializer, EmbeddedServletContainerCustomizer,EnvironmentAware{
+public class WebConfiguration implements ServletContextInitializer,
+		EmbeddedServletContainerCustomizer, EnvironmentAware {
 	private Logger log = LoggerFactory.getLogger(WebConfiguration.class);
 
 	@Inject
@@ -57,13 +61,12 @@ public class WebConfiguration implements ServletContextInitializer, EmbeddedServ
 
 	private RelaxedPropertyResolver propertyResolver;
 
-
 	@Override
 	public void setEnvironment(Environment env) {
 		this.propertyResolver = new RelaxedPropertyResolver(env,
 				"spring.webconfig.");
 	}
-	
+
 	@Bean
 	public WebMvcConfigurerAdapter webMvcConfigurerAdapter() {
 		WebMvcConfigurerAdapter webMvcConfigurerAdapter = new WebMvcConfigurerAdapter() {
@@ -106,130 +109,181 @@ public class WebConfiguration implements ServletContextInitializer, EmbeddedServ
 	}
 
 	@Bean
-	public HttpMessageConverters customConverters() {
+	public HttpMessageConverters customConverters(JodaModule jacksonJodaModule) {
 		MappingJackson2HttpMessageConverter mappingJacksonHttpMessageConverter = new MappingJackson2HttpMessageConverter();
-		mappingJacksonHttpMessageConverter.setObjectMapper(new CustomObjectMapper());
+		mappingJacksonHttpMessageConverter
+				.setObjectMapper(new CustomObjectMapper(jacksonJodaModule));
+//		mappingJacksonHttpMessageConverter
+//				.setObjectMapper(new CustomObjectMapper());
 		List<MediaType> mediaTypes = new ArrayList<>();
 		mediaTypes.add(MediaType.APPLICATION_JSON);
 		mappingJacksonHttpMessageConverter.setSupportedMediaTypes(mediaTypes);
 		return new HttpMessageConverters(mappingJacksonHttpMessageConverter);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.springframework.boot.context.embedded.EmbeddedServletContainerCustomizer#customize(org.springframework.boot.context.embedded.ConfigurableEmbeddedServletContainer)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.springframework.boot.context.embedded.EmbeddedServletContainerCustomizer
+	 * #customize(org.springframework.boot.context.embedded.
+	 * ConfigurableEmbeddedServletContainer)
 	 */
 	@Override
 	public void customize(ConfigurableEmbeddedServletContainer container) {
-		 MimeMappings mappings = new MimeMappings(MimeMappings.DEFAULT);
-	        // IE issue, see https://github.com/jhipster/generator-jhipster/pull/711
-	        mappings.add("html", "text/html;charset=utf-8");
-	        // CloudFoundry issue, see https://github.com/cloudfoundry/gorouter/issues/64
-	        mappings.add("json", "text/html;charset=utf-8");
-	        container.setMimeMappings(mappings);
-	        container.addErrorPages(new ErrorPage(HttpStatus.NOT_FOUND, "/views/404.html"));
-	        container.addErrorPages(new ErrorPage(HttpStatus.INTERNAL_SERVER_ERROR, "/views/500.html"));
+		MimeMappings mappings = new MimeMappings(MimeMappings.DEFAULT);
+		// IE issue, see https://github.com/jhipster/generator-jhipster/pull/711
+		mappings.add("html", "text/html;charset=utf-8");
+		// CloudFoundry issue, see
+		// https://github.com/cloudfoundry/gorouter/issues/64
+		mappings.add("json", "text/html;charset=utf-8");
+		container.setMimeMappings(mappings);
+		container.addErrorPages(new ErrorPage(HttpStatus.NOT_FOUND,
+				"/views/404.html"));
+		container.addErrorPages(new ErrorPage(HttpStatus.INTERNAL_SERVER_ERROR,
+				"/views/500.html"));
 	}
 
-	/* (non-Javadoc)
-	 * @see org.springframework.boot.context.embedded.ServletContextInitializer#onStartup(javax.servlet.ServletContext)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.springframework.boot.context.embedded.ServletContextInitializer#onStartup
+	 * (javax.servlet.ServletContext)
 	 */
 	@Override
 	public void onStartup(ServletContext servletContext)
 			throws ServletException {
-		 log.info("Web application configuration, using profiles: {}", Arrays.toString(env.getActiveProfiles()));
-	        EnumSet<DispatcherType> disps = EnumSet.of(DispatcherType.REQUEST, DispatcherType.FORWARD, DispatcherType.ASYNC);
-	        if (!env.acceptsProfiles(Constants.SPRING_PROFILE_FAST)) {
-	            initMetrics(servletContext, disps);
-	        }
-	        if (env.acceptsProfiles(Constants.SPRING_PROFILE_PRODUCTION,Constants.SPRING_PROFILE_TEST)) {
-	            initCachingHttpHeadersFilter(servletContext, disps);
-	            initStaticResourcesProductionFilter(servletContext, disps);
-	            initGzipFilter(servletContext, disps);
-	        }
-	        log.info("Web application fully configured");
+		log.info("Web application configuration, using profiles: {}",
+				Arrays.toString(env.getActiveProfiles()));
+		EnumSet<DispatcherType> disps = EnumSet.of(DispatcherType.REQUEST,
+				DispatcherType.FORWARD, DispatcherType.ASYNC);
+		if (!env.acceptsProfiles(Constants.SPRING_PROFILE_FAST)) {
+			initMetrics(servletContext, disps);
+		}
+		if (env.acceptsProfiles(Constants.SPRING_PROFILE_PRODUCTION,
+				Constants.SPRING_PROFILE_TEST)) {
+			initCachingHttpHeadersFilter(servletContext, disps);
+			initStaticResourcesProductionFilter(servletContext, disps);
+			initGzipFilter(servletContext, disps);
+		}
+		log.info("Web application fully configured");
 	}
 
-	 /**
-     * Initializes Metrics.
-     */
-    private void initMetrics(ServletContext servletContext, EnumSet<DispatcherType> disps) {
-        log.debug("Initializing Metrics registries");
-        servletContext.setAttribute(InstrumentedFilter.REGISTRY_ATTRIBUTE,
-                metricRegistry);
-        servletContext.setAttribute(MetricsServlet.METRICS_REGISTRY,
-                metricRegistry);
+	/**
+	 * Initializes Metrics.
+	 */
+	private void initMetrics(ServletContext servletContext,
+			EnumSet<DispatcherType> disps) {
+		log.debug("Initializing Metrics registries");
+		servletContext.setAttribute(InstrumentedFilter.REGISTRY_ATTRIBUTE,
+				metricRegistry);
+		servletContext.setAttribute(MetricsServlet.METRICS_REGISTRY,
+				metricRegistry);
 
-        log.debug("Registering Metrics Filter");
-        FilterRegistration.Dynamic metricsFilter = servletContext.addFilter("webappMetricsFilter",
-                new InstrumentedFilter());
+		log.debug("Registering Metrics Filter");
+		FilterRegistration.Dynamic metricsFilter = servletContext.addFilter(
+				"webappMetricsFilter", new InstrumentedFilter());
 
-        metricsFilter.addMappingForUrlPatterns(disps, true, "/*");
-        metricsFilter.setAsyncSupported(true);
+		metricsFilter.addMappingForUrlPatterns(disps, true, "/*");
+		metricsFilter.setAsyncSupported(true);
 
-        log.debug("Registering Metrics Servlet");
-        ServletRegistration.Dynamic metricsAdminServlet =
-                servletContext.addServlet("metricsServlet", new MetricsServlet());
+		log.debug("Registering Metrics Servlet");
+		ServletRegistration.Dynamic metricsAdminServlet = servletContext
+				.addServlet("metricsServlet", new MetricsServlet());
 
-        metricsAdminServlet.addMapping("/app/admin/metrics");
-        metricsAdminServlet.setAsyncSupported(true);
-        metricsAdminServlet.setLoadOnStartup(2);
-        
-//        log.debug("Registering HealthCheck Servlet");
-//		ServletRegistration.Dynamic healthCheckAdminServlet = servletContext
-//				.addServlet("healthCheckServlet",
-//						new HealthCheckCustomServlet());
-//
-//		healthCheckAdminServlet.addMapping("/app/admin/health");
-//		healthCheckAdminServlet.setAsyncSupported(true);
-//		healthCheckAdminServlet.setLoadOnStartup(3);
-    }
-    
-    /**
-     * Initializes the static resources production Filter.
-     */
-    private void initStaticResourcesProductionFilter(ServletContext servletContext,
-                                                     EnumSet<DispatcherType> disps) {
+		metricsAdminServlet.addMapping("/app/admin/metrics");
+		metricsAdminServlet.setAsyncSupported(true);
+		metricsAdminServlet.setLoadOnStartup(2);
 
-        log.debug("Registering static resources production Filter");
-        FilterRegistration.Dynamic staticResourcesProductionFilter =
-                servletContext.addFilter("staticResourcesProductionFilter",
-                        new StaticResourcesProductionFilter());
-        staticResourcesProductionFilter.addMappingForUrlPatterns(disps, true, "/assets/*");
-        staticResourcesProductionFilter.addMappingForUrlPatterns(disps, true, "/scripts/*");
-        staticResourcesProductionFilter.setAsyncSupported(true);
-    }
-    
-    /**
-     * Initializes the GZip filter.
-     */
-    private void initGzipFilter(ServletContext servletContext, EnumSet<DispatcherType> disps) {
-        log.debug("Registering GZip Filter");
-        FilterRegistration.Dynamic compressingFilter = servletContext.addFilter("gzipFilter", new GZipServletFilter());
-        Map<String, String> parameters = new HashMap<>();
-        compressingFilter.setInitParameters(parameters);
-        compressingFilter.addMappingForUrlPatterns(disps, true, "*.css");
-        compressingFilter.addMappingForUrlPatterns(disps, true, "*.json");
-        compressingFilter.addMappingForUrlPatterns(disps, true, "*.html");
-        compressingFilter.addMappingForUrlPatterns(disps, true, "*.js");
-        compressingFilter.addMappingForUrlPatterns(disps, true, "*.svg");
-        compressingFilter.addMappingForUrlPatterns(disps, true, "*.ttf");
-        compressingFilter.addMappingForUrlPatterns(disps, true, "/api/*");
-        compressingFilter.addMappingForUrlPatterns(disps, true, "/metrics/*");
-        compressingFilter.setAsyncSupported(true);
-    }
-    
-    /**
-     * Initializes the cachig HTTP Headers Filter.
-     */
-    private void initCachingHttpHeadersFilter(ServletContext servletContext,
-                                              EnumSet<DispatcherType> disps) {
-        log.debug("Registering Caching HTTP Headers Filter");
-        FilterRegistration.Dynamic cachingHttpHeadersFilter =
-                servletContext.addFilter("cachingHttpHeadersFilter",
-                        new CachingHttpHeadersFilter());
+		// log.debug("Registering HealthCheck Servlet");
+		// ServletRegistration.Dynamic healthCheckAdminServlet = servletContext
+		// .addServlet("healthCheckServlet",
+		// new HealthCheckCustomServlet());
+		//
+		// healthCheckAdminServlet.addMapping("/app/admin/health");
+		// healthCheckAdminServlet.setAsyncSupported(true);
+		// healthCheckAdminServlet.setLoadOnStartup(3);
+	}
 
-        cachingHttpHeadersFilter.addMappingForUrlPatterns(disps, true, "/assets/*");
-        cachingHttpHeadersFilter.addMappingForUrlPatterns(disps, true, "/scripts/*");
-        cachingHttpHeadersFilter.setAsyncSupported(true);
-    }
+	/**
+	 * Initializes the static resources production Filter.
+	 */
+	private void initStaticResourcesProductionFilter(
+			ServletContext servletContext, EnumSet<DispatcherType> disps) {
+
+		log.debug("Registering static resources production Filter");
+		FilterRegistration.Dynamic staticResourcesProductionFilter = servletContext
+				.addFilter("staticResourcesProductionFilter",
+						new StaticResourcesProductionFilter());
+		staticResourcesProductionFilter.addMappingForUrlPatterns(disps, true,
+				"/assets/*");
+		staticResourcesProductionFilter.addMappingForUrlPatterns(disps, true,
+				"/scripts/*");
+		staticResourcesProductionFilter.setAsyncSupported(true);
+	}
+
+	/**
+	 * Initializes the GZip filter.
+	 */
+	private void initGzipFilter(ServletContext servletContext,
+			EnumSet<DispatcherType> disps) {
+		log.debug("Registering GZip Filter");
+		FilterRegistration.Dynamic compressingFilter = servletContext
+				.addFilter("gzipFilter", new GZipServletFilter());
+		Map<String, String> parameters = new HashMap<>();
+		compressingFilter.setInitParameters(parameters);
+		compressingFilter.addMappingForUrlPatterns(disps, true, "*.css");
+		compressingFilter.addMappingForUrlPatterns(disps, true, "*.json");
+		compressingFilter.addMappingForUrlPatterns(disps, true, "*.html");
+		compressingFilter.addMappingForUrlPatterns(disps, true, "*.js");
+		compressingFilter.addMappingForUrlPatterns(disps, true, "*.svg");
+		compressingFilter.addMappingForUrlPatterns(disps, true, "*.ttf");
+		compressingFilter.addMappingForUrlPatterns(disps, true, "/api/*");
+		compressingFilter.addMappingForUrlPatterns(disps, true, "/metrics/*");
+		compressingFilter.setAsyncSupported(true);
+	}
+
+	/**
+	 * Initializes the cachig HTTP Headers Filter.
+	 */
+	private void initCachingHttpHeadersFilter(ServletContext servletContext,
+			EnumSet<DispatcherType> disps) {
+		log.debug("Registering Caching HTTP Headers Filter");
+		FilterRegistration.Dynamic cachingHttpHeadersFilter = servletContext
+				.addFilter("cachingHttpHeadersFilter",
+						new CachingHttpHeadersFilter());
+
+		cachingHttpHeadersFilter.addMappingForUrlPatterns(disps, true,
+				"/assets/*");
+		cachingHttpHeadersFilter.addMappingForUrlPatterns(disps, true,
+				"/scripts/*");
+		cachingHttpHeadersFilter.setAsyncSupported(true);
+	}
+
+	public static class Pojo {
+		private DateTime start;
+
+		public DateTime getStart() {
+			return start;
+		}
+
+		public void setStart(DateTime start) {
+			this.start = start;
+		}
+		
+	}
+
+	public static void main(String[] args) throws Exception {
+		final String INPUT_JSON = "{\"start\" : \"1972-12-28T12:00:01.000Z\"}";
+		String INPUT_JSON1="{\"start\" : \"2015-05-06T10:00:00.000Z\"}";
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.registerModule(new JodaModule());
+		Pojo bean = mapper.readValue(INPUT_JSON, Pojo.class);
+		System.out.println(bean.getStart());
+		bean = mapper.readValue(INPUT_JSON1, Pojo.class);
+		System.out.println(bean.getStart());
+		
+	}
+
 }

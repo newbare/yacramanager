@@ -2,6 +2,7 @@ package fr.wati.yacramanager.web.dto;
 
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
+import org.joda.time.LocalDateTime;
 
 import fr.wati.yacramanager.beans.ValidationStatus;
 import fr.wati.yacramanager.beans.Valideable;
@@ -12,8 +13,8 @@ public class WorkLogDTO implements Valideable{
 
 	private long id;
 	private String title;
-	private DateTime start;
-	private DateTime end;
+	private LocalDateTime start;
+	private LocalDateTime end;
 	private Long employeId;
 	private Long taskId;
 	private String taskName;
@@ -82,15 +83,15 @@ public class WorkLogDTO implements Valideable{
 		this.extraTime = extraTime;
 	}
 
-	public DateTime getStart() {
+	public LocalDateTime getStart() {
 		return start;
 	}
 
-	public void setStart(DateTime dateTime) {
+	public void setStart(LocalDateTime dateTime) {
 		this.start = dateTime;
 	}
 
-	public DateTime getEnd() {
+	public LocalDateTime getEnd() {
 		return end;
 	}
 
@@ -123,7 +124,7 @@ public class WorkLogDTO implements Valideable{
 		this.clientName = clientName;
 	}
 
-	public void setEnd(DateTime end) {
+	public void setEnd(LocalDateTime end) {
 		this.end = end;
 	}
 

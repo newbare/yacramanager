@@ -180,7 +180,6 @@ function TimeSheetController($scope,$rootScope,$http,$sce,WorkLogREST,alertServi
         firstDay:1,
         minTime:"06:00:00",
         maxTime:"22:00:00",
-        timezone:'local',
         header:{
           left: '',
           center: '',

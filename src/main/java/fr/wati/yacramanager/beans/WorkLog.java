@@ -14,7 +14,7 @@ import javax.persistence.ManyToOne;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Type;
-import org.joda.time.DateTime;
+import org.joda.time.LocalDateTime;
 
 /**
  * @author Rachid Ouattara
@@ -32,10 +32,10 @@ public class WorkLog extends AuditableEntity implements Valideable {
 	private Task task;
 	@ManyToOne
 	private Employe employe;
-	@Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
-	private DateTime startDate;
-	@Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
-	private DateTime endDate;
+	@Type(type="org.jadira.usertype.dateandtime.joda.PersistentLocalDateTime")
+	private LocalDateTime startDate;
+	@Type(type="org.jadira.usertype.dateandtime.joda.PersistentLocalDateTime")
+	private LocalDateTime endDate;
 	/**
 	 * the duration in minutes
 	 */
@@ -89,16 +89,16 @@ public class WorkLog extends AuditableEntity implements Valideable {
 	public void setEmploye(Employe employe) {
 		this.employe = employe;
 	}
-	public DateTime getStartDate() {
+	public LocalDateTime getStartDate() {
 		return startDate;
 	}
-	public void setStartDate(DateTime startDate) {
+	public void setStartDate(LocalDateTime startDate) {
 		this.startDate = startDate;
 	}
-	public DateTime getEndDate() {
+	public LocalDateTime getEndDate() {
 		return endDate;
 	}
-	public void setEndDate(DateTime endDate) {
+	public void setEndDate(LocalDateTime endDate) {
 		this.endDate = endDate;
 	}
 	public Long getDuration() {
