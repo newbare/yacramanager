@@ -60,7 +60,7 @@ public class AuthController {
 		return modelAndView;
 	}
 
-	@RequestMapping(value = "/auth/")
+	@RequestMapping(value = "/auth/**")
 	public RedirectView redirectToLogin() {
 		RedirectView redirectView = new RedirectView("login", false);
 		return redirectView;

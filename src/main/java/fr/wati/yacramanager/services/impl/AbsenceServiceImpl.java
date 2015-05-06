@@ -33,6 +33,7 @@ import fr.wati.yacramanager.services.ServiceException;
 import fr.wati.yacramanager.utils.Filter;
 import fr.wati.yacramanager.utils.Filter.FilterArray;
 import fr.wati.yacramanager.utils.Filter.FilterArrayValue;
+import fr.wati.yacramanager.utils.Filter.FilterBoolean;
 import fr.wati.yacramanager.utils.Filter.FilterDate;
 import fr.wati.yacramanager.utils.Filter.FilterText;
 import fr.wati.yacramanager.utils.Filter.FilterType;
@@ -191,6 +192,16 @@ public class AbsenceServiceImpl implements AbsenceService {
 						return CommonSpecifications.betweenDate(filterDate.getValue().getStart(), filterDate.getValue().getEnd(),Absence.class, "date");
 					}else {
 						return CommonSpecifications.equals(filterDate.getValue().getDate(), Absence_.date);
+					}
+				}
+				break;
+			case BOOLEAN:
+				FilterBoolean filterBoolean=(FilterBoolean) filter;
+				if("validated".equals(filter.getField()) && filterBoolean.getValue()!=null){
+					if(filterBoolean.getValue()){
+						return CommonSpecifications.equalsAny(Lists.newArrayList(ValidationStatus.APPROVED), Absence_.validationStatus);
+					}else {
+						return CommonSpecifications.equalsAny(Lists.newArrayList(ValidationStatus.WAIT_FOR_APPROVEMENT,ValidationStatus.SAVED), Absence_.validationStatus);
 					}
 				}
 				break;

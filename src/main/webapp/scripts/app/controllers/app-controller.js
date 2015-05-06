@@ -64,9 +64,10 @@ App.config(function($tooltipProvider) {
   });
 });
 
-App.controller('AppCtrl', [ '$scope', '$location', 'UsersREST','$rootScope','$translate','$locale','LanguageService','$state',
-		function($scope, $location, UsersREST,$rootScope,$translate,$locale,LanguageService,$state) {
-			
+App.controller('AppCtrl', [ '$scope', '$location', 'UsersREST','$rootScope','$translate','$locale','LanguageService','$state','ENV','VERSION',
+		function($scope, $location, UsersREST,$rootScope,$translate,$locale,LanguageService,$state,ENV,VERSION) {
+			$scope.ENV=ENV;
+			$scope.VERSION=VERSION;
 			$scope.eventsToWait=['userInfo'];
 			$scope.navClass = function(page) {
 				var currentRoute = $location.path().substring(1) || 'home';

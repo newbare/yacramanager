@@ -301,19 +301,19 @@ public abstract class Filter {
 	}
 	
 	public static class FilterBoolean extends Filter{
-		private boolean value;
+		private Boolean value;
 
 		/**
 		 * @return the value
 		 */
-		public boolean isValue() {
+		public Boolean getValue() {
 			return value;
 		}
 
 		/**
 		 * @param value the value to set
 		 */
-		public void setValue(boolean value) {
+		public void setValue(Boolean value) {
 			this.value = value;
 		}
 		
@@ -417,7 +417,11 @@ public abstract class Filter {
 					FilterBoolean filterBoolean=new FilterBoolean();
 					filterBoolean.setField(((TextNode)jsonNode.get("field")).asText());
 					filterBoolean.setType(filterType);
-					filterBoolean.setValue(jsonNode.get("value").asBoolean());
+					if(!jsonNode.get("value").isNull() && jsonNode.get("value").isBoolean()){
+						filterBoolean.setValue(jsonNode.get("value").asBoolean());
+					}else {
+						filterBoolean.setValue(null);
+					}
 					filters.add(filterBoolean);
 					break;
 				case DATE_RANGE:

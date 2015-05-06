@@ -11,6 +11,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.joda.time.DateTime;
+import org.joda.time.LocalDateTime;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -68,8 +69,8 @@ public class WorkLogRestController {
 			@RequestParam(value = "start", required = true) long start,
 			@RequestParam(value = "end", required = true) long end) {
 		// We receive time in second
-		DateTime startDate = new DateTime(start * 1000);
-		DateTime endDate = new DateTime(end * 1000);
+		LocalDateTime startDate = new LocalDateTime(start * 1000);
+		LocalDateTime endDate = new LocalDateTime(end * 1000);
 		List<WorkLog> workLogs = workLogService.findByEmployeAndStartDateBetween(SecurityUtils.getConnectedUser(), startDate, endDate);
 		if(workLogs!=null && !workLogs.isEmpty()){
 			List<WorkLogDTO> dtos = dtoMapper.mapWorkLogs(workLogs);

@@ -1,6 +1,7 @@
 function TimeSheetController($scope,$rootScope,$http,$sce,WorkLogREST,alertService,$popover,$compile,$modal,ngTableParams) {
 	$rootScope.page={"title":"Timesheet","description":"View and manage timesheet"};
 	$scope.timeType="duration";
+	var worklogDateFormat="YYYY-MM-DDTHH:mm:ss.SSS";
 	$scope.timesheetCalendarTitle=undefined;
 	var editWorklogModal = $modal({scope: $scope, template: _contextPath+'views/app/components/templates/edit-worklog.tpl.html', show: false});
 	$scope.showEditWorkLogModal = function() {
@@ -126,7 +127,7 @@ function TimeSheetController($scope,$rootScope,$http,$sce,WorkLogREST,alertServi
     };
     /* alert on Drop */
      $scope.onEventDrop = function(event, dayDelta, minuteDelta, allDay, revertFunc, jsEvent, ui, view){
-       WorkLogREST.update(event).$promise.then(
+       WorkLogREST.update(eventToWorkLog(event)).$promise.then(
 		        //success
 		        function( value ){},
 		        //error
@@ -135,7 +136,7 @@ function TimeSheetController($scope,$rootScope,$http,$sce,WorkLogREST,alertServi
     };
     /* alert on Resize */
     $scope.onEventResize = function(event, dayDelta, minuteDelta, revertFunc, jsEvent, ui, view ){
-    	 WorkLogREST.update(event).$promise.then(
+    	WorkLogREST.update(eventToWorkLog(event)).$promise.then(
  		        //success
  		        function( value ){},
  		        //error
@@ -228,16 +229,38 @@ function TimeSheetController($scope,$rootScope,$http,$sce,WorkLogREST,alertServi
 			return false;
 		}
     };
+	var eventToWorkLog = function(event) {
+		var worklog = {};
+		worklog.title = event.title;
+		worklog.id=event.id;
+		worklog.type = event.type;
+		if ("TIME" === event.type) {
+			worklog.start = moment(event.start).format(worklogDateFormat);
+			worklog.end = moment(event.end).format(worklogDateFormat);
+			worklog.duration = null;
+		} else {
+			worklog.start = moment(event.start).format(worklogDateFormat);
+			worklog.end = null;
+			worklog.duration = event.durationTime;
+		}
+
+		worklog.taskId = event.taskId;
+		worklog.taskName = event.taskName;
+		worklog.description = event.description;
+		worklog.validationStatus=event.validationStatus;
+		worklog.employeId = _userId;
+		return worklog;
+	}
     $scope.postWorkLog = function(hideFn) {
     	var worklog={};
     	 worklog.title=null;
     	 worklog.type=$scope.worklog.timeType;
     	 if("TIME"===$scope.worklog.timeType){
-    		 worklog.start=$scope.worklog.timeStartDate;
-    		 worklog.end=$scope.worklog.timeEndDate;
+    		 worklog.start=moment($scope.worklog.timeStartDate).format(worklogDateFormat);
+    		 worklog.end=moment($scope.worklog.timeEndDate).format(worklogDateFormat);
     		 worklog.duration=null;
     	 }else {
-    		 worklog.start=$scope.worklog.durationStartDate;
+    		 worklog.start=moment($scope.worklog.durationStartDate).format(worklogDateFormat);
     		 worklog.end=null;
     		 worklog.duration=$scope.worklog.durationTime;
 		}

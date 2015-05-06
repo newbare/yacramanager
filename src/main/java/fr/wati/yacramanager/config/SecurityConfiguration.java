@@ -98,6 +98,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter
 			http.requiresChannel().antMatchers("/**").requiresSecure();
 		}
 		http.formLogin()
+				.usernameParameter("email")
 				.defaultSuccessUrl(DEFAULT_LOGIN_SUCCESS_PATH)
 				.loginProcessingUrl("/auth/authentication")
 				.loginPage("/auth/login")

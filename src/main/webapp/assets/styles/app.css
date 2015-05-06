@@ -2,7 +2,11 @@ body.modal-open {
 overflow-y: visible!important;
 }
 
-.development-ribbon {
+
+/* ==========================================================================
+Developement Ribbon
+========================================================================== */
+.development {
     position: absolute;
     width: 149px;
     height: 149px;
@@ -14,6 +18,15 @@ overflow-y: visible!important;
     background-position: center center;
     background-repeat: no-repeat;
 }
+
+/* ==========================================================================
+Version number in navbar
+========================================================================== */
+.navbar-version {
+    font-size: 10px;
+    color: #ccc
+}
+
 
 img.profile-picture{
 	max-width: 140px;

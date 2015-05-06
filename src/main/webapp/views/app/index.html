@@ -44,10 +44,6 @@
 </script>
 </head>
 <body data-ng-controller="AppCtrl" data-web-socket="" data-auth-application-support="" class="waiting-for-angular" data-events-to-wait="eventsToWait" data-application-loading-support="" data-connection-lost-support="">
-	<!-- <div class="development-ribbon"></div> -->
-	<!-- <div class="ribbon">
-  		<a href="">Developpement</a>
-	</div> -->
 	<div id="initializing-panel"></div>
 	<div id="app-content">
 	<!-- Fixed navbar -->
@@ -61,7 +57,10 @@
 						class="icon-bar"></span> <span class="icon-bar"></span> <span
 						class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="."><span class="icon-yacra-full"></span></a>
+				<a class="navbar-brand" href="/">
+					<span class="icon-yacra-full"></span>
+					<span class="navbar-version" ng-show="{{ENV !== 'prod'}}">[{{ENV | uppercase}}] v{{VERSION}}</span>
+				</a>
 			</div>
 			<div class="navbar-collapse collapse">
 				<ul class="nav navtop navbar-nav navbar-left">
@@ -254,7 +253,7 @@
 	<script src="../../bower_components/chosen/chosen.jquery.js"></script>
 	<script src="../../bower_components/angular-daterangepicker/js/angular-daterangepicker.js"></script>
 	<script src="../../bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
-	<script src="../../bower_components/angular-loading-bar/build/loading-bar.min.js"></script>
+	<script src="../../bower_components/angular-loading-bar/build/loading-bar.js"></script>
 	<script src="../../bower_components/ngQuickDate/dist/ng-quick-date.min.js"></script>
 	<script src="../../bower_components/angular-xeditable/dist/js/xeditable.min.js"></script>
 	<script src="../../bower_components/angular-bootstrap-colorpicker/js/bootstrap-colorpicker-module.js"></script>
@@ -271,7 +270,6 @@
  	<script src="../../bower_components/angular-local-storage/dist/angular-local-storage.js"></script>
  	<script src="../../bower_components/angular-strap/dist/angular-strap.js"></script>
  	<script src="../../bower_components/angular-strap/dist/angular-strap.tpl.js"></script>
- 	<script src="../../bower_components/angular-strap/dist/modules/modal.js"></script>
  	<script src="../../bower_components/angular-translate-loader-static-files/angular-translate-loader-static-files.js"></script>
  	<script src="../../bower_components/angular-timer/dist/angular-timer.js"></script>
  	<script src="../../bower_components/sockjs-client/dist/sockjs.js"></script>

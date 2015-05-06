@@ -5,6 +5,10 @@
 	border-top: 1px solid #f5f5f5;
 	border-bottom: 1px solid #f5f5f5;
 }
+
+.ng-criteria-bar li.list-group-item{
+	border: none;
+}
 /* the criteria button */
 .ng-criterion {
 	background-color: none;

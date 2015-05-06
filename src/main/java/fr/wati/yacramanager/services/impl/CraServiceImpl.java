@@ -162,14 +162,14 @@ public class CraServiceImpl implements CraService {
 			//worklog part
 			List<WorkLog> employeWorkLogs = workLogService
 					.findByEmployeAndStartDateBetweenAndExtratimeFalse(currentEmploye,
-							startDate.toDateTimeAtStartOfDay(), endDate.toDateTimeAtStartOfDay());
+							startDate.toDateTimeAtStartOfDay().toLocalDateTime(), endDate.toDateTimeAtStartOfDay().toLocalDateTime());
 			handleWorkLogPart(startDate.toDateTimeAtStartOfDay(), endDate.toDateTimeAtStartOfDay(), employeCraDetailsDTO.getTaskRows(),
 					employeWorkLogs);
 			
 			//Extra Time part
 			//worklog part
 			List<WorkLog> employeExtraTime = workLogService
-					.findExtraTime(currentEmploye,startDate.toDateTimeAtStartOfDay(), endDate.toDateTimeAtStartOfDay());
+					.findExtraTime(currentEmploye,startDate.toDateTimeAtStartOfDay().toLocalDateTime(), endDate.toDateTimeAtStartOfDay().toLocalDateTime());
 			handleWorkLogPart(startDate.toDateTimeAtStartOfDay(), endDate.toDateTimeAtStartOfDay(), employeCraDetailsDTO.getExtraTimeRows(),
 					employeExtraTime);
 
@@ -281,19 +281,19 @@ public class CraServiceImpl implements CraService {
 				default:
 					break;
 				}
-				if (!craTaskRow.getDuration().containsKey(currentDate)) {
+				if (!craTaskRow.getDuration().containsKey(currentDate.toLocalDate())) {
 					craTaskRow.getDuration().put(currentDate.toLocalDate(),
 							currentDuration);
 				} else {
 					craTaskRow.getDuration().put(
 							currentDate.toLocalDate(),
-							craTaskRow.getDuration().get(currentDate)
+							craTaskRow.getDuration().get(currentDate.toLocalDate())
 									+ currentDuration);
 				}
 				if(DateTimeComparator
-						.getDateOnlyInstance().compare(currentDate, workLog.getStartDate())==0){
+						.getDateOnlyInstance().compare(currentDate, workLog.getStartDate().toDateTime())==0){
 					if (!craTaskRow.getValidationStatus().containsKey(
-							currentDate)) {
+							currentDate.toLocalDate())) {
 						craTaskRow.getValidationStatus().put(currentDate.toLocalDate(),
 								workLog.getValidationStatus());
 					} else {

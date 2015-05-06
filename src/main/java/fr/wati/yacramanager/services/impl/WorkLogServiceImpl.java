@@ -4,8 +4,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import org.joda.time.DateTime;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.joda.time.LocalDateTime;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -109,21 +108,21 @@ public class WorkLogServiceImpl implements WorkLogService,SpecificationFactory<W
 	}
 
 	@Override
-	public Page<WorkLog> findByStartDateBetween(DateTime dateDebut, DateTime dateFin,
+	public Page<WorkLog> findByStartDateBetween(LocalDateTime dateDebut, LocalDateTime dateFin,
 			Pageable pageable) {
 		return workLogRepository.findByStartDateBetween(dateDebut, dateFin, pageable);
 	}
 
 	@Override
 	public Page<WorkLog> findByEmployeAndStartDateBetween(Employe employe,
-			DateTime dateDebut, DateTime dateFin, Pageable pageable) {
+			LocalDateTime dateDebut, LocalDateTime dateFin, Pageable pageable) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public List<WorkLog> findByEmployeAndStartDateBetween(Employe employe,
-			DateTime dateDebut, DateTime dateFin) {
+			LocalDateTime dateDebut, LocalDateTime dateFin) {
 		return workLogRepository.findByEmployeAndStartDateBetween(employe, dateDebut, dateFin);
 	}
 
@@ -177,20 +176,20 @@ public class WorkLogServiceImpl implements WorkLogService,SpecificationFactory<W
 	}
 
 	@Override
-	public Page<WorkLog> findExtraTime(Employe employe, DateTime dateDebut,
-			DateTime dateFin, Pageable pageable) {
+	public Page<WorkLog> findExtraTime(Employe employe, LocalDateTime dateDebut,
+			LocalDateTime dateFin, Pageable pageable) {
 		return workLogRepository.findByEmployeAndStartDateBetweenAndExtraTimeTrue(employe, dateDebut, dateFin, pageable);
 	}
 
 	@Override
-	public List<WorkLog> findExtraTime(Employe employe, DateTime dateDebut,
-			DateTime dateFin) {
+	public List<WorkLog> findExtraTime(Employe employe, LocalDateTime dateDebut,
+			LocalDateTime dateFin) {
 		return workLogRepository.findByEmployeAndStartDateBetweenAndExtraTimeTrue(employe, dateDebut, dateFin);
 	}
 
 	@Override
 	public List<WorkLog> findByEmployeAndStartDateBetweenAndExtratimeFalse(
-			Employe employe, DateTime dateDebut, DateTime dateFin) {
+			Employe employe, LocalDateTime dateDebut, LocalDateTime dateFin) {
 		// TODO Auto-generated method stub
 		return workLogRepository.findByEmployeAndStartDateBetweenAndExtraTimeFalse(employe, dateDebut, dateFin);
 	}
