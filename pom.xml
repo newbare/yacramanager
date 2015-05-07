@@ -779,7 +779,8 @@
 			</build>
 			<properties>
 				<!-- log configuration -->
-				<logback.loglevel>INFO</logback.loglevel>
+				<logback.loglevel>DEBUG</logback.loglevel>
+				<maven.test.skip>true</maven.test.skip>
 			</properties>
 		</profile>
 		<profile>

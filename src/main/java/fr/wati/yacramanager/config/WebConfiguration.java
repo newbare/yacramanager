@@ -274,16 +274,16 @@ public class WebConfiguration implements ServletContextInitializer,
 		
 	}
 
-	public static void main(String[] args) throws Exception {
-		final String INPUT_JSON = "{\"start\" : \"1972-12-28T12:00:01.000Z\"}";
-		String INPUT_JSON1="{\"start\" : \"2015-05-06T10:00:00.000Z\"}";
-		ObjectMapper mapper = new ObjectMapper();
-		mapper.registerModule(new JodaModule());
-		Pojo bean = mapper.readValue(INPUT_JSON, Pojo.class);
-		System.out.println(bean.getStart());
-		bean = mapper.readValue(INPUT_JSON1, Pojo.class);
-		System.out.println(bean.getStart());
-		
-	}
+//	public static void main(String[] args) throws Exception {
+//		final String INPUT_JSON = "{\"start\" : \"1972-12-28T12:00:01.000Z\"}";
+//		String INPUT_JSON1="{\"start\" : \"2015-05-06T10:00:00.000Z\"}";
+//		ObjectMapper mapper = new ObjectMapper();
+//		mapper.registerModule(new JodaModule());
+//		Pojo bean = mapper.readValue(INPUT_JSON, Pojo.class);
+//		System.out.println(bean.getStart());
+//		bean = mapper.readValue(INPUT_JSON1, Pojo.class);
+//		System.out.println(bean.getStart());
+//		
+//	}
 
 }
