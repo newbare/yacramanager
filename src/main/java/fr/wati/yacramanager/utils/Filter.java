@@ -417,7 +417,7 @@ public abstract class Filter {
 					FilterBoolean filterBoolean=new FilterBoolean();
 					filterBoolean.setField(((TextNode)jsonNode.get("field")).asText());
 					filterBoolean.setType(filterType);
-					if(!jsonNode.get("value").isNull() && jsonNode.get("value").isBoolean()){
+					if(!jsonNode.get("value").isNull() && !"undefined".equals(((TextNode)jsonNode.get("value")).asText())){
 						filterBoolean.setValue(jsonNode.get("value").asBoolean());
 					}else {
 						filterBoolean.setValue(null);

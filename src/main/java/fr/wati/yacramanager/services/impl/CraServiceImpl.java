@@ -267,7 +267,7 @@ public class CraServiceImpl implements CraService {
 				switch (workLog.getWorkLogType()) {
 				case DURATION:
 					if (DateTimeComparator.getDateOnlyInstance().compare(
-							currentDate, workLog.getStartDate()) == 0) {
+							currentDate, workLog.getStartDate().toDateTime()) == 0) {
 						currentDuration = workLog.getDuration();
 					}
 					break;

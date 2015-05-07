@@ -10,6 +10,7 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -36,6 +37,7 @@ import fr.wati.yacramanager.web.api.RestServiceException;
 import fr.wati.yacramanager.web.api.TaskRestController;
 import fr.wati.yacramanager.web.api.UserRestController;
 import fr.wati.yacramanager.web.api.WorkLogRestController;
+import fr.wati.yacramanager.web.dto.ExceptionDto;
 
 /**
  * @author Rachid Ouattara
@@ -64,12 +66,12 @@ public class RestControllerAdvice {
 	@ExceptionHandler({ RestServiceException.class, ServiceException.class,Exception.class })
 	@ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
 	@SendToUser(value = "/queue/errors")
-	public ResponseEntity<String> handleRestException(Exception ex, HttpServletResponse response)
+	public @ResponseBody ResponseEntity<ExceptionDto> handleRestException(Exception ex, HttpServletResponse response)
 			throws IOException {
 		// messagingTemplate.convertAndSendToUser(SecurityUtils.getConnectedUser().getUsername(),
 		// "/queue/errors", ex.getMessage());
 		logger.error(ex.getMessage(), ex);
-		return new ResponseEntity<String>(ex.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
+		return new ResponseEntity<ExceptionDto>(new ExceptionDto(ExceptionUtils.getRootCause(ex).getMessage()),HttpStatus.INTERNAL_SERVER_ERROR);
 
 	}
 }

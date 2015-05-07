@@ -14,6 +14,22 @@ function CompanyController($scope, $rootScope,$state) {
 	$scope.$state=$state;
 }
 
+function CompanyHomeController($scope,$state,company,CompanyREST){
+	$scope.company=company;
+	
+	$scope.updateCompany = function() {
+		return CompanyREST.update({},$scope.company).$promise.then(
+		        //success
+		        function( value ){
+		        	 
+		        },
+		        //error
+		        function( error ){/*Do something with error*/}
+		      );
+	};
+}
+
+
 /*COMPANY-EMPLOYEE section*/
 function CompanyEmployeesController($scope,$state) {
 	$scope.currentTab = 'basicInfos';

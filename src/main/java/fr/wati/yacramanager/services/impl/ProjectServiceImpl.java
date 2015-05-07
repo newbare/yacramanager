@@ -5,7 +5,11 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.joda.time.DateTime;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -35,12 +39,15 @@ import fr.wati.yacramanager.utils.Filter.FilterArrayValue;
 import fr.wati.yacramanager.utils.Filter.FilterDate;
 import fr.wati.yacramanager.utils.Filter.FilterText;
 import fr.wati.yacramanager.utils.Filter.FilterType;
+import fr.wati.yacramanager.web.api.ClientController;
 import fr.wati.yacramanager.web.dto.ProjectDTO;
 
 @Service
 @Transactional
 public class ProjectServiceImpl implements ProjectService{
 
+	private static final Log LOG = LogFactory.getLog(ProjectServiceImpl.class);
+	
 	@Inject
 	private ProjectRepository projectRepository;
 	@Inject
@@ -53,6 +60,9 @@ public class ProjectServiceImpl implements ProjectService{
 	
 	@Inject
 	private CompanyService companyService;
+	
+	@Autowired
+	private RabbitTemplate rabbitTemplate;
 	
 	@Inject
 	private TaskService taskService;
@@ -69,7 +79,7 @@ public class ProjectServiceImpl implements ProjectService{
 		 */
 		Task defaulTask=new Task();
 		defaulTask.setCreatedDate(new DateTime());
-		defaulTask.setName(project.getName()+" - default");
+		defaulTask.setName("[Default task]");
 		defaulTask.setColor(project.getColor());
 		defaulTask.setTaskStatus(TaskStatus.OPEN);
 		taskService.createTask(saveProject.getId(), defaulTask);
@@ -109,6 +119,7 @@ public class ProjectServiceImpl implements ProjectService{
 
 	@Override
 	public Iterable<Project> findAll() {
+		LOG.debug(rabbitTemplate);
 		return projectRepository.findAll();
 	}
 

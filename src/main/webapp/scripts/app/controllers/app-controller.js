@@ -116,6 +116,7 @@ App.controller('WorkLogCtrl',['$scope','$http','WorkLogREST','alertService',func
 	 $scope.open=false;
 	 $scope.project=undefined;
 	 $scope.task=undefined;
+	 var worklogDateFormat="YYYY-MM-DDTHH:mm:ss.SSS";
 	 var start;
      $scope.startTimer = function (){
          $scope.$broadcast('timer-start');
@@ -138,8 +139,8 @@ App.controller('WorkLogCtrl',['$scope','$http','WorkLogREST','alertService',func
     	 if(data.minutes>=1){
     		 $scope.worklog.title="";
         	 $scope.worklog.type="TIME";
-        	 $scope.worklog.start=start;
-        	 $scope.worklog.end=start.clone().add('minutes',data.minutes );
+        	 $scope.worklog.start=start.format(worklogDateFormat);
+        	 $scope.worklog.end=start.clone().add('minutes',data.minutes).format(worklogDateFormat);
         	 //duration in minutes
         	 $scope.worklog.duration=0;//Math.round((data.millis/1000)/60);
         	 $scope.worklog.taskId= $scope.task.id;
@@ -372,6 +373,13 @@ var stateConfig =[ '$stateProvider','$locationProvider','$translateProvider','tm
 			}).state('company.home', {
 				url : "/home",
 				templateUrl : _contextPath+'views/app/components/company/company-home.html',
+				controller : CompanyHomeController,
+				resolve : {
+					company :function(CompanyREST) {
+						return CompanyREST.get(
+								{id : _userCompanyId});
+					}
+				},
 				data: {
 				    ncyBreadcrumbSkip: true 
 				  }
@@ -668,14 +676,16 @@ var stateConfig =[ '$stateProvider','$locationProvider','$translateProvider','tm
 				controller : AdminSettingsController
 			});
 			
-//			$translateProvider.preferredLanguage('en');
-			$translateProvider.determinePreferredLanguage();
+			$translateProvider.preferredLanguage('en');
+//			$translateProvider.determinePreferredLanguage();
 			
 			$translateProvider.useStaticFilesLoader({
 			      prefix: _contextPath+'i18n/',
 			      suffix: '.json'
 			});
 
+			// tell angular-translate to use your custom handler
+			$translateProvider.useMissingTranslationHandler('translationMissingErrorHandlerFactory');
 			$translateProvider.useCookieStorage();
 
 			tmhDynamicLocaleProvider
@@ -684,6 +694,14 @@ var stateConfig =[ '$stateProvider','$locationProvider','$translateProvider','tm
 					.useCookieStorage('NG_TRANSLATE_LANG_KEY');
 
 		} ];
+
+//define custom handler
+App.factory('translationMissingErrorHandlerFactory', function (dep1, dep2) {
+  // has to return a function which gets a tranlation id
+  return function (translationID) {
+    // do something with dep1 and dep2
+  };
+});
 
 App.config(whenConfig).config(stateConfig)
 

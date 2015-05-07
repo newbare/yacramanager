@@ -118,7 +118,7 @@ public class CompanyServiceImpl implements CompanyService {
 		 * client we create a default one
 		 */
 		Client defaultClient = new Client();
-		defaultClient.setName(company.getName());
+		defaultClient.setName("[Default client]");
 		clientService.createClient(saveCompany.getId(), defaultClient);
 		return saveCompany;
 	}
@@ -134,6 +134,7 @@ public class CompanyServiceImpl implements CompanyService {
 		companyAccountInfoDTO.setExpiredDate(company.getCompanyAccountInfo().getExpiredDate());
 		companyAccountInfoDTO.setLocked(company.getCompanyAccountInfo().isLocked());
 		companyDTO.setCompanyAccountInfo(companyAccountInfoDTO);
+		companyDTO.setLicenseEndDate(companyAccountInfoDTO.getExpiredDate());
 		return companyDTO;
 	}
 

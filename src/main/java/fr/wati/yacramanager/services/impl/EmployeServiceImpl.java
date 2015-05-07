@@ -192,7 +192,7 @@ public class EmployeServiceImpl implements EmployeService {
 	 */
 	@Override
 	public Employe registerEmploye(RegistrationDTO registrationDTO,boolean isSocialRegistration) throws ServiceException{
-		if(StringUtils.isEmpty(registrationDTO.getUsername()) || findByUsername(registrationDTO.getUsername())!=null){
+		if(StringUtils.isEmpty(registrationDTO.getEmail()) || findByUsername(registrationDTO.getEmail())!=null){
 			throw new ServiceException("The username already exist");
 		}
 		Employe employe=new Employe();

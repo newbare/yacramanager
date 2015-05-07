@@ -55,7 +55,7 @@ App.directive('httpRequestError', [ '$rootScope', 'alertService', 'notifService'
                      				link : function(scope, elem, attrs, ctrl) {
                      					scope.$on('event:http-request-error', function(event, error) {
                      						//notifService.notify('error',error.title+': <strong>'+error.status+'</strong>',error.data);
-                     						alertService.show('danger',error.title+': '+error.status,JSON.stringify(error.data));
+                     						alertService.show('danger',error.title+': '+error.status,JSON.stringify(error.data.errorMessage));
                      					});
                      				}
                      			};

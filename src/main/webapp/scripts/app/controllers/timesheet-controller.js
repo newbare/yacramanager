@@ -241,7 +241,7 @@ function TimeSheetController($scope,$rootScope,$http,$sce,WorkLogREST,alertServi
 		} else {
 			worklog.start = moment(event.start).format(worklogDateFormat);
 			worklog.end = null;
-			worklog.duration = event.durationTime;
+			worklog.duration = event.duration;
 		}
 
 		worklog.taskId = event.taskId;

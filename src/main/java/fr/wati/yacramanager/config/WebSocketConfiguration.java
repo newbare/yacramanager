@@ -3,6 +3,7 @@ package fr.wati.yacramanager.config;
 import org.springframework.boot.bind.RelaxedPropertyResolver;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.core.env.Environment;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.messaging.simp.config.StompBrokerRelayRegistration;
@@ -12,6 +13,7 @@ import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 
 @Configuration
 @EnableWebSocketMessageBroker
+@Profile({"!"+Constants.SPRING_PROFILE_CLOUD})
 public class WebSocketConfiguration extends AbstractWebSocketMessageBrokerConfigurer implements EnvironmentAware {
 
 	private RelaxedPropertyResolver propertyResolver;
