@@ -233,7 +233,7 @@ App.directive('authApplicationSupport', function($timeout,$modal) {
       };
     });
 
-App.directive('absencePortfolio',['AbsenceREST', function(AbsenceREST) {
+App.directive('absencePortfolio',['AbsenceREST','USERINFO', function(AbsenceREST,USERINFO) {
     return {
     	replace:true,
         restrict: 'E',
@@ -260,7 +260,7 @@ App.directive('absencePortfolio',['AbsenceREST', function(AbsenceREST) {
 					'</fieldset>',
         link: function(scope, elem, attrs) {
         	scope.absencePortfolio={};
-        	var userID=attrs.userId || _userId;
+        	var userID=attrs.userId || USERINFO.id;
         	scope.$on('absence-portfolio-changed',function(){
         		scope.refreshPortfolio();
         	});

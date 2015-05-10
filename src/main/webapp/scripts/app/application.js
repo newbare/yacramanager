@@ -75,7 +75,7 @@ App.config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
 
   
   
-App.run(function($rootScope, $templateCache, UsersREST,$state,ENV,VERSION) {
+App.run(function($rootScope,$q, $templateCache, UsersREST,$state,ENV,VERSION,USERINFO) {
 	$rootScope.page = '';
 	$rootScope.$state = $state;
 	$rootScope.appContextPath=_contextPath;
@@ -90,23 +90,21 @@ App.run(function($rootScope, $templateCache, UsersREST,$state,ENV,VERSION) {
 			event.preventDefault();
 		}
 	});
-	$rootScope.$on('$viewContentLoading', function(event, viewConfig) {
-//		console.log(viewConfig);
-	});
-	
-	$rootScope.$on('$viewContentLoaded', function(event) {
-//		console.log(event);
-	});
-
 	var loadUserInfo = function() {
+		var deferred = $q.defer();
 		UsersREST.get({
 			service : 'user-info'
 		}, function(data) {
-			$rootScope.userInfo = data;
 			$rootScope.$broadcast('userInfo', data);
+			deferred.resolve(data);
+			$rootScope.userInfo=data;
+			userInfo=data;
 		});
 	};
 	loadUserInfo();
+	$rootScope.$on('event:userInfo-Refresh', function() {
+		loadUserInfo();
+	});
 });
 
 App.run(function(editableOptions,editableThemes) {

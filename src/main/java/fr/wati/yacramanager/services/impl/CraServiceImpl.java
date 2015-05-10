@@ -162,7 +162,7 @@ public class CraServiceImpl implements CraService {
 			//worklog part
 			List<WorkLog> employeWorkLogs = workLogService
 					.findByEmployeAndStartDateBetweenAndExtratimeFalse(currentEmploye,
-							startDate.toDateTimeAtStartOfDay().toLocalDateTime(), endDate.toDateTimeAtStartOfDay().toLocalDateTime());
+							startDate.toDateTimeAtStartOfDay().toLocalDateTime(), endDate.toDateTimeAtStartOfDay().plusDays(1).toLocalDateTime());
 			handleWorkLogPart(startDate.toDateTimeAtStartOfDay(), endDate.toDateTimeAtStartOfDay(), employeCraDetailsDTO.getTaskRows(),
 					employeWorkLogs);
 			

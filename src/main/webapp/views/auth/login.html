@@ -30,7 +30,7 @@
 <script th:if=" ${activationFailed} !=null" th:inline="javascript"
 	type="text/javascript">
 			var activationFailed = [[${activationFailed}]];
-			var errorMessage = [[${activationMessage}]];
+			var activationMessage = [[${activationMessage}]];
 </script>
 <script th:if=" ${activationSuccess} !=null" th:inline="javascript"
 	type="text/javascript">

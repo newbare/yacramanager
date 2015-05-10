@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en" data-ng-app="yaCRAApp">
+<html xmlns:th="http://www.thymeleaf.org" lang="en" >
 <head>
 <title data-update-title=""></title>
 <meta charset="utf-8"/>
@@ -35,13 +35,6 @@
 <link rel="stylesheet"	href="../../assets/styles/yacranav.css"/>
 <link rel="stylesheet"	href="../../assets/styles/yacrafooter.css"/>
 <!-- endbuild -->
-
-<script th:inline="javascript" type="text/javascript">
-	var _contextPath = [[@{/}]] ;
-	var _userId = [[${userId}]];
-	var _userCompanyName = [[${userCompanyName}]];
-	var _userCompanyId = "[[${userCompanyId}]]";
-</script>
 </head>
 <body data-ng-controller="AppCtrl" data-web-socket="" data-auth-application-support="" class="waiting-for-angular" data-events-to-wait="eventsToWait" data-application-loading-support="" data-connection-lost-support="">
 	<div id="initializing-panel"></div>
@@ -59,7 +52,7 @@
 				</button>
 				<a class="navbar-brand" href="/">
 					<span class="icon-yacra-full"></span>
-					<span class="navbar-version" ng-show="{{ENV !== 'prod'}}">[{{ENV | uppercase}}] v{{VERSION}}</span>
+					<span class="navbar-version hidden-xs hidden-sm" data-ng-show="{{ENV !== 'prod'}}">[{{ENV | uppercase}}] v{{VERSION}}</span>
 				</a>
 			</div>
 			<div class="navbar-collapse collapse">
@@ -238,6 +231,7 @@
  	<script src="../../bower_components/jquery/dist/jquery.js"></script>
  	<script src="../../bower_components/jquery-ui/jquery-ui.js"></script>
  	<script src="../../bower_components/angular/angular.js"></script>
+ 	<script src="../../bower_components/angular-deferred-bootstrap/angular-deferred-bootstrap.js"></script>
  	<script src="../../bower_components/bootstrap/dist/js/bootstrap.js"></script>
  	<script src="../../bower_components/angular-ui-router/release/angular-ui-router.js"></script>
  	<script src="../../bower_components/angular-resource/angular-resource.js"></script>
@@ -267,7 +261,7 @@
  	<script src="../../bower_components/angular-dynamic-locale/src/tmhDynamicLocale.js"></script>
  	<script src="../../bower_components/fullcalendar/fullcalendar.js"></script>
  	<script src="../../bower_components/angular-ui-calendar/src/calendar.js"></script>
- 	<script src="../../bower_components/angular-local-storage/dist/angular-local-storage.js"></script>
+ 	<script src="../../bower_components/angular-local-storage/angular-local-storage.js"></script>
  	<script src="../../bower_components/angular-strap/dist/angular-strap.js"></script>
  	<script src="../../bower_components/angular-strap/dist/angular-strap.tpl.js"></script>
  	<script src="../../bower_components/angular-translate-loader-static-files/angular-translate-loader-static-files.js"></script>
@@ -304,5 +298,21 @@
 	<script	src="../../scripts/app/controllers/user-settings-controller.js"></script>
 	<script	src="../../scripts/app/controllers/user-profile-controller.js"></script>
 	<!-- endbuild -->
+	
+	<script th:inline="javascript" type="text/javascript">
+		var _contextPath = [[@{/}]] ;
+		/* var _userId = [[${userId}]];
+		var _userCompanyName = [[${userCompanyName}]];
+		var _userCompanyId = "[[${userCompanyId}]]"; */
+		window.deferredBootstrapper.bootstrap({
+		  element: window.document,
+		  module: 'yaCRAApp',
+		  resolve: {
+		    USERINFO: ['$http', function ($http) {
+		      return $http.get(_contextPath + 'app/api/users/user-info');
+		    }]
+		  }
+		});
+	</script>
 </body>
 </html>

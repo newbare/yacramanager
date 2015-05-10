@@ -20,9 +20,13 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
+import com.codahale.metrics.annotation.Timed;
+
 import fr.wati.yacramanager.beans.CompanyTempInvitation;
+import fr.wati.yacramanager.beans.Users;
 import fr.wati.yacramanager.config.social.DefaultConnectionSignUp;
 import fr.wati.yacramanager.dao.JdbcCompanyInvitationRepository;
+import fr.wati.yacramanager.services.UserService;
 import fr.wati.yacramanager.web.ResourceNotFoundException;
 import fr.wati.yacramanager.web.dto.RegistrationDTO;
 
@@ -30,6 +34,9 @@ import fr.wati.yacramanager.web.dto.RegistrationDTO;
 public class AuthController {
 
 	private final Logger log = LoggerFactory.getLogger(AuthController.class);
+
+	@Inject
+	private UserService userService;
 
 	@Inject
 	private DefaultConnectionSignUp connectionSignUp;
@@ -40,7 +47,7 @@ public class AuthController {
 	@RequestMapping(value = "/auth/login")
 	public ModelAndView login(
 			@RequestParam(value = "error", defaultValue = "false", required = false) boolean error,
-			HttpSession httpSession) {
+			HttpSession httpSession, Model model) {
 
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("auth/login");
@@ -57,7 +64,43 @@ public class AuthController {
 
 			}
 		}
+
+		if (model != null) {
+			log.debug("Redirect to login after activation");
+			if (model.containsAttribute("activationFailed")) {
+				modelAndView.addObject("activationFailed",
+						model.asMap().get("activationFailed"));
+			}
+			if (model.containsAttribute("activationMessage")) {
+				modelAndView.addObject("activationMessage",
+						model.asMap().get("activationMessage"));
+			}
+			if (model.containsAttribute("activationSuccess")) {
+				modelAndView.addObject("activationSuccess",
+						model.asMap().get("activationSuccess"));
+			}
+		}
 		return modelAndView;
+	}
+
+	@RequestMapping(value = "/auth/activate", method = RequestMethod.GET)
+	@Timed
+	public RedirectView activateAccount(
+			@RequestParam(value = "key") String key,
+			final RedirectAttributes redirectAttrs) {
+		RedirectView redirectView = new RedirectView();
+		redirectView.setUrl("/auth/login");
+		Users user = userService.activateRegistration(key);
+		if (user == null) {
+			redirectAttrs.addFlashAttribute("activationFailed", true);
+			redirectAttrs.addFlashAttribute("activationMessage",
+					"No account found for given activation key");
+		} else {
+			redirectAttrs.addFlashAttribute("activationSuccess", true);
+			redirectAttrs.addFlashAttribute("activationMessage",
+					"The account has been activated !");
+		}
+		return redirectView;
 	}
 
 	@RequestMapping(value = "/auth/**")
@@ -69,7 +112,8 @@ public class AuthController {
 	@RequestMapping(value = "/auth/register")
 	public ModelAndView register(
 			@RequestParam(value = "oauth_user", defaultValue = "false", required = false) boolean oauthUser,
-			HttpSession httpSession, WebRequest webRequest,HttpServletRequest request,Model model ) {
+			HttpSession httpSession, WebRequest webRequest,
+			HttpServletRequest request, Model model) {
 
 		ModelAndView modelAndView = new ModelAndView();
 		if (oauthUser
@@ -80,9 +124,10 @@ public class AuthController {
 					connection).fromConnection(connection);
 			modelAndView.addObject("preFillRegistrationDTO", registrationDTO);
 		}
-		if (model !=null && model.containsAttribute("invitation")) {
-			CompanyTempInvitation invitation = (CompanyTempInvitation) model.asMap().get("invitation");
-			log.debug("Registration after invitation"+invitation);
+		if (model != null && model.containsAttribute("invitation")) {
+			CompanyTempInvitation invitation = (CompanyTempInvitation) model
+					.asMap().get("invitation");
+			log.debug("Registration after invitation" + invitation);
 			modelAndView.addObject("invitation", invitation);
 		}
 		modelAndView.addObject("oauthUser", oauthUser);
@@ -91,14 +136,14 @@ public class AuthController {
 	}
 
 	@RequestMapping(value = "/auth/invitation/accept", method = RequestMethod.GET)
-	public RedirectView  acceptInvitation(
+	public RedirectView acceptInvitation(
 			@RequestParam(value = "token", required = true) String token,
 			@RequestParam(value = "user", required = true) String user,
 			@RequestParam(value = "company", required = true) String company,
 			final RedirectAttributes redirectAttrs) {
 		CompanyTempInvitation invitation = companyInvitationRepository
 				.findInvitationWithToken(user, company, token);
-		RedirectView  redirectView  = new RedirectView ();
+		RedirectView redirectView = new RedirectView();
 		if (invitation != null) {
 			redirectView.setUrl("/auth/register");
 			redirectAttrs.addFlashAttribute("invitation", invitation);

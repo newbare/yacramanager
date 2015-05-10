@@ -2,7 +2,7 @@
  * 
  */
 
-function UserProfileController($scope, $rootScope, UsersREST, alertService,EmployeesREST) {
+function UserProfileController($scope, $rootScope, UsersREST, alertService,EmployeesREST,USERINFO) {
 	$rootScope.page = {
 		"title" : "User profile",
 		"description" : "Edit your profile"
@@ -26,7 +26,7 @@ function UserProfileController($scope, $rootScope, UsersREST, alertService,Emplo
 	};
 	
 	$scope.refresh=function(){
-		$scope.employe=EmployeesREST.get({id:_userId});
+		$scope.employe=EmployeesREST.get({id:USERINFO.id});
 	};
 	
 	$scope.refresh();

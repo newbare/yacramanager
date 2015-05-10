@@ -19,6 +19,8 @@ public interface EmployeService extends CrudService<Employe, Long>,Specification
 	
 	Employe findByContact_Email(String email);
 	
+	Employe findByEmail(String email);
+	
 	String resetPassword(Employe employe);
 	
 	/**

@@ -1,6 +1,6 @@
 'use strict';
 
-function ActivityReportController($scope,$rootScope,ActivityReportREST,$filter,$http,WorkLogREST,alertService,AbsenceREST) {
+function ActivityReportController($scope,$rootScope,ActivityReportREST,$filter,$http,WorkLogREST,alertService,AbsenceREST,USERINFO) {
 	$rootScope.page={"title":"CRA","description":"View and manage you CRA"};
 	$scope.dateFormat="dd MMMM yyyy";
 	$scope.craDateFormat="EEE dd/MM";
@@ -108,7 +108,7 @@ function ActivityReportController($scope,$rootScope,ActivityReportREST,$filter,$
 	$scope.saveTimeOff=function(selectedDate,hideFn){
 		console.log('Saving ...'+$scope.newAbsence);
 		var toCreate={
-				employeId:_userId,
+				employeId:USERINFO.id,
 				date: moment(),
 				startDate: selectedDate,
 				endDate: selectedDate,
@@ -134,7 +134,7 @@ function ActivityReportController($scope,$rootScope,ActivityReportREST,$filter,$
 			closeable:false,
 			filterValue:[],
 			buttonSelectedItemsFormater:function(data){
-				if(data.name==""+_userId+""){
+				if(data.name==""+USERINFO.id+""){
 					return ' Me';
 				}else {
 					return ' '+getUserInitials(data.label);
@@ -143,14 +143,14 @@ function ActivityReportController($scope,$rootScope,ActivityReportREST,$filter,$
 			defaultSelectedItems:function(data){
 				var items=[];
 				angular.forEach(data,function(item){
-					if(item.name==""+_userId+""){
+					if(item.name==""+USERINFO.id+""){
 						items.push(item);
 					}
 				});
 				return items;
 			},
 			getData:function($defer){
-				$http.get(_contextPath+"app/api/users/managed/"+_userId,{params:{"me":true} })
+				$http.get(_contextPath+"app/api/users/managed/"+USERINFO.id,{params:{"me":true} })
 					.success(function(data, status) {
 						$defer.resolve(data);
 					});
@@ -204,7 +204,7 @@ function ActivityReportController($scope,$rootScope,ActivityReportREST,$filter,$
 	});
 	
 	$scope.isCurrentEmploye=function(employeId){
-		return employeId==_userId;
+		return employeId==USERINFO.id;
 	};
 	
 	$scope.isCraLocked=function(employeCraDetail){
@@ -251,7 +251,7 @@ function ActivityReportController($scope,$rootScope,ActivityReportREST,$filter,$
 		worklog.taskId = taskRow.task.id;
 		worklog.taskName = taskRow.task.name;
 		worklog.description = 'Created from activity report view';
-		worklog.employeId = _userId;
+		worklog.employeId = USERINFO.id;
 		return WorkLogREST.save(worklog).$promise.then(function(result) {
 			alertService.show('success', 'Confirmation', 'Data saved');
 		});
@@ -282,7 +282,7 @@ function ActivityReportController($scope,$rootScope,ActivityReportREST,$filter,$
 	
 	$scope.approveActivityReport=function(activityReportId,startDate,endDate){
 		ActivityReportREST.approve({
-			employeId : _userId,
+			employeId : USERINFO.id,
 			startDate : startDate,
 			endDate: endDate
 		},{}).$promise.then(function(result) {

@@ -61,8 +61,8 @@ public class ProjectServiceImpl implements ProjectService{
 	@Inject
 	private CompanyService companyService;
 	
-	@Autowired
-	private RabbitTemplate rabbitTemplate;
+//	@Autowired
+//	private RabbitTemplate rabbitTemplate;
 	
 	@Inject
 	private TaskService taskService;
@@ -119,7 +119,7 @@ public class ProjectServiceImpl implements ProjectService{
 
 	@Override
 	public Iterable<Project> findAll() {
-		LOG.debug(rabbitTemplate);
+		//LOG.debug(rabbitTemplate);
 		return projectRepository.findAll();
 	}
 

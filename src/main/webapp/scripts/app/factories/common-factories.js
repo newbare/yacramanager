@@ -51,17 +51,23 @@ App.factory("AbsenceREST", function($resource) {
 	});
 });
 
-App.factory('LanguageService', function ($http, $translate, LANGUAGES) {
+App.factory('LanguageService', function ($q,$translate, LANGUAGES) {
     return {
-        getBy: function(language) {
-            if (language === undefined) {
-                language = $translate.storage().get('NG_TRANSLATE_LANG_KEY') || window.navigator.language;
+        getCurrent: function () {
+            var deferred = $q.defer();
+            var language = $translate.storage().get('NG_TRANSLATE_LANG_KEY');
+
+            if (angular.isUndefined(language)) {
+                language = 'en';
             }
 
-            var promise =  $http.get( _contextPath+'i18n/' + language + '.json').then(function(response) {
-                return LANGUAGES;
-            });
-            return promise;
+            deferred.resolve(language);
+            return deferred.promise;
+        },
+        getAll: function () {
+            var deferred = $q.defer();
+            deferred.resolve(LANGUAGES);
+            return deferred.promise;
         }
     };
 });
@@ -179,8 +185,8 @@ App.factory("TasksREST", function($resource) {
 	});
 });
 
-App.factory("CompanySettingsREST", function($resource) {
-	return $resource(_contextPath + "app/api/settings/company/"+ _userCompanyId + "/:id", {}, {
+App.factory("CompanySettingsREST", function($resource,USERINFO) {
+	return $resource(_contextPath + "app/api/settings/company/"+ USERINFO.company.id + "/:id", {}, {
 		update : {
 			method : 'PUT'
 		}
@@ -230,8 +236,8 @@ App.factory("UsersREST", function($resource) {
 	});
 });
 
-App.factory("UserSettingsREST", function($resource) {
-	return $resource(_contextPath + "app/api/settings/user/" + _userId	+ "/:id", {}, {
+App.factory("UserSettingsREST", function($resource,USERINFO) {
+	return $resource(_contextPath + "app/api/settings/user/" + USERINFO.id	+ "/:id", {}, {
 		update : {
 			method : 'PUT'
 		}

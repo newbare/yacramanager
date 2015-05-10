@@ -71,7 +71,7 @@ public class RestControllerAdvice {
 		// messagingTemplate.convertAndSendToUser(SecurityUtils.getConnectedUser().getUsername(),
 		// "/queue/errors", ex.getMessage());
 		logger.error(ex.getMessage(), ex);
-		return new ResponseEntity<ExceptionDto>(new ExceptionDto(ExceptionUtils.getRootCause(ex).getMessage()),HttpStatus.INTERNAL_SERVER_ERROR);
+		return new ResponseEntity<ExceptionDto>(new ExceptionDto(ExceptionUtils.getRootCauseMessage(ex)),HttpStatus.INTERNAL_SERVER_ERROR);
 
 	}
 }

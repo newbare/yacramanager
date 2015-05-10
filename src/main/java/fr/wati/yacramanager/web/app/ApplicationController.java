@@ -19,10 +19,10 @@ public class ApplicationController {
 	public ModelAndView index(Principal principal){
 		ModelAndView modelAndView=new ModelAndView("app/index");
 		Employe connectedUser = SecurityUtils.getConnectedUser();
-		modelAndView.addObject("userFirstName", connectedUser.getFirstName());
-		modelAndView.addObject("userId", connectedUser.getId());
-		modelAndView.addObject("userCompanyName", connectedUser.getCompany().getName());
-		modelAndView.addObject("userCompanyId", connectedUser.getCompany().getId());
+//		modelAndView.addObject("userFirstName", connectedUser.getFirstName());
+//		modelAndView.addObject("userId", connectedUser.getId());
+//		modelAndView.addObject("userCompanyName", connectedUser.getCompany().getName());
+//		modelAndView.addObject("userCompanyId", connectedUser.getCompany().getId());
 		return modelAndView;
 	}
 

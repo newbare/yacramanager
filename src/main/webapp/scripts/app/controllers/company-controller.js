@@ -1,5 +1,5 @@
-function CompanyController($scope, $rootScope,$state) {
-	if($scope.userInfo){
+function CompanyController($scope, $rootScope,$state,USERINFO) {
+	if($scope.USERINFO){
 		$rootScope.page={
 				"title" : $scope.userInfo.company.name,
 				"description" : "Dashboard"
@@ -14,14 +14,14 @@ function CompanyController($scope, $rootScope,$state) {
 	$scope.$state=$state;
 }
 
-function CompanyHomeController($scope,$state,company,CompanyREST){
+function CompanyHomeController($scope,$rootScope,$state,company,CompanyREST,USERINFO){
 	$scope.company=company;
 	
 	$scope.updateCompany = function() {
 		return CompanyREST.update({},$scope.company).$promise.then(
 		        //success
 		        function( value ){
-		        	 
+		        	$rootScope.$broadcast('event:userInfo-Refresh');
 		        },
 		        //error
 		        function( error ){/*Do something with error*/}
@@ -31,7 +31,7 @@ function CompanyHomeController($scope,$state,company,CompanyREST){
 
 
 /*COMPANY-EMPLOYEE section*/
-function CompanyEmployeesController($scope,$state) {
+function CompanyEmployeesController($scope,$state,USERINFO) {
 	$scope.currentTab = 'basicInfos';
 	$scope.currentEmployee=null;
 	$scope.activateTab = function(tab) {
@@ -50,7 +50,7 @@ function CompanyEmployeesController($scope,$state) {
 	$scope.birthDay=new Date();
 }
 
-function CompanyEmployeesViewController($scope, $rootScope,$http,EmployeesREST,CompanyREST,ngTableParams,$state,alertService){
+function CompanyEmployeesViewController($scope, $rootScope,$http,EmployeesREST,CompanyREST,ngTableParams,$state,alertService,USERINFO){
 	$scope.$state=$state;
 	$scope.hasDatas=false;
 	$scope.viewStyle=undefined;
@@ -65,11 +65,11 @@ function CompanyEmployeesViewController($scope, $rootScope,$http,EmployeesREST,C
 			buttonSelectedItemsFormater:function(data){
 				return data.label;
 			},
-			filterValue:[{name:_userCompanyId,label:_userCompanyName,ticked:false}],
+			filterValue:[{name:""+USERINFO.company.id+"",label:USERINFO.company.name,ticked:false}],
 			defaultSelectedItems:function(data){
 				var items=[];
 				angular.forEach(data,function(item){
-					if(item.name==""+_userCompanyId+""){
+					if(item.name==""+USERINFO.company.id+""){
 						items.push(item);
 					}
 				});
@@ -191,22 +191,22 @@ function CompanyEmployeesViewController($scope, $rootScope,$http,EmployeesREST,C
 		}});
 	
 	$scope.postEmploye=function(hideFn){
-		$scope.employe.companyId=_userCompanyId;
+		$scope.employe.companyId=USERINFO.company.id;
 		EmployeesREST.save($scope.employe).$promise.then(function(result) {
    		 hideFn();
    		 alertService.show('info','Confirmation', 'Employe created');
 		});
 	};
 	$scope.inviteEmploye=function(hideFn){
-		$scope.employe.companyId=_userCompanyId;
-		CompanyREST.inviteEmployee({"id": _userCompanyId},$scope.employeToInvite).$promise.then(function(result) {
+		$scope.employe.companyId=USERINFO.company.id;
+		CompanyREST.inviteEmployee({"id": USERINFO.company.id},$scope.employeToInvite).$promise.then(function(result) {
    		 hideFn();
    		 alertService.show('info','Confirmation', 'Employe has been invited ');
 		});
 	};
 }
 
-function CompanyEmployeesQuickViewController($scope,$http,EmployeesREST,ngTableParams,$state){
+function CompanyEmployeesQuickViewController($scope,$http,EmployeesREST,ngTableParams,$state,USERINFO){
 	$scope.employees=[];
 	$scope.employeesListFilter="";
 	$scope.doFilterList=function(data){
@@ -229,7 +229,7 @@ function CompanyEmployeesListController($scope, $rootScope,$http,EmployeesREST,n
 	 
 }
 
-function CompanyEmployeesOverviewController($scope,employe,EmployeesREST){
+function CompanyEmployeesOverviewController($scope,employe,EmployeesREST,USERINFO){
 	$scope.employe=employe;
 	$scope.activateTab('basicInfos');
 	$scope.updateEmploye = function() {
@@ -260,7 +260,7 @@ function CompanyEmployeesOverviewController($scope,employe,EmployeesREST){
 				page:0,
 				size:100,
 				sort:"lastName",
-				filter:{"filter":[{"type":"ARRAY","field":"company","value":[{"name":_userCompanyId,"label":"","ticked":true}]}]}
+				filter:{"filter":[{"type":"ARRAY","field":"company","value":[{"name":""+USERINFO.company.id+"","label":"","ticked":true}]}]}
 			},function(data) {
 				$scope.companyEmployees=data.result;
 	});
@@ -274,7 +274,7 @@ function CompanyEmployeesOverviewController($scope,employe,EmployeesREST){
 
 
 /*COMPANY-CLIENT section*/
-function CompanyClientsViewController($scope, $rootScope,$http,ClientsREST,ngTableParams,$state,alertService,$state){
+function CompanyClientsViewController($scope, $rootScope,$http,ClientsREST,ngTableParams,$state,alertService,$state,USERINFO){
 	$scope.tableFilter="";
 	$scope.$state=$state;
 	$scope.client={};
@@ -287,11 +287,11 @@ function CompanyClientsViewController($scope, $rootScope,$http,ClientsREST,ngTab
 			buttonSelectedItemsFormater:function(data){
 				return data.label;
 			},
-			filterValue:[{name:_userCompanyId,label:_userCompanyName,ticked:false}],
+			filterValue:[{name:""+USERINFO.company.id+"",label:USERINFO.company.name,ticked:false}],
 			defaultSelectedItems:function(data){
 				var items=[];
 				angular.forEach(data,function(item){
-					if(item.name==""+_userCompanyId+""){
+					if(item.name==""+USERINFO.company.id+""){
 						items.push(item);
 					}
 				});
@@ -353,7 +353,7 @@ function CompanyClientsViewController($scope, $rootScope,$http,ClientsREST,ngTab
 			if($scope.tableFilter!=="" && $scope.tableFilter!==undefined){
 				ClientsREST.get(
 						{
-							companyId : _userCompanyId,
+							companyId : USERINFO.company.id,
 							page:params.$params.page-1,
 							size:params.$params.count,
 							sort:params.$params.sorting,
@@ -374,8 +374,8 @@ function CompanyClientsViewController($scope, $rootScope,$http,ClientsREST,ngTab
 			}
 		}});
 	$scope.postClient=function(hideFn){
-		$scope.client.companyId=parseInt(_userCompanyId);
-		ClientsREST.save({companyId :_userCompanyId},$scope.client).$promise.then(function(result) {
+		$scope.client.companyId=parseInt(USERINFO.company.id);
+		ClientsREST.save({companyId :USERINFO.company.id},$scope.client).$promise.then(function(result) {
    		 hideFn();
    		 alertService.show('info','Confirmation', 'Client created');
    		$scope.tableParams.reload();
@@ -383,7 +383,7 @@ function CompanyClientsViewController($scope, $rootScope,$http,ClientsREST,ngTab
 	};
 }
 
-function CompanyClientsQuickViewController($scope,$http,ClientsREST,ngTableParams,$state){
+function CompanyClientsQuickViewController($scope,$http,ClientsREST,ngTableParams,$state,USERINFO){
 	$scope.clients=[];
 	$scope.clientsListFilter="";
 	$scope.tableParams.settings().counts=[];
@@ -396,14 +396,14 @@ function CompanyClientsQuickViewController($scope,$http,ClientsREST,ngTableParam
 	});
 }
 
-function CompanyClientsListController($scope, $rootScope,$http,ClientsREST,ngTableParams,$state){
+function CompanyClientsListController($scope, $rootScope,$http,ClientsREST,ngTableParams,$state,USERINFO){
 	 $scope.changeSelection = function(client) {
 	      $state.go('company.clients.details',{ id:client.id });
 	 };
 	 $scope.tableParams.settings().counts=[10, 25, 50, 100];
 }
 
-function CompanyClientsOverviewController($scope,ClientsREST,ProjectsREST,client,alertService){
+function CompanyClientsOverviewController($scope,ClientsREST,ProjectsREST,client,alertService,USERINFO){
 	$scope.client=client;
 	$scope.contactFilter='';
 	
@@ -412,7 +412,7 @@ function CompanyClientsOverviewController($scope,ClientsREST,ProjectsREST,client
 		angular.forEach(clientToUpdate.contacts,function(contact){
 			delete contact.searchField;
 		});
-		return ClientsREST.update({companyId :_userCompanyId},clientToUpdate).$promise.then(
+		return ClientsREST.update({companyId :USERINFO.company.id},clientToUpdate).$promise.then(
 		        //success
 		        function( value ){
 		        	 $scope.tableParams.reload();
@@ -435,20 +435,20 @@ function CompanyClientsOverviewController($scope,ClientsREST,ProjectsREST,client
 				name:project.name,
 				description:project.description
 		}
-		ProjectsREST.save({companyId :_userCompanyId,clientId :client.id},projectToSave).$promise.then(function(result) {
+		ProjectsREST.save({companyId :USERINFO.company.id,clientId :client.id},projectToSave).$promise.then(function(result) {
 	  		 alertService.show('info','Confirmation', 'Project created');
-	  		 $scope.client=ClientsREST.get({companyId : _userCompanyId,id:$scope.client.id})
+	  		 $scope.client=ClientsREST.get({companyId : USERINFO.company.id,id:$scope.client.id})
 			});
 	};
 	$scope.updateProject=function(project){
 		if(!project.isnew){
 			var projectToUpdate=clone(project);
 			delete projectToUpdate.searchField;
-			ProjectsREST.update({companyId :_userCompanyId},projectToUpdate).$promise.then(
+			ProjectsREST.update({companyId :USERINFO.company.id},projectToUpdate).$promise.then(
 			        //success
 			        function( value ){
 			        	 $scope.tableParams.reload();
-			        	 $scope.client=ClientsREST.get({companyId : _userCompanyId,id:$scope.client.id})
+			        	 $scope.client=ClientsREST.get({companyId : USERINFO.company.id,id:$scope.client.id})
 			        },
 			        //error
 			        function( error ){/*Do something with error*/}
@@ -465,7 +465,7 @@ function CompanyClientsOverviewController($scope,ClientsREST,ProjectsREST,client
 
 
 /*COMPANY-PROJECT section*/
-function CompanyProjectsViewController($scope, $rootScope,$http,ProjectsREST,ngTableParams,$state,alertService,$state){
+function CompanyProjectsViewController($scope, $rootScope,$http,ProjectsREST,ngTableParams,$state,alertService,$state,USERINFO){
 	$scope.tableFilter="";
 	$scope.$state=$state;
 	$scope.project={};
@@ -478,11 +478,11 @@ function CompanyProjectsViewController($scope, $rootScope,$http,ProjectsREST,ngT
 			buttonSelectedItemsFormater:function(data){
 				return data.label;
 			},
-			filterValue:[{name:_userCompanyId,label:_userCompanyName,ticked:false}],
+			filterValue:[{name:""+USERINFO.company.id+"",label:USERINFO.company.name,ticked:false}],
 			defaultSelectedItems:function(data){
 				var items=[];
 				angular.forEach(data,function(item){
-					if(item.name==""+_userCompanyId+""){
+					if(item.name==""+USERINFO.company.id+""){
 						items.push(item);
 					}
 				});
@@ -502,7 +502,7 @@ function CompanyProjectsViewController($scope, $rootScope,$http,ProjectsREST,ngT
 				return "["+data.label+"]";
 			},
 			getData:function($defer){
-				$http.get(_contextPath+"app/api/"+_userCompanyId+"/client",
+				$http.get(_contextPath+"app/api/"+USERINFO.company.id+"/client",
 						{
 							params:
 								{	
@@ -599,7 +599,7 @@ function CompanyProjectsViewController($scope, $rootScope,$http,ProjectsREST,ngT
 			if($scope.tableFilter!=="" && $scope.tableFilter!==undefined){
 				ProjectsREST.get(
 						{
-							companyId : _userCompanyId,
+							companyId : USERINFO.company.id,
 							page:params.$params.page-1,
 							size:params.$params.count,
 							sort:params.$params.sorting,
@@ -624,14 +624,14 @@ function CompanyProjectsViewController($scope, $rootScope,$http,ProjectsREST,ngT
 		$scope.doFilterList(args);
 	});
 	$scope.postProject=function(hideFn){
-		ProjectsREST.save({companyId :_userCompanyId,clientId :$scope.client.id},$scope.project).$promise.then(function(result) {
+		ProjectsREST.save({companyId :USERINFO.company.id,clientId :$scope.client.id},$scope.project).$promise.then(function(result) {
    		 hideFn();
    		 alertService.show('info','Confirmation', 'Project created');
 		});
 	};
 }
 
-function CompanyProjectsQuickViewController($scope,$http,ProjectsREST,ngTableParams,$state){
+function CompanyProjectsQuickViewController($scope,$http,ProjectsREST,ngTableParams,$state,USERINFO){
 	$scope.projects=[];
 	$scope.projectsListFilter="";
 	$scope.tableParams.settings().counts=[];
@@ -644,7 +644,7 @@ function CompanyProjectsQuickViewController($scope,$http,ProjectsREST,ngTablePar
 	});
 }
 
-function CompanyProjectsListController($scope, $rootScope,$http,ProjectsREST,ngTableParams,$state){
+function CompanyProjectsListController($scope, $rootScope,$http,ProjectsREST,ngTableParams,$state,USERINFO){
 	 $scope.tableParams.settings().counts=[10, 25, 50, 100];
 	 $scope.changeSelection = function(project) {
 	        //console.info(user);
@@ -654,7 +654,7 @@ function CompanyProjectsListController($scope, $rootScope,$http,ProjectsREST,ngT
 }
 
 function CompanyProjectsOverviewController($scope, ProjectsREST, TasksREST,EmployeesREST,
-		project) {
+		project,USERINFO) {
 	$scope.project = project;
 	$scope.employeeByTask={};
 	$scope.groupByTask=true;
@@ -662,7 +662,7 @@ function CompanyProjectsOverviewController($scope, ProjectsREST, TasksREST,Emplo
 	$scope.reset=function(){
 		$scope.project.$promise.then(function(project) {
 			angular.forEach(project.tasks,function(task){
-				TasksREST.getAssignedEmployee({companyId:_userCompanyId,taskId:task.id,employeId:_userId}, 
+				TasksREST.getAssignedEmployee({companyId:USERINFO.company.id,taskId:task.id,employeId:USERINFO.id}, 
 						function(value) {
 							$scope.employeeByTask[task.id]=value.result;
 						}
@@ -685,7 +685,7 @@ function CompanyProjectsOverviewController($scope, ProjectsREST, TasksREST,Emplo
 					page:0,
 					size:100,
 					sort:"lastName",
-					filter:{"filter":[{"type":"ARRAY","field":"company","value":[{"name":_userCompanyId,"label":"","ticked":true}]}]}
+					filter:{"filter":[{"type":"ARRAY","field":"company","value":[{"name":""+USERINFO.company.id+"","label":"","ticked":true}]}]}
 				},function(data) {
 					$scope.companyEmployees=data.result;
 		});
@@ -701,13 +701,13 @@ function CompanyProjectsOverviewController($scope, ProjectsREST, TasksREST,Emplo
 			employeesList.push(employee.id);
 		});
 		
-		TasksREST.assignEmployeeToTask({companyId:_userCompanyId,taskId:currentTask.id,employeesIds:employeesList},null,function(result){
+		TasksREST.assignEmployeeToTask({companyId:USERINFO.company.id,taskId:currentTask.id,employeesIds:employeesList},null,function(result){
 			$scope.reset();
 			hideFn();
 		});
 	};
 	$scope.unAssignEmploye=function(task,employee){
-		TasksREST.unAssignEmployeeToTask({companyId:_userCompanyId,taskId:task.id,employeesIds:[employee.id]},null,
+		TasksREST.unAssignEmployeeToTask({companyId:USERINFO.company.id,taskId:task.id,employeesIds:[employee.id]},null,
 			function(result){
 			$scope.reset();
 			});
@@ -718,7 +718,7 @@ function CompanyProjectsOverviewController($scope, ProjectsREST, TasksREST,Emplo
 }
 /*COMPANY-PROJECT End of section*/
 
-function CompanyProjectsController($scope, $rootScope,$http,ngTableParams,ProjectsREST){
+function CompanyProjectsController($scope, $rootScope,$http,ngTableParams,ProjectsREST,USERINFO){
 	
 	$scope.$on('userInfo', function(event, userInfo) {
 		//do afteruserInfo is retrieved 
@@ -727,7 +727,7 @@ function CompanyProjectsController($scope, $rootScope,$http,ngTableParams,Projec
 	
 	var fetchClients = function(queryParams) {
 		return $http.get(
-				_contextPath + "app/api/" + _userCompanyId + "/client", {
+				_contextPath + "app/api/" + USERINFO.company.id + "/client", {
 					params : {}
 				}).then(function(response) {
 					$scope.clients=response.data.result;
@@ -755,11 +755,11 @@ function CompanyProjectsController($scope, $rootScope,$http,ngTableParams,Projec
 			buttonSelectedItemsFormater:function(data){
 				return data.label;
 			},
-			filterValue:[{name:_userCompanyId,label:_userCompanyName,ticked:false}],
+			filterValue:[{name:USERINFO.company.id,label:USERINFO.company.name,ticked:false}],
 			defaultSelectedItems:function(data){
 				var items=[];
 				angular.forEach(data,function(item){
-					if(item.name==""+_userCompanyId+""){
+					if(item.name==""+USERINFO.company.id+""){
 						items.push(item);
 					}
 				});
@@ -779,7 +779,7 @@ function CompanyProjectsController($scope, $rootScope,$http,ngTableParams,Projec
 				return "["+data.label+"]";
 			},
 			getData:function($defer){
-				$http.get(_contextPath+"app/api/"+_userCompanyId+"/client",
+				$http.get(_contextPath+"app/api/"+USERINFO.company.id+"/client",
 						{
 							params:
 								{	
@@ -864,7 +864,7 @@ function CompanyProjectsController($scope, $rootScope,$http,ngTableParams,Projec
 			if($scope.tableFilter!==""){
 				ProjectsREST.get(
 						{
-							companyId : _userCompanyId,
+							companyId : USERINFO.company.id,
 							page:params.$params.page-1,
 							size:params.$params.count,
 							sort:params.$params.sorting,
@@ -887,7 +887,7 @@ function CompanyProjectsController($scope, $rootScope,$http,ngTableParams,Projec
 	
 }
 
-function CompanySettingsController($scope,CompanySettingsREST,$rootScope){
+function CompanySettingsController($scope,CompanySettingsREST,$rootScope,USERINFO){
 	$rootScope.page={"title":"Company settings","description":"Edit your settings"};
 	$scope.settingsFilter='';
 	$scope.settings=[];

@@ -64,8 +64,8 @@ App.config(function($tooltipProvider) {
   });
 });
 
-App.controller('AppCtrl', [ '$scope', '$location', 'UsersREST','$rootScope','$translate','$locale','LanguageService','$state','ENV','VERSION',
-		function($scope, $location, UsersREST,$rootScope,$translate,$locale,LanguageService,$state,ENV,VERSION) {
+App.controller('AppCtrl', [ '$scope', '$location', 'UsersREST','$rootScope','$translate','$locale','LanguageService','$state','ENV','VERSION','USERINFO',
+		function($scope, $location, UsersREST,$rootScope,$translate,$locale,LanguageService,$state,ENV,VERSION,USERINFO) {
 			$scope.ENV=ENV;
 			$scope.VERSION=VERSION;
 			$scope.eventsToWait=['userInfo'];
@@ -93,25 +93,38 @@ App.controller('AppCtrl', [ '$scope', '$location', 'UsersREST','$rootScope','$tr
 		} ]);
 
 App.controller('LanguageController', function ($scope, $translate, LanguageService) {
-    $scope.changeLanguage = function (languageKey) {
-        $translate.use(languageKey);
+	 
+	LanguageService.getCurrent().then(function(langage){$scope.currentLanguage=langage}); 
+	
+	$scope.changeLanguage = function (languageKey) {
+         $translate.use(languageKey);
+         $scope.currentLanguage=languageKey;
+     };
 
-        LanguageService.getBy(languageKey).then(function(languages) {
-            $scope.languages = languages;
-        });
-        $scope.currentLanguage=languageKey;
-    };
-
-    LanguageService.getBy().then(function (languages) {
-        $scope.languages = languages;
-        $scope.currentLanguage=$translate.use();
-    });
+     LanguageService.getAll().then(function (languages) {
+         $scope.languages = languages;
+     });
+    
+	
+	//    $scope.changeLanguage = function (languageKey) {
+//        $translate.use(languageKey);
+//
+//        LanguageService.getBy(languageKey).then(function(languages) {
+//            $scope.languages = languages;
+//        });
+//        $scope.currentLanguage=languageKey;
+//    };
+//
+//    LanguageService.getBy().then(function (languages) {
+//        $scope.languages = languages;
+//        $scope.currentLanguage=$translate.use();
+//    });
     
 });
 
 
 
-App.controller('WorkLogCtrl',['$scope','$http','WorkLogREST','alertService',function($scope,$http,WorkLogREST,alertService){
+App.controller('WorkLogCtrl',['$scope','$rootScope','$http','WorkLogREST','alertService','USERINFO',function($scope,$rootScope,$http,WorkLogREST,alertService,USERINFO){
 	 $scope.timerRunning = false;
 	 $scope.open=false;
 	 $scope.project=undefined;
@@ -146,7 +159,7 @@ App.controller('WorkLogCtrl',['$scope','$http','WorkLogREST','alertService',func
         	 $scope.worklog.taskId= $scope.task.id;
         	 $scope.worklog.taskName=$scope.task.name;
         	 $scope.worklog.description=$scope.description;
-        	 $scope.worklog.employeId=_userId;
+        	 $scope.worklog.employeId=USERINFO.id;
         	 WorkLogREST.save($scope.worklog).$promise.then(function(result) {
         		 $scope.resetWorkLog();
         		 alertService.show('success','Confirmation', 'Data saved');
@@ -160,13 +173,13 @@ App.controller('WorkLogCtrl',['$scope','$http','WorkLogREST','alertService',func
      
      var fetchProjects = function(queryParams) {
  		return $http.get(
- 				_contextPath + "app/api/" + _userCompanyId + "/project/employe/"+ _userId, {
+ 				_contextPath + "app/api/" + USERINFO.company.id + "/project/employe/"+ USERINFO.id, {
  					params : {}
  				}).then(function(response) {
  					$scope.projects=response.data.result;
  				});
  	}; 
-
+ 	
  	fetchProjects();
  	
  	$scope.selectProject=function(project){
@@ -181,7 +194,7 @@ App.controller('WorkLogCtrl',['$scope','$http','WorkLogREST','alertService',func
  	
  	var fetchTasks = function(queryParams) {
  		return $http.get(
- 				_contextPath + "app/api/" + _userCompanyId + "/task/"+$scope.project.id+"/"+ _userId, {
+ 				_contextPath + "app/api/" + USERINFO.company.id + "/task/"+$scope.project.id+"/"+ USERINFO.id, {
  					params : {}
  				}).then(function(response) {
  					$scope.tasks=response.data.result;
@@ -217,7 +230,7 @@ App.controller('LoginCtrl', [ '$scope','$http','authService',function($scope,$ht
                   return( serializeData( data ) );
 	    	  },
 	    	  data: {
-	    		  username: $scope.username,
+	    		  email: $scope.username,
 	    		  password: $scope.password
 	    	  }
 	      })
@@ -375,9 +388,9 @@ var stateConfig =[ '$stateProvider','$locationProvider','$translateProvider','tm
 				templateUrl : _contextPath+'views/app/components/company/company-home.html',
 				controller : CompanyHomeController,
 				resolve : {
-					company :function(CompanyREST) {
+					company :function(CompanyREST,USERINFO) {
 						return CompanyREST.get(
-								{id : _userCompanyId});
+								{id : USERINFO.company.id});
 					}
 				},
 				data: {
@@ -452,9 +465,9 @@ var stateConfig =[ '$stateProvider','$locationProvider','$translateProvider','tm
 				templateUrl : _contextPath+'views/app/components/company/clients/company-clients-overview.html',
 				controller : CompanyClientsOverviewController,
 				resolve : {
-					client :function(ClientsREST,$stateParams) {
+					client :function(ClientsREST,$stateParams,USERINFO) {
 						return ClientsREST.get(
-								{companyId : _userCompanyId,id:$stateParams.id});
+								{companyId : USERINFO.company.id,id:$stateParams.id});
 					}
 				},
 				data : {
@@ -487,9 +500,9 @@ var stateConfig =[ '$stateProvider','$locationProvider','$translateProvider','tm
 				templateUrl : _contextPath+'views/app/components/company/clients/company-clients-overview.html',
 				controller : CompanyClientsOverviewController,
 				resolve : {
-					client :function(ClientsREST,$stateParams) {
+					client :function(ClientsREST,$stateParams,USERINFO) {
 						return ClientsREST.get(
-								{companyId : _userCompanyId,id:$stateParams.id});
+								{companyId : USERINFO.company.id,id:$stateParams.id});
 					}
 				},
 				data : {
@@ -508,9 +521,9 @@ var stateConfig =[ '$stateProvider','$locationProvider','$translateProvider','tm
 				templateUrl : _contextPath+'views/app/components/company/projects/company-projects-overview.html',
 				controller : CompanyProjectsOverviewController,
 				resolve : {
-					project :function(ProjectsREST,$stateParams) {
+					project :function(ProjectsREST,$stateParams,USERINFO) {
 						return ProjectsREST.get(
-								{companyId : _userCompanyId,id:$stateParams.id});
+								{companyId : USERINFO.company.id,id:$stateParams.id});
 					}
 				},
 				data : {
@@ -543,9 +556,9 @@ var stateConfig =[ '$stateProvider','$locationProvider','$translateProvider','tm
 				templateUrl : _contextPath+'views/app/components/company/projects/company-projects-overview.html',
 				controller : CompanyProjectsOverviewController,
 				resolve : {
-					project :function(ProjectsREST,$stateParams) {
+					project :function(ProjectsREST,$stateParams,USERINFO) {
 						return ProjectsREST.get(
-								{companyId : _userCompanyId,id:$stateParams.id});
+								{companyId : USERINFO.company.id,id:$stateParams.id});
 					}
 				},
 				data : {
@@ -594,9 +607,9 @@ var stateConfig =[ '$stateProvider','$locationProvider','$translateProvider','tm
 				templateUrl : _contextPath+'views/app/components/admin/company/admin-company-overview.html',
 				controller : AdminCompanyOverviewController,
 				resolve : {
-					company :function(CompanyREST,$stateParams,$state) {
+					company :function(CompanyREST,$stateParams,$state,USERINFO) {
 						return CompanyREST.get({
-							companyId : _userCompanyId,
+							companyId : USERINFO.company.id,
 							id : $stateParams.id
 						},function(){},function(error){
 							 //404 company not found
@@ -636,9 +649,9 @@ var stateConfig =[ '$stateProvider','$locationProvider','$translateProvider','tm
 				templateUrl : _contextPath+'views/app/components/admin/company/admin-company-overview.html',
 				controller : AdminCompanyOverviewController,
 				resolve : {
-					company :function(CompanyREST,$stateParams) {
+					company :function(CompanyREST,$stateParams,USERINFO) {
 						return CompanyREST.get({
-							companyId : _userCompanyId,
+							companyId : USERINFO.company.id,
 							id : $stateParams.id
 						});
 					}
@@ -696,10 +709,10 @@ var stateConfig =[ '$stateProvider','$locationProvider','$translateProvider','tm
 		} ];
 
 //define custom handler
-App.factory('translationMissingErrorHandlerFactory', function (dep1, dep2) {
+App.factory('translationMissingErrorHandlerFactory', function () {
   // has to return a function which gets a tranlation id
   return function (translationID) {
-    // do something with dep1 and dep2
+    console.log("Missing translation "+translationID);
   };
 });
 

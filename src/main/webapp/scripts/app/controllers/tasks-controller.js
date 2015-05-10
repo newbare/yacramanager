@@ -1,6 +1,6 @@
 'use strict';
 
-function TasksController($scope, $rootScope,ngTableParams, alertService,ProjectsREST,TasksREST, $http) {
+function TasksController($scope, $rootScope,ngTableParams, alertService,ProjectsREST,TasksREST, $http,USERINFO) {
 	$rootScope.page = {
 		"title" : "Tasks",
 		"description" : "My tasks"
@@ -27,14 +27,14 @@ function TasksController($scope, $rootScope,ngTableParams, alertService,Projects
 			defaultSelectedItems:function(data){
 				var items=[];
 				angular.forEach(data,function(item){
-					if(item.name==""+_userId+""){
+					if(item.name==""+USERINFO.id+""){
 						items.push(item);
 					}
 				});
 				return items;
 			},
 			getData:function($defer){
-				$http.get(_contextPath+"app/api/"+_userCompanyId+"/project/employe/"+_userId)
+				$http.get(_contextPath+"app/api/"+USERINFO.company.id+"/project/employe/"+USERINFO.id)
 					.success(function(data, status) {
 						var value=[];
 						if(data.totalCount>0){
@@ -82,8 +82,8 @@ function TasksController($scope, $rootScope,ngTableParams, alertService,Projects
 	};
 	
 	$scope.addTask=function(project){
-		var newtask={name:$scope.taskToAdd.taskName,description:$scope.taskToAdd.taskDescription,projectId:project.id,employeId:_userId};
-		TasksREST.save({companyId :_userCompanyId},newtask).$promise.then(function(result){
+		var newtask={name:$scope.taskToAdd.taskName,description:$scope.taskToAdd.taskDescription,projectId:project.id,employeId:USERINFO.id};
+		TasksREST.save({companyId :USERINFO.company.id},newtask).$promise.then(function(result){
 			alertService.show('success','Confirmation', 'New task created');
 			$scope.resetTaskToAdd();
 			$scope.refreshProjects();
@@ -94,7 +94,7 @@ function TasksController($scope, $rootScope,ngTableParams, alertService,Projects
 
 
 	$scope.refreshProjects = function() {
-		$http.get(_contextPath+"app/api/"+_userCompanyId+"/project/employe/"+_userId)
+		$http.get(_contextPath+"app/api/"+USERINFO.company.id+"/project/employe/"+USERINFO.id)
 		.success(function(data, status) {
 			$scope.projects = data.result;
 		});

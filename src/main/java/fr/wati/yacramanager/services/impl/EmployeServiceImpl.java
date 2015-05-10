@@ -42,7 +42,6 @@ import fr.wati.yacramanager.dao.specifications.EmployeSpecifications;
 import fr.wati.yacramanager.listeners.ActivityEvent;
 import fr.wati.yacramanager.services.CompanyService;
 import fr.wati.yacramanager.services.EmployeService;
-import fr.wati.yacramanager.services.MailService;
 import fr.wati.yacramanager.services.ProjectService;
 import fr.wati.yacramanager.services.ServiceException;
 import fr.wati.yacramanager.services.TaskService;
@@ -83,9 +82,6 @@ public class EmployeServiceImpl implements EmployeService {
 	
 	@Inject
 	private TaskService  taskService;
-	
-	@Inject
-	private MailService mailService;
 	
 	@Inject
 	private CompanyAccountInfoRepository companyAccountInfoRepository;
@@ -197,6 +193,7 @@ public class EmployeServiceImpl implements EmployeService {
 		}
 		Employe employe=new Employe();
 		employe.setUserName(registrationDTO.getEmail());
+		Set<Role> roles=new HashSet<>();
 		if(isSocialRegistration){
 			employe.setEnabled(true);
 			employe.setSocialUser(true);
@@ -219,17 +216,26 @@ public class EmployeServiceImpl implements EmployeService {
 		company.setName(registrationDTO.getCompanyName());
 		company.setRegisteredDate(new DateTime());
 		if(registrationDTO.getCompanyInvitation()!=null){
+			employe.setEnabled(true);
+			employe.setActivationKey(null);
 			//check invitation validity
 			CompanyTempInvitation givenInvitation = registrationDTO.getCompanyInvitation();
 			CompanyTempInvitation invitation = companyInvitationRepository.findInvitationWithToken(givenInvitation.getUserId(), givenInvitation.getCompanyId(), givenInvitation.getToken());
 			if(invitation!=null && invitation.isStillValid()){
 				Company company2 = companyService.findOne(Long.valueOf(invitation.getCompanyId()));
 				employe.setCompany(company2);
+				employe.getProjects().add(company2.getClients().get(0).getProjects().get(0));
+				employe.getTasks().add(company2.getClients().get(0).getProjects().get(0).getTasks().get(0));
+				company2.getClients().get(0).getProjects().get(0).getAssignedEmployees().add(employe);
+				company2.getClients().get(0).getProjects().get(0).getTasks().get(0).getAssignedEmployees().add(employe);
+				
 			}else {
 				throw new ServiceException("The given invitation is not valid");
 			}
-			
+			roles.add(roleRepository.findByRole(Role.SALARIE));
 		}else {
+			roles.add(roleRepository.findByRole(Role.SSII_ADMIN));
+			roles.add(roleRepository.findByRole(Role.INDEP));
 			//initialize company
 			Company createCompany = companyService.createCompany(company);
 			employe.setCompany(createCompany);
@@ -245,9 +251,8 @@ public class EmployeServiceImpl implements EmployeService {
 			employe.getTasks().add(createCompany.getClients().get(0).getProjects().get(0).getTasks().get(0));
 		}
 		
-		Set<Role> roles=new HashSet<>();
-		roles.add(roleRepository.findByRole(Role.SSII_ADMIN));
-		roles.add(roleRepository.findByRole(Role.INDEP));
+		
+		
 		employe.setRoles(roles);
 		Employe saveEmploye = employeRepository.save(employe);
 		return saveEmploye;
@@ -367,10 +372,6 @@ public class EmployeServiceImpl implements EmployeService {
 		
 	}
 	
-	private String getDefaultUsername(String firstName,String lastName){
-		return firstName.toLowerCase().substring(0, 1)+lastName.toLowerCase();
-	}
-
 	@Override
 	public boolean isManager(Long requester, Long employeId) {
 		return getManagedEmployees(requester).contains(employeRepository.findOne(employeId));
@@ -427,6 +428,14 @@ public class EmployeServiceImpl implements EmployeService {
 			employeeManager.getManagedEmployes().add(employee);
 		}
 		
+	}
+
+	/* (non-Javadoc)
+	 * @see fr.wati.yacramanager.services.EmployeService#findByEmail(java.lang.String)
+	 */
+	@Override
+	public Employe findByEmail(String email) {
+		return employeRepository.findByEmail(email);
 	}
 
 }

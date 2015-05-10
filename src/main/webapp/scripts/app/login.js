@@ -140,6 +140,8 @@ App.controller('RegisterController',function ($scope, $location,$window,Registra
 	if(typeof invitation !== 'undefined'){
 		$scope.invitation=invitation;
 		$scope.user.companyName=$scope.invitation.companyName;
+		$scope.user.email=$scope.invitation.userId;
+		$scope.user.companyInvitation=invitation;
 	};
 	$scope.register=function(){
 		$scope.user.captchaToken=$scope.response;
@@ -205,8 +207,8 @@ App.config([ '$stateProvider', '$urlRouterProvider','$locationProvider','$transl
 //	        pageTitle: 'Registration'
 //	      }
 //	});
-	$translateProvider.determinePreferredLanguage();
-	
+	//$translateProvider.determinePreferredLanguage();
+	$translateProvider.preferredLanguage('en');
 	$translateProvider.useStaticFilesLoader({
 	      prefix: _contextPath+'i18n/',
 	      suffix: '.json'

@@ -1,5 +1,5 @@
 function FraisController($scope, $rootScope, NoteREST, alertService,
-		ngTableParams, notifService, $upload,$modal,$http,$filter) {
+		ngTableParams, notifService, $upload,$modal,$http,$filter,USERINFO) {
 	$rootScope.page = {
 		"title" : "Frais",
 		"description" : "Gerez vos notes de frais"
@@ -23,7 +23,7 @@ function FraisController($scope, $rootScope, NoteREST, alertService,
 	var allNote = [];
 	
 	$scope.refreshApproval=function(){
-		$http.get(_contextPath+"app/api/frais/approval",{params:{"requesterId":_userId} })
+		$http.get(_contextPath+"app/api/frais/approval",{params:{"requesterId":USERINFO.id} })
 		.success(function(data, status) {
 			$scope.approvementTotal=data.totalCount;
 			$scope.approvements=data.result;
@@ -32,14 +32,14 @@ function FraisController($scope, $rootScope, NoteREST, alertService,
 	
 	$scope.refreshApproval();
 	$scope.approve=function(id){
-		$http.put(_contextPath+"app/api/frais/approval/approve/"+parseInt(_userId)+"/"+id)
+		$http.put(_contextPath+"app/api/frais/approval/approve/"+parseInt(USERINFO.id)+"/"+id)
 		.success(function(data, status) {
 			alertService.show('success','Updated', 'Data has been updated');
 			$scope.refreshApproval();
 		});
 	};
 	$scope.reject=function(id){
-		$http.put(_contextPath+"app/api/frais/approval/reject/"+parseInt(_userId)+"/"+id)
+		$http.put(_contextPath+"app/api/frais/approval/reject/"+parseInt(USERINFO.id)+"/"+id)
 		.success(function(data, status) {
 			alertService.show('success','Updated', 'Data has been updated');
 			$scope.refreshApproval();
@@ -53,7 +53,7 @@ function FraisController($scope, $rootScope, NoteREST, alertService,
 			closeable:false,
 			filterValue:[],
 			buttonSelectedItemsFormater:function(data){
-				if(data.name==""+_userId+""){
+				if(data.name==""+USERINFO.id+""){
 					return ' Me';
 				}else {
 					return ' '+getUserInitials(data.label);
@@ -62,14 +62,14 @@ function FraisController($scope, $rootScope, NoteREST, alertService,
 			defaultSelectedItems:function(data){
 				var items=[];
 				angular.forEach(data,function(item){
-					if(item.name==""+_userId+""){
+					if(item.name==""+USERINFO.id+""){
 						items.push(item);
 					}
 				});
 				return items;
 			},
 			getData:function($defer){
-				$http.get(_contextPath+"app/api/users/managed/"+_userId,{params:{"me":true} })
+				$http.get(_contextPath+"app/api/users/managed/"+USERINFO.id,{params:{"me":true} })
 					.success(function(data, status) {
 						$defer.resolve(data);
 					});

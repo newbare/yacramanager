@@ -1,4 +1,4 @@
-function TimeSheetController($scope,$rootScope,$http,$sce,WorkLogREST,alertService,$popover,$compile,$modal,ngTableParams) {
+function TimeSheetController($scope,$rootScope,$http,$sce,WorkLogREST,alertService,$popover,$compile,$modal,ngTableParams,USERINFO) {
 	$rootScope.page={"title":"Timesheet","description":"View and manage timesheet"};
 	$scope.timeType="duration";
 	var worklogDateFormat="YYYY-MM-DDTHH:mm:ss.SSS";
@@ -23,7 +23,7 @@ function TimeSheetController($scope,$rootScope,$http,$sce,WorkLogREST,alertServi
 	
 	
 	var fetchProjects = function(queryParams) {
-		return $http.get(_contextPath + "app/api/" + _userCompanyId + "/project/employe/"+ _userId, {
+		return $http.get(_contextPath + "app/api/" + USERINFO.company.id + "/project/employe/"+ USERINFO.id, {
 					params : {}
 				}).then(function(response) {
 					$scope.projects=response.data.result;
@@ -49,7 +49,7 @@ function TimeSheetController($scope,$rootScope,$http,$sce,WorkLogREST,alertServi
 	
 	
 	var fetchTasks = function(queryParams) {
-		return $http.get(_contextPath + "app/api/" + _userCompanyId + "/task/"+$scope.project.id+"/"+ _userId, {
+		return $http.get(_contextPath + "app/api/" + USERINFO.company.id + "/task/"+$scope.project.id+"/"+ USERINFO.id, {
 					params : {}
 				}).then(function(response) {
 					$scope.tasks=response.data.result;
@@ -70,7 +70,7 @@ function TimeSheetController($scope,$rootScope,$http,$sce,WorkLogREST,alertServi
 			closeable:false,
 			filterValue:[],
 			buttonSelectedItemsFormater:function(data){
-				if(data.name==""+_userId+""){
+				if(data.name==""+USERINFO.id+""){
 					return '<i class="fa fa-user"></i> Me';
 				}else {
 					return '<i class="fa fa-user"></i> '+getUserInitials(data.label);
@@ -79,14 +79,14 @@ function TimeSheetController($scope,$rootScope,$http,$sce,WorkLogREST,alertServi
 			defaultSelectedItems:function(data){
 				var items=[];
 				angular.forEach(data,function(item){
-					if(item.name==""+_userId+""){
+					if(item.name==""+USERINFO.id+""){
 						items.push(item);
 					}
 				});
 				return items;
 			},
 			getData:function($defer){
-				$http.get(_contextPath+"app/api/users/managed/"+_userId,{params:{"me":true} })
+				$http.get(_contextPath+"app/api/users/managed/"+USERINFO.id,{params:{"me":true} })
 					.success(function(data, status) {
 						$defer.resolve(data);
 					});
@@ -248,7 +248,7 @@ function TimeSheetController($scope,$rootScope,$http,$sce,WorkLogREST,alertServi
 		worklog.taskName = event.taskName;
 		worklog.description = event.description;
 		worklog.validationStatus=event.validationStatus;
-		worklog.employeId = _userId;
+		worklog.employeId = USERINFO.id;
 		return worklog;
 	}
     $scope.postWorkLog = function(hideFn) {
@@ -268,7 +268,7 @@ function TimeSheetController($scope,$rootScope,$http,$sce,WorkLogREST,alertServi
     	 worklog.taskId= $scope.task.id;
     	 worklog.taskName=$scope.task.name;
     	 worklog.description=$scope.worklog.description;
-    	 worklog.employeId=_userId;
+    	 worklog.employeId=USERINFO.id;
     	 
     	 WorkLogREST.save(worklog).$promise.then(function(result) {
     		 $scope.currentView.calendar.refetchEvents();

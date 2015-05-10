@@ -23,12 +23,10 @@ import org.springframework.social.connect.web.SignInAdapter;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.support.WebApplicationContextUtils;
-import org.springframework.web.servlet.ModelAndView;
 import org.thymeleaf.context.IWebContext;
 import org.thymeleaf.spring4.SpringTemplateEngine;
 import org.thymeleaf.spring4.context.SpringWebContext;
@@ -40,7 +38,6 @@ import fr.wati.yacramanager.beans.Users;
 import fr.wati.yacramanager.services.EmployeService;
 import fr.wati.yacramanager.services.MailService;
 import fr.wati.yacramanager.services.ServiceException;
-import fr.wati.yacramanager.services.UserService;
 import fr.wati.yacramanager.services.security.GoogleReCaptchaService;
 import fr.wati.yacramanager.services.security.GoogleReCaptchaService.GoogleReCaptchaResponse;
 import fr.wati.yacramanager.web.dto.RegistrationDTO;
@@ -55,9 +52,6 @@ public class AuthenticationController {
 
 	@Inject
 	private EmployeService employeService;
-
-	@Inject
-	private UserService userService;
 
 	@Inject
 	private MailService mailService;
@@ -85,12 +79,12 @@ public class AuthenticationController {
 		registrationDTO.setLocale(locale);
 		Employe registerEmploye = employeService
 				.registerEmploye(registrationDTO,registrationDTO.isSocialUser());
-		if(!registrationDTO.isSocialUser()){
+		if(!registrationDTO.isSocialUser() && registrationDTO.getCompanyInvitation()==null){
 			String content = createHtmlContentFromTemplate(registerEmploye, locale,
 					request, response);
 			mailService.sendActivationEmail(
 					registerEmploye.getContact().getEmail(), content, locale);
-		}else {
+		}else if(registrationDTO.isSocialUser()) {
 			if(SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken){
 				ProviderSignInAttempt providerSignInAttempt=(ProviderSignInAttempt) webRequest.getAttribute(ProviderSignInAttempt.SESSION_ATTRIBUTE, RequestAttributes.SCOPE_SESSION);
 				if(providerSignInAttempt!=null){
@@ -103,29 +97,12 @@ public class AuthenticationController {
 		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
 
-	@RequestMapping(value = "/activate", method = RequestMethod.GET)
-	@Timed
-	public ModelAndView activateAccount(
-			@RequestParam(value = "key") String key) {
-		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName("auth/login");
-		
-		Users user = userService.activateRegistration(key);
-		if (user == null) {
-			modelAndView.addObject("activationFailed", true);
-			modelAndView.addObject("activationMessage", "No account found for given activation key");
-		}else {
-			modelAndView.addObject("activationSuccess", true);
-			modelAndView.addObject("activationMessage", "The account has been activated !");
-		}
-		return modelAndView;
-	}
 
 	@RequestMapping(value = "/password-recovery", method = RequestMethod.POST,produces={MediaType.APPLICATION_JSON_VALUE})
 	@Timed
 	public ResponseEntity<String> recoverPassword(@RequestBody String email,HttpServletRequest request, HttpServletResponse response,
 			Locale locale) {
-		Employe employe = employeService.findByContact_Email(email);
+		Employe employe = employeService.findByEmail(email);
 		if(employe!=null){
 			String resetPassword = employeService.resetPassword(employe);
 			Map<String, Object> variables = new HashMap<String, Object>();

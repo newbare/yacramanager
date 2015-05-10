@@ -5,7 +5,7 @@ function ApiDocsController($scope,$rootScope) {
 }
 
 
-function AbsencesController($scope, $rootScope, AbsenceREST, alertService,ngTableParams,notifService,$http) {
+function AbsencesController($scope, $rootScope, AbsenceREST, alertService,ngTableParams,notifService,$http,USERINFO) {
 	$rootScope.page = {
 		"title" : "Absences",
 		"description" : "Declarez vos absences"
@@ -33,7 +33,7 @@ function AbsencesController($scope, $rootScope, AbsenceREST, alertService,ngTabl
 			closeable:false,
 			filterValue:[],
 			buttonSelectedItemsFormater:function(data){
-				if(data.name==""+_userId+""){
+				if(data.name==""+USERINFO.id+""){
 					return ' Me';
 				}else {
 					return ' '+getUserInitials(data.label);
@@ -42,14 +42,14 @@ function AbsencesController($scope, $rootScope, AbsenceREST, alertService,ngTabl
 			defaultSelectedItems:function(data){
 				var items=[];
 				angular.forEach(data,function(item){
-					if(item.name==""+_userId+""){
+					if(item.name==""+USERINFO.id+""){
 						items.push(item);
 					}
 				});
 				return items;
 			},
 			getData:function($defer){
-				$http.get(_contextPath+"app/api/users/managed/"+_userId,{params:{"me":true} })
+				$http.get(_contextPath+"app/api/users/managed/"+USERINFO.id,{params:{"me":true} })
 					.success(function(data, status) {
 						$defer.resolve(data);
 					});
@@ -130,7 +130,7 @@ function AbsencesController($scope, $rootScope, AbsenceREST, alertService,ngTabl
 	AbsenceREST.getTypes(function(data) {
 		$scope.absencesType = data;
 	});
-	var today = moment().format('YYYY-MM-DD');
+	var today = new Date(moment());
 	$scope.selectAbsence=function(absence){
 		var index = $scope.selectedAbsences.indexOf(absence);
 		if(index==-1){
@@ -257,7 +257,7 @@ function AbsencesController($scope, $rootScope, AbsenceREST, alertService,ngTabl
 	
 	$scope.refreshApproval=function(){
 		AbsenceREST.getApprovals({
-			"requesterId" : _userId
+			"requesterId" : USERINFO.id
 		}).$promise.then(function(result) {
 			$scope.approvementTotal=result.totalCount;
 			$scope.approvements=result.result;
@@ -270,14 +270,14 @@ function AbsencesController($scope, $rootScope, AbsenceREST, alertService,ngTabl
 	};
 	$scope.refreshApproval();
 	$scope.approve=function(id){
-		$http.put(_contextPath+"app/api/absences/approval/approve/"+parseInt(_userId)+"/"+id)
+		$http.put(_contextPath+"app/api/absences/approval/approve/"+parseInt(USERINFO.id)+"/"+id)
 		.success(function(data, status) {
 			alertService.show('success','Updated', 'Data has been updated');
 			$scope.refreshApproval();
 		});
 	};
 	$scope.reject=function(id){
-		$http.put(_contextPath+"app/api/absences/approval/reject/"+parseInt(_userId)+"/"+id)
+		$http.put(_contextPath+"app/api/absences/approval/reject/"+parseInt(USERINFO.id)+"/"+id)
 		.success(function(data, status) {
 			alertService.show('success','Updated', 'Data has been updated');
 			$scope.refreshApproval();

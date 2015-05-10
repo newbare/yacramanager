@@ -32,7 +32,7 @@ App.service('notifService', function() {
 });
 	
 
-App.service('WebSocketService', function($timeout,notifService) {
+App.service('WebSocketService', function($timeout,notifService,USERINFO) {
 	var stompClient = null;	
 	
 	var subscribeToCommonTopic=function(){
@@ -52,13 +52,13 @@ App.service('WebSocketService', function($timeout,notifService) {
 	};
 	
 	var subscribeToCompanyQueue=function(){
-		stompClient.subscribe("/user/queue/"+_userCompanyName, function(msg) {
+		stompClient.subscribe("/user/queue/"+USERINFO.company.id, function(msg) {
 			notifService.notify('info','From company queue',msg.body);
 		});
 	};
 	
 	var subscribeToCompanyTopic=function(){
-		stompClient.subscribe("/topic/"+_userCompanyName, function(msg) {
+		stompClient.subscribe("/topic/"+USERINFO.company.id, function(msg) {
 			notifService.notify('info','From company topic',msg.body);
 		});
 	};
