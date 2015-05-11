@@ -6,6 +6,7 @@
 	</div>
 	<div class="col-md-9">
 		<h4><span class="">{{employe.lastName}} - {{employe.firstName}}</span></h4>
+		<span class="text-muted">Registered on {{employe.createdDate  | date:'medium'}}</span>
 		<div class="row"></div>
 		<ul class="nav nav-pills nav-justified" role="tablist">
 		  <li class="active"><a href="" role="tab" data-toggle="tab" data-ng-click="activateTab('basicInfos')">Basic infos</a></li>
@@ -104,7 +105,7 @@
 			  </div>
 			  
 			  <div class="tab-pane" data-ng-class="{'active' : isActiveTab('activities') }">
-			  	Recent activities
+			  	<activities-timeline data-source="timelineData"></activities-timeline>
 			  </div>
 		</div>
 	</div>

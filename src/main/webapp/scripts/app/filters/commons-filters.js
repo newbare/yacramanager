@@ -11,3 +11,9 @@ App.filter("durationHours", function() {
 		return moment.duration(millis).asHours()+'h';
 	};
 });
+
+App.filter("dateFromNow", function() {
+	return function(input) {
+		return moment(input).from(moment());
+	};
+});

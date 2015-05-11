@@ -1,3 +1,16 @@
+/* ==========================================================================
+Version number in navbar
+========================================================================== */
+.navbar-version {
+    font-size: 10px;
+    color: #ccc
+}
+
+a i.fa {
+margin-right: 6px;
+font-size: 120%;
+}
+
 .navbar-custom {
     background-color:#2980B9;
     color:#ffffff;

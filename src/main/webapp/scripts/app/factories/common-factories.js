@@ -254,3 +254,15 @@ App.factory("WorkLogREST", function($resource) {
 		}
 	});
 });
+
+App.factory("ActivitiesREST", function($resource) {
+	return $resource(_contextPath + "app/api/:companyId/task/:id", {
+		companyId : '@companyId'
+	}, {
+		forUser:{
+			url : _contextPath + "app/api/activities/user/:id",
+			method : 'GET',
+			isArray : false
+		}
+	});
+});

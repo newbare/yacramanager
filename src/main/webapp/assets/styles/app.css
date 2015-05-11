@@ -19,14 +19,6 @@ Developement Ribbon
     background-repeat: no-repeat;
 }
 
-/* ==========================================================================
-Version number in navbar
-========================================================================== */
-.navbar-version {
-    font-size: 10px;
-    color: #ccc
-}
-
 
 img.profile-picture{
 	max-width: 140px;

@@ -3,12 +3,15 @@ package fr.wati.yacramanager.web.dto;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.joda.time.DateTime;
+
 import fr.wati.yacramanager.beans.Client;
 
 public class ClientDTO {
 	private Long id;
 	private String name;
 	private Long companyId;
+	private DateTime createdDate;
 	private List<ContactDTO> contacts = new ArrayList<>();
 	private List<ProjectDTO> projects=new ArrayList<>();
 	
@@ -50,6 +53,12 @@ public class ClientDTO {
 	}
 	public void setProjects(List<ProjectDTO> projects) {
 		this.projects = projects;
+	}
+	public DateTime getCreatedDate() {
+		return createdDate;
+	}
+	public void setCreatedDate(DateTime createdDate) {
+		this.createdDate = createdDate;
 	}
 	
 }

@@ -1,0 +1,31 @@
+<div class="row">
+	<div class="col-xs-12 col-sm-10 col-sm-offset-1">
+		
+		<!-- #section:pages/timeline.style2 -->
+		<div class="timeline-container timeline-style2" data-ng-repeat="day in timelineData.days">
+			<span class="timeline-label"> <b>{{day.date | dateFromNow}}</b>
+			</span>
+			<div class="timeline-items">
+				<div class="timeline-item clearfix" data-ng-repeat="activityItem in day.activityItems">
+					<div class="timeline-info">
+						<span class="timeline-date">{{activityItem.time}}</span> <i
+							class="timeline-indicator btn btn-info no-hover"></i>
+					</div>
+					<div class="widget-box transparent">
+						<div class="widget-body">
+							<div class="widget-main no-padding">
+								<p class="text-info">
+									<strong>{{activityItem.activityDTO.employe.firstName}} {{activityItem.activityDTO.employe.lastName}}</strong>
+									<i class="fa fa-arrow-right"></i> <strong>{{activityItem.activityDTO.activityOperation}}</strong>
+								</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- /.timeline-items -->
+		</div>
+		<!-- /.timeline-container -->
+	</div>
+</div>
+

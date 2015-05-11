@@ -151,7 +151,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter
 				.antMatchers("/assets/images/**").antMatchers("/scripts/**")
 				.antMatchers("/assets/styles/**").antMatchers("/assets/fonts/**")
 				.antMatchers("/i18n/**")
-				.antMatchers("/swagger-ui/**");
+				.antMatchers("/swagger-ui/**").antMatchers("/views/*");
 	}
 
 	@Bean

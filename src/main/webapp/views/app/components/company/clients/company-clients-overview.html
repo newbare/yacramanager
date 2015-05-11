@@ -1,5 +1,6 @@
 <div class="row">
 	<h3><strong><a href="#" onaftersave="updateClient()" buttons="no" editable-text="client.name">{{ client.name || 'Name' | uppercase}}</a></strong></h3>
+	<span class="text-muted">Created on {{client.createdDate  | date:'medium'}}</span>
 </div>
 
 <h5><strong>{{client.projects.length}} Projects for {{ client.name || 'Name' }}</strong></h5>

@@ -229,16 +229,18 @@ function CompanyEmployeesListController($scope, $rootScope,$http,EmployeesREST,n
 	 
 }
 
-function CompanyEmployeesOverviewController($scope,employe,EmployeesREST,USERINFO){
+function CompanyEmployeesOverviewController($scope,employe,EmployeesREST,USERINFO,ActivitiesREST){
 	$scope.employe=employe;
 	$scope.activateTab('basicInfos');
 	$scope.updateEmploye = function() {
 		return EmployeesREST.update($scope.employe);
 	};
 	$scope.employeManager=undefined;
+	$scope.timelineData=undefined;
 	$scope.employe.$promise.then(function(result) {
 		$scope.employeManager=result.manager;
 		$scope.currentEmployee=result;
+		$scope.timelineData=ActivitiesREST.forUser({id:$scope.employe.id});
 	});
 	$scope.addPhoneNumbers=function(employe){
 		employe.phoneNumbers.push('');

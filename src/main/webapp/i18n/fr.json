@@ -23,6 +23,9 @@
 				"settings":"Péférences",
 				"profile":"Profil",
 				"logout":"Déconnexion",
+				"about":"A propos",
+				"pricing":"Pricing",
+				"quicktour":"Quick tour",
 				"api":{
 					"doc":"Rest API"
 				}

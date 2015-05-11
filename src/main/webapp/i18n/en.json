@@ -21,6 +21,9 @@
 				"settings":"Settings",
 				"profile":"Profile",
 				"logout":"Logout",
+				"about":"About",
+				"pricing":"Pricing",
+				"quicktour":"Quick tour",
 				"api":{
 					"doc":"Rest API"
 				}

@@ -645,3 +645,18 @@ App.directive('ngFocus', [function() {
 	    }
 	  }
 	}]);
+App.directive('activitiesTimeline', function() {
+    return {
+    	replace:true,
+        restrict: 'E',
+        scope : true,
+        templateUrl: _contextPath	+ 'views/app/components/templates/timeline/timeline.tpl.html',
+        link: function (scope, element,attrs) {
+        	console.log(scope.timelineData);
+        	var resource= scope[attrs['source']];
+        	resource.$promise.then(function(result){
+        		scope.timelineData=result;
+        	});
+        }
+    };
+});

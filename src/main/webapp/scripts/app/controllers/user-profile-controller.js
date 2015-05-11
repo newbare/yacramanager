@@ -2,7 +2,7 @@
  * 
  */
 
-function UserProfileController($scope, $rootScope, UsersREST, alertService,EmployeesREST,USERINFO) {
+function UserProfileController($scope, $rootScope, UsersREST, alertService,EmployeesREST,USERINFO,ActivitiesREST) {
 	$rootScope.page = {
 		"title" : "User profile",
 		"description" : "Edit your profile"
@@ -24,6 +24,7 @@ function UserProfileController($scope, $rootScope, UsersREST, alertService,Emplo
 			alertService.show('success','Confirmation','Password has been changed');
 		});
 	};
+	$scope.timelineData=ActivitiesREST.forUser({id:USERINFO.id});
 	
 	$scope.refresh=function(){
 		$scope.employe=EmployeesREST.get({id:USERINFO.id});
