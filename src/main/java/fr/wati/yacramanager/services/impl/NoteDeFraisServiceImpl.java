@@ -22,6 +22,7 @@ import fr.wati.yacramanager.beans.Employe;
 import fr.wati.yacramanager.beans.NoteDeFrais;
 import fr.wati.yacramanager.beans.NoteDeFrais_;
 import fr.wati.yacramanager.beans.ValidationStatus;
+import fr.wati.yacramanager.beans.WorkLog;
 import fr.wati.yacramanager.dao.repository.NoteDeFraisRepository;
 import fr.wati.yacramanager.dao.specifications.CommonSpecifications;
 import fr.wati.yacramanager.listeners.ActivityEvent;
@@ -51,7 +52,13 @@ public class NoteDeFraisServiceImpl implements NoteDeFraisService {
 	 */
 	@Override
 	public <S extends NoteDeFrais> S save(S entity) {
-		return noteDeFraisRepository.save(entity);
+		ActivityOperation activityOperation=entity.getId()==null?ActivityOperation.CREATE:ActivityOperation.UPDATE;
+		S save = noteDeFraisRepository.save(entity);
+		applicationEventPublisher.publishEvent(ActivityEvent
+				.createWithSource(this).user()
+				.operation(activityOperation)
+				.onEntity(NoteDeFrais.class, save.getId()));
+		return save;
 	}
 
 	/* (non-Javadoc)
@@ -108,6 +115,10 @@ public class NoteDeFraisServiceImpl implements NoteDeFraisService {
 	@Override
 	public void delete(Long id) {
 		noteDeFraisRepository.delete(id);
+		applicationEventPublisher.publishEvent(ActivityEvent
+				.createWithSource(this).user()
+				.operation(ActivityOperation.DELETE)
+				.onEntity(NoteDeFrais.class, id));
 	}
 
 	/* (non-Javadoc)
@@ -115,7 +126,7 @@ public class NoteDeFraisServiceImpl implements NoteDeFraisService {
 	 */
 	@Override
 	public void delete(NoteDeFrais entity) {
-		noteDeFraisRepository.delete(entity);
+		delete(entity.getId());
 	}
 
 	/* (non-Javadoc)

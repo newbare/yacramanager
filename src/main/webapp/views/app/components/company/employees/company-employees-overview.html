@@ -8,16 +8,16 @@
 		<h4><span class="">{{employe.lastName}} - {{employe.firstName}}</span></h4>
 		<span class="text-muted">Registered on {{employe.createdDate  | date:'medium'}}</span>
 		<div class="row"></div>
-		<ul class="nav nav-pills nav-justified" role="tablist">
+		<ul class="nav nav-tabs " role="tablist">
 		  <li class="active"><a href="" role="tab" data-toggle="tab" data-ng-click="activateTab('basicInfos')">Basic infos</a></li>
 		  <li><a href="" role="tab" data-toggle="tab" data-ng-click="activateTab('administration')">Administration</a></li>
 		  <li><a href="" role="tab" data-toggle="tab" data-ng-click="activateTab('salaryInfos')">Salary</a></li>
-		  <li><a href="" role="tab" data-toggle="tab" data-ng-click="activateTab('activities')">Recent activities</a></li>
+		  <li><a href="" role="tab" data-toggle="tab" data-ng-click="activateTab('activities')"><i class="fa fa-rss"></i> Recent activities</a></li>
 		</ul>
 		<div class="tab-content">
 			  <br>
 			  <div class="tab-pane" data-ng-class="{'active' : isActiveTab('basicInfos') }">
-			  	<h4><span class="label label-info">Personal info</span></h4>
+			  	<h3 class="header smaller lighter blue">Personal Info</h3>
 			  	<table class="table editable-form-table">
 					<tr>
 						<td>Username</td>
@@ -41,7 +41,7 @@
 					</tr>
 					
 				</table>
-				<h4><span class="label label-info">Contact</span></h4>
+				<h3 class="header smaller lighter blue">Contact</h3>
 				<table class="table editable-form-table">
 					<tr>
 						<td>Email</td>
@@ -105,7 +105,7 @@
 			  </div>
 			  
 			  <div class="tab-pane" data-ng-class="{'active' : isActiveTab('activities') }">
-			  	<activities-timeline data-source="timelineData"></activities-timeline>
+			  	<activities-timeline data-source="timelineSource"></activities-timeline>
 			  </div>
 		</div>
 	</div>

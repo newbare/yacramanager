@@ -11,4 +11,6 @@ import fr.wati.yacramanager.beans.Activities;
 public interface ActivitiesRepository extends JpaRepository<Activities, Long>, JpaSpecificationExecutor<Activities>{
 
 	List<Activities> findByUser_Id(Long userId,Pageable pageable);
+	
+	List<Activities> findByEntityTypeAndEntityId(String entityType,Long entityId,Pageable pageable);
 }

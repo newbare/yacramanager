@@ -1,14 +1,14 @@
  <div class="row">
-	<h3><strong><a href="#" onaftersave="updateProject()" buttons="no" editable-text="project.name">{{ project.name || 'Project Name' | uppercase}}</a></strong></h3>
+	<h3><strong><a href="#" onaftersave="updateProject(project)" buttons="no" editable-text="project.name">{{ project.name || 'Project Name' | uppercase}}</a></strong></h3>
 	<span class="text-muted">Created on {{project.createdDate  | date:'medium'}}</span>
 </div>
 <div class="well well-sm">
 	Description
-	<h4><strong><a href="#" onaftersave="updateProject()" editable-textarea="project.description"  e-rows="7"><pre>{{ project.description || 'Project Description' }}</pre></a></strong></h4>
+	<h4><strong><a href="#" onaftersave="updateProject(project)" editable-textarea="project.description"  e-rows="7"><pre>{{ project.description || 'Project Description' }}</pre></a></strong></h4>
 </div>
 <hr>
-<h5 data-ng-if="groupByTask"><strong>Current attached task {{project.numberOfTasks}}</strong></h5>
-<h5 data-ng-if="!groupByTask"><strong>{{employeesByProject.length}} employee(s) assigned</strong></h5>
+<h3 data-ng-if="groupByTask" class="header smaller lighter blue">Current attached task {{project.numberOfTasks}}</h3>
+<h3 data-ng-if="!groupByTask" class="header smaller lighter blue">{{employeesByProject.length}} employee(s) assigned</h3>
 <div class="row">
 	<div class="col-md-6">
 		<div class="input-group input-group-sm">
@@ -94,4 +94,6 @@
 	    	<li>|</li>
 	    </ul>
 	  </li>
-	</ul>
+</ul>
+<h3 class="header smaller lighter blue"><i class="fa fa-rss"></i>Last activities on {{ project.name}}</h3>
+<activities-timeline data-source="timelineSource"></activities-timeline>

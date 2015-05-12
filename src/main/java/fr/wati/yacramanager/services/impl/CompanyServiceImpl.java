@@ -20,6 +20,7 @@ import fr.wati.yacramanager.beans.Client;
 import fr.wati.yacramanager.beans.Company;
 import fr.wati.yacramanager.beans.CompanyAccountInfo;
 import fr.wati.yacramanager.beans.Company_;
+import fr.wati.yacramanager.beans.WorkLog;
 import fr.wati.yacramanager.dao.repository.CompanyRepository;
 import fr.wati.yacramanager.dao.repository.ContactRepository;
 import fr.wati.yacramanager.dao.specifications.CommonSpecifications;
@@ -51,10 +52,11 @@ public class CompanyServiceImpl implements CompanyService {
 	public <S extends Company> S save(S entity) {
 		S entityFound = (S) findOne(entity.getId());
 		// contactRepository.save(entity.getContacts());
+		ActivityOperation activityOperation=entity.getId()==null?ActivityOperation.CREATE:ActivityOperation.UPDATE;
 		S save = companyRepository.save(entity);
 		applicationEventPublisher.publishEvent(ActivityEvent
 				.createWithSource(this).user()
-				.operation(ActivityOperation.CREATE)
+				.operation(activityOperation)
 				.onEntity(Company.class, save.getId()));
 		return save;
 	}
@@ -92,11 +94,15 @@ public class CompanyServiceImpl implements CompanyService {
 	@Override
 	public void delete(Long id) {
 		companyRepository.delete(id);
+		applicationEventPublisher.publishEvent(ActivityEvent
+				.createWithSource(this).user()
+				.operation(ActivityOperation.DELETE)
+				.onEntity(Company.class, id));
 	}
 
 	@Override
 	public void delete(Company entity) {
-		companyRepository.delete(entity);
+		delete(entity.getId());
 	}
 
 	@Override

@@ -164,6 +164,9 @@ function TimeSheetController($scope,$rootScope,$http,$sce,WorkLogREST,alertServi
     	popover.$scope.isValidated=$scope.isValidated;
     	popover.$scope.isWaiting=$scope.isWaiting;
     	popover.$scope.isRejected=$scope.isRejected;
+    	popover.$scope.deleteEvent=function(event){
+    		WorkLogREST.remove(event);
+    	}
     };
     
     $scope.eventSource = {

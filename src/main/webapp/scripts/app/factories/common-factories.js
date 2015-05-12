@@ -263,6 +263,21 @@ App.factory("ActivitiesREST", function($resource) {
 			url : _contextPath + "app/api/activities/user/:id",
 			method : 'GET',
 			isArray : false
+		},
+		forCompany:{
+			url : _contextPath + "app/api/activities/company/:id",
+			method : 'GET',
+			isArray : false
+		},
+		forProject:{
+			url : _contextPath + "app/api/activities/project/:id",
+			method : 'GET',
+			isArray : false
+		},
+		forClient:{
+			url : _contextPath + "app/api/activities/client/:id",
+			method : 'GET',
+			isArray : false
 		}
 	});
 });

@@ -39,10 +39,11 @@ public class TaskServiceImpl implements TaskService {
 	
 	@Override
 	public <S extends Task> S save(S entity) {
+		ActivityOperation activityOperation=entity.getId()==null?ActivityOperation.CREATE:ActivityOperation.UPDATE;
 		S save = taskRepository.save(entity);
 		applicationEventPublisher.publishEvent(ActivityEvent
 				.createWithSource(this).user()
-				.operation(ActivityOperation.REJECT)
+				.operation(activityOperation)
 				.onEntity(Task.class, save.getId()));
 		return save;
 	}
@@ -80,6 +81,10 @@ public class TaskServiceImpl implements TaskService {
 	@Override
 	public void delete(Long id) {
 		taskRepository.delete(id);
+		applicationEventPublisher.publishEvent(ActivityEvent
+				.createWithSource(this).user()
+				.operation(ActivityOperation.DELETE)
+				.onEntity(Task.class, id));
 	}
 
 	@Override
@@ -104,7 +109,7 @@ public class TaskServiceImpl implements TaskService {
 		if(StringUtils.isEmpty(task.getColor())){
 			task.setColor(project.getColor());
 		}
-		Task saveTask = taskRepository.save(task);
+		Task saveTask = save(task);
 		project.getTasks().add(saveTask);
 		return saveTask;
 	}

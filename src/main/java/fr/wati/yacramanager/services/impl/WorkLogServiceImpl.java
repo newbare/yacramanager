@@ -38,10 +38,11 @@ public class WorkLogServiceImpl implements WorkLogService,SpecificationFactory<W
 	
 	@Override
 	public <S extends WorkLog> S save(S entity) {
+		ActivityOperation activityOperation=entity.getId()==null?ActivityOperation.CREATE:ActivityOperation.UPDATE;
 		S save = workLogRepository.save(entity);
 		applicationEventPublisher.publishEvent(ActivityEvent
 				.createWithSource(this).user()
-				.operation(ActivityOperation.CREATE)
+				.operation(activityOperation)
 				.onEntity(WorkLog.class, save.getId()));
 		return save;
 	}
@@ -79,11 +80,15 @@ public class WorkLogServiceImpl implements WorkLogService,SpecificationFactory<W
 	@Override
 	public void delete(Long id) {
 		workLogRepository.delete(id);
+		applicationEventPublisher.publishEvent(ActivityEvent
+				.createWithSource(this).user()
+				.operation(ActivityOperation.DELETE)
+				.onEntity(WorkLog.class, id));
 	}
 
 	@Override
 	public void delete(WorkLog entity) {
-		workLogRepository.delete(entity);
+		delete(entity.getId());
 	}
 
 	@Override

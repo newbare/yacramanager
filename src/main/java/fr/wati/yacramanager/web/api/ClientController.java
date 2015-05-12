@@ -53,11 +53,15 @@ public class ClientController {
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	@Timed
-	public ClientDTO read(@PathVariable("companyId") Long companyId,
+	public ResponseEntity<ClientDTO> read(@PathVariable("companyId") Long companyId,
 			@PathVariable("id") Long id) {
 		Company company = companyService.findOne(companyId);
-		return clientService.toClientDTO(clientService.findByCompanyAndId(
-				company, id));
+		if(company==null || clientService.findByCompanyAndId(
+				company, id)==null){
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<>(clientService.toClientDTO(clientService.findByCompanyAndId(
+				company, id)),HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)

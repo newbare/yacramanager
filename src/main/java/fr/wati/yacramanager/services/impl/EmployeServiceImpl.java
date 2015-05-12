@@ -99,13 +99,14 @@ public class EmployeServiceImpl implements EmployeService {
 
 	@Override
 	public <S extends Employe> S save(S entity) {
+		ActivityOperation activityOperation=entity.getId()==null?ActivityOperation.CREATE:ActivityOperation.UPDATE;
 		if(entity.getContact()!=null){
 			contactRepository.save(entity.getContact());
 		}
 		S save = employeRepository.save(entity);
 		applicationEventPublisher.publishEvent(ActivityEvent
 				.createWithSource(this).user()
-				.operation(ActivityOperation.CREATE)
+				.operation(activityOperation)
 				.onEntity(Employe.class, save.getId()));
 		return save;
 	}

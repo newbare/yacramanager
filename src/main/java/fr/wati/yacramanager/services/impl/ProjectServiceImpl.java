@@ -8,8 +8,6 @@ import javax.inject.Inject;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.joda.time.DateTime;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -39,7 +37,6 @@ import fr.wati.yacramanager.utils.Filter.FilterArrayValue;
 import fr.wati.yacramanager.utils.Filter.FilterDate;
 import fr.wati.yacramanager.utils.Filter.FilterText;
 import fr.wati.yacramanager.utils.Filter.FilterType;
-import fr.wati.yacramanager.web.api.ClientController;
 import fr.wati.yacramanager.web.dto.ProjectDTO;
 
 @Service
@@ -72,7 +69,7 @@ public class ProjectServiceImpl implements ProjectService{
 		Client client=clientRepository.findOne(clientId);
 		project.setClient(client);
 		project.setCreatedDate(new DateTime());
-		Project saveProject = projectRepository.save(project);
+		Project saveProject = save(project);
 		client.getProjects().add(project);
 		/*
 		 * Each project should have at least one default Task 
@@ -94,10 +91,11 @@ public class ProjectServiceImpl implements ProjectService{
 	
 	@Override
 	public <S extends Project> S save(S entity) {
+		ActivityOperation activityOperation=entity.getId()==null?ActivityOperation.CREATE:ActivityOperation.UPDATE;
 		S save = projectRepository.save(entity);
 		applicationEventPublisher.publishEvent(ActivityEvent
 				.createWithSource(this).user()
-				.operation(ActivityOperation.CREATE)
+				.operation(activityOperation)
 				.onEntity(Project.class, save.getId()));
 		return save;
 	}
@@ -136,11 +134,15 @@ public class ProjectServiceImpl implements ProjectService{
 	@Override
 	public void delete(Long id) {
 		projectRepository.delete(id);
+		applicationEventPublisher.publishEvent(ActivityEvent
+				.createWithSource(this).user()
+				.operation(ActivityOperation.DELETE)
+				.onEntity(Project.class, id));
 	}
 
 	@Override
 	public void delete(Project entity) {
-		projectRepository.delete(entity);
+		delete(entity.getId());
 	}
 
 	@Override

@@ -17,6 +17,7 @@ import fr.wati.yacramanager.beans.Client;
 import fr.wati.yacramanager.beans.Client_;
 import fr.wati.yacramanager.beans.Company;
 import fr.wati.yacramanager.beans.Project;
+import fr.wati.yacramanager.beans.WorkLog;
 import fr.wati.yacramanager.dao.repository.ClientRepository;
 import fr.wati.yacramanager.dao.repository.CompanyRepository;
 import fr.wati.yacramanager.dao.repository.ContactRepository;
@@ -58,11 +59,11 @@ public class ClientServiceImpl implements ClientService {
 	
 	@Override
 	public <S extends Client> S save(S entity) {
-		//contactRepository.save(entity.getContacts());
+		ActivityOperation activityOperation=entity.getId()==null?ActivityOperation.CREATE:ActivityOperation.UPDATE;
 		S save = clientRepository.save(entity);
 		applicationEventPublisher.publishEvent(ActivityEvent
 				.createWithSource(this).user()
-				.operation(ActivityOperation.CREATE)
+				.operation(activityOperation)
 				.onEntity(Client.class, save.getId()));
 		return save;
 	}
@@ -100,11 +101,15 @@ public class ClientServiceImpl implements ClientService {
 	@Override
 	public void delete(Long id) {
 		clientRepository.delete(id);
+		applicationEventPublisher.publishEvent(ActivityEvent
+				.createWithSource(this).user()
+				.operation(ActivityOperation.DELETE)
+				.onEntity(Client.class, id));
 	}
 
 	@Override
 	public void delete(Client entity) {
-		clientRepository.delete(entity);
+		delete(entity.getId());
 	}
 
 	@Override
@@ -120,7 +125,7 @@ public class ClientServiceImpl implements ClientService {
 	public Client createClient(Long companyId,Client client){
 		Company company=companyRepository.findOne(companyId);
 		client.setCompany(company);
-		Client saveClient = clientRepository.save(client);
+		Client saveClient = save(client);
 		company.getClients().add(saveClient);
 		/*
 		 * Each client should have a default project

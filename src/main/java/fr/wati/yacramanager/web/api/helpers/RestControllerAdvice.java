@@ -63,7 +63,7 @@ public class RestControllerAdvice {
 				HashMap.class, true));
 	}
 
-	@ExceptionHandler({ RestServiceException.class, ServiceException.class,Exception.class })
+	@ExceptionHandler({ RestServiceException.class, ServiceException.class })
 	@ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
 	@SendToUser(value = "/queue/errors")
 	public @ResponseBody ResponseEntity<ExceptionDto> handleRestException(Exception ex, HttpServletResponse response)

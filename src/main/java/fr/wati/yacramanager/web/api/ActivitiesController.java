@@ -35,18 +35,21 @@ public class ActivitiesController {
 	@RequestMapping(value="/company/{id}", method = RequestMethod.GET)
 	@Timed
 	public ActivitiesDetailsDTO forCompany(@PathVariable("id") Long companyId){
-		return null;
+		Pageable pageable=new PageRequest(0, 100);
+		return activityService.fromActivities(activityService.findForCompany(companyId, pageable));
 	}
 	
 	@RequestMapping(value="/project/{id}", method = RequestMethod.GET)
 	@Timed
 	public ActivitiesDetailsDTO forProject(@PathVariable("id") Long projectId){
-		return null;
+		Pageable pageable=new PageRequest(0, 100);
+		return activityService.fromActivities(activityService.findForProject(projectId, pageable));
 	}
 	
 	@RequestMapping(value="/client/{id}", method = RequestMethod.GET)
 	@Timed
 	public ActivitiesDetailsDTO forClient(@PathVariable("id") Long clientId){
-		return null;
+		Pageable pageable=new PageRequest(0, 100);
+		return activityService.fromActivities(activityService.findForClient(clientId, pageable));
 	}
 }

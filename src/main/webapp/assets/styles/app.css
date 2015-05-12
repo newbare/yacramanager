@@ -360,7 +360,9 @@ timer>span {
 }
 
 /* feat: before angular is ready, display loading animation */
-body.waiting-for-angular div#app-login-content,body.waiting-for-angular div#app-content
+body.waiting-for-angular div#app-login-content,
+body.waiting-for-angular div#app-content,
+body.waiting-for-angular div.footer
 	{
 	display: none;
 }
@@ -980,6 +982,9 @@ a .badge {
 	background-color: #fcf8e3 !important;
 }
 
+.today-color{
+	background-color: #fcf8e3 !important;
+}
 .cra-table td {
 	text-align: center;
 }

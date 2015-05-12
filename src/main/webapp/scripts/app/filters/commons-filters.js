@@ -14,6 +14,7 @@ App.filter("durationHours", function() {
 
 App.filter("dateFromNow", function() {
 	return function(input) {
-		return moment(input).from(moment());
+		var iscurrentDate = moment(input).isSame(moment(), "day");
+		return iscurrentDate ? 'Today':moment(input).from(moment());
 	};
 });

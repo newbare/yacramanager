@@ -236,12 +236,10 @@ function CompanyEmployeesOverviewController($scope,employe,EmployeesREST,USERINF
 		return EmployeesREST.update($scope.employe);
 	};
 	$scope.employeManager=undefined;
-	$scope.timelineData=undefined;
-	$scope.employe.$promise.then(function(result) {
-		$scope.employeManager=result.manager;
-		$scope.currentEmployee=result;
-		$scope.timelineData=ActivitiesREST.forUser({id:$scope.employe.id});
-	});
+	$scope.timelineSource=undefined;
+	$scope.employeManager=$scope.employe.manager;
+	$scope.currentEmployee=$scope.employe;
+	$scope.timelineSource=ActivitiesREST.forUser({id:$scope.employe.id});
 	$scope.addPhoneNumbers=function(employe){
 		employe.phoneNumbers.push('');
 	};
@@ -405,10 +403,11 @@ function CompanyClientsListController($scope, $rootScope,$http,ClientsREST,ngTab
 	 $scope.tableParams.settings().counts=[10, 25, 50, 100];
 }
 
-function CompanyClientsOverviewController($scope,ClientsREST,ProjectsREST,client,alertService,USERINFO){
+function CompanyClientsOverviewController($scope,ClientsREST,ProjectsREST,client,alertService,USERINFO,ActivitiesREST){
 	$scope.client=client;
 	$scope.contactFilter='';
-	
+	$scope.timelineSource=undefined;
+	$scope.timelineSource=ActivitiesREST.forClient({id:$scope.client.id});
 	$scope.updateClient = function() {
 		var clientToUpdate={id:$scope.client.id,name:$scope.client.name,email:$scope.client.email,contacts:$scope.client.contacts};
 		angular.forEach(clientToUpdate.contacts,function(contact){
@@ -456,11 +455,11 @@ function CompanyClientsOverviewController($scope,ClientsREST,ProjectsREST,client
 			        function( error ){/*Do something with error*/}
 			      );
 			};
-		}
+		};
 		
 	$scope.deleteProject=function(project,index){
 		client.projects.splice(index,1);
-	}
+	};
 	
 }
 /*COMPANY-CLIENT End of section*/
@@ -656,11 +655,13 @@ function CompanyProjectsListController($scope, $rootScope,$http,ProjectsREST,ngT
 }
 
 function CompanyProjectsOverviewController($scope, ProjectsREST, TasksREST,EmployeesREST,
-		project,USERINFO) {
+		project,USERINFO,ActivitiesREST) {
 	$scope.project = project;
 	$scope.employeeByTask={};
 	$scope.groupByTask=true;
 	
+	$scope.timelineSource=undefined;
+	$scope.timelineSource=ActivitiesREST.forProject({id:$scope.project.id});
 	$scope.reset=function(){
 		$scope.project.$promise.then(function(project) {
 			angular.forEach(project.tasks,function(task){
@@ -713,10 +714,21 @@ function CompanyProjectsOverviewController($scope, ProjectsREST, TasksREST,Emplo
 			function(result){
 			$scope.reset();
 			});
-	}
+	};
 	$scope.selectActiveTask =function(task){
 		$scope.activeTask=task;
-	}
+	};
+	$scope.updateProject=function(project){
+		var projectToUpdate={id:$scope.project.id,name:$scope.project.name,description:$scope.project.description,color:$scope.project.color};
+		ProjectsREST.update({companyId :USERINFO.company.id},projectToUpdate).$promise.then(
+		        //success
+		        function( value ){
+		        	 $scope.tableParams.reload();
+		        },
+		        //error
+		        function( error ){/*Do something with error*/}
+		      );
+		};
 }
 /*COMPANY-PROJECT End of section*/
 

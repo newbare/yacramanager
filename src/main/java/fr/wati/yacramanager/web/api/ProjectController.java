@@ -30,13 +30,13 @@ import com.codahale.metrics.annotation.Timed;
 import fr.wati.yacramanager.beans.Company;
 import fr.wati.yacramanager.beans.Employe;
 import fr.wati.yacramanager.beans.Project;
-import fr.wati.yacramanager.services.ClientService;
 import fr.wati.yacramanager.services.CompanyService;
 import fr.wati.yacramanager.services.EmployeService;
 import fr.wati.yacramanager.services.ProjectService;
 import fr.wati.yacramanager.services.impl.DtoMapper;
 import fr.wati.yacramanager.utils.Filter.FilterBuilder;
 import fr.wati.yacramanager.utils.SpecificationBuilder;
+import fr.wati.yacramanager.web.ResourceNotFoundException;
 import fr.wati.yacramanager.web.dto.ProjectDTO;
 import fr.wati.yacramanager.web.dto.ResponseWrapper;
 
@@ -59,6 +59,10 @@ public class ProjectController {
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ProjectDTO read(@PathVariable("companyId") Long companyId,@PathVariable("id") Long id) {
+		Project project = projectService.findOne(id);
+		if(project==null){
+			throw new ResourceNotFoundException("The project does not exist");
+		}
 		return projectService.toProjectDTO(projectService.findOne(id));
 	}
 

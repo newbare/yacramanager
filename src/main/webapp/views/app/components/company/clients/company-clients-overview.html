@@ -2,9 +2,7 @@
 	<h3><strong><a href="#" onaftersave="updateClient()" buttons="no" editable-text="client.name">{{ client.name || 'Name' | uppercase}}</a></strong></h3>
 	<span class="text-muted">Created on {{client.createdDate  | date:'medium'}}</span>
 </div>
-
-<h5><strong>{{client.projects.length}} Projects for {{ client.name || 'Name' }}</strong></h5>
-<hr>
+<h3 class="header smaller lighter blue">{{client.projects.length}} Projects for {{ client.name || 'Name' }}</h3>
 <div class="row">
 	<div class="col-lg-6">
 		<div class="input-group input-group-sm">
@@ -39,10 +37,10 @@
     </ul>
   </li>
 </ul>
-<h5><strong>{{client.contacts.length}} Contacs for {{ client.name || 'Name' }}</strong></h5>
-<hr>
+<h3 class="header smaller lighter blue">{{client.contacts.length}} Contacs for {{ client.name || 'Name' }}</h3>
 <div data-contacts-manager data-contacts-manager-config="contactsManagerConfig"></div>
-
+<h3 class="header smaller lighter blue"><i class="fa fa-rss"></i>Last activities on {{ client.name}}</h3>
+<activities-timeline data-source="timelineSource"></activities-timeline>
 <div class="row ng-cloak ng-table-pager">
 	<div ng-if="params.settings().counts.length"
 		class="ng-table-counts btn-group pull-right">

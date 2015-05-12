@@ -652,11 +652,15 @@ App.directive('activitiesTimeline', function() {
         scope : true,
         templateUrl: _contextPath	+ 'views/app/components/templates/timeline/timeline.tpl.html',
         link: function (scope, element,attrs) {
-        	console.log(scope.timelineData);
-        	var resource= scope[attrs['source']];
-        	resource.$promise.then(function(result){
-        		scope.timelineData=result;
-        	});
+        	 scope.$watch(attrs['source'], function(newValue, oldValue) {
+        		    if (scope[attrs['source']]!==undefined) {
+        		    	var resource= scope[attrs['source']];
+        		    	resource.$promise.then(function(result){
+        	        		scope.timelineData=result;
+        	        	});
+        		    }
+        		  });
+        	
         }
     };
 });

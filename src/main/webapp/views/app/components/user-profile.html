@@ -1,5 +1,4 @@
 <div class="row">
-	<fieldset data-collapsible-fieldset="General info" data-collapsible-fieldset-collapsed>
 		<div>
 			<div class="row" >
 				<div class="col-md-3">
@@ -10,15 +9,15 @@
 				<div class="col-md-9">
 					<h4><span class="">{{employe.lastName}} - {{employe.firstName}}</span></h4>
 					<div class="row"></div>
-					<ul class="nav nav-pills nav-justified" role="tablist">
+					<ul class="nav nav-tabs" role="tablist">
 					  <li class="active"><a href="" role="tab" data-toggle="tab" data-ng-click="activateTab('basicInfos')">Basic infos</a></li>
 					  <li><a href="" role="tab" data-toggle="tab" data-ng-click="activateTab('salaryInfos')">Salary</a></li>
-					  <li><a href="" role="tab" data-toggle="tab" data-ng-click="activateTab('activities')">Recent activities</a></li>
+					  <li><a href="" role="tab" data-toggle="tab" data-ng-click="activateTab('activities')"><i class="fa fa-rss"></i> Recent activities</a></li>
 					</ul>
 					<div class="tab-content">
 						  <br>
 						  <div class="tab-pane" data-ng-class="{'active' : isActiveTab('basicInfos') }">
-						  	<h4><span class="label label-info">Personal info</span></h4>
+						  	<h3 class="header smaller lighter blue">Personal info</h3>
 						  	<table class="table editable-form-table">
 								<tr>
 									<td>Username</td>
@@ -42,7 +41,7 @@
 								</tr>
 								
 							</table>
-							<h4><span class="label label-info">Contact</span></h4>
+							<h3 class="header smaller lighter blue">Contact</h3>
 							<table class="table editable-form-table">
 								<tr>
 									<td>Email</td>
@@ -71,6 +70,26 @@
 									<td><a href="#" onaftersave="updateEmploye()" editable-number="employe.postCode">{{ employe.postCode || 'empty' }}</a></td>
 								</tr>
 							</table>
+							<h3 class="header smaller lighter blue">Change password</h3>
+							<div class="">
+								<form role="form">
+									<div class="form-group" >
+										<label for="password">Current password</label>
+										<input type="password" class="form-control" id="current-password" data-ng-model="currentPassword" placeholder="Current password">
+									</div>
+									<div class="form-group" >
+										<label for="password">New password</label>
+										<input type="password" class="form-control" id="password" data-ng-model="newPassword" placeholder="New password">
+										<password-strength-bar password-to-check="newPassword"/>
+									</div>
+									<div class="form-group" data-ng-class="{'has-success has-feedback' : canChangePassword() && !newPassword.length==0 , 'has-error has-feedback' : !canChangePassword() && !newPassword.length==0 }">
+										<label for="confirm-password">Confirm Password</label> 
+										<input	type="password" class="form-control" id="confirm-password" data-ng-model="confirmPassword"	placeholder="Confirm password">
+										<span class="glyphicon glyphicon-ok form-control-feedback" data-ng-show="newPassword.length>0 && confirmPassword.length>0"></span>
+									</div>
+									<button type="submit" class="btn btn-success btn-block" data-ng-disabled="!canChangePassword()" data-ng-click="changePassword()">Change</button>
+								</form>
+						</div>
 						  </div>
 						  <div class="tab-pane" data-ng-class="{'active' : isActiveTab('salaryInfos') }">
 						  	Salary
@@ -83,26 +102,4 @@
 				</div>
 			</div>
 		</div>
-	</fieldset>
-	<fieldset class="col-md-9 col-md-offset-3" data-collapsible-fieldset="Change password" data-collapsible-fieldset-collapsed="">
-		<div class="">
-				<form role="form">
-					<div class="form-group" >
-						<label for="password">Current password</label>
-						<input type="password" class="form-control" id="current-password" data-ng-model="currentPassword" placeholder="Current password">
-					</div>
-					<div class="form-group" >
-						<label for="password">New password</label>
-						<input type="password" class="form-control" id="password" data-ng-model="newPassword" placeholder="New password">
-						<password-strength-bar password-to-check="newPassword"/>
-					</div>
-					<div class="form-group" data-ng-class="{'has-success has-feedback' : canChangePassword() && !newPassword.length==0 , 'has-error has-feedback' : !canChangePassword() && !newPassword.length==0 }">
-						<label for="confirm-password">Confirm Password</label> 
-						<input	type="password" class="form-control" id="confirm-password" data-ng-model="confirmPassword"	placeholder="Confirm password">
-						<span class="glyphicon glyphicon-ok form-control-feedback" data-ng-show="newPassword.length>0 && confirmPassword.length>0"></span>
-					</div>
-					<button type="submit" class="btn btn-success btn-block" data-ng-disabled="!canChangePassword()" data-ng-click="changePassword()">Change</button>
-				</form>
-		</div>
-	</fieldset>
 </div>

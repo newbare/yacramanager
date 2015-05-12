@@ -390,7 +390,7 @@ var stateConfig =[ '$stateProvider','$locationProvider','$translateProvider','tm
 				resolve : {
 					company :function(CompanyREST,USERINFO) {
 						return CompanyREST.get(
-								{id : USERINFO.company.id});
+								{id : USERINFO.company.id}).$promise;
 					}
 				},
 				data: {
@@ -411,7 +411,7 @@ var stateConfig =[ '$stateProvider','$locationProvider','$translateProvider','tm
 				controller : CompanyEmployeesOverviewController,
 				resolve : {
 					employe :function(EmployeesREST,$stateParams) {
-						return EmployeesREST.get({id:$stateParams.id});
+						return EmployeesREST.get({id:$stateParams.id}).$promise;
 					}
 				},
 				data : {
@@ -446,7 +446,7 @@ var stateConfig =[ '$stateProvider','$locationProvider','$translateProvider','tm
 				controller : CompanyEmployeesOverviewController,
 				resolve : {
 					employe :function(EmployeesREST,$stateParams) {
-						return EmployeesREST.get({id:$stateParams.id});
+						return EmployeesREST.get({id:$stateParams.id}).$promise;
 					}
 				},
 				data : {
@@ -467,7 +467,7 @@ var stateConfig =[ '$stateProvider','$locationProvider','$translateProvider','tm
 				resolve : {
 					client :function(ClientsREST,$stateParams,USERINFO) {
 						return ClientsREST.get(
-								{companyId : USERINFO.company.id,id:$stateParams.id});
+								{companyId : USERINFO.company.id,id:$stateParams.id}).$promise;
 					}
 				},
 				data : {
@@ -502,7 +502,7 @@ var stateConfig =[ '$stateProvider','$locationProvider','$translateProvider','tm
 				resolve : {
 					client :function(ClientsREST,$stateParams,USERINFO) {
 						return ClientsREST.get(
-								{companyId : USERINFO.company.id,id:$stateParams.id});
+								{companyId : USERINFO.company.id,id:$stateParams.id}).$promise;
 					}
 				},
 				data : {
@@ -523,7 +523,7 @@ var stateConfig =[ '$stateProvider','$locationProvider','$translateProvider','tm
 				resolve : {
 					project :function(ProjectsREST,$stateParams,USERINFO) {
 						return ProjectsREST.get(
-								{companyId : USERINFO.company.id,id:$stateParams.id});
+								{companyId : USERINFO.company.id,id:$stateParams.id}).$promise;
 					}
 				},
 				data : {
@@ -558,7 +558,7 @@ var stateConfig =[ '$stateProvider','$locationProvider','$translateProvider','tm
 				resolve : {
 					project :function(ProjectsREST,$stateParams,USERINFO) {
 						return ProjectsREST.get(
-								{companyId : USERINFO.company.id,id:$stateParams.id});
+								{companyId : USERINFO.company.id,id:$stateParams.id}).$promise;
 					}
 				},
 				data : {
@@ -611,12 +611,7 @@ var stateConfig =[ '$stateProvider','$locationProvider','$translateProvider','tm
 						return CompanyREST.get({
 							companyId : USERINFO.company.id,
 							id : $stateParams.id
-						},function(){},function(error){
-							 //404 company not found
-						    if(response.status === 404) {
-						    	$state.go('error404');
-						    }
-						});
+						}).$promise;
 					}
 				}
 			})
@@ -653,7 +648,7 @@ var stateConfig =[ '$stateProvider','$locationProvider','$translateProvider','tm
 						return CompanyREST.get({
 							companyId : USERINFO.company.id,
 							id : $stateParams.id
-						});
+						}).$promise;
 					}
 				},
 				data: {

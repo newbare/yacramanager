@@ -61,10 +61,11 @@ public class AbsenceServiceImpl implements AbsenceService {
 
 	@Override
 	public <S extends Absence> S save(S entity){
+		ActivityOperation activityOperation=entity.getId()==null?ActivityOperation.CREATE:ActivityOperation.UPDATE;
 		S save = absenceRepository.save(entity);
 		applicationEventPublisher.publishEvent(ActivityEvent
 				.createWithSource(this).user()
-				.operation(ActivityOperation.CREATE)
+				.operation(activityOperation)
 				.onEntity(Absence.class, save.getId()));
 		return save;
 	}
@@ -109,12 +110,16 @@ public class AbsenceServiceImpl implements AbsenceService {
 	@Override
 	public void delete(Long id) {
 		absenceRepository.delete(id);
+		applicationEventPublisher.publishEvent(ActivityEvent
+				.createWithSource(this).user()
+				.operation(ActivityOperation.DELETE)
+				.onEntity(Absence.class, id));
 	}
 
 
 	@Override
 	public void delete(Absence entity) {
-		absenceRepository.delete(entity);
+		delete(entity.getId());
 	}
 
 
@@ -226,7 +231,7 @@ public class AbsenceServiceImpl implements AbsenceService {
 			absencePortfolioService.save(absencePortfolio);
 			applicationEventPublisher.publishEvent(ActivityEvent
 					.createWithSource(this).user(validator)
-					.operation(ActivityOperation.REJECT)
+					.operation(ActivityOperation.VALIDATE)
 					.onEntity(Absence.class, save.getId()));
 		}else {
 			throw new ServiceException(validator.getFullName()+ " is not the manager of "+findOne.getEmploye().getFullName());

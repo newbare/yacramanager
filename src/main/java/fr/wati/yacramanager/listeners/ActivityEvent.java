@@ -110,7 +110,7 @@ public class ActivityEvent extends ApplicationEvent {
 	
 	public ActivityEvent onEntity(Class<?> entityClass,Long entityId){
 		setEntityId(entityId);
-		setEntityType(entityClass.getName());
+		setEntityType(entityClass.getSimpleName());
 		return this;
 	}
 	

@@ -1,23 +1,34 @@
 <div class="row">
-	<div class="col-xs-12 col-sm-10 col-sm-offset-1">
+	<div class="col-xs-12 col-sm-10">
 		
 		<!-- #section:pages/timeline.style2 -->
 		<div class="timeline-container timeline-style2" data-ng-repeat="day in timelineData.days">
-			<span class="timeline-label"> <b>{{day.date | dateFromNow}}</b>
+			<span class="timeline-label">
+				<span class="label label-primary arrowed-in-right label-lg">
+					<b>{{day.date | dateFromNow}}</b>
+				</span> 
 			</span>
 			<div class="timeline-items">
 				<div class="timeline-item clearfix" data-ng-repeat="activityItem in day.activityItems">
 					<div class="timeline-info">
-						<span class="timeline-date">{{activityItem.time}}</span> <i
+						<span class="timeline-date">{{activityItem.time | date: 'shortTime'}}</span> <i
 							class="timeline-indicator btn btn-info no-hover"></i>
 					</div>
 					<div class="widget-box transparent">
 						<div class="widget-body">
 							<div class="widget-main no-padding">
-								<p class="text-info">
+								<span class="text-info">
 									<strong>{{activityItem.activityDTO.employe.firstName}} {{activityItem.activityDTO.employe.lastName}}</strong>
-									<i class="fa fa-arrow-right"></i> <strong>{{activityItem.activityDTO.activityOperation}}</strong>
-								</p>
+								</span>
+								<i class="fa fa-hand-o-right"></i>
+								<span class="" data-ng-class="{'text-success' : activityItem.activityDTO.activityOperation=='CREATE' || activityItem.activityDTO.activityOperation=='VALIDATE' , 'text-warning' : activityItem.activityDTO.activityOperation=='UPDATE', 'text-danger' : activityItem.activityDTO.activityOperation=='DELETE' || activityItem.activityDTO.activityOperation=='REJECT'}">
+									<strong>{{activityItem.activityDTO.activityOperation}}</strong>
+								</span> 
+								<span class="text-muted">Entity 
+									<a data-ui-sref="company.employees.view.quick.overview({ id: activityItem.activityDTO.entityId })">
+										{{activityItem.activityDTO.entityType}}
+									</a>
+								</span>
 							</div>
 						</div>
 					</div>

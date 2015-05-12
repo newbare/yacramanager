@@ -11,7 +11,7 @@ public interface ActivityService {
 
 	List<Activities> findForUser(Long userId,Pageable pageable);
 	
-	List<Activities> findForCompany(Long comapanyId,Pageable pageable);
+	List<Activities> findForCompany(Long companyId,Pageable pageable);
 	
 	List<Activities> findForProject(Long projectId,Pageable pageable);
 	

@@ -90,6 +90,10 @@ App.run(function($rootScope,$q, $templateCache, UsersREST,$state,ENV,VERSION,USE
 			event.preventDefault();
 		}
 	});
+	 $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
+		    event.preventDefault();
+		    $state.go('error404');
+	});
 	var loadUserInfo = function() {
 		var deferred = $q.defer();
 		UsersREST.get({

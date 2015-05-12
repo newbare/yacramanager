@@ -2,7 +2,9 @@
 <ul class="list-group tasks">
 	<!-- Iterate over project -->
 	<li class="list-group-item project-list-group-item" data-ng-repeat="project in projects">
-		<div class="row"><h4><span class="label label-primary">{{project.client.name}} - {{project.name}}</span></h4></div>
+		<div class="row">
+			<h4 class="header blue">{{project.client.name}} - {{project.name}} <small> {{project.tasks.length}} tasks</small></h4>
+		</div>
 		<div class="row">
 				<div class="input-group input-group-sm">
 				 <div class="input-group-addon">Name</div>
@@ -14,9 +16,8 @@
 			      </span>
 			    </div><!-- /input-group -->
 		</div>
-		<hr>
 		<div class="table-responsive">
-			<table class="table table-hover ng-table"  data-ng-show="project.tasks.length>0">
+			<table class="table table-striped table-bordered table-hover ng-table"  data-ng-show="project.tasks.length>0">
 					<thead>
 						<tr>
 							<th>Created date</th>
