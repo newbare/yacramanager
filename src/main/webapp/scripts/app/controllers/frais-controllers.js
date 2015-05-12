@@ -1,3 +1,7 @@
+function FraisDetailController($scope,frais,NoteREST){
+	$scope.currentNote=frais;
+}
+
 function FraisController($scope, $rootScope, NoteREST, alertService,
 		ngTableParams, notifService, $upload,$modal,$http,$filter,USERINFO) {
 	$rootScope.page = {

@@ -39,7 +39,7 @@
 </ul>
 <h3 class="header smaller lighter blue">{{client.contacts.length}} Contacs for {{ client.name || 'Name' }}</h3>
 <div data-contacts-manager data-contacts-manager-config="contactsManagerConfig"></div>
-<h3 class="header smaller lighter blue"><i class="fa fa-rss"></i>Last activities on {{ client.name}}</h3>
+<h3 class="header smaller lighter blue"><i class="fa fa-rss orange"></i>Last activities on {{ client.name}}</h3>
 <activities-timeline data-source="timelineSource"></activities-timeline>
 <div class="row ng-cloak ng-table-pager">
 	<div ng-if="params.settings().counts.length"

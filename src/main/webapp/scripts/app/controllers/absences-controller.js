@@ -5,6 +5,18 @@ function ApiDocsController($scope,$rootScope) {
 }
 
 
+function AbsencesDetailController($scope,AbsenceREST,absence,absencesType){
+	$scope.absencesType = absencesType;
+	$scope.currentAbsence=absence;
+	$scope.currentAbsence.startDate=new Date(absence.startDate);
+	$scope.currentAbsence.endDate=new Date(absence.endDate);
+	angular.forEach($scope.absencesType, function(entry) {
+		if(entry.name==$scope.currentAbsence.typeAbsence){
+			$scope.currentAbsence.typeAbsence=entry;
+		 }
+	});
+}
+
 function AbsencesController($scope, $rootScope, AbsenceREST, alertService,ngTableParams,notifService,$http,USERINFO) {
 	$rootScope.page = {
 		"title" : "Absences",

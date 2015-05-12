@@ -81,13 +81,30 @@ App.run(function($rootScope,$q, $templateCache, UsersREST,$state,ENV,VERSION,USE
 	$rootScope.appContextPath=_contextPath;
 	 $rootScope.ENV = ENV;
      $rootScope.VERSION = VERSION;
+     var hasAnyOneOfRole=function(userRoles,definedRoles){
+			result=false;
+			definedRoles.forEach(function(entry) {
+			    if(hasTheRole(userRoles,entry)) {
+			    	result=true;
+			    }
+			});
+			return result;
+		};
+		var hasTheRole=function(roles,role){
+				result=false;
+				roles.forEach(function(entry) {
+				    if(entry.role==role) {
+				    	result=true;
+				    }
+				});
+				return result;
+			};
 	// $templateCache.removeAll();
 	$rootScope.$on('$stateChangeStart', function(event, toState, toParams,
 			fromState, fromParams) {
-		if (toState.data && toState.data.roles) {
-			// User isn’t authenticated
-//			$state.transitionTo("login");
-			event.preventDefault();
+		
+		if (angular.isDefined(toState.data.roles) && ! hasAnyOneOfRole(USERINFO.roles,toState.data.roles)) {
+			 $state.go('accessdenied');
 		}
 	});
 	 $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {

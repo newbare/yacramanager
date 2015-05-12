@@ -10,43 +10,7 @@
 				<h3 data-ng-show="edition" class="panel-title">Edit timeoff</h3>
 			</div>
 			<div class="modal-body">
-				<form role="form" >
-						<div class="form-group">
-							<label for="typeAbsence">Type absence</label>
-							<select ng-model="currentAbsence.typeAbsence" class="form-control" placeholder="Please select" ng-options="type.name for type in absencesType"></select>
-<!-- 							<button id="typeAbsence"   type="button" class="btn btn-default form-control" ng-model="selectedAction" data-html="0" data-ng-options="type.name as type.label for type in absencesType" data-bs-select> -->
-<!-- 							  Action <span class="caret"></span> -->
-<!-- 							</button> -->
-						</div>
-						<div class="form-group">
-							<label for="absenceDescription">(Facultatif)</label> <input
-								type="text" class="form-control" id="absenceDescription"
-								data-ng-model="currentAbsence.description"
-								placeholder="Enter a description">
-						</div>
-						<div class="form-group">
-							<label for="datepicker">Select date range</label>
-							<div class="input-group" id="datepicker">
-								<input type="date" class=" form-control " name="start"
-									data-ng-model="currentAbsence.startDate" placeholder="From"/>
-									 <span class="input-group-addon">to</span> <input
-									type="date" class=" form-control " name="end"
-									data-ng-model="currentAbsence.endDate" placeholder="Until"/>
-							</div>
-						</div>
-						<div class="form-group">
-							<label> <input type="checkbox" class=""
-								ng-model="currentAbsence.startAfternoon" /> <span>Start
-									from afternoon</span>
-							</label>
-						</div>
-						<div class="form-group">
-							<label> <input type="checkbox" class=""
-								ng-model="currentAbsence.endMorning" /> <span>End after
-									morning</span>
-							</label>
-						</div>
-					</form>
+				<div data-ng-include="'/views/app/components/templates/partials/absences-form.html'"></div>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-primary"

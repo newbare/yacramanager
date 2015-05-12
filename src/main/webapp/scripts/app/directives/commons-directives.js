@@ -649,7 +649,7 @@ App.directive('activitiesTimeline', function() {
     return {
     	replace:true,
         restrict: 'E',
-        scope : true,
+        scope : false,
         templateUrl: _contextPath	+ 'views/app/components/templates/timeline/timeline.tpl.html',
         link: function (scope, element,attrs) {
         	 scope.$watch(attrs['source'], function(newValue, oldValue) {

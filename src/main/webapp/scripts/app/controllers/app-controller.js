@@ -247,6 +247,8 @@ App.controller('LoginCtrl', [ '$scope','$http','authService',function($scope,$ht
 var whenConfig=[ '$urlRouterProvider',	function($urlRouterProvider) {
 	$urlRouterProvider
 	.when('','/home')
+	.when('/absence', '/absence/list')
+	.when('/frais', '/frais/list')
 	.when('/company', '/company/home')
 	.when('/admin/company', '/admin/company/view/quickview')
 	.when('/company/employees', '/company/employees/view/quickview')
@@ -281,6 +283,14 @@ var stateConfig =[ '$stateProvider','$locationProvider','$translateProvider','tm
 			        pageTitle: 'Error 404'
 			      }
 			})
+			.state('accessdenied', {
+				url : "/accessdenied",
+				templateUrl : _contextPath+'views/app/components/error/accessdenied.html',
+				controller : HomeController,
+				data: {
+			        pageTitle: 'Access denied'
+			      }
+			})
 			.state('home', {
 				url : "/home",
 				templateUrl : _contextPath+'views/app/components/home.html',
@@ -300,13 +310,35 @@ var stateConfig =[ '$stateProvider','$locationProvider','$translateProvider','tm
 			})
 			.state('frais', {
 				url : "/frais",
-				templateUrl : _contextPath+'views/app/components/frais.html',
+				templateUrl : _contextPath+'views/app/components/frais/frais.html',
 				controller : FraisController,
 				data: {
 			        pageTitle: 'Frais',
 			        ncyBreadcrumbLabel: 'Frais'
 			      }
-			}).state('activity-report', {
+			}).state('frais.list', {
+				url : "/list",
+				templateUrl : _contextPath+'views/app/components/frais/frais-list.html',
+				controller : FraisController,
+				data: {
+			        pageTitle: 'Frais',
+			        ncyBreadcrumbLabel: 'List view'
+			      }
+			}).state('frais.detail', {
+				url : "/detail/:id",
+				templateUrl : _contextPath+'views/app/components/frais/frais-detail.html',
+				controller : FraisDetailController,
+				resolve : {
+					frais :function(NoteREST,$stateParams) {
+						return NoteREST.get({id:$stateParams.id}).$promise;
+					}
+				},
+				data : {
+					ncyBreadcrumbLabel : ' N° {{currentNote.id}}',
+					 ncyBreadcrumbParent: 'frais'
+				}
+			})
+			.state('activity-report', {
 				url : "/activity-report",
 				templateUrl : _contextPath+'views/app/components/activity-report.html',
 				controller : ActivityReportController,
@@ -314,15 +346,41 @@ var stateConfig =[ '$stateProvider','$locationProvider','$translateProvider','tm
 			        pageTitle: 'Activity report',
 			        ncyBreadcrumbLabel: 'Activity report'
 			      }
-			}).state('absences', {
-				url : "/absences",
-				templateUrl : _contextPath+'views/app/components/absences.html',
+			}).state('absence', {
+				url : "/absence",
+				templateUrl : _contextPath+'views/app/components/absence/absence.html',
 				controller : AbsencesController,
 				data: {
 			        pageTitle: 'Absences',
 			        ncyBreadcrumbLabel: 'Absences'
 			      }
-			}).state('timesheet', {
+			}).state('absence.list', {
+				url : "/list",
+				templateUrl : _contextPath+'views/app/components/absence/absence-list.html',
+				controller : AbsencesController,
+				data: {
+			        pageTitle: 'Absences',
+			        ncyBreadcrumbLabel: 'List view',
+			        ncyBreadcrumbParent: 'absences'
+			      }
+			}).state('absence.detail', {
+				url : "/detail/:id",
+				templateUrl : _contextPath+'views/app/components/absence/absence-detail.html',
+				controller : AbsencesDetailController,
+				resolve : {
+					absence :function(AbsenceREST,$stateParams) {
+						return AbsenceREST.get({id:$stateParams.id}).$promise;
+					},
+					absencesType: function(AbsenceREST){
+						return AbsenceREST.getTypes().$promise;
+					}
+				},
+				data : {
+					ncyBreadcrumbLabel : '{{currentAbsence.typeAbsence.name}} from {{currentAbsence.startDate | date : "mediumDate"}} to {{currentAbsence.endDate | date : "mediumDate"}}',
+					 ncyBreadcrumbParent: 'absences'
+				}
+			})
+			.state('timesheet', {
 				url : "/timesheet",
 				templateUrl : _contextPath+'views/app/components/timesheet.html',
 				controller : TimeSheetController,
@@ -592,6 +650,7 @@ var stateConfig =[ '$stateProvider','$locationProvider','$translateProvider','tm
 				templateUrl : _contextPath+'views/app/components/admin/admin-home.html',
 				controller : AdminHomeController,
 				data: {
+					roles: ['ROLE_ADMIN'],
 					ncyBreadcrumbSkip: true
 				  }
 			})
@@ -600,6 +659,7 @@ var stateConfig =[ '$stateProvider','$locationProvider','$translateProvider','tm
 				templateUrl : _contextPath+'views/app/components/templates/partials/panel-view.html',
 				controller : AdminCompaniesController,
 				data: {
+					roles: ['ROLE_ADMIN'],
 					ncyBreadcrumbLabel : 'Company'
 				  }
 			}).state('admin.company.details', {
@@ -607,6 +667,7 @@ var stateConfig =[ '$stateProvider','$locationProvider','$translateProvider','tm
 				templateUrl : _contextPath+'views/app/components/admin/company/admin-company-overview.html',
 				controller : AdminCompanyOverviewController,
 				resolve : {
+					roles: ['ROLE_ADMIN'],
 					company :function(CompanyREST,$stateParams,$state,USERINFO) {
 						return CompanyREST.get({
 							companyId : USERINFO.company.id,
@@ -620,6 +681,7 @@ var stateConfig =[ '$stateProvider','$locationProvider','$translateProvider','tm
 				templateUrl : _contextPath+'views/app/components/admin/company/admin-company-view.html',
 				controller : AdminCompanyViewController,
 				data: {
+					roles: ['ROLE_ADMIN'],
 				    ncyBreadcrumbSkip: true 
 				  }
 			})
@@ -628,6 +690,7 @@ var stateConfig =[ '$stateProvider','$locationProvider','$translateProvider','tm
 				templateUrl : _contextPath+'views/app/components/admin/company/admin-company-list.html',
 				controller : AdminCompanyListController,
 				data: {
+					roles: ['ROLE_ADMIN'],
 					ncyBreadcrumbLabel : 'List view'
 				  }
 			}).state('admin.company.view.quick', {
@@ -635,6 +698,7 @@ var stateConfig =[ '$stateProvider','$locationProvider','$translateProvider','tm
 				templateUrl : _contextPath+'views/app/components/admin/company/admin-company-quickview.html',
 				controller : AdminCompanyQuickViewController,
 				data: {
+					roles: ['ROLE_ADMIN'],
 					ncyBreadcrumbLabel : 'Quick view'
 				  }
 				
@@ -652,6 +716,7 @@ var stateConfig =[ '$stateProvider','$locationProvider','$translateProvider','tm
 					}
 				},
 				data: {
+					roles: ['ROLE_ADMIN'],
 					 ncyBreadcrumbLabel: '{{company.name}}'
 				  }
 			})
@@ -660,6 +725,7 @@ var stateConfig =[ '$stateProvider','$locationProvider','$translateProvider','tm
 				templateUrl : _contextPath+'views/app/components/admin/admin-logs.html',
 				controller : LogsController,
                  data: {
+                	roles: ['ROLE_ADMIN'],
  					ncyBreadcrumbLabel: 'Logs'
  				  }
 			})
@@ -668,6 +734,7 @@ var stateConfig =[ '$stateProvider','$locationProvider','$translateProvider','tm
 				templateUrl : _contextPath+'views/app/components/admin/admin-metrics.html',
 				controller : MetricsController,
 				data: {
+					roles: ['ROLE_ADMIN'],
 					ncyBreadcrumbLabel: 'Metrics'
 				  }
 			})

@@ -188,6 +188,8 @@ public class DtoMapper {
 		dto.setDate(absence.getDate());
 		dto.setId(absence.getId());
 		dto.setValidationStatus(absence.getValidationStatus());
+		dto.setStartAfternoon(absence.isStartAfternoon());
+		dto.setEndMorning(absence.isEndMorning());
 		return dto;
 	}
 	
