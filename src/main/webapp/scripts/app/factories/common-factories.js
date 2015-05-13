@@ -129,6 +129,10 @@ App.factory("EmployeesREST", function($resource) {
 		updateManager:{
 			url:_contextPath + "app/api/users/update-manager/:employeeId",
 			method : 'POST',
+		},
+		updateUserRights:{
+			url:_contextPath + "app/api/users/update-rights/:employeeId",
+			method : 'POST',
 		}
 	});
 });

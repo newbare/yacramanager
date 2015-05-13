@@ -66,7 +66,7 @@ var App = angular.module('yaCRAApp', [ 'ngResource', 'mgcrea.ngStrap',
 		'http-auth-interceptor', 'timer', 'localytics.directives',
 		'daterangepicker', 'pascalprecht.translate', 'angular-loading-bar',
 		'ngQuickDate', 'xeditable', 'colorpicker.module', 'angular.filter',
-		'truncate','ncy-angular-breadcrumb','ngCookies','tmh.dynamicLocale','ngFinder' ]);
+		'truncate','ncy-angular-breadcrumb','ngCookies','tmh.dynamicLocale','ngFinder']);
 
 
 App.config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
@@ -102,9 +102,9 @@ App.run(function($rootScope,$q, $templateCache, UsersREST,$state,ENV,VERSION,USE
 	// $templateCache.removeAll();
 	$rootScope.$on('$stateChangeStart', function(event, toState, toParams,
 			fromState, fromParams) {
-		
 		if (angular.isDefined(toState.data.roles) && ! hasAnyOneOfRole(USERINFO.roles,toState.data.roles)) {
-			 $state.go('accessdenied');
+			event.preventDefault();
+			$state.go('error403');
 		}
 	});
 	 $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {

@@ -135,7 +135,21 @@ public class UserRestController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
     
-	
+    @RequestMapping(value = "/update-rights/{employeeId}",
+            method = RequestMethod.POST,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+	@RolesAllowed(Role.SSII_ADMIN)
+    public ResponseEntity<?> updateUserRights(@PathVariable("employeeId") Long employeeId ,@RequestBody(required=true) List<String> roles) throws RestServiceException {
+    	try {
+			employeService.updateUserRights(employeeId,roles);
+		} catch (ServiceException e) {
+			LOG.error(e);
+			throw new RestServiceException(e);
+		}
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+    
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@Timed

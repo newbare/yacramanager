@@ -22,6 +22,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
+
 import fr.wati.yacramanager.beans.Activities.ActivityOperation;
 import fr.wati.yacramanager.beans.Company;
 import fr.wati.yacramanager.beans.CompanyAccountInfo;
@@ -437,6 +441,24 @@ public class EmployeServiceImpl implements EmployeService {
 	@Override
 	public Employe findByEmail(String email) {
 		return employeRepository.findByEmail(email);
+	}
+
+	/* (non-Javadoc)
+	 * @see fr.wati.yacramanager.services.EmployeService#updateUserRights(java.lang.Long, java.util.List)
+	 */
+	@Override
+	@Transactional
+	public void updateUserRights(Long employeeId, List<String> roles)
+			throws ServiceException {
+		Employe employe = findOne(employeeId);
+		List<Role> transformRoles = Lists.transform(roles, new Function<String,Role>() {
+			@Override
+			public Role apply(String input) {
+				return roleRepository.findByRole(input);
+			}
+		});
+		employe.setRoles(Sets.newHashSet(transformRoles));
+		save(employe);
 	}
 
 }

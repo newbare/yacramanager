@@ -198,6 +198,8 @@ public class CompanyController {
 			final Locale locale, final HttpServletRequest request,
 			final HttpServletResponse response) {
 		Map<String, Object> variables = new HashMap<String, Object>();
+		variables.put("firstName", companyTempInvitation.getFirstName());
+		variables.put("lastName", companyTempInvitation.getLastName());
 		variables.put("invitationToken", companyTempInvitation.getToken());
 		variables.put("invitationUsername", companyTempInvitation.getUserId());
 		variables.put("invitationCompany", companyTempInvitation.getCompanyId());

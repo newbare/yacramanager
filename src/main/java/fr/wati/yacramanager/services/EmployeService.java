@@ -37,4 +37,6 @@ public interface EmployeService extends CrudService<Employe, Long>,Specification
 
 	void updateManager(Long employeeId, Long managerId) throws ServiceException;
 	
+	void updateUserRights(Long employeeId, List<String> roles) throws ServiceException;
+	
 }

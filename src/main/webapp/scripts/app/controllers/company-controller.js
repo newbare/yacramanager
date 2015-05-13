@@ -269,6 +269,18 @@ function CompanyEmployeesOverviewController($scope,employe,EmployeesREST,USERINF
 			
 		})
 	};
+	$scope.userRight=[];
+	angular.forEach(USERINFO.roles,function(currentRole){
+		$scope.userRight.push(currentRole.role);
+	});
+	
+	$scope.existingRights=['ROLE_INDEP','ROLE_SALARIE','ROLE_SSII_ADMIN','ROLE_ADMIN'];
+	$scope.updateUserRights=function(){
+		EmployeesREST.updateUserRights({"employeeId": employe.id},$scope.userRight,function(response){
+					
+				})
+	}
+	
 }
 /*COMPANY-EMPLOYEE End of section*/
 

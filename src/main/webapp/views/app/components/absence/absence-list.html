@@ -48,13 +48,13 @@
 					<td data-title="'Type'" data-sortable="'typeAbsence'" >{{ absence.typeAbsence}}</td>
 					<td data-title="'From'" data-sortable="'startDate'">{{ absence.startDate | date : dateFormat }}</td>
 					<td data-title="'To'" data-sortable="'endDate'">{{ absence.endDate | date : dateFormat }}</td>
-					<td data-title="'Description'" data-sortable="'description '" class="hidden-xs">{{ absence.description }}</td>
+					<td data-title="'Description'" data-sortable="'description'" class="hidden-xs">{{ absence.description }}</td>
 					<td data-title="'Validation'" data-sortable="'validationStatus'" align="right"><span class="label" data-ng-class="{'label-success' : isValidated(absence) , 'label-warning' : isWaiting(absence), 'label-danger' : isRejected(absence)}">{{absence.validationStatus}}</span></td>
 					<td class="">
 						<div class="btn-group actions-btn" role="group">
 						  <button type="button" class="btn btn-link" data-ui-sref="absence.detail({id:absence.id})"><span class="fa fa-eye"></span></button>
 						  <button type="button" class="btn btn-link"><span class="fa fa-pencil"></span></button>
-						  <button type="button" class="btn btn-link"><span class="fa fa-trash-o red"></span></button>
+						  <button type="button" class="btn btn-link" data-ng-click="deleteAbsence(absence.id)" data-ng-confirm="Are you sure to want to delete this absence?"><span class="fa fa-trash-o red"></span></button>
 						</div>
 					</td>
 				</tr>

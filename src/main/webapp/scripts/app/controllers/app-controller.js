@@ -277,16 +277,16 @@ var stateConfig =[ '$stateProvider','$locationProvider','$translateProvider','tm
 			$stateProvider
 			.state('error404', {
 				url : "/error404",
-				templateUrl : _contextPath+'views/app/components/templates/error-404.tpl.html',
+				templateUrl : _contextPath+'views/app/components/error/error-404.tpl.html',
 				controller : HomeController,
 				data: {
 			        pageTitle: 'Error 404'
 			      }
 			})
-			.state('accessdenied', {
-				url : "/accessdenied",
-				templateUrl : _contextPath+'views/app/components/error/accessdenied.html',
-				controller : HomeController,
+			.state('error403', {
+				url : "/error403",
+				templateUrl : _contextPath+'views/app/components/error/error-403.tpl.html',
+				controller : function(){},
 				data: {
 			        pageTitle: 'Access denied'
 			      }

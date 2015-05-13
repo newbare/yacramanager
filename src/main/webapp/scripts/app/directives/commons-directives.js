@@ -237,39 +237,42 @@ App.directive('absencePortfolio',['AbsenceREST','USERINFO', function(AbsenceREST
     return {
     	replace:true,
         restrict: 'E',
-        template:'<fieldset data-collapsible-fieldset="Available time off" data-collapsible-fieldset-collapsed="true">'+
-					'<div>'+
-					'<div class="progress">'+
-					'  <div class="progress-bar progress-bar-striped " data-ng-class="{\'progress-bar-success\':$index==1,\'progress-bar-warning\':$index==2,\'progress-bar-info\':$index==3,\'progress-bar-danger\':$index==4}" '+
-					'	  		style="width: {{portfolio.remaining*100/totalPortfolioRemaining}}%" data-ng-repeat="portfolio in absencePortfolio" title="{{portfolio.typeAbsenceDTO.label}} {{portfolio.remaining*100/totalPortfolioRemaining |number:0 }}%">'+
-					'	    <span class="sr-only">portfolio.remaining*100/totalPortfolioRemaining</span>'+
-					'	    {{portfolio.typeAbsenceDTO.label | characters:15}} {{portfolio.remaining*100/totalPortfolioRemaining |number:0 }}%'+
-					'	  </div>'+
-					'	</div>'+
-					'</div>'+
-					'<div class="row">'+
-					'	<div class="col-md-4 col-xs-12" data-ng-repeat="portfolio in absencePortfolio">'+
-					'		<div class="col-md-8 col-xs-6"><span>{{portfolio.typeAbsenceDTO.label}}: </span></div>'+
-					'		<div class="col-md-4 col-xs-2">'+
-					'			<span>'+
-					'				<strong>{{portfolio.remaining}}</strong>'+
-					'			</span>'+
-					'			</div>'+
-					'	</div>'+
-					'</div>'+
-					'</fieldset>',
+//        template:'<fieldset data-collapsible-fieldset="Available time off" data-collapsible-fieldset-collapsed="true">'+
+//					'<div>'+
+//					'<div class="progress">'+
+//					'  <div class="progress-bar progress-bar-striped " data-ng-class="{\'progress-bar-success\':$index==1,\'progress-bar-warning\':$index==2,\'progress-bar-info\':$index==3,\'progress-bar-danger\':$index==4}" '+
+//					'	  		style="width: {{portfolio.remaining*100/totalPortfolioRemaining}}%" data-ng-repeat="portfolio in absencePortfolio" title="{{portfolio.typeAbsenceDTO.label}} {{portfolio.remaining*100/totalPortfolioRemaining |number:0 }}%">'+
+//					'	    <span class="sr-only">portfolio.remaining*100/totalPortfolioRemaining</span>'+
+//					'	    {{portfolio.typeAbsenceDTO.label | characters:15}} {{portfolio.remaining*100/totalPortfolioRemaining |number:0 }}%'+
+//					'	  </div>'+
+//					'	</div>'+
+//					'</div>'+
+//					'<div class="row">'+
+//					'	<div class="col-md-4 col-xs-12" data-ng-repeat="portfolio in absencePortfolio">'+
+//					'		<div class="col-md-8 col-xs-6"><span>{{portfolio.typeAbsenceDTO.label}}: </span></div>'+
+//					'		<div class="col-md-4 col-xs-2">'+
+//					'			<span>'+
+//					'				<strong>{{portfolio.remaining}}</strong>'+
+//					'			</span>'+
+//					'			</div>'+
+//					'	</div>'+
+//					'</div>'+
+//					'</fieldset>',
+        templateUrl: _contextPath	+ 'views/app/components/templates/partials/absence-portfolio.tpl.html',
         link: function(scope, elem, attrs) {
         	scope.absencePortfolio={};
         	var userID=attrs.userId || USERINFO.id;
         	scope.$on('absence-portfolio-changed',function(){
         		scope.refreshPortfolio();
         	});
+        	var initialisation=true;
         	scope.refreshPortfolio=function(){
         		AbsenceREST.getPortfolio({
         			"requesterId" : userID
         		}).$promise.then(function(result) {
         			scope.absencePortfolio=result.result;
         			scope.totalPortfolioRemaining=scope.countTotalPortfolio(scope.absencePortfolio);
+        			initialisation=false;
         		});
         	};
         	scope.countTotalPortfolio=function(absencePortfolios){
@@ -280,6 +283,9 @@ App.directive('absencePortfolio',['AbsenceREST','USERINFO', function(AbsenceREST
         		return total;
         	};
         	scope.refreshPortfolio();
+        	if(initialisation){
+        		$('#absencePortfolioBody').collapse();
+        	}
         }
       };
     }]);

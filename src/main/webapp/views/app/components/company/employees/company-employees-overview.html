@@ -22,7 +22,7 @@
 							      Username
 							    </div>
 							    <div class="profile-info-value">
-							      <a href="#" onaftersave="updateEmploye()" editable-text="employe.username">{{ employe.username || 'empty' }}</a>
+							      <span>{{ employe.username }}</span>
 							    </div>
 							  </div>
 							</div>
@@ -117,34 +117,41 @@
 							</div>
 			  </div>
 			  <div class="tab-pane" data-ng-class="{'active' : isActiveTab('administration') }">
-			  	<span class="text-muted">Created on {{employe.createdDate  | date:'longDate'}}</span>
-			  	<fieldset data-collapsible-fieldset="Management" data-collapsible-fieldset-collapsed>
-			  		<div class="">
-			  		<form class="form-horizontal">
-					  <div class="form-group">
-					    <label for="manager" class="col-sm-4 control-label">Select the manager</label>
-					    
-					    <div class="col-sm-8">
-						     <div class=" input-group-sm">
-							     <select class="form-control" id="manager" allow-single-deselect="true"
-										data-chosen="" data-placeholder="Select Manager" data-ng-model="employeManager"
-										data-ng-options="format(ce) for ce in companyEmployees track by ce.id">
-										<option value=""></option>
-								</select>
-							</div>
-					    </div>
-					  </div>
-					  <div class="form-group">
-					    <div class="col-sm-offset-8 col-sm-4">
-					      <button class="btn btn-success btn-xs"	data-ng-click="updateManager()">
-							<i class="fa fa-plus"></i> Update manager
-						  </button>
-					    </div>
-					 </div>
-  					</form>
-  					</div>
-			  	</fieldset>
-			  </div>
+			  	<div class="row">
+			  	<h3 class="header smaller lighter blue">Manager</h3>
+				  <div class="form-group">
+				    <label for="manager" class="control-label">Select the manager</label>
+				     <select class="form-control" id="manager" allow-single-deselect="true"
+							data-chosen="" data-placeholder="Select Manager" data-ng-model="employeManager"
+							data-ng-options="format(ce) for ce in companyEmployees track by ce.id">
+							<option value=""></option>
+					</select>
+				  </div>
+				  <div class="form-group">
+				      <button class="btn btn-success btn-sm pull-right" data-ng-click="updateManager()">
+						<i class="fa fa-plus"></i> Update manager
+					  </button>
+				 </div>
+				 </div>
+				<div class="row">
+					<h3 class="header smaller lighter blue">User rights</h3>
+					<div class="form-group">
+						<label for="selectUserRights">Employees</label> <select
+							class="form-control" id="selectUserRights" class="form-control"
+							data-chosen="" data-ng-change="selectProject(project)" multiple
+							data-placeholder="Select employee" data-ng-model="userRight"
+							data-ng-options="ce for ce in existingRights">
+							<option value=""></option>
+						</select>
+					</div>
+					<div class="form-group">
+						<button class="btn btn-success btn-sm pull-right"
+							data-ng-click="updateUserRights()">
+							<i class="fa fa-lock"></i> Update user Right
+						</button>
+					</div>
+				</div>
+			</div>
 			  <div class="tab-pane" data-ng-class="{'active' : isActiveTab('salaryInfos') }">
 			  	Salary
 			  </div>
