@@ -7,10 +7,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 import fr.wati.yacramanager.beans.ActivityReport;
+import fr.wati.yacramanager.beans.ValidationStatus;
 
 public interface ActivityReportRepository extends JpaRepository<ActivityReport, Long>, JpaSpecificationExecutor<ActivityReport>{
 
 	List<ActivityReport> findByEmployeIdAndStartDateBetweenAndEndDateBetween(Long employeId,LocalDate startDate,LocalDate endDate,LocalDate startDate2,LocalDate endDate2);
 	
 	ActivityReport findByEmployeIdAndStartDateAndEndDate(Long employeId,LocalDate startDate,LocalDate endDate);
+	
+	List<ActivityReport> findByEmployeIdInAndValidationStatusIn(List<Long> employeIds,List<ValidationStatus> validationStatus);
 }

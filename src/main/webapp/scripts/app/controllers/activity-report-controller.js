@@ -5,6 +5,16 @@ function ActivityReportController($scope,$rootScope,ActivityReportREST,$filter,$
 	$scope.dateFormat="dd MMMM yyyy";
 	$scope.craDateFormat="EEE dd/MM";
 	$scope.numberOfWeek=0;
+	$scope.approvementTotal=0;
+	$scope.currentTab='viewActivityReport';
+	
+	$scope.activateTab=function(tab){
+		$scope.currentTab=tab;
+	};
+	$scope.isActiveTab=function(tab){
+		return tab==$scope.currentTab;
+	};
+	
 	$scope.resetNewAbsence=function(){
 		$scope.newAbsence={};
 	};
@@ -257,7 +267,20 @@ function ActivityReportController($scope,$rootScope,ActivityReportREST,$filter,$
 		});
 	};
 	
-	
+	$scope.refreshApproval=function(){
+		ActivityReportREST.getApprovals({
+			"id" : USERINFO.id
+		}).$promise.then(function(result) {
+			$scope.approvementTotal=result.length;
+			$scope.approvements=result;
+		});
+//		$http.get(_contextPath+"/app/api/absences/approval",{params:{"requesterId":_userId} })
+//		.success(function(data, status) {
+//			$scope.approvementTotal=data.totalCount;
+//			$scope.approvements=data.result;
+//		});
+	};
+	$scope.refreshApproval();
 	$scope.sendForApproval=function(employeId){
 		ActivityReportREST.submit({
 			employeId : employeId,
@@ -280,14 +303,26 @@ function ActivityReportController($scope,$rootScope,ActivityReportREST,$filter,$
 		});
 	};
 	
-	$scope.approveActivityReport=function(activityReportId,startDate,endDate){
+	$scope.approveActivityReport=function(employeId,startDate,endDate){
 		ActivityReportREST.approve({
-			employeId : USERINFO.id,
+			requesterId : USERINFO.id,
+			employeId : employeId,
 			startDate : startDate,
 			endDate: endDate
 		},{}).$promise.then(function(result) {
 			$scope.retrieveCraDetails($scope.currentFilter);
 			alertService.show('success','Activity report has been approved','The request has been sent!');
+		});
+	};
+	$scope.rejectActivityReport=function(activityReportId,startDate,endDate){
+		ActivityReportREST.reject({
+			requesterId : USERINFO.id,
+			employeId : employeId,
+			startDate : startDate,
+			endDate: endDate
+		},{}).$promise.then(function(result) {
+			$scope.retrieveCraDetails($scope.currentFilter);
+			alertService.show('success','Activity report has been rejected','The request has been sent!');
 		});
 	};
 	

@@ -75,6 +75,13 @@ public class ActivityReport extends AuditableEntity implements Valideable {
 
 	public void setEmployeId(Long employeId) {
 		this.employeId = employeId;
+	}
+
+	@Override
+	public String toString() {
+		return String
+				.format("ActivityReport [employeId=%s, startDate=%s, endDate=%s, validationStatus=%s]",
+						employeId, startDate, endDate, validationStatus);
 	} 
 	
 	

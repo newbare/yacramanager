@@ -213,9 +213,19 @@ App.factory("ActivityReportREST", function($resource) {
 			url : _contextPath + "app/api/activity-report/approve",
 			method : 'POST'
 		},
+		reject : {
+			url : _contextPath + "app/api/activity-report/reject",
+			method : 'POST'
+		},
 		cancel : {
 			url : _contextPath + "app/api/activity-report/cancel",
 			method : 'POST'
+		},
+		getApprovals : {
+			url : _contextPath + "app/api/activity-report/approval/:id",
+			method : 'GET',
+			isArray : true
+
 		}
 	});
 });

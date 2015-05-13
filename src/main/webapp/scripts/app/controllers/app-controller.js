@@ -280,7 +280,7 @@ var stateConfig =[ '$stateProvider','$locationProvider','$translateProvider','tm
 				templateUrl : _contextPath+'views/app/components/error/error-404.tpl.html',
 				controller : HomeController,
 				data: {
-			        pageTitle: 'Error 404'
+			        pageTitle: 'Page not found'
 			      }
 			})
 			.state('error403', {
@@ -430,6 +430,7 @@ var stateConfig =[ '$stateProvider','$locationProvider','$translateProvider','tm
 				templateUrl : _contextPath+'views/app/components/api-docs.html',
 				controller : ApiDocsController,
 				data: {
+					roles: ['ROLE_ADMIN'],
 			        ncyBreadcrumbLabel: 'Yacra API'
 			      }
 			})

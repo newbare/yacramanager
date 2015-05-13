@@ -46,6 +46,10 @@
 		"timeoff":{
 			"mytimeoff":"My time off",
 			"tobeapprouved":"To be aproved "
+			},
+		"cra":{
+			"mycra":"My activity report",
+			"tobeapprouved":"To be aproved "
 			}
 	},
 	"global": {
@@ -317,6 +321,19 @@
             "misses": "Misses",
             "evictioncount": "Eviction count",
             "mean": "Mean get time (ms)"
+        },
+        "datasource": {
+        	"usage": "Usage",
+            "title": "DataSource statistics (time in millisecond)",
+            "name": "Pool usage",
+            "count": "Count",
+            "mean": "Mean",
+            "min": "Min",
+            "max": "Max",
+            "p50": "p50",
+            "p75": "p75",
+            "p95": "p95",
+            "p99": "p99"
         }
     },
     "health": {

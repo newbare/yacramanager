@@ -1,5 +1,6 @@
 package fr.wati.yacramanager.web.api;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -12,6 +13,7 @@ import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,8 +22,12 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.codahale.metrics.annotation.Timed;
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
 
+import fr.wati.yacramanager.beans.ActivityReport;
 import fr.wati.yacramanager.beans.Employe;
+import fr.wati.yacramanager.beans.ValidationStatus;
 import fr.wati.yacramanager.services.ActivityReportService;
 import fr.wati.yacramanager.services.CraService;
 import fr.wati.yacramanager.services.EmployeService;
@@ -120,17 +126,64 @@ public class ActivityReportController {
 	@ResponseStatus(value = HttpStatus.OK)
 	@Timed
 	public void approveSubmittedActivityReport(
+			@RequestParam(value = "requesterId") Long requesterId,
 			@RequestParam(value = "employeId") Long employeId,
 			@RequestParam(value = "startDate") @DateTimeFormat(iso = ISO.DATE) LocalDate startDate,
 			@RequestParam(value = "endDate") @DateTimeFormat(iso = ISO.DATE) LocalDate endDate)
 			throws RestServiceException {
 		try {
-			Employe employe = employeService.findOne(employeId);
-			activityReportService.approveSubmittedActivityReport(employe, activityReportService.findByEmployeAndStartDateAndEndDate(employe, startDate, endDate));
+			Employe manager = employeService.findOne(requesterId);
+			activityReportService.approveSubmittedActivityReport(manager, activityReportService.findByEmployeAndStartDateAndEndDate(employeService.findOne(employeId), startDate, endDate));
 		} catch (ServiceException e) {
 			logger.error(e.getMessage(), e);
 			throw new RestServiceException(e);
 		}
+	}
+	
+	@RequestMapping(value = "/reject", method = RequestMethod.POST)
+	@ResponseStatus(value = HttpStatus.OK)
+	@Timed
+	public void rejectSubmittedActivityReport(
+			@RequestParam(value = "requesterId") Long requesterId,
+			@RequestParam(value = "employeId") Long employeId,
+			@RequestParam(value = "startDate") @DateTimeFormat(iso = ISO.DATE) LocalDate startDate,
+			@RequestParam(value = "endDate") @DateTimeFormat(iso = ISO.DATE) LocalDate endDate)
+			throws RestServiceException {
+		try {
+			Employe manager = employeService.findOne(requesterId);
+			activityReportService.rejectSubmittedActivityReport(manager, activityReportService.findByEmployeAndStartDateAndEndDate(employeService.findOne(employeId), startDate, endDate));
+		} catch (ServiceException e) {
+			logger.error(e.getMessage(), e);
+			throw new RestServiceException(e);
+		}
+	}
+	
+	@RequestMapping(value = "/approval/{id}", method = RequestMethod.GET)
+	@Timed
+	public @ResponseBody
+	List<CraDetailsDTO> getCraDetailsToApprove(@PathVariable(value = "id") Long requesterId) throws RestServiceException {
+		List<CraDetailsDTO> craDetailsDTOs=new ArrayList<>();
+		try {
+			Employe requester=employeService.findOne(requesterId);
+			if(requester==null){
+				throw new RestServiceException("Requester not found");
+			}
+			List<Employe> managedEmployees = employeService.getManagedEmployees(requesterId);
+			Function<Employe, Long> idExtractor=new Function<Employe, Long>() {
+				@Override
+				public Long apply(Employe employe) {
+					return employe.getId();
+				}
+			};
+			List<ActivityReport> activityReportsToApprove = activityReportService.findByEmployeInAndValidationStatusIn(Lists.transform(managedEmployees, idExtractor), Lists.newArrayList(ValidationStatus.WAIT_FOR_APPROVEMENT));
+			for(ActivityReport currentActivityReport:activityReportsToApprove){
+				craDetailsDTOs.add(craService.generateCraDetail(Lists.newArrayList(employeService.findOne(currentActivityReport.getEmployeId())), currentActivityReport.getStartDate(), currentActivityReport.getEndDate()));
+			}
+		} catch (ServiceException e) {
+			logger.error(e.getMessage(), e);
+			throw new RestServiceException(e);
+		}
+		return craDetailsDTOs;
 	}
 	
 }

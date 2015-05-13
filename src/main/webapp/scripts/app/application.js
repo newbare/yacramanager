@@ -104,12 +104,12 @@ App.run(function($rootScope,$q, $templateCache, UsersREST,$state,ENV,VERSION,USE
 			fromState, fromParams) {
 		if (angular.isDefined(toState.data.roles) && ! hasAnyOneOfRole(USERINFO.roles,toState.data.roles)) {
 			event.preventDefault();
-			$state.go('error403');
+			$state.go('error403',{pageTitle: 'Access denied'});
 		}
 	});
 	 $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
 		    event.preventDefault();
-		    $state.go('error404');
+		    $state.go('error404',{pageTitle: 'Page not Found'});
 	});
 	var loadUserInfo = function() {
 		var deferred = $q.defer();
