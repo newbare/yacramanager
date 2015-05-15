@@ -34,7 +34,7 @@ import fr.wati.yacramanager.utils.Filter.FilterType;
 import fr.wati.yacramanager.web.dto.ClientDTO;
 
 @Transactional
-@Service
+@Service("clientService")
 public class ClientServiceImpl implements ClientService {
 
 	@Inject

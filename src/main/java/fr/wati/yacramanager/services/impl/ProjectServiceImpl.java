@@ -39,7 +39,7 @@ import fr.wati.yacramanager.utils.Filter.FilterText;
 import fr.wati.yacramanager.utils.Filter.FilterType;
 import fr.wati.yacramanager.web.dto.ProjectDTO;
 
-@Service
+@Service("projectService")
 @Transactional
 public class ProjectServiceImpl implements ProjectService{
 
@@ -216,6 +216,10 @@ public class ProjectServiceImpl implements ProjectService{
 		dto.setId(project.getId());
 		dto.setCreatedDate(project.getCreatedDate());
 		dto.setName(project.getName());
+		if(project.getCreatedBy()!=null){
+			dto.setCreatedBy(project.getCreatedBy().getId());
+		}
+		dto.setColor(project.getColor());
 		dto.setDescription(project.getDescription());
 		dto.setTasks(dtoMapper.mapTasks(project.getTasks()));
 		dto.setClient(clientService.toClientDTO(project.getClient()));

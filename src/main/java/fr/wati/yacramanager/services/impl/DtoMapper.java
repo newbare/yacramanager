@@ -5,9 +5,13 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.Transformer;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.google.common.collect.Lists;
 
 import fr.wati.yacramanager.beans.Absence;
 import fr.wati.yacramanager.beans.Attachement;
@@ -142,6 +146,9 @@ public class DtoMapper {
 		dto.setCreatedDate(project.getCreatedDate());
 		dto.setDescription(project.getDescription());
 		dto.setColor(project.getColor());
+		if(project.getCreatedBy()!=null){
+			dto.setCreatedBy(project.getCreatedBy().getId());
+		}
 //		if(project.getClient()!=null){
 //			ClientDTO clientDTO=map(project.getClient());
 //			dto.setClient(clientDTO);
@@ -350,6 +357,7 @@ public class DtoMapper {
 	 * @param tasks
 	 * @return
 	 */
+	@Transactional
 	public  List<TaskDTO> mapTasks(Iterable<Task> tasks) {
 		List<TaskDTO> dtos = new ArrayList<>();
 		for (Task task : tasks) {
@@ -362,11 +370,21 @@ public class DtoMapper {
 	 * @param task
 	 * @return
 	 */
+	@Transactional
 	public  TaskDTO map(Task task) {
 		TaskDTO dto=new TaskDTO();
 		dto.setCreatedDate(task.getCreatedDate());
 		dto.setDescription(task.getDescription());
-//		dto.setEmployeId(task.getEmploye().getId());
+		List<Employe> assignedEmployees=Lists.newArrayList();
+		assignedEmployees.addAll(task.getAssignedEmployees());
+		List<Long> assignedEmployeesIds = (List<Long>) CollectionUtils.collect(assignedEmployees, new Transformer() {
+			@Override
+			public Object transform(Object input) {
+				Employe employe=(Employe) input;
+				return (Long)employe.getId();
+			}
+		});
+		dto.setAssignedEmployeesIds(assignedEmployeesIds);
 		dto.setId(task.getId());
 		dto.setName(task.getName());
 		dto.setTaskStatus(task.getTaskStatus());

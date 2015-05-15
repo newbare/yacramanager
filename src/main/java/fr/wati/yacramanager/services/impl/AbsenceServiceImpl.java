@@ -41,7 +41,7 @@ import fr.wati.yacramanager.utils.Filter.FilterText;
 import fr.wati.yacramanager.utils.Filter.FilterType;
 import fr.wati.yacramanager.web.dto.AbsenceDTO.TypeAbsence;
 
-@Service
+@Service("absenceService")
 public class AbsenceServiceImpl implements AbsenceService {
 
 	@Inject

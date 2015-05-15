@@ -176,7 +176,7 @@ App.factory("TasksREST", function($resource) {
 		getAll:{
 			url : _contextPath + "app/api/:companyId/task/:employeId/all",
 			method : 'GET',
-			isArray : false
+			isArray : true
 		},
 		getAssignedEmployee:{
 			url : _contextPath + "app/api/:companyId/task/:taskId/assigned/:employeId",

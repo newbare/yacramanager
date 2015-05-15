@@ -5,7 +5,7 @@ function TasksController($scope, $rootScope,ngTableParams, alertService,Projects
 		"title" : "Tasks",
 		"description" : "My tasks"
 	};
-
+	$scope.currentEmployeId=USERINFO.id;
 	$scope.tableFilter="";
 	var allTask=[];
 	$scope.resetTaskToAdd=function(){
@@ -13,6 +13,9 @@ function TasksController($scope, $rootScope,ngTableParams, alertService,Projects
 	};
 	$scope.projectToAdd=undefined;
 	$scope.projects=[];
+	$scope.selectProjectToAdd=function(project){
+		$scope.projectToAdd=project;
+	};
 	
 	$scope.resetTaskToAdd();
 	
@@ -132,7 +135,7 @@ function TasksController($scope, $rootScope,ngTableParams, alertService,Projects
 		TasksREST.save({companyId :USERINFO.company.id},newtask).$promise.then(function(result){
 			alertService.show('success','Confirmation', 'New task created');
 			$scope.resetTaskToAdd();
-			$scope.refreshProjects();
+			$scope.tableParams.reload();
 		});
 		
 	};
@@ -145,7 +148,18 @@ function TasksController($scope, $rootScope,ngTableParams, alertService,Projects
 			$scope.projects = data.result;
 		});
 	};
-	
+	$scope.deleteTask=function(taskid){
+		TasksREST.remove({
+			id : taskid,
+			companyId:USERINFO.company.id
+		}).$promise.then(function(result) {
+			$scope.tableParams.reload();
+			alertService.show('success','Confirmation', 'Task deleted');
+		}, function(error) {
+			console.log(error);
+			alertService.show('error','' + error.status, error.data);
+		});
+	}
 	$scope.tableParams = new ngTableParams({
         page: 1,            // show first page
         count: 10 ,
@@ -167,17 +181,17 @@ function TasksController($scope, $rootScope,ngTableParams, alertService,Projects
 							sort:params.$params.sorting,
 							filter:$scope.tableFilter
 						},function(data) {
-					params.total(data.totalCount);
-					$scope.startIndex=data.startIndex;
-					$scope.endIndex=data.endIndex;
-					if(data.totalCount>=1){
+					params.total(data.length);
+					$scope.startIndex=(params.$params.page-1)*params.$params.count+1;
+					$scope.endIndex=$scope.startIndex+data.length-1;
+					if(data.length>=1){
 						$scope.hasDatas=true;
 					}else {
 						$scope.hasDatas=false;
 					}
-					allTask=data.result;
+					allTask=data;
 					// set new data
-					$defer.resolve(data.result);
+					$defer.resolve(data);
 				});
 			}
         }

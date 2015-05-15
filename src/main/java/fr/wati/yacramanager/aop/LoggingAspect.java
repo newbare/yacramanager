@@ -2,6 +2,7 @@ package fr.wati.yacramanager.aop;
 
 import java.util.Arrays;
 
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.AfterThrowing;
@@ -25,7 +26,7 @@ public class LoggingAspect {
     @AfterThrowing(pointcut = "loggingPoincut()", throwing = "e")
     public void logAfterThrowing(JoinPoint joinPoint, Throwable e) {
             log.error("Exception in {}.{}() with cause = {}", joinPoint.getSignature().getDeclaringTypeName(),
-                    joinPoint.getSignature().getName(), e.getCause());
+                    joinPoint.getSignature().getName(), ExceptionUtils.getRootCauseMessage(e));
     }
 
     @Around("loggingPoincut()")

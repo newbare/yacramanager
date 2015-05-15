@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.Transformer;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
@@ -13,6 +15,8 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.google.common.collect.Lists;
 
 import fr.wati.yacramanager.beans.Activities.ActivityOperation;
 import fr.wati.yacramanager.beans.Employe;
@@ -25,21 +29,26 @@ import fr.wati.yacramanager.dao.repository.TaskRepository;
 import fr.wati.yacramanager.dao.specifications.CommonSpecifications;
 import fr.wati.yacramanager.listeners.ActivityEvent;
 import fr.wati.yacramanager.services.EmployeService;
+import fr.wati.yacramanager.services.ProjectService;
 import fr.wati.yacramanager.services.TaskService;
 import fr.wati.yacramanager.utils.Filter;
 import fr.wati.yacramanager.utils.Filter.FilterArray;
 import fr.wati.yacramanager.utils.Filter.FilterArrayValue;
 import fr.wati.yacramanager.utils.Filter.FilterText;
 import fr.wati.yacramanager.utils.Filter.FilterType;
+import fr.wati.yacramanager.web.dto.TaskDTO;
 
 @Transactional
-@Service
+@Service("taskService")
 public class TaskServiceImpl implements TaskService {
 
 	@Inject
 	private TaskRepository taskRepository;
 	@Inject
 	private ProjectRepository  projectRepository;
+	
+	@Inject
+	private ProjectService projectService;
 	@Inject
 	private EmployeService employeService;
 	
@@ -226,5 +235,45 @@ public class TaskServiceImpl implements TaskService {
 		}
 		task.getAssignedEmployees().remove(employe);
 		employe.getTasks().remove(task);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	@Transactional
+	public TaskDTO toTaskDTO(Task task) {
+		TaskDTO dto=new TaskDTO();
+		task=findOne(task.getId());
+		dto.setCreatedDate(task.getCreatedDate());
+		dto.setDescription(task.getDescription());
+		dto.setColor(task.getColor());
+		if(task.getCreatedBy()!=null){
+			dto.setCreatedBy(task.getCreatedBy().getId());
+		}
+		List<Employe> assignedEmployees=Lists.newArrayList();
+		assignedEmployees.addAll(task.getAssignedEmployees());
+		List<Long> assignedEmployeesIds = (List<Long>) CollectionUtils.collect(assignedEmployees, new Transformer() {
+			@Override
+			public Object transform(Object input) {
+				Employe employe=(Employe) input;
+				return (Long)employe.getId();
+			}
+		});
+		dto.setAssignedEmployeesIds(assignedEmployeesIds);
+		dto.setId(task.getId());
+		dto.setName(task.getName());
+		dto.setTaskStatus(task.getTaskStatus());
+		dto.setProjectId(task.getProject().getId());
+		dto.setProject(projectService.toProjectDTO(task.getProject()));
+		return dto;
+	}
+
+	@Override
+	@Transactional
+	public List<TaskDTO> toTaskDTOs(Iterable<Task> tasks) {
+		List<TaskDTO> dtos=Lists.newArrayList();
+		for(Task task:tasks){
+			dtos.add(toTaskDTO(task));
+		}
+		return dtos;
 	}
 }

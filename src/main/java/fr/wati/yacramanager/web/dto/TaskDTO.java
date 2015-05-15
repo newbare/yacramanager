@@ -3,6 +3,9 @@
  */
 package fr.wati.yacramanager.web.dto;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.joda.time.DateTime;
 
 import fr.wati.yacramanager.beans.Task;
@@ -12,7 +15,7 @@ import fr.wati.yacramanager.beans.TaskStatus;
  * @author Rachid Ouattara
  *
  */
-public class TaskDTO {
+public class TaskDTO extends AuditableDTO{
 
 	private Long id;
 	private String name;
@@ -21,7 +24,9 @@ public class TaskDTO {
 	private Long projectId;
 	private TaskStatus taskStatus;
 	private Long employeId;
+	private String color;
 	private ProjectDTO project;
+	private List<Long> assignedEmployeesIds=new ArrayList<>();
 	/**
 	 * @return the id
 	 */
@@ -33,6 +38,13 @@ public class TaskDTO {
 	 */
 	public void setId(Long id) {
 		this.id = id;
+	}
+	
+	public String getColor() {
+		return color;
+	}
+	public void setColor(String color) {
+		this.color = color;
 	}
 	/**
 	 * @return the name
@@ -118,6 +130,14 @@ public class TaskDTO {
 	 */
 	public void setProject(ProjectDTO project) {
 		this.project = project;
+	}
+	
+	
+	public List<Long> getAssignedEmployeesIds() {
+		return assignedEmployeesIds;
+	}
+	public void setAssignedEmployeesIds(List<Long> assignedEmployeesIds) {
+		this.assignedEmployeesIds = assignedEmployeesIds;
 	}
 	public Task toTask(Task task) {
 		task.setCreatedDate(getCreatedDate()!=null?getCreatedDate():new DateTime());

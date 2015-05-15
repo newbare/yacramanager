@@ -20,7 +20,6 @@ import fr.wati.yacramanager.beans.Client;
 import fr.wati.yacramanager.beans.Company;
 import fr.wati.yacramanager.beans.CompanyAccountInfo;
 import fr.wati.yacramanager.beans.Company_;
-import fr.wati.yacramanager.beans.WorkLog;
 import fr.wati.yacramanager.dao.repository.CompanyRepository;
 import fr.wati.yacramanager.dao.repository.ContactRepository;
 import fr.wati.yacramanager.dao.specifications.CommonSpecifications;
@@ -34,7 +33,7 @@ import fr.wati.yacramanager.utils.Filter.FilterType;
 import fr.wati.yacramanager.web.dto.CompanyAccountInfoDTO;
 import fr.wati.yacramanager.web.dto.CompanyDTO;
 
-@Service
+@Service("companyService")
 @Transactional
 public class CompanyServiceImpl implements CompanyService {
 

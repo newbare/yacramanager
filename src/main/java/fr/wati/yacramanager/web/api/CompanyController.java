@@ -86,6 +86,7 @@ public class CompanyController {
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
+	@RolesAllowed({Role.ADMIN,Role.SSII_ADMIN})
 	@Timed
 	public void update(@PathVariable("id") Long id, @RequestBody CompanyDTO dto) {
 		Company findOne = companyService.findOne(id);

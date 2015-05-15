@@ -25,7 +25,7 @@ import fr.wati.yacramanager.web.dto.AbsenceDTO.TypeAbsence;
  *
  */
 @Transactional
-@Service
+@Service("absencePortfolioService")
 public class AbsencePortfolioServiceImpl implements AbsencePortfolioService {
 
 	@Inject

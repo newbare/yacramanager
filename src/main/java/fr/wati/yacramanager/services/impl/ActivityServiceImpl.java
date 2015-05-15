@@ -31,7 +31,7 @@ import fr.wati.yacramanager.web.dto.ActivitiesDetailsDTO.ActivityDTO;
 import fr.wati.yacramanager.web.dto.ActivitiesDetailsDTO.ActivityDay;
 import fr.wati.yacramanager.web.dto.ActivitiesDetailsDTO.ActivityItem;
 
-@Service
+@Service("activityService")
 public class ActivityServiceImpl implements ActivityService {
 
 	@Inject

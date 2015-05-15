@@ -9,7 +9,7 @@ overflow-y: visible!important;
 
 /* CSS Trick Enable Bootstrap 3 Hover Dropdowns */
 
-@media only screen and (min-width : 768px) {
+@media only screen and (min-width : 992px) {
     /* Make Navigation Toggle on Desktop Hover */
     .dropdown:hover .dropdown-menu {
         display: block;

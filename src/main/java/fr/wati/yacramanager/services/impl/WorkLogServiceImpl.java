@@ -28,7 +28,7 @@ import fr.wati.yacramanager.services.SpecificationFactory;
 import fr.wati.yacramanager.services.WorkLogService;
 import fr.wati.yacramanager.utils.Filter;
 
-@Service
+@Service("workLogService")
 @Transactional
 public class WorkLogServiceImpl implements WorkLogService,SpecificationFactory<WorkLog> {
 

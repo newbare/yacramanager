@@ -15,6 +15,8 @@ public interface EmployeService extends CrudService<Employe, Long>,Specification
 
 	List<Employe> getManagedEmployees(Long requesterId);
 	
+	List<Long> getManagedEmployeesIds(Long requesterId);
+	
 	List<Employe> getEmployeesAssignedToTask(Long requesterId,Long taskId);
 	
 	Employe findByContact_Email(String email);

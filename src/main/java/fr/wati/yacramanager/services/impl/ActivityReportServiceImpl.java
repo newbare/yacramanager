@@ -24,7 +24,7 @@ import fr.wati.yacramanager.services.ActivityReportService;
 import fr.wati.yacramanager.services.EmployeService;
 import fr.wati.yacramanager.services.ServiceException;
 
-@Service
+@Service("activityReportService")
 @Transactional
 public class ActivityReportServiceImpl implements ActivityReportService {
 	

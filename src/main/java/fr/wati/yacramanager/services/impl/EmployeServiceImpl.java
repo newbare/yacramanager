@@ -7,6 +7,8 @@ import java.util.Set;
 
 import javax.inject.Inject;
 
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.Transformer;
 import org.apache.commons.lang3.StringUtils;
 import org.dozer.Mapper;
 import org.dozer.spring.DozerBeanMapperFactoryBean;
@@ -60,7 +62,7 @@ import fr.wati.yacramanager.web.dto.RegistrationDTO;
 import fr.wati.yacramanager.web.dto.UserInfoDTO;
 
 @Transactional
-@Service
+@Service("employeService")
 public class EmployeServiceImpl implements EmployeService {
 
 	@Inject
@@ -459,6 +461,20 @@ public class EmployeServiceImpl implements EmployeService {
 		});
 		employe.setRoles(Sets.newHashSet(transformRoles));
 		save(employe);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Long> getManagedEmployeesIds(Long requesterId) {
+		List<Employe> managedEmployees = getManagedEmployees(requesterId);
+		List<Long> assignedEmployeesIds = (List<Long>) CollectionUtils.collect(managedEmployees, new Transformer() {
+			@Override
+			public Object transform(Object input) {
+				Employe employe=(Employe) input;
+				return (Long)employe.getId();
+			}
+		});
+		return assignedEmployeesIds;
 	}
 
 }

@@ -41,7 +41,7 @@ import fr.wati.yacramanager.web.dto.CraDetailsDTO.CraTaskRow;
 import fr.wati.yacramanager.web.dto.CraDetailsDTO.EmployeCraDetailsDTO;
 import fr.wati.yacramanager.web.dto.ProjectDTO;
 
-@Service
+@Service("craService")
 public class CraServiceImpl implements CraService {
 
 	@Inject

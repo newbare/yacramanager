@@ -19,7 +19,7 @@ import fr.wati.yacramanager.dao.repository.SettingsRepository;
 import fr.wati.yacramanager.dao.repository.UserRepository;
 import fr.wati.yacramanager.services.SettingsService;
 
-@Service
+@Service("settingsService")
 @Transactional
 public class SettingsServiceImpl implements SettingsService {
 

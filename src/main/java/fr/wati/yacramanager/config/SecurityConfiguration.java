@@ -18,6 +18,8 @@ package fr.wati.yacramanager.config;
 import javax.inject.Inject;
 import javax.sql.DataSource;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.bind.RelaxedPropertyResolver;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.Bean;
@@ -53,6 +55,7 @@ import fr.wati.yacramanager.web.filter.AjaxTimeoutRedirectFilter;
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter
 		implements EnvironmentAware {
 
+	private final Logger log = LoggerFactory.getLogger(SecurityConfiguration.class);
 	public static final String DEFAULT_LOGIN_SUCCESS_PATH = "/app/view/";
 
 	private RelaxedPropertyResolver propertyResolver;
@@ -196,6 +199,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter
 				"bcrypt.encoder.strength", Integer.class));
 	}
 
+	
+	
 	/*
 	 * (non-Javadoc)
 	 * 

@@ -38,7 +38,7 @@ import fr.wati.yacramanager.utils.Filter.FilterText;
 import fr.wati.yacramanager.utils.Filter.FilterType;
 import fr.wati.yacramanager.web.dto.NoteDeFraisDTO;
 
-@Service
+@Service("noteDeFraisService")
 public class NoteDeFraisServiceImpl implements NoteDeFraisService {
 
 	@Inject

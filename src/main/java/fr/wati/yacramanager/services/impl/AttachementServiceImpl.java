@@ -21,7 +21,7 @@ import fr.wati.yacramanager.services.EmployeService;
  * 
  */
 @Transactional
-@Service
+@Service("attachementService")
 public class AttachementServiceImpl implements AttachementService {
 
 	@Inject

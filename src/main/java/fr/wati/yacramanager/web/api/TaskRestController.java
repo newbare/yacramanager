@@ -21,6 +21,9 @@ import org.springframework.data.domain.Sort.Order;
 import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.method.P;
+import org.springframework.security.access.prepost.PostFilter;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -47,51 +50,54 @@ import fr.wati.yacramanager.web.dto.TaskDTO;
 
 /**
  * @author Rachid Ouattara
- *
+ * 
  */
 @RestController
 @RequestMapping("/app/api/{companyId}/task")
 public class TaskRestController {
 
 	private static final Log LOG = LogFactory.getLog(TaskRestController.class);
-	
+
 	@Inject
 	private CompanyService companyService;
-	
+
 	@Inject
 	private DtoMapper dtoMapper;
-	
+
 	@Inject
 	private TaskService taskService;
 	@Inject
-	private EmployeService  employeService;
+	private EmployeService employeService;
 	@Inject
-	private ProjectService  projectService;
-	
+	private ProjectService projectService;
+
 	@RequestMapping(value = "/{projectId}/{employeId}", method = RequestMethod.GET)
 	@Timed
 	public ResponseWrapper<List<TaskDTO>> getTasks(
 			@PathVariable("companyId") Long companyId,
 			@PathVariable("projectId") Long projectId,
-			@PathVariable("employeId") Long employeId) throws RestServiceException{
-		Company company=companyService.findOne(companyId);
-		if(company==null){
+			@PathVariable("employeId") Long employeId)
+			throws RestServiceException {
+		Company company = companyService.findOne(companyId);
+		if (company == null) {
 			throw new RestServiceException("The given company doesn't exist");
 		}
-		
+
 		Employe employe = employeService.findOne(employeId);
-		if(employe==null){
+		if (employe == null) {
 			throw new RestServiceException("The given employe doesn't exist");
 		}
-		if(!company.getId().equals(employe.getCompany().getId())){
-			throw new RestServiceException("The given employe is not member of the given company");
+		if (!company.getId().equals(employe.getCompany().getId())) {
+			throw new RestServiceException(
+					"The given employe is not member of the given company");
 		}
-		Project project=projectService.findOne(projectId);
-		if(project==null){
+		Project project = projectService.findOne(projectId);
+		if (project == null) {
 			throw new RestServiceException("The given project doesn't exist");
 		}
-		List<Task> tasks = taskService.findByProjectAndAssignedEmployeesIn(project, employe);
-		if(tasks!=null && !tasks.isEmpty()){
+		List<Task> tasks = taskService.findByProjectAndAssignedEmployeesIn(
+				project, employe);
+		if (tasks != null && !tasks.isEmpty()) {
 			ResponseWrapper<List<TaskDTO>> responseWrapper = new ResponseWrapper<>(
 					dtoMapper.mapTasks(tasks), tasks.size());
 			return responseWrapper;
@@ -104,53 +110,65 @@ public class TaskRestController {
 	public ResponseWrapper<List<EmployeDto>> getAssigedEmployeesByTask(
 			@PathVariable("companyId") Long companyId,
 			@PathVariable("taskId") Long taskId,
-			@PathVariable("employeId") Long employeId) throws RestServiceException{
-		Company company=companyService.findOne(companyId);
-		if(company==null){
+			@PathVariable("employeId") Long employeId)
+			throws RestServiceException {
+		Company company = companyService.findOne(companyId);
+		if (company == null) {
 			throw new RestServiceException("The given company doesn't exist");
 		}
-		
+
 		Employe employe = employeService.findOne(employeId);
-		if(employe==null){
+		if (employe == null) {
 			throw new RestServiceException("The given employe doesn't exist");
 		}
-		if(!company.getId().equals(employe.getCompany().getId())){
-			throw new RestServiceException("The given employe is not member of the given company");
+		if (!company.getId().equals(employe.getCompany().getId())) {
+			throw new RestServiceException(
+					"The given employe is not member of the given company");
 		}
-		Task task=taskService.findOne(taskId);
-		if(task==null){
+		Task task = taskService.findOne(taskId);
+		if (task == null) {
 			throw new RestServiceException("The given task doesn't exist");
 		}
-		List<Employe> employees=employeService.getEmployeesAssignedToTask(employeId, taskId);
-		if(employees!=null && !employees.isEmpty()){
+		List<Employe> employees = employeService.getEmployeesAssignedToTask(
+				employeId, taskId);
+		if (employees != null && !employees.isEmpty()) {
 			ResponseWrapper<List<EmployeDto>> responseWrapper = new ResponseWrapper<>(
 					dtoMapper.mapEmployees(employees), employees.size());
 			return responseWrapper;
 		}
 		return new ResponseWrapper<List<EmployeDto>>(null);
 	}
-	
-	@RequestMapping(value="/{taskId}/assign-employees", method = RequestMethod.POST)
+
+	@RequestMapping(value = "/{taskId}/assign-employees", method = RequestMethod.POST)
 	@Timed
-	public void assignEmployeesToTask(@PathVariable("companyId") Long companyId,@PathVariable(value="taskId") Long taskId, @RequestParam(value="employeesIds",required=true) List<Long> employeesIds){
+	public void assignEmployeesToTask(
+			@PathVariable("companyId") Long companyId,
+			@PathVariable(value = "taskId") Long taskId,
+			@RequestParam(value = "employeesIds", required = true) List<Long> employeesIds) {
 		for (Long employeeId : employeesIds) {
 			taskService.assignEmployeToTask(employeeId, taskId);
 		}
 	}
-	
-	@RequestMapping(value="/{taskId}/unassign-employees", method = RequestMethod.POST)
+
+	@RequestMapping(value = "/{taskId}/unassign-employees", method = RequestMethod.POST)
 	@Timed
-	public void unAssignEmployeesToTask(@PathVariable("companyId") Long companyId,@PathVariable(value="taskId") Long taskId, @RequestParam(value="employeesIds",required=true) List<Long> employeesIds){
+	public void unAssignEmployeesToTask(
+			@PathVariable("companyId") Long companyId,
+			@PathVariable(value = "taskId") Long taskId,
+			@RequestParam(value = "employeesIds", required = true) List<Long> employeesIds) {
 		for (Long employeeId : employeesIds) {
 			taskService.unAssignEmployeToTask(employeeId, taskId);
 		}
 	}
-	
+
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@RequestMapping(value="/{employeId}/all", method = RequestMethod.GET)
+	@RequestMapping(value = "/{employeId}/all", method = RequestMethod.GET)
 	@Timed
-	public ResponseWrapper<List<TaskDTO>> getAll(
-			@PathVariable("companyId") Long companyId,@PathVariable("employeId") Long employeId,
+	@PostFilter("filterObject.getAssignedEmployeesIds().contains(#employeId) "
+			+ "or  T(org.apache.commons.collections.CollectionUtils).containsAny(@employeService.getManagedEmployeesIds(#employeId),filterObject.getAssignedEmployeesIds())")
+	public List<TaskDTO> getAll(
+			@PathVariable("companyId") Long companyId,
+			@PathVariable("employeId") @P("employeId") Long employeId,
 			@RequestParam(required = false) Integer page,
 			@RequestParam(required = false) Integer size,
 			@RequestParam(required = false, value = "sort") Map<String, String> sort,
@@ -195,49 +213,50 @@ public class TaskRestController {
 			pageable = new PageRequest(page, size);
 		}
 
-		Page<Task> findBySpecificationAndOrder = taskService.findAll(specifications, pageable);
-		ResponseWrapper<List<TaskDTO>> responseWrapper = new ResponseWrapper<>(
-				dtoMapper.mapTasks(findBySpecificationAndOrder),
-				findBySpecificationAndOrder.getTotalElements());
-		long startIndex = findBySpecificationAndOrder.getNumber() * size + 1;
-		long endIndex = startIndex
-				+ findBySpecificationAndOrder.getNumberOfElements() - 1;
-		responseWrapper.setStartIndex(startIndex);
-		responseWrapper.setEndIndex(endIndex);
-		return responseWrapper;
+		Page<Task> findBySpecificationAndOrder = taskService.findAll(
+				specifications, pageable);
+		List<TaskDTO> respone = taskService
+				.toTaskDTOs(findBySpecificationAndOrder);
+		return respone;
 	}
-	
+
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	@Timed
-	public ResponseEntity<TaskDTO> read(@PathVariable("companyId") Long companyId,@PathVariable("id") Long id) {
-		return new ResponseEntity<TaskDTO>(dtoMapper.map(taskService.findOne(id)),HttpStatus.OK);
+	public ResponseEntity<TaskDTO> read(
+			@PathVariable("companyId") Long companyId,
+			@PathVariable("id") Long id) {
+		return new ResponseEntity<TaskDTO>(taskService.toTaskDTO(taskService
+				.findOne(id)), HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-	public ResponseEntity<String> update(@PathVariable("id") Long id, @RequestBody TaskDTO dto) {
-		Task task=taskService.findOne(id);
+	public ResponseEntity<String> update(@PathVariable("id") Long id,
+			@RequestBody TaskDTO dto) {
+		Task task = taskService.findOne(id);
 		if (task != null) {
 			dto.toTask(task);
 			taskService.save(task);
 			return new ResponseEntity<String>(HttpStatus.OK);
 		}
-		return new ResponseEntity<String>("The given task id:"+id+" does not exist",
-				HttpStatus.NOT_MODIFIED);
+		return new ResponseEntity<String>("The given task id:" + id
+				+ " does not exist", HttpStatus.NOT_MODIFIED);
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
 	@Timed
 	public ResponseEntity<String> create(@RequestBody TaskDTO dto) {
-		Task createTask = taskService.createTask(dto.getProjectId(), dto.toTask(new Task()));
+		Task createTask = taskService.createTask(dto.getProjectId(),
+				dto.toTask(new Task()));
 		taskService.assignEmployeToTask(dto.getEmployeId(), createTask.getId());
 		return new ResponseEntity<String>(HttpStatus.CREATED);
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	@Timed
-	public void delete(@PathVariable("id") Long id) {
-		taskService.delete(id);;
+	@PreAuthorize("@taskService.findOne(#id) !=null &&  principal.getDomainUser().getId().equals(@taskService.findOne(#id).getCreatedBy().getId())")
+	public void delete(@PathVariable("companyId") Long companyId,@PathVariable("id") @P("id") Long id) {
+		taskService.delete(id);
+		;
 	}
-	
-	
+
 }

@@ -32,7 +32,7 @@ import fr.wati.yacramanager.utils.Filter.FilterText;
 import fr.wati.yacramanager.utils.Filter.FilterType;
 
 @Transactional
-@Service
+@Service("userService")
 public class UserServiceImpl implements UserService{
 
 	private Logger logger=LoggerFactory.getLogger(UserServiceImpl.class);

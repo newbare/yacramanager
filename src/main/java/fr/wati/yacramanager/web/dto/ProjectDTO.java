@@ -13,7 +13,7 @@ import fr.wati.yacramanager.beans.Project;
  * @author Rachid Ouattara
  *
  */
-public class ProjectDTO {
+public class ProjectDTO extends AuditableDTO{
 
 	private Long id;
 	private String name;
