@@ -253,7 +253,7 @@ public class TaskRestController {
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	@Timed
-	@PreAuthorize("@taskService.findOne(#id) !=null &&  principal.getDomainUser().getId().equals(@taskService.findOne(#id).getCreatedBy().getId())")
+	@PreAuthorize("@taskService.findOne(#id) !=null &&  principal.getDomainUser().getId().equals(@taskService.toTaskDTO(@taskService.findOne(#id)).getCreatedBy())")
 	public void delete(@PathVariable("companyId") Long companyId,@PathVariable("id") @P("id") Long id) {
 		taskService.delete(id);
 		;

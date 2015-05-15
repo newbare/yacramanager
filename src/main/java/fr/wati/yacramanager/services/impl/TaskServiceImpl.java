@@ -96,7 +96,15 @@ public class TaskServiceImpl implements TaskService {
 	}
 
 	@Override
+	@Transactional
 	public void delete(Long id) {
+		Task task=findOne(id);
+		if(task.getAssignedEmployees()!=null && !task.getAssignedEmployees().isEmpty()){
+			for(Employe employe:task.getAssignedEmployees()){
+				employe.getTasks().remove(task);
+			}
+			task.getAssignedEmployees().clear();
+		}
 		taskRepository.delete(id);
 		applicationEventPublisher.publishEvent(ActivityEvent
 				.createWithSource(this).user()
