@@ -1,0 +1,30 @@
+<div class="navbar navbar-default" role="navigation">
+	<div class="navbar-header">
+       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+		<ul class="nav nav-pills sub-menu">
+			<li data-ng-class="navClass('admin/home')"><a
+				data-ui-sref="admin.home">Home</a></li>
+			<li data-ng-class="navClass('admin/company')"><a
+				data-ui-sref="admin.company.view.quick">Companies</a></li>
+			<li data-ng-class="navClass('admin/messages')"><a
+				data-ui-sref="admin.messages">Messages</a></li>
+			<li data-ng-class="navClass('admin/settings')"><a
+				data-ui-sref="admin.settings">Settings</a></li>
+			<li data-ng-class="navClass('admin/logs')"><a
+			data-ui-sref="admin.logs">Logs</a></li>
+			<li data-ng-class="navClass('admin/metrics')"><a
+			data-ui-sref="admin.metrics">Metrics</a></li>
+		</ul>
+	</div>
+</div>
+<!-- Content -->
+<div class="">
+	<div data-ui-view></div>
+</div>

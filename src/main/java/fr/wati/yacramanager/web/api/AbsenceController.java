@@ -168,7 +168,7 @@ public class AbsenceController  {
 					SecurityUtils.getConnectedUser().getId(), absence);
 		} catch (ServiceException e) {
 			log.error(e.getMessage(), e);
-			throw new RestServiceException(e);
+			throw new RestServiceException(e.getMessage(),e);
 		}
 		return new ResponseEntity<>(HttpStatus.CREATED);
 	}

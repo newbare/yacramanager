@@ -28,6 +28,9 @@ public interface ActivityReportService extends CrudService<ActivityReport, Long>
 			Employe employe, LocalDate startDate, LocalDate endDate)
 			throws ServiceException;
 	
+	
+	List<ActivityReport> findApprovedBetweenDate(Long employeId,LocalDate startDate,LocalDate endDate,List<ValidationStatus> validationStatus);
+	
 	ActivityReport findByEmployeAndStartDateAndEndDate(Employe employe,LocalDate startDate,LocalDate endDate);
 	List<ActivityReport> findByEmployeInAndValidationStatusIn(List<Long> employeId,List<ValidationStatus> validationStatus);
 }

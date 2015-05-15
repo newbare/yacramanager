@@ -1,0 +1,32 @@
+
+<!-- Menu on the left -->
+<div class="navbar navbar-default" role="navigation">
+	<div class="navbar-header">
+       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+		<ul class="nav nav-pills sub-menu">
+			<li data-ng-class="navClass('company/home')"><a
+				data-ui-sref="company.home">Home</a></li>
+			<li data-ng-class="{ active: $state.includes('company.employees') }"><a
+				data-ui-sref="company.employees.view.quick">Employees</a></li>
+			<li data-ng-class="{ active: $state.includes('company.clients') }"><a
+				data-ui-sref="company.clients.view.quick">Clients</a></li>
+			<li data-ng-class="{ active: $state.includes('company.projects') }"><a
+				data-ui-sref="company.projects.view.quick">Projects</a></li>
+			<li data-ng-class="{ active: $state.includes('company.messages') }"><a
+				data-ui-sref="company.messages">Messages</a></li>
+			<li data-ng-class="{ active: $state.includes('company.settings') }"><a
+				data-ui-sref="company.settings">Settings</a></li>
+		</ul>
+	</div>
+</div>
+<!-- Content -->
+<div class="">
+	<div data-ui-view class=""></div>
+</div>

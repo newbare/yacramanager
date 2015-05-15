@@ -3,11 +3,17 @@ function FraisDetailController($scope,frais,NoteREST){
 }
 
 function FraisController($scope, $rootScope, NoteREST, alertService,
-		ngTableParams, notifService, $upload,$modal,$http,$filter,USERINFO) {
-	$rootScope.page = {
-		"title" : "Frais",
-		"description" : "Gerez vos notes de frais"
-	};
+		ngTableParams, notifService, $upload,$modal,$http,$filter,USERINFO,NgStomp) {
+	var filterRef="";
+	$scope.client = NgStomp('/websocket/event');
+	$scope.client.connect( function(){
+        $scope.client.subscribe("/topic/company/"+USERINFO.company.id+"/event", function(event) {
+			if(event.entityType==='NoteDeFrais' && USERINFO.id!=event.userId){
+				$scope.refreshDatas();
+			}
+			$scope.refreshApproval();
+        });
+    }, function(){}, '/');
 	$scope.currentTab='myExpenses';
 	$scope.approvementTotal=0;
 	$scope.approvements=[];
@@ -131,6 +137,7 @@ function FraisController($scope, $rootScope, NoteREST, alertService,
 	$scope.doFilter=function(data){
 		var serverFilter={filter:data};
 		$scope.tableFilter=JSON.stringify(serverFilter);
+		filterRef=$scope.tableFilter;
 		$scope.refreshDatas();
 	};
 
@@ -274,7 +281,7 @@ function FraisController($scope, $rootScope, NoteREST, alertService,
 	}, {
 		total : 0, // length of data
 		getData : function($defer, params) {
-			if($scope.tableFilter!=="" && $scope.tableFilter!==undefined){
+			if(($scope.tableFilter!=="" && $scope.tableFilter!==undefined)||(filterRef!=="" && filterRef!==undefined)){
 				NoteREST.get({
 					page:params.$params.page-1,
 					size:params.$params.count,

@@ -10,6 +10,7 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,12 +18,19 @@ import fr.wati.yacramanager.beans.Activities.ActivityOperation;
 import fr.wati.yacramanager.beans.Employe;
 import fr.wati.yacramanager.beans.Project;
 import fr.wati.yacramanager.beans.Task;
+import fr.wati.yacramanager.beans.TaskStatus;
+import fr.wati.yacramanager.beans.Task_;
 import fr.wati.yacramanager.dao.repository.ProjectRepository;
 import fr.wati.yacramanager.dao.repository.TaskRepository;
+import fr.wati.yacramanager.dao.specifications.CommonSpecifications;
 import fr.wati.yacramanager.listeners.ActivityEvent;
 import fr.wati.yacramanager.services.EmployeService;
 import fr.wati.yacramanager.services.TaskService;
 import fr.wati.yacramanager.utils.Filter;
+import fr.wati.yacramanager.utils.Filter.FilterArray;
+import fr.wati.yacramanager.utils.Filter.FilterArrayValue;
+import fr.wati.yacramanager.utils.Filter.FilterText;
+import fr.wati.yacramanager.utils.Filter.FilterType;
 
 @Transactional
 @Service
@@ -136,7 +144,47 @@ public class TaskServiceImpl implements TaskService {
 
 	@Override
 	public Specification<Task> buildSpecification(Filter filter) {
-		// TODO Auto-generated method stub
+		if(filter!=null){
+			FilterType filterType = filter.getType();
+			switch (filterType) {
+			case ARRAY:
+				FilterArray filterArray=(FilterArray) filter;
+				if("taskStatus".equals(filter.getField())){
+					List<TaskStatus> taskStatus=new ArrayList<>();
+					for(FilterArrayValue filterArrayValue: filterArray.getValue()){
+						taskStatus.add(TaskStatus.valueOf(filterArrayValue.getName()));
+					}
+					return CommonSpecifications.equalsAny(taskStatus, Task_.taskStatus);
+				}
+				if("employe".equals(filter.getField())){
+					List<Employe> employes=new ArrayList<>();
+					for(FilterArrayValue filterArrayValue: filterArray.getValue()){
+						employes.add(employeService.findOne(Long.valueOf(filterArrayValue.getName())));
+					}
+					Specifications<Task> specifications=null;
+					for(Employe employe:employes){
+						if(specifications==null){
+							specifications=Specifications.where(CommonSpecifications.isMember(employe, Task_.assignedEmployees));
+						}else {
+							specifications =specifications.or(CommonSpecifications.isMember(employe, Task_.assignedEmployees));
+						}
+					}
+					return specifications;
+				}
+				break;
+				case TEXT:
+					FilterText filterText=(FilterText) filter;
+					if("name".equals(filterText.getField())){
+						return CommonSpecifications.likeIgnoreCase(filterText.getValue(), Task_.name);
+					}
+					if("description".equals(filterText.getField())){
+						return CommonSpecifications.likeIgnoreCase(filterText.getValue(), Task_.description);
+					}
+					break;
+			default:
+				break;
+			}
+		}
 		return null;
 	}
 

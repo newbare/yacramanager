@@ -170,7 +170,7 @@ public class ActivityReportServiceImpl implements ActivityReportService {
 		if(employeService.isManager(employeManager.getId(), activityReport.getEmployeId())){
 			if(ValidationStatus.WAIT_FOR_APPROVEMENT.equals(activityReport.getValidationStatus())){
 				activityReport.setValidationStatus(ValidationStatus.APPROVED);
-				ActivityReport save = activityReportRepository.save(activityReport);
+				activityReportRepository.save(activityReport);
 				applicationEventPublisher.publishEvent(ActivityEvent
 						.createWithSource(this).user()
 						.operation(ActivityOperation.VALIDATE)
@@ -205,7 +205,7 @@ public class ActivityReportServiceImpl implements ActivityReportService {
 		if(employeService.isManager(employeManager.getId(), activityReport.getEmployeId())){
 			if(ValidationStatus.WAIT_FOR_APPROVEMENT.equals(activityReport.getValidationStatus())){
 				activityReport.setValidationStatus(ValidationStatus.REJECTED);
-				ActivityReport save = activityReportRepository.save(activityReport);
+				activityReportRepository.save(activityReport);
 				applicationEventPublisher.publishEvent(ActivityEvent
 						.createWithSource(this).user()
 						.operation(ActivityOperation.REJECT)
@@ -216,6 +216,15 @@ public class ActivityReportServiceImpl implements ActivityReportService {
 		}else {
 			throw new ServiceException("Only a manager can reject this activity report");
 		}
+	}
+
+	/* (non-Javadoc)
+	 * @see fr.wati.yacramanager.services.ActivityReportService#findByEmployeIdAndStartDateBetweenAndEndDateBetweenAndValidationStatusIn(java.lang.Long, org.joda.time.LocalDate, org.joda.time.LocalDate, org.joda.time.LocalDate, org.joda.time.LocalDate, java.util.List)
+	 */
+	@Override
+	public List<ActivityReport> findApprovedBetweenDate(
+			Long employeId, LocalDate startDate, LocalDate endDate,	List<ValidationStatus> validationStatus) {
+		return activityReportRepository.findApprovedBetweenDate(employeId, startDate, endDate, validationStatus);
 	}
 
 }

@@ -21,6 +21,7 @@ import fr.wati.yacramanager.beans.AbsencePortfolio;
 import fr.wati.yacramanager.beans.AbsencePortfolio.AbsencePortfolioPK;
 import fr.wati.yacramanager.beans.Absence_;
 import fr.wati.yacramanager.beans.Activities.ActivityOperation;
+import fr.wati.yacramanager.beans.ActivityReport;
 import fr.wati.yacramanager.beans.Employe;
 import fr.wati.yacramanager.beans.ValidationStatus;
 import fr.wati.yacramanager.dao.repository.AbsenceRepository;
@@ -28,6 +29,7 @@ import fr.wati.yacramanager.dao.specifications.CommonSpecifications;
 import fr.wati.yacramanager.listeners.ActivityEvent;
 import fr.wati.yacramanager.services.AbsencePortfolioService;
 import fr.wati.yacramanager.services.AbsenceService;
+import fr.wati.yacramanager.services.ActivityReportService;
 import fr.wati.yacramanager.services.EmployeService;
 import fr.wati.yacramanager.services.ServiceException;
 import fr.wati.yacramanager.utils.Filter;
@@ -47,6 +49,9 @@ public class AbsenceServiceImpl implements AbsenceService {
 	
 	@Inject
 	private EmployeService employeService;
+	
+	@Inject
+	private ActivityReportService activityReportService;
 	
 	@Inject
 	private AbsencePortfolioService absencePortfolioService;
@@ -275,6 +280,7 @@ public class AbsenceServiceImpl implements AbsenceService {
 	public Absence postAbsence(Long employeId, Absence absence)
 			throws ServiceException {
 		Employe employe = employeService.findOne(employeId);
+		//Check into acquired available days
 		TypeAbsence typeAbsence = absence.getTypeAbsence();
 		AbsencePortfolio absencePortfolio = absencePortfolioService.findByUserAndType(employe.getId(), typeAbsence);
 		if(absencePortfolio==null){
@@ -282,6 +288,11 @@ public class AbsenceServiceImpl implements AbsenceService {
 		}
 		if((absence.getDaysBetween()+absencePortfolio.getWaiting())>absencePortfolio.getRemaining()){
 			throw new ServiceException("You do not have enought remainnig days for "+typeAbsence.getLabel()+" Remaining: "+absencePortfolio.getRemaining()+" Waiting: "+absencePortfolio.getWaiting());
+		}
+		//Check for no activity already validated
+		List<ActivityReport> activityReports = activityReportService.findApprovedBetweenDate(employeId, absence.getStartDate(), absence.getEndDate(),Lists.newArrayList(ValidationStatus.APPROVED));
+		if(activityReports!=null && activityReports.size()>0){
+			throw new ServiceException("You cannot post absence for this date as an activity report has already vaidated");
 		}
 		absencePortfolio.incrementWaiting(absence.getDaysBetween());
 		absencePortfolioService.save(absencePortfolio);

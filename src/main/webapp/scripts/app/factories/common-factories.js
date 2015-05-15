@@ -173,6 +173,11 @@ App.factory("TasksREST", function($resource) {
 				id : '@id'
 			}
 		},
+		getAll:{
+			url : _contextPath + "app/api/:companyId/task/:employeId/all",
+			method : 'GET',
+			isArray : false
+		},
 		getAssignedEmployee:{
 			url : _contextPath + "app/api/:companyId/task/:taskId/assigned/:employeId",
 			method : 'GET',
@@ -294,4 +299,56 @@ App.factory("ActivitiesREST", function($resource) {
 			isArray : false
 		}
 	});
+});
+
+App.factory('NgStomp', function($rootScope) {
+    var stompClient = {};
+
+    function NGStomp(url) {
+    	var socket = new SockJS(url);
+        this.stompClient = Stomp.over(socket);
+    }
+
+    NGStomp.prototype.subscribe = function(queue, callback) {
+        this.stompClient.subscribe(queue, function() {
+            var args = arguments;
+            $rootScope.$apply(function() {
+                callback(JSON.parse(args[0].body));
+            })
+        })
+    }
+
+    NGStomp.prototype.send = function(queue, headers, data) {
+        this.stompClient.send(queue, headers, data);
+    }
+
+    NGStomp.prototype.connect = function( on_connect, on_error) {
+    	this.stompClient.debug=function(){
+			//do nothing
+		};
+    	this.stompClient.connect({},
+            function(frame) {
+                $rootScope.$apply(function() {
+                    on_connect.apply(stompClient, frame);
+                })
+            },
+            function(frame) {
+                $rootScope.$apply(function() {
+                    on_error.apply(stompClient, frame);
+                })
+            });
+    }
+
+    NGStomp.prototype.disconnect = function(callback) {
+        this.stompClient.disconnect(function() {
+            var args = arguments;
+            $rootScope.$apply(function() {
+                callback.apply(args);
+            })
+        })
+    }
+
+    return function(url) {
+        return new NGStomp(url);
+    }
 });

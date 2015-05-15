@@ -12,12 +12,16 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.google.common.collect.Lists;
+
 import fr.wati.yacramanager.beans.Activities.ActivityOperation;
+import fr.wati.yacramanager.beans.ActivityReport;
 import fr.wati.yacramanager.beans.Employe;
 import fr.wati.yacramanager.beans.ValidationStatus;
 import fr.wati.yacramanager.beans.WorkLog;
 import fr.wati.yacramanager.dao.repository.WorkLogRepository;
 import fr.wati.yacramanager.listeners.ActivityEvent;
+import fr.wati.yacramanager.services.ActivityReportService;
 import fr.wati.yacramanager.services.EmployeService;
 import fr.wati.yacramanager.services.ServiceException;
 import fr.wati.yacramanager.services.SpecificationFactory;
@@ -33,6 +37,9 @@ public class WorkLogServiceImpl implements WorkLogService,SpecificationFactory<W
 	
 	@Inject
 	private EmployeService employeService;
+	
+	@Inject
+	private ActivityReportService activityReportService;
 
 	private ApplicationEventPublisher applicationEventPublisher;
 	
@@ -197,5 +204,31 @@ public class WorkLogServiceImpl implements WorkLogService,SpecificationFactory<W
 			Employe employe, LocalDateTime dateDebut, LocalDateTime dateFin) {
 		// TODO Auto-generated method stub
 		return workLogRepository.findByEmployeAndStartDateBetweenAndExtraTimeFalse(employe, dateDebut, dateFin);
+	}
+
+	/* (non-Javadoc)
+	 * @see fr.wati.yacramanager.services.WorkLogService#postWorkLog(fr.wati.yacramanager.beans.WorkLog)
+	 */
+	@Override
+	public WorkLog postWorkLog(WorkLog workLog) throws ServiceException {
+		//Check for no activity already validated
+		List<ActivityReport> activityReports = activityReportService.findApprovedBetweenDate(workLog.getEmploye().getId(), workLog.getStartDate().toLocalDate(), workLog.getStartDate().toLocalDate(),Lists.newArrayList(ValidationStatus.APPROVED));
+		if(activityReports!=null && activityReports.size()>0){
+			throw new ServiceException("You cannot post worklog for this date as an activity report has already vaidated");
+		}
+		return save(workLog);
+	}
+
+	/* (non-Javadoc)
+	 * @see fr.wati.yacramanager.services.WorkLogService#updateWorkLog(fr.wati.yacramanager.beans.WorkLog)
+	 */
+	@Override
+	public void updateWorkLog(WorkLog workLog) throws ServiceException {
+		//Check for no activity already validated
+		List<ActivityReport> activityReports = activityReportService.findApprovedBetweenDate(workLog.getEmploye().getId(), workLog.getStartDate().toLocalDate(), workLog.getStartDate().toLocalDate(),Lists.newArrayList(ValidationStatus.APPROVED));
+		if(activityReports!=null && activityReports.size()>0){
+			throw new ServiceException("You cannot post worklog for this date as an activity report has already vaidated");
+		}
+		save(workLog);
 	}
 }

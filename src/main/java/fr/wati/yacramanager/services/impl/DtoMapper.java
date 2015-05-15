@@ -371,6 +371,7 @@ public class DtoMapper {
 		dto.setName(task.getName());
 		dto.setTaskStatus(task.getTaskStatus());
 		dto.setProjectId(task.getProject().getId());
+		dto.setProject(map(task.getProject()));
 		return dto;
 	}
 }

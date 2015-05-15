@@ -25,4 +25,11 @@ public interface WorkLogService extends CrudService<WorkLog, Long>,Specification
 	
 	Page<WorkLog> findByEmploye(Employe employe,Pageable pageable);
 	
+	WorkLog postWorkLog(WorkLog workLog) throws ServiceException;
+
+	/**
+	 * @param workLog
+	 */
+	void updateWorkLog(WorkLog workLog) throws ServiceException;
+	
 }

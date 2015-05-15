@@ -17,14 +17,20 @@ function AbsencesDetailController($scope,AbsenceREST,absence,absencesType){
 	});
 }
 
-function AbsencesController($scope, $rootScope, AbsenceREST, alertService,ngTableParams,notifService,$http,USERINFO) {
-	$rootScope.page = {
-		"title" : "Absences",
-		"description" : "Declarez vos absences"
-	};
+function AbsencesController($scope, $rootScope, AbsenceREST,NgStomp, alertService,ngTableParams,notifService,$http,USERINFO) {
+	$scope.client = NgStomp('/websocket/event');
+	$scope.client.connect( function(){
+        $scope.client.subscribe("/topic/company/"+USERINFO.company.id+"/event", function(event) {
+			if(event.entityType==='Absence' && USERINFO.id!=event.userId){
+				$scope.refreshDatas();
+			}
+			$scope.refreshApproval();
+        });
+    }, function(){}, '/');
 	$scope.currentTab='myTimeOff';
 	$scope.approvementTotal=0;
 	$scope.approvements=[];
+	var absenceDateFormat="YYYY-MM-DD";
 	
 	$scope.activateTab=function(tab){
 		$scope.currentTab=tab;
@@ -183,13 +189,19 @@ function AbsencesController($scope, $rootScope, AbsenceREST, alertService,ngTabl
 	};
 	
 	$scope.postAbsence = function(hideFn) {
-		$scope.currentAbsence.typeAbsence=$scope.currentAbsence.typeAbsence.name;
-		$scope.currentAbsence.startDate=moment.utc($scope.currentAbsence.startDate).format('YYYY-MM-DD');
-		$scope.currentAbsence.endDate=moment.utc($scope.currentAbsence.endDate).format('YYYY-MM-DD')
-		AbsenceREST.save($scope.currentAbsence).$promise.then(function(result) {
+		var absenceToPost={};
+		absenceToPost.typeAbsence=$scope.currentAbsence.typeAbsence.name;
+		absenceToPost.startDate=moment($scope.currentAbsence.startDate).format(absenceDateFormat);
+		absenceToPost.endDate=moment($scope.currentAbsence.endDate).format(absenceDateFormat);
+		absenceToPost.description=$scope.currentAbsence.description;
+		absenceToPost.startAfternoon =$scope.currentAbsence.startAfternoon;
+		absenceToPost.endMorning =$scope.currentAbsence.endMorning;
+		AbsenceREST.save(absenceToPost).$promise.then(function(result) {
 			alertService.show('success','Confirmation', 'Data saved');
 			$scope.reset();
 			$scope.tableParams.reload();
+			hideFn();
+		},function(){
 			hideFn();
 		});
 	};

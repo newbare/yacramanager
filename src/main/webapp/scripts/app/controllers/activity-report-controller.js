@@ -1,7 +1,15 @@
 'use strict';
 
-function ActivityReportController($scope,$rootScope,ActivityReportREST,$filter,$http,WorkLogREST,alertService,AbsenceREST,USERINFO) {
-	$rootScope.page={"title":"CRA","description":"View and manage you CRA"};
+function ActivityReportController($scope,$rootScope,ActivityReportREST,NgStomp,$filter,$http,WorkLogREST,alertService,AbsenceREST,USERINFO) {
+	$scope.client = NgStomp('/websocket/event');
+	$scope.client.connect( function(){
+        $scope.client.subscribe("/topic/company/"+USERINFO.company.id+"/event", function(event) {
+			if(event.entityType==='ActivityReport' && USERINFO.id!=event.userId){
+				$scope.refreshView();
+			}
+			$scope.refreshApproval();
+        });
+    }, function(){}, '/');
 	$scope.dateFormat="dd MMMM yyyy";
 	$scope.craDateFormat="EEE dd/MM";
 	$scope.numberOfWeek=0;
@@ -314,7 +322,7 @@ function ActivityReportController($scope,$rootScope,ActivityReportREST,$filter,$
 			alertService.show('success','Activity report has been approved','The request has been sent!');
 		});
 	};
-	$scope.rejectActivityReport=function(activityReportId,startDate,endDate){
+	$scope.rejectActivityReport=function(employeId,startDate,endDate){
 		ActivityReportREST.reject({
 			requesterId : USERINFO.id,
 			employeId : employeId,

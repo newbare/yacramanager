@@ -383,7 +383,7 @@ angular
 										 '<li class="dropdown pull-right">'+
 //										+ '<span id="manage-filter-btn">'
 										'<div class="btn-group">'+
-											 '<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"> <i class="fa fa-filter"></i> <span class="caret"></span></button>'+
+											 '<button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown"> <i class="fa fa-filter"></i> <span class="caret"></span></button>'+
 											 '<div class="more-content dropdown-menu">'+
 											 '<form role="form">'+
 											 '<div class="checkbox">'+
@@ -411,7 +411,7 @@ angular
 //										+ '</span>'
 										 '</li>'+
 										 '<li class="pull-right">'+
-											 '<button type="button" class="btn btn-primary" data-ng-click="doFilter(filters)"><i class="fa fa-search"></i></button>'+
+											 '<button type="button" class="btn btn-primary btn-sm" data-ng-click="doFilter(filters)"><i class="fa fa-search"></i></button>'+
 										 '</li>'+
 									 '</ul>'+
 									

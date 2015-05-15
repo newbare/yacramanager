@@ -21,6 +21,7 @@ public class TaskDTO {
 	private Long projectId;
 	private TaskStatus taskStatus;
 	private Long employeId;
+	private ProjectDTO project;
 	/**
 	 * @return the id
 	 */
@@ -106,6 +107,18 @@ public class TaskDTO {
 		this.employeId = employeId;
 	}
 	
+	/**
+	 * @return the project
+	 */
+	public ProjectDTO getProject() {
+		return project;
+	}
+	/**
+	 * @param project the project to set
+	 */
+	public void setProject(ProjectDTO project) {
+		this.project = project;
+	}
 	public Task toTask(Task task) {
 		task.setCreatedDate(getCreatedDate()!=null?getCreatedDate():new DateTime());
 		task.setDescription(getDescription());

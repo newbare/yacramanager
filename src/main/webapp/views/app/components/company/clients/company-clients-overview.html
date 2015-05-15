@@ -28,10 +28,10 @@
     	<li>|</li>
     	<li><a href="#" onaftersave="updateProject(project)"  editable-textarea="project.description" e-rows="3">{{project.description || "Description"}}</a></li>
     	<li>|</li>
-    	<li><p class="text-warning">{{project.numberOfTasks}} task(s)</p></li>
-    	<li>|</li>
-    	<li><p class="text-warning">{{project.numberOfEmployes}} employee(s)</p></li>
-    	<li>|</li>
+    	<li data-ng-if="!project.isnew"><p class="text-warning">{{project.numberOfTasks}} task(s)</p></li>
+    	<li data-ng-if="!project.isnew">|</li>
+    	<li data-ng-if="!project.isnew"><p class="text-warning">{{project.numberOfEmployes}} employee(s)</p></li>
+    	<li data-ng-if="!project.isnew">|</li>
     	<li><button type="button" class="btn btn-success btn-xs" data-ng-if="project.isnew" data-ng-click="saveProject(project,client)">Save</button></li>
     	<li><button type="button" class="btn btn-danger btn-xs" data-ng-if="project.isnew" data-ng-click="deleteProject(project,$index)">Cancel</button></li>
     </ul>

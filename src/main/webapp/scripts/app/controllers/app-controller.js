@@ -311,7 +311,6 @@ var stateConfig =[ '$stateProvider','$locationProvider','$translateProvider','tm
 			.state('frais', {
 				url : "/frais",
 				templateUrl : _contextPath+'views/app/components/frais/frais.html',
-				controller : FraisController,
 				data: {
 			        pageTitle: 'Frais',
 			        ncyBreadcrumbLabel: 'Frais'
@@ -349,7 +348,6 @@ var stateConfig =[ '$stateProvider','$locationProvider','$translateProvider','tm
 			}).state('absence', {
 				url : "/absence",
 				templateUrl : _contextPath+'views/app/components/absence/absence.html',
-				controller : AbsencesController,
 				data: {
 			        pageTitle: 'Absences',
 			        ncyBreadcrumbLabel: 'Absences'
@@ -360,8 +358,7 @@ var stateConfig =[ '$stateProvider','$locationProvider','$translateProvider','tm
 				controller : AbsencesController,
 				data: {
 			        pageTitle: 'Absences',
-			        ncyBreadcrumbLabel: 'List view',
-			        ncyBreadcrumbParent: 'absences'
+			        ncyBreadcrumbLabel: 'List view'
 			      }
 			}).state('absence.detail', {
 				url : "/detail/:id",
@@ -376,8 +373,7 @@ var stateConfig =[ '$stateProvider','$locationProvider','$translateProvider','tm
 					}
 				},
 				data : {
-					ncyBreadcrumbLabel : '{{currentAbsence.typeAbsence.name}} from {{currentAbsence.startDate | date : "mediumDate"}} to {{currentAbsence.endDate | date : "mediumDate"}}',
-					 ncyBreadcrumbParent: 'absences'
+					ncyBreadcrumbLabel : '{{currentAbsence.typeAbsence.name}} from {{currentAbsence.startDate | date : "mediumDate"}} to {{currentAbsence.endDate | date : "mediumDate"}}'
 				}
 			})
 			.state('timesheet', {
@@ -436,7 +432,7 @@ var stateConfig =[ '$stateProvider','$locationProvider','$translateProvider','tm
 			})
 			.state('company', {
 				url : "/company",
-				templateUrl : _contextPath+'views/app/components/company.html',
+				templateUrl : _contextPath+'views/app/components/company/company.html',
 				controller : CompanyController,
 				data: {
 			        pageTitle: 'Company management',
@@ -640,7 +636,7 @@ var stateConfig =[ '$stateProvider','$locationProvider','$translateProvider','tm
 				controller : CompanySettingsController,
 			}).state('admin', {
 				url : "/admin",
-				templateUrl : _contextPath+'views/app/components/admin.html',
+				templateUrl : _contextPath+'views/app/components/admin/admin.html',
 				controller : AdminController,
 				abstract : true,
 				data: {
@@ -652,7 +648,7 @@ var stateConfig =[ '$stateProvider','$locationProvider','$translateProvider','tm
 				controller : AdminHomeController,
 				data: {
 					roles: ['ROLE_ADMIN'],
-					ncyBreadcrumbSkip: true
+					ncyBreadcrumbLabel : 'Admin'
 				  }
 			})
 			.state('admin.company', {

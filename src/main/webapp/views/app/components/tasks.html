@@ -1,56 +1,62 @@
+
+<div class="row">
+	<form class="form-inline">
+	  <div class="form-group">
+	    <div class="input-group input-group-sm">
+	      <div class="input-group-addon">Project</div>
+	      	<select id="project" class="form-control"   data-ng-change="selectProjectToAdd(project)"
+          		data-placeholder="Select a project"
+          		data-ng-model="projectToAdd"
+          		data-ng-options="p.name for p in projects">
+         		<option value=""></option>
+ 			</select>
+	    </div>
+	  </div>
+	  <div class="form-group">
+	    <div class="input-group input-group-sm">
+	      <div class="input-group-addon">Name</div>
+	      <input type="text" data-ng-model="taskToAdd.taskName" class="form-control" placeholder="Enter task name" aria-describedby="sizing-addon3">
+	    </div>
+	  </div>
+	  <div class="form-group">
+	    <div class="input-group input-group-sm">
+	      <div class="input-group-addon">Description</div>
+	      <input type="text" data-ng-model="taskToAdd.taskDescription" class="form-control" placeholder="Enter task description" aria-describedby="sizing-addon3">
+	    </div>
+	  </div>
+	  <button class="btn btn-success btn-sm" type="button" data-ng-disabled="!canAddTask()" data-ng-click="addTask(project)">Add task</button>
+	</form>
+</div>
 <div data-ng-criteria-bar data-criteria-bar-config="criteriaBarConfig" data-do-filter="doFilter(criteriaBarConfig.filters)"></div>
-<ul class="list-group tasks">
-	<!-- Iterate over project -->
-	<li class="list-group-item project-list-group-item" data-ng-repeat="project in projects">
-		<div class="row">
-			<h4 class="header blue">{{project.client.name}} - {{project.name}} <small> {{project.tasks.length}} tasks</small></h4>
-		</div>
-		<div class="row">
-				<div class="input-group input-group-sm">
-				 <div class="input-group-addon">Name</div>
-			      <input type="text" data-ng-model="taskToAdd.taskName" class="form-control"  placeholder="Enter task name">
-			      <span class="input-group-addon">Description</span>
-			      <input type="text" data-ng-model="taskToAdd.taskDescription" class="form-control"  placeholder="Enter task description">
-			      <span class="input-group-btn">
-			        <button class="btn btn-success" type="button" data-ng-disabled="!canAddTask()" data-ng-click="addTask(project)">Add task</button>
-			      </span>
-			    </div><!-- /input-group -->
-		</div>
-		<div class="table-responsive">
-			<table class="table table-striped table-bordered table-hover ng-table"  data-ng-show="project.tasks.length>0">
-					<thead>
-						<tr>
-							<th>Created date</th>
-							<th>Name</th>
-							<th>Description</th>
-							<th></th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr align="left" data-ng-repeat="task in project.tasks" class="">
-							<td>{{ task.createdDate | date : 'short'}}</td>
-							<td >{{ task.name}}</td>
-							<td >{{ task.description}}</td>
-							<td class="tool-btn-col">
-								<div class="btn-group actions-btn" role="group">
-								  <button type="button" class="btn btn-link" data-ng-click="editTask(task.id)"><span class="fa fa-pencil"></span></button>
-								  <button type="button" class="btn btn-link" data-ng-click="deleteTask(task.id)" data-ng-confirm="Do you want to delete this entry ?"><span class="fa fa-trash-o red"></span></button>
-								</div>
-								<!-- <div class="btn-group">
-								 <button type="button" class="btn btn-link dropdown-toggle tool-btn" style="color: grey;" data-toggle="dropdown">
-								    <i class="fa fa-cog"></i><span class="caret"></span>
-								  </button>
-								  <ul class="dropdown-menu table-action" role="menu">
-								    <li><a href="" data-ng-click="editTask(task.id)"><i class="fa fa-pencil-square-o"></i>Edit</a></li>
-								    <li class="divider"></li>
-								    <li><a href="" data-ng-click="deleteTask(task.id)"><i class="fa fa-trash-o" style="color: red;"></i>Delete</a></li>
-								  </ul>
-								</div> -->
-							</td>
-						</tr>
-					</tbody>
-					
-			</table>
-		</div>
-	</li>
-</ul>
+<div class="row" data-ng-show="hasDatas"> 
+	<span style="vertical-align: middle;" data-ng-show="tableParams.settings().total>0"><b>{{startIndex}}</b> - <b>{{endIndex}}</b> of <b>{{tableParams.settings().total}}</b></span>
+	<div class="btn-group" style="padding-left:5px;" >
+	    <a href="" data-ng-click="refreshDatas()"><i class="fa fa-refresh"></i></a> 
+	</div>
+</div>
+<div class="table-responsive">
+	<table data-ng-table="tableParams" class="table table-striped table-bordered table-hover ng-table-responsive">
+	     <tbody data-ng-repeat="group in $groups">
+	     <tr class="ng-table-group">
+	         <td colspan="{{$columns.length}}">
+	             <a href="" data-ng-click="group.$hideRows = !group.$hideRows">
+	                 <span class="glyphicon" data-ng-class="{ 'glyphicon-chevron-right': group.$hideRows, 'glyphicon-chevron-down': !group.$hideRows }"></span>
+	                 <strong>{{group.value }}</strong>
+	             </a>
+	         </td>
+	     </tr>
+	     <tr data-ng-hide="group.$hideRows" data-ng-repeat="task in group.data">
+	        <td data-title="'Created date'" data-sortable="'createdDate'">{{ task.createdDate | date : 'short'}}</td>
+			<td data-title="'Name'" data-sortable="'name'">{{ task.name}}</td>
+			<td data-title="'Description'" data-sortable="'description'">{{ task.description}}</td>
+			<td data-title="'Status'" data-sortable="'taskStatus'"><span class="label" data-ng-class="{'label-success' : task.taskStatus==='OPEN' , 'label-danger' : task.taskStatus==='COMPLETED'}">{{task.taskStatus}}</span></td>
+			<td class="tool-btn-col">
+				<div class="btn-group actions-btn" role="group">
+				  <button type="button" class="btn btn-link" data-ng-click="editTask(task.id)"><span class="fa fa-pencil"></span></button>
+				  <button type="button" class="btn btn-link" data-ng-click="deleteTask(task.id)" data-ng-confirm="Do you want to delete this entry ?"><span class="fa fa-trash-o red"></span></button>
+				</div>
+			</td>
+	   	</tr>
+	     </tbody>
+	</table>
+</div>

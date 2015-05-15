@@ -36,6 +36,7 @@ import fr.wati.yacramanager.beans.Task;
 import fr.wati.yacramanager.beans.ValidationStatus;
 import fr.wati.yacramanager.beans.WorkLog;
 import fr.wati.yacramanager.services.EmployeService;
+import fr.wati.yacramanager.services.ServiceException;
 import fr.wati.yacramanager.services.TaskService;
 import fr.wati.yacramanager.services.WorkLogService;
 import fr.wati.yacramanager.services.impl.DtoMapper;
@@ -107,9 +108,14 @@ public class WorkLogRestController {
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@Timed
-	public void update(@PathVariable("id") Long id, @RequestBody WorkLogDTO dto) {
+	public void update(@PathVariable("id") Long id, @RequestBody WorkLogDTO dto) throws RestServiceException {
 		WorkLog findOne = workLogService.findOne(id);
-		workLogService.save(dto.toWorkLog(findOne));
+		try {
+			workLogService.updateWorkLog(dto.toWorkLog(findOne));
+		} catch (ServiceException e) {
+			LOG.error(e.getMessage(), e);
+			throw new RestServiceException(e);
+		}
 	}
 
 
@@ -187,7 +193,12 @@ public class WorkLogRestController {
 		}
 		Task task=taskService.findOne(dto.getTaskId());
 		workLog.setTask(task);
-		workLogService.save(workLog);
+		try {
+			workLogService.postWorkLog(workLog);
+		} catch (ServiceException e) {
+			LOG.error(e.getMessage(), e);
+			throw new RestServiceException(e);
+		}
 		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
 

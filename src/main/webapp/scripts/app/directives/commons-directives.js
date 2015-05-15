@@ -302,7 +302,6 @@ App.directive('applicationLoadingSupport', function($timeout) {
         				for (var i in eventsToWait) {
 							  if(eventsToWait[i]===event){
 								  eventsToWait.splice(i, 1);
-								  debug("event "+event+' finished');
 								}
 							}
 						if(eventsToWait.length===0){

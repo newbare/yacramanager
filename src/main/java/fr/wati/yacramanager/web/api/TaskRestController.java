@@ -147,10 +147,10 @@ public class TaskRestController {
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@RequestMapping(value="/{projectId}/{employeId}/all", method = RequestMethod.GET)
+	@RequestMapping(value="/{employeId}/all", method = RequestMethod.GET)
 	@Timed
 	public ResponseWrapper<List<TaskDTO>> getAll(
-			@PathVariable("companyId") Long companyId,@PathVariable("projectId") Long projectId,@PathVariable("employeId") Long employeId,
+			@PathVariable("companyId") Long companyId,@PathVariable("employeId") Long employeId,
 			@RequestParam(required = false) Integer page,
 			@RequestParam(required = false) Integer size,
 			@RequestParam(required = false, value = "sort") Map<String, String> sort,
@@ -173,7 +173,7 @@ public class TaskRestController {
 		}
 		Specifications<Task> specifications = null;
 		if (!filters.isEmpty()) {
-			LOG.debug("Building Absence specification");
+			LOG.debug("Building Task specification");
 			specifications = Specifications.where(SpecificationBuilder
 					.buildSpecification(filters, taskService));
 		}

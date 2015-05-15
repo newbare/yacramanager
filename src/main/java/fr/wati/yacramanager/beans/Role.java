@@ -34,6 +34,7 @@ public class Role implements Serializable {
 	public static final String SSII_ADMIN = "ROLE_SSII_ADMIN";
 	public static final String SALARIE = "ROLE_SALARIE";
 	public static final String INDEP = "ROLE_INDEP";
+	public static final String ANONYMOUS = "ROLE_ANONYMOUS";
 
 	public static List<String> availabeRoles = new ArrayList<String>();
 
@@ -42,6 +43,7 @@ public class Role implements Serializable {
 		availabeRoles.add(SALARIE);
 		availabeRoles.add(INDEP);
 		availabeRoles.add(ADMIN);
+		availabeRoles.add(ANONYMOUS);
 	}
 
 	@Id

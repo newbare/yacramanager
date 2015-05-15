@@ -5,6 +5,7 @@ import org.springframework.context.ApplicationEvent;
 
 import fr.wati.yacramanager.beans.Activities;
 import fr.wati.yacramanager.beans.Activities.ActivityOperation;
+import fr.wati.yacramanager.beans.Employe;
 import fr.wati.yacramanager.beans.Users;
 import fr.wati.yacramanager.utils.SecurityUtils;
 
@@ -15,6 +16,7 @@ public class ActivityEvent extends ApplicationEvent {
 	private DateTime date;
 	private Users user;
 	private ActivityOperation activityOperation;
+	private Long userId;
 	private Long entityId;
 	private String entityType;
 	
@@ -53,6 +55,20 @@ public class ActivityEvent extends ApplicationEvent {
 
 	public void setActivityOperation(ActivityOperation activityOperation) {
 		this.activityOperation = activityOperation;
+	}
+
+	/**
+	 * @return the userId
+	 */
+	public Long getUserId() {
+		return userId;
+	}
+
+	/**
+	 * @param userId the userId to set
+	 */
+	public void setUserId(Long userId) {
+		this.userId = userId;
 	}
 
 	public Long getEntityId() {
@@ -95,11 +111,14 @@ public class ActivityEvent extends ApplicationEvent {
 	
 	public ActivityEvent user(Users users){
 		setUser(users);
+		setUserId(users.getId());
 		return this;
 	}
 	
 	public ActivityEvent user(){
-		setUser(SecurityUtils.getConnectedUser());
+		Employe connectedUser = SecurityUtils.getConnectedUser();
+		setUser(connectedUser);
+		setUserId(connectedUser.getId());
 		return this;
 	}
 	
