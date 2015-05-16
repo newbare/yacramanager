@@ -22,7 +22,7 @@
 <link rel="stylesheet" href="../../bower_components/chosen/chosen.min.css"/>
 <link rel="stylesheet" href="../../bower_components/jquery.gritter/css/jquery.gritter.css"/>
 <link rel="stylesheet" href="../../bower_components/bootstrap/dist/css/bootstrap.css" />
-<link rel="stylesheet" href="../../bower_components/fontawesome/css/font-awesome.min.css"/>
+<link rel="stylesheet" href="../../bower_components/font-awesome/css/font-awesome.min.css"/>
 <!-- endbuild -->
 
 <!-- build:css /assets/styles/app/main.css -->
@@ -272,32 +272,65 @@
     <!-- endbuild -->
 	
 	<!-- build:js /scripts/app/app.js -->
-	<script src="../../scripts/app/application.js"></script>
+	<script src="../../scripts/app/app.js"></script>
 	<script src="../../scripts/app/app.constants.js"></script>
-	<script src="../../scripts/app/common-app.js"></script>
+	<script src="../../scripts/common-app.js"></script>
 	<script src="../../scripts/app/constants.js"></script>
-	<script	src="../../scripts/app/controllers/app-controller.js"></script>
+	<script	src="../../scripts/app/home/home.controllers.js"></script>
+	<script	src="../../scripts/app/home/home.js"></script>
+	<script	src="../../scripts/app/activityreport/activityreport.controllers.js"></script>
+	<script	src="../../scripts/app/activityreport/activityreport.js"></script>
+	<script	src="../../scripts/app/error/error.js"></script>
+	<script	src="../../scripts/app/absences/absences.controllers.js"></script>
+	<script	src="../../scripts/app/absences/absences.js"></script>
+	<script	src="../../scripts/app/frais/frais.controllers.js"></script>
+	<script	src="../../scripts/app/frais/frais.js"></script>
+	<script	src="../../scripts/app/tasks/tasks.controllers.js"></script>
+	<script	src="../../scripts/app/tasks/tasks.js"></script>
+	<script	src="../../scripts/app/timesheet/timesheet.controllers.js"></script>
+	<script	src="../../scripts/app/timesheet/timesheet.js"></script>
+	<script	src="../../scripts/app/users/profile/users.profile.controllers.js"></script>
+	<script	src="../../scripts/app/users/profile/users.profile.js"></script>
+	<script	src="../../scripts/app/users/settings/users.settings.controllers.js"></script>
+	<script	src="../../scripts/app/users/settings/users.settings.js"></script>
+	<script	src="../../scripts/app/documents/documents.controllers.js"></script>
+	<script	src="../../scripts/app/documents/documents.js"></script>
+	<script	src="../../scripts/app/admin/admin.js"></script>
+	<script	src="../../scripts/app/admin/company/admin.company.controllers.js"></script>
+	<script	src="../../scripts/app/admin/company/admin.company.js"></script>
+	<script	src="../../scripts/app/admin/docs/admin.docs.controllers.js"></script>
+	<script	src="../../scripts/app/admin/docs/admin.docs.js"></script>
+	<script	src="../../scripts/app/admin/home/admin.home.controllers.js"></script>
+	<script	src="../../scripts/app/admin/home/admin.home.js"></script>
+	<script	src="../../scripts/app/admin/logs/admin.logs.controllers.js"></script>
+	<script	src="../../scripts/app/admin/logs/admin.logs.js"></script>
+	<script	src="../../scripts/app/admin/configuration/admin.configuration.controllers.js"></script>
+	<script	src="../../scripts/app/admin/configuration/admin.configuration.js"></script>
+	<script	src="../../scripts/app/admin/metrics/admin.metrics.controllers.js"></script>
+	<script	src="../../scripts/app/admin/metrics/admin.metrics.js"></script>
+	<script	src="../../scripts/app/company/company.js"></script>
+	<script	src="../../scripts/app/company/activities/company.activities.controllers.js"></script>
+	<script	src="../../scripts/app/company/activities/company.activities.js"></script>
+	<script	src="../../scripts/app/company/clients/company.clients.controllers.js"></script>
+	<script	src="../../scripts/app/company/clients/company.clients.js"></script>
+	<script	src="../../scripts/app/company/employees/company.employees.controllers.js"></script>
+	<script	src="../../scripts/app/company/employees/company.employees.js"></script>
+	<script	src="../../scripts/app/company/home/company.home.controllers.js"></script>
+	<script	src="../../scripts/app/company/home/company.home.js"></script>
+	<script	src="../../scripts/app/company/projects/company.projects.controllers.js"></script>
+	<script	src="../../scripts/app/company/projects/company.projects.js"></script>
+	<script	src="../../scripts/app/company/settings/company.settings.controllers.js"></script>
+	<script	src="../../scripts/app/company/settings/company.settings.js"></script>
+	
+	
 	<script src="../../scripts/bootstrap.file-input.js"></script>
 	<script src="../../scripts/http-auth-interceptor.js"></script>
 	<script src="../../scripts/colResizable-1.3.min.js"></script>
-	<script src="../../scripts/app/filters/commons-filters.js"></script>
-	<script	src="../../scripts/app/controllers/home-controller.js"></script>
-	<script	src="../../scripts/app/controllers/sidebar-controller.js"></script>
-	<script	src="../../scripts/app/controllers/admin-controller.js"></script>
-	<script	src="../../scripts/app/controllers/frais-controllers.js"></script>
-	<script	src="../../scripts/app/controllers/messages-controller.js"></script>
-	<script	src="../../scripts/app/controllers/company-controller.js"></script>
-	<script src="../../scripts/app/factories/common-factories.js"></script>
-	<script src="../../scripts/app/services/common-services.js"></script>
-	<script	src="../../scripts/app/directives/commons-directives.js"></script>
-	<script	src="../../scripts/app/directives/angular-criterias.js"></script>
-	<script	src="../../scripts/app/controllers/timesheet-controller.js"></script>
-	<script	src="../../scripts/app/controllers/users-controller.js"></script>
-	<script	src="../../scripts/app/controllers/absences-controller.js"></script>
-	<script	src="../../scripts/app/controllers/tasks-controller.js"></script>
-	<script	src="../../scripts/app/controllers/activity-report-controller.js"></script>
-	<script	src="../../scripts/app/controllers/user-settings-controller.js"></script>
-	<script	src="../../scripts/app/controllers/user-profile-controller.js"></script>
+	<script src="../../scripts/components/filters/commons-filters.js"></script>
+	<script src="../../scripts/components/factories/common-factories.js"></script>
+	<script src="../../scripts/components/services/common-services.js"></script>
+	<script	src="../../scripts/components/directives/commons-directives.js"></script>
+	<script	src="../../scripts/components/directives/angular-criterias.js"></script>
 	<!-- endbuild -->
 	
 	<script th:inline="javascript" type="text/javascript">

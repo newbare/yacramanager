@@ -10,7 +10,7 @@ import fr.wati.yacramanager.beans.Users;
 import fr.wati.yacramanager.utils.SecurityUtils;
 
 @SuppressWarnings("serial")
-public class ActivityEvent extends ApplicationEvent {
+public class ActivityEvent<DTO> extends ApplicationEvent {
 
 	private Long id;
 	private DateTime date;
@@ -19,6 +19,7 @@ public class ActivityEvent extends ApplicationEvent {
 	private Long userId;
 	private Long entityId;
 	private String entityType;
+	private DTO dto;
 	
 	public ActivityEvent(Object source) {
 		super(source);
@@ -87,6 +88,20 @@ public class ActivityEvent extends ApplicationEvent {
 		this.entityType = entityType;
 	}
 
+	/**
+	 * @return the dto
+	 */
+	public DTO getDto() {
+		return dto;
+	}
+
+	/**
+	 * @param dto the dto to set
+	 */
+	public void setDto(DTO dto) {
+		this.dto = dto;
+	}
+
 	public Activities toActivities(){
 		Activities activities = new Activities();
 		activities.setUser(getUser());
@@ -97,37 +112,42 @@ public class ActivityEvent extends ApplicationEvent {
 		return activities;
 	}
 	
-	public static ActivityEvent createWithSource(Object source){
-		ActivityEvent activityEvent = new ActivityEvent(source);
+	public static <DTO> ActivityEvent<DTO> createWithSource(Object source){
+		ActivityEvent<DTO> activityEvent = new ActivityEvent<DTO>(source);
 		activityEvent.setDate(new DateTime());
 		return activityEvent;
 	}
 	
-	public static ActivityEvent create(){
-		ActivityEvent activityEvent = new ActivityEvent(null);
+	public static <DTO> ActivityEvent<DTO> create(){
+		ActivityEvent<DTO> activityEvent = new ActivityEvent<DTO>(null);
 		activityEvent.setDate(new DateTime());
 		return activityEvent;
 	}
 	
-	public ActivityEvent user(Users users){
+	public ActivityEvent<DTO> user(Users users){
 		setUser(users);
 		setUserId(users.getId());
 		return this;
 	}
 	
-	public ActivityEvent user(){
+	public ActivityEvent<DTO> user(){
 		Employe connectedUser = SecurityUtils.getConnectedUser();
 		setUser(connectedUser);
 		setUserId(connectedUser.getId());
 		return this;
 	}
 	
-	public ActivityEvent operation(ActivityOperation activityOperation){
+	public ActivityEvent<DTO> operation(ActivityOperation activityOperation){
 		setActivityOperation(activityOperation);;
 		return this;
 	}
 	
-	public ActivityEvent onEntity(Class<?> entityClass,Long entityId){
+	public ActivityEvent<DTO> dto(DTO dto){
+		setDto(dto);
+		return this;
+	}
+	
+	public ActivityEvent<DTO> onEntity(Class<?> entityClass,Long entityId){
 		setEntityId(entityId);
 		setEntityType(entityClass.getSimpleName());
 		return this;

@@ -60,7 +60,7 @@ public class ActivityReportServiceImpl implements ActivityReportService {
 		applicationEventPublisher.publishEvent(ActivityEvent
 				.createWithSource(this).user()
 				.operation(ActivityOperation.CREATE)
-				.onEntity(ActivityReport.class, 0L));
+				.onEntity(ActivityReport.class, 0L).dto(activityReport));
 	}
 
 	@Override
@@ -150,7 +150,7 @@ public class ActivityReportServiceImpl implements ActivityReportService {
 				applicationEventPublisher.publishEvent(ActivityEvent
 						.createWithSource(this).user()
 						.operation(ActivityOperation.DELETE)
-						.onEntity(ActivityReport.class, 0L));
+						.onEntity(ActivityReport.class, 0L).dto(activityReport));
 			}else {
 				throw new ServiceException("You cannot cancel this activity report");
 			}
@@ -174,7 +174,7 @@ public class ActivityReportServiceImpl implements ActivityReportService {
 				applicationEventPublisher.publishEvent(ActivityEvent
 						.createWithSource(this).user()
 						.operation(ActivityOperation.VALIDATE)
-						.onEntity(ActivityReport.class, 0L));
+						.onEntity(ActivityReport.class, 0L).dto(activityReport));
 			}else {
 				throw new ServiceException("You cannot approve this activity report due to its status: "+activityReport.getValidationStatus());
 			}
@@ -209,7 +209,7 @@ public class ActivityReportServiceImpl implements ActivityReportService {
 				applicationEventPublisher.publishEvent(ActivityEvent
 						.createWithSource(this).user()
 						.operation(ActivityOperation.REJECT)
-						.onEntity(ActivityReport.class, 0L));
+						.onEntity(ActivityReport.class, 0L).dto(activityReport));
 			}else {
 				throw new ServiceException("You cannot reject this activity report due to its status: "+activityReport.getValidationStatus());
 			}

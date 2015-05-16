@@ -1,0 +1,27 @@
+<div class="modal" id="editionAbsencesFormModal" tabindex="-1"
+	role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" ng-click="$hide()">
+					<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+				</button>
+				<h3 data-ng-show="!edition" class="panel-title">Add timeoff</h3>
+				<h3 data-ng-show="edition" class="panel-title">Edit timeoff</h3>
+			</div>
+			<div class="modal-body">
+				<div data-ng-include="'/views/app/templates/partials/absences-form.html'"></div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary"
+							data-ng-click="postAbsence($hide)" data-ng-show="!edition" >Submit</button>
+						<button type="button" class="btn btn-success"
+							data-ng-click="putAbsence()" data-ng-show="edition" >Edit</button>
+				<button type="button" class="btn btn-link" data-ng-click="$hide()" data-dismiss="modal">Cancel</button>
+			</div>
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->

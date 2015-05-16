@@ -21,7 +21,9 @@ public interface ProjectService extends CrudService<Project, Long>,Specification
 	 * @param findByCompanyAndId
 	 * @return
 	 */
-	ProjectDTO toProjectDTO(Project findByCompanyAndId);
+	ProjectDTO toProjectDTO(Project project);
+	
+	List<ProjectDTO> toProjectDTOs(Iterable<Project> projects);
 	
 	long countNumberOfEmployeeForProject(Project project);
 	

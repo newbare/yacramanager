@@ -56,7 +56,7 @@ public class CompanyServiceImpl implements CompanyService {
 		applicationEventPublisher.publishEvent(ActivityEvent
 				.createWithSource(this).user()
 				.operation(activityOperation)
-				.onEntity(Company.class, save.getId()));
+				.onEntity(Company.class, save.getId()).dto(toCompanyDTO(save)));
 		return save;
 	}
 

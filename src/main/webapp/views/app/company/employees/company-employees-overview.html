@@ -1,0 +1,25 @@
+<div class="row" data-ng-show="employe">
+	<div class="col-md-offset-1 col-md-9">
+		<img data-ng-src="{{employe.profileImageUrl}}" class="img-thumbnail profile-picture"  max-height="140" max-width="140"
+         alt="Generic placeholder thumbnail">
+         <button class="btn btn-link">Update Avatar</button>
+		<h3><span class="label label-info label-xlg  arrowed-in arrowed-in-right">{{employe.lastName}} - {{employe.firstName}}</span></h3>
+		<span class="text-muted">Registered on {{employe.createdDate  | date:'medium'}}</span>
+		<div class="row"></div>
+		<ul class="nav nav-tabs " role="tablist">
+		  <li data-ng-class="{ active: $state.includes('company.employees.view.quick.overview.basic') }"><a  role="tab" data-ui-sref="company.employees.view.quick.overview.basic({ id: employe.id })">Basic infos</a></li>
+		  <li data-ng-class="{ active: $state.includes('company.employees.view.quick.overview.administration') }"><a  role="tab" data-ui-sref="company.employees.view.quick.overview.administration({ id: employe.id })" >Administration</a></li>
+		  <li data-ng-class="{ active: $state.includes('company.employees.view.quick.overview.salary') }"><a  role="tab" data-ui-sref="company.employees.view.quick.overview.salary({ id: employe.id })" >Salary</a></li>
+		  <li data-ng-class="{ active: $state.includes('company.employees.view.quick.overview.activities') }"><a  role="tab" data-ui-sref="company.employees.view.quick.overview.activities({ id: employe.id })"><i class="fa fa-rss orange"></i> Recent activities</a></li>
+		</ul>
+		<div class="tab-content">
+			  <br>
+			  <div data-ui-view=""></div>
+		</div>
+	</div>
+</div>
+<div class="row" data-ng-show="employe==undefined">
+No Employe found
+</div>
+
+ 

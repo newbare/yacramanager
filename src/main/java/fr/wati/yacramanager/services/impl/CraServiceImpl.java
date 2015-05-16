@@ -28,6 +28,7 @@ import fr.wati.yacramanager.services.ClientService;
 import fr.wati.yacramanager.services.CraService;
 import fr.wati.yacramanager.services.EmployeService;
 import fr.wati.yacramanager.services.ServiceException;
+import fr.wati.yacramanager.services.TaskService;
 import fr.wati.yacramanager.services.WorkLogService;
 import fr.wati.yacramanager.utils.DateUtils;
 import fr.wati.yacramanager.web.dto.AbsenceDTO;
@@ -49,6 +50,9 @@ public class CraServiceImpl implements CraService {
 
 	@Inject
 	private WorkLogService workLogService;
+	
+	@Inject
+	private TaskService taskService;
 	
 	@Inject
 	private ActivityReportService activityReportService;
@@ -255,7 +259,7 @@ public class CraServiceImpl implements CraService {
 				ProjectDTO projectDTO = dtoMapper.map(workLog.getTask().getProject());
 				projectDTO.setClient(clientService.toClientDTO(workLog.getTask().getProject().getClient()));
 				craTaskRow.setProject(projectDTO);
-				craTaskRow.setTask(dtoMapper.map(workLog.getTask()));
+				craTaskRow.setTask(taskService.toTaskDTO(workLog.getTask()));
 				craTaskRow.setExtraTime(workLog.isExtraTime());
 				craTaskMap.put(workLog.getTask().getId(), craTaskRow);
 				taskRows.add(craTaskRow);

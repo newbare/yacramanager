@@ -1,0 +1,104 @@
+
+<div class="tab-pane"
+	data-ng-class="{'active' : isActiveTab('basicInfos') }">
+	<h3 class="header smaller lighter blue">Personal info</h3>
+	<div class="profile-user-info profile-user-info-striped">
+		<div class="profile-info-row">
+			<div class="profile-info-name hidden-sm hidden-xs">Username</div>
+			<div class="profile-info-value">
+				<span>{{ employe.username }}</span>
+			</div>
+		</div>
+	</div>
+	<div class="profile-user-info profile-user-info-striped">
+		<div class="profile-info-row">
+			<div class="profile-info-name hidden-sm hidden-xs">First name</div>
+			<div class="profile-info-value">
+				<a href="#" onaftersave="updateEmploye()"
+					editable-text="employe.firstName">{{ employe.firstName ||
+					'empty' }}</a>
+			</div>
+		</div>
+	</div>
+	<div class="profile-user-info profile-user-info-striped">
+		<div class="profile-info-row">
+			<div class="profile-info-name hidden-sm hidden-xs">Last name</div>
+			<div class="profile-info-value">
+				<a href="#" onaftersave="updateEmploye()"
+					editable-text="employe.lastName">{{ employe.lastName || 'empty'
+					}}</a>
+			</div>
+		</div>
+	</div>
+	<div class="profile-user-info profile-user-info-striped">
+		<div class="profile-info-row">
+			<div class="profile-info-name hidden-sm hidden-xs">Birth day</div>
+			<div class="profile-info-value">
+				<a href="#" onaftersave="updateEmploye()"
+					editable-date="employe.birthDay">{{ employe.birthDay ?
+					(employe.birthDay | date :'fullDate') : 'empty' || 'empty' }}</a>
+			</div>
+		</div>
+	</div>
+	<div class="profile-user-info profile-user-info-striped">
+		<div class="profile-info-row">
+			<div class="profile-info-name hidden-sm hidden-xs">Gender</div>
+			<div class="profile-info-value">
+				<a href="#" onaftersave="updateEmploye()"
+					editable-radiolist="employe.gender"
+					e-ng-options="c.value as c.text for c in civilities">{{
+					employe.gender || 'empty' }}</a>
+			</div>
+		</div>
+	</div>
+	<h3 class="header smaller lighter blue">Contact</h3>
+	<div class="profile-user-info profile-user-info-striped">
+		<div class="profile-info-row">
+			<div class="profile-info-name hidden-sm hidden-xs">Email</div>
+			<div class="profile-info-value">
+				<a href="#" onaftersave="updateEmploye()"
+					editable-email="employe.email">{{ employe.email || 'empty' }}</a>
+			</div>
+		</div>
+	</div>
+	<div class="profile-user-info profile-user-info-striped">
+		<div class="profile-info-row">
+			<div class="profile-info-name hidden-sm hidden-xs">Tel</div>
+			<div class="profile-info-value">
+				<ul class="list-inline">
+					<li data-ng-repeat="phoneNumber in employe.phoneNumbers"><i
+						class="fa fa-phone"></i> <a href="#" onaftersave="updateEmploye()"
+						editable-tel="employe.phoneNumbers[$index]">{{
+							employe.phoneNumbers[$index] || 'empty' }}</a></li>
+					<li>
+						<button class="btn btn-primary btn-xs"
+							data-ng-click="addPhoneNumbers(employe)">Add</button>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div class="profile-user-info profile-user-info-striped">
+		<div class="profile-info-row">
+			<div class="profile-info-name hidden-sm hidden-xs">Street</div>
+			<div class="profile-info-value">
+				<a href="#" onaftersave="updateEmploye()"
+					editable-text="employe.adress">{{ employe.adress || 'empty' }}</a>
+			</div>
+		</div>
+	</div>
+	<div class="profile-user-info profile-user-info-striped">
+		<div class="profile-info-row">
+			<div class="profile-info-name hidden-sm hidden-xs">Code</div>
+			<div class="profile-info-value">
+				<a href="#" onaftersave="updateEmploye()"
+					editable-number="employe.postCode">{{ employe.postCode ||
+					'empty' }}</a>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="row" data-ng-show="employe==undefined">No Employe
+	found</div>
+
+

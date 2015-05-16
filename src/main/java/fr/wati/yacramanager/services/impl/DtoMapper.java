@@ -217,6 +217,7 @@ public class DtoMapper {
 		ManagedEmployeInfoDTO dto = new ManagedEmployeInfoDTO();
 		dto.setName(String.valueOf(employe.getId()));
 		dto.setLabel(employe.getFullName());
+		dto.setId(employe.getId());
 		return dto;
 	}
 	

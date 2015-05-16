@@ -33,7 +33,6 @@ import fr.wati.yacramanager.beans.Project;
 import fr.wati.yacramanager.services.CompanyService;
 import fr.wati.yacramanager.services.EmployeService;
 import fr.wati.yacramanager.services.ProjectService;
-import fr.wati.yacramanager.services.impl.DtoMapper;
 import fr.wati.yacramanager.utils.Filter.FilterBuilder;
 import fr.wati.yacramanager.utils.SpecificationBuilder;
 import fr.wati.yacramanager.web.ResourceNotFoundException;
@@ -50,9 +49,6 @@ public class ProjectController {
 	private ProjectService projectService;
 	@Inject
 	private CompanyService companyService;
-	
-	@Inject
-	private DtoMapper dtoMapper;
 	
 	@Inject
 	private EmployeService  employeService;
@@ -128,8 +124,7 @@ public class ProjectController {
 		}
 
 		Page<Project> findBySpecificationAndOrder = projectService.findAll(specifications, pageable);
-		ResponseWrapper<List<ProjectDTO>> responseWrapper = new ResponseWrapper<>(
-				dtoMapper.mapProjects(findBySpecificationAndOrder),
+		ResponseWrapper<List<ProjectDTO>> responseWrapper = new ResponseWrapper<>(projectService.toProjectDTOs(findBySpecificationAndOrder),
 				findBySpecificationAndOrder.getTotalElements());
 		long startIndex = findBySpecificationAndOrder.getNumber() * size + 1;
 		long endIndex = startIndex

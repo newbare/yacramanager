@@ -16,12 +16,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.base.Function;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Multimaps;
 
 import fr.wati.yacramanager.beans.Activities;
 import fr.wati.yacramanager.beans.Client;
-import fr.wati.yacramanager.beans.Company;
 import fr.wati.yacramanager.beans.Employe;
 import fr.wati.yacramanager.beans.Project;
 import fr.wati.yacramanager.dao.repository.ActivitiesRepository;
@@ -36,6 +36,7 @@ public class ActivityServiceImpl implements ActivityService {
 
 	@Inject
 	private ActivitiesRepository activitiesRepository;
+	
 
 	@Inject
 	private DtoMapper dtoMapper;
@@ -51,8 +52,13 @@ public class ActivityServiceImpl implements ActivityService {
 
 	@Override
 	public List<Activities> findForCompany(Long companyId, Pageable pageable) {
-		return activitiesRepository.findByEntityTypeAndEntityId(
-				Company.class.getSimpleName(), companyId, pageable);
+		List<Activities> foundForCompany = activitiesRepository.findForCompany(companyId); 
+		List<Activities> response =Lists.newArrayList(); 
+		List<List<Activities>> partitions = Lists.partition(Lists.newArrayList(foundForCompany), pageable.getPageSize());
+	        for (Activities activities : partitions.get(pageable.getPageNumber())) {
+	        	response.add(activities);
+	        }
+		return response;
 	}
 
 	@Override
@@ -91,8 +97,10 @@ public class ActivityServiceImpl implements ActivityService {
 				activityDTO.setDate(currentActivities.getDate());
 				activityDTO.setEntityId(currentActivities.getEntityId());
 				activityDTO.setEntityType(currentActivities.getEntityType());
-				activityDTO.setEmploye(dtoMapper
-						.map((Employe) currentActivities.getUser()));
+				if(currentActivities.getUser()!=null){
+					activityDTO.setEmploye(dtoMapper
+							.map((Employe) currentActivities.getUser()));
+				}
 				activityItem.setTime(currentActivities.getDate().toLocalTime());
 				activityItem.setActivityDTO(activityDTO);
 				activityItems.add(activityItem);

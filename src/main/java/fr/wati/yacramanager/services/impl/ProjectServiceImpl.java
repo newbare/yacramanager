@@ -93,10 +93,14 @@ public class ProjectServiceImpl implements ProjectService{
 	public <S extends Project> S save(S entity) {
 		ActivityOperation activityOperation=entity.getId()==null?ActivityOperation.CREATE:ActivityOperation.UPDATE;
 		S save = projectRepository.save(entity);
+		for(Task task: save.getTasks()){
+			task.setColor(entity.getColor());
+		}
+
 		applicationEventPublisher.publishEvent(ActivityEvent
 				.createWithSource(this).user()
 				.operation(activityOperation)
-				.onEntity(Project.class, save.getId()));
+				.onEntity(Project.class, save.getId()).dto(toProjectDTO(save)));
 		return save;
 	}
 
@@ -254,5 +258,17 @@ public class ProjectServiceImpl implements ProjectService{
 	@Override
 	public long countNumberOfTaskForProject(Project project) {
 		return project.getTasks().size();
+	}
+
+	/* (non-Javadoc)
+	 * @see fr.wati.yacramanager.services.ProjectService#toProjectDTOs(java.lang.Iterable)
+	 */
+	@Override
+	public List<ProjectDTO> toProjectDTOs(Iterable<Project> projects) {
+		List<ProjectDTO> projectDTOs=new ArrayList<>();
+		for(Project project:projects){
+			projectDTOs.add(toProjectDTO(project));
+		}
+		return projectDTOs;
 	}
 }

@@ -11,7 +11,7 @@ overflow-y: visible!important;
 
 @media only screen and (min-width : 992px) {
     /* Make Navigation Toggle on Desktop Hover */
-    .dropdown:hover .dropdown-menu {
+    .nav .dropdown:hover .dropdown-menu {
         display: block;
     }
 }

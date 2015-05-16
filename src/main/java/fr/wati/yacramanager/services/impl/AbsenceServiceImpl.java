@@ -39,6 +39,7 @@ import fr.wati.yacramanager.utils.Filter.FilterBoolean;
 import fr.wati.yacramanager.utils.Filter.FilterDate;
 import fr.wati.yacramanager.utils.Filter.FilterText;
 import fr.wati.yacramanager.utils.Filter.FilterType;
+import fr.wati.yacramanager.web.dto.AbsenceDTO;
 import fr.wati.yacramanager.web.dto.AbsenceDTO.TypeAbsence;
 
 @Service("absenceService")
@@ -71,7 +72,7 @@ public class AbsenceServiceImpl implements AbsenceService {
 		applicationEventPublisher.publishEvent(ActivityEvent
 				.createWithSource(this).user()
 				.operation(activityOperation)
-				.onEntity(Absence.class, save.getId()));
+				.onEntity(Absence.class, save.getId()).dto(map(save)));
 		return save;
 	}
 
@@ -237,7 +238,7 @@ public class AbsenceServiceImpl implements AbsenceService {
 			applicationEventPublisher.publishEvent(ActivityEvent
 					.createWithSource(this).user(validator)
 					.operation(ActivityOperation.VALIDATE)
-					.onEntity(Absence.class, save.getId()));
+					.onEntity(Absence.class, save.getId()).dto(map(save)));
 		}else {
 			throw new ServiceException(validator.getFullName()+ " is not the manager of "+findOne.getEmploye().getFullName());
 		}
@@ -253,10 +254,26 @@ public class AbsenceServiceImpl implements AbsenceService {
 			applicationEventPublisher.publishEvent(ActivityEvent
 					.createWithSource(this).user(validator)
 					.operation(ActivityOperation.REJECT)
-					.onEntity(Absence.class, save.getId()));
+					.onEntity(Absence.class, save.getId()).dto(map(absence)));
 		}else {
 			throw new ServiceException(validator.getFullName()+ " is not the manager of "+findOne.getEmploye().getFullName());
 		}
+	}
+	
+	public  AbsenceDTO map(Absence absence) {
+		AbsenceDTO dto = new AbsenceDTO();
+		dto.setDescription(absence.getDescription());
+		dto.setStartDate(absence.getStartDate());
+		dto.setEmployeId(absence.getEmploye().getId());
+		dto.setEmployeName(absence.getEmploye().getFullName());
+		dto.setEndDate(absence.getEndDate());
+		dto.setTypeAbsence(String.valueOf(absence.getTypeAbsence()));
+		dto.setDate(absence.getDate());
+		dto.setId(absence.getId());
+		dto.setValidationStatus(absence.getValidationStatus());
+		dto.setStartAfternoon(absence.isStartAfternoon());
+		dto.setEndMorning(absence.isEndMorning());
+		return dto;
 	}
 	
 	public List<Absence> getEntitiesToApproved(Long employeId){

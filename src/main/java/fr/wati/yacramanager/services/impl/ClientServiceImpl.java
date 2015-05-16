@@ -17,7 +17,6 @@ import fr.wati.yacramanager.beans.Client;
 import fr.wati.yacramanager.beans.Client_;
 import fr.wati.yacramanager.beans.Company;
 import fr.wati.yacramanager.beans.Project;
-import fr.wati.yacramanager.beans.WorkLog;
 import fr.wati.yacramanager.dao.repository.ClientRepository;
 import fr.wati.yacramanager.dao.repository.CompanyRepository;
 import fr.wati.yacramanager.dao.repository.ContactRepository;
@@ -64,7 +63,7 @@ public class ClientServiceImpl implements ClientService {
 		applicationEventPublisher.publishEvent(ActivityEvent
 				.createWithSource(this).user()
 				.operation(activityOperation)
-				.onEntity(Client.class, save.getId()));
+				.onEntity(Client.class, save.getId()).dto(toClientDTO(save)));
 		return save;
 	}
 

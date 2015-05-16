@@ -116,7 +116,7 @@ var stateConfig =[ '$stateProvider','$locationProvider','$translateProvider','tm
 			$stateProvider
 			.state('error404', {
 				url : "/error404",
-				templateUrl : _contextPath+'views/app/components/templates/error-404.tpl.html',
+				templateUrl : _contextPath+'views/app/templates/error-404.tpl.html',
 				controller : HomeController,
 				data: {
 			        pageTitle: 'Error 404'

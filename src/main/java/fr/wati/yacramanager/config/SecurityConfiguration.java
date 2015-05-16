@@ -97,7 +97,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter
 						new String[] { "ADMIN", "SSII_ADMIN", "SALARIE",
 								"INDEP" }).anyRequest().authenticated();
 		if (environment.acceptsProfiles(Constants.SPRING_PROFILE_CLOUD,
-				Constants.SPRING_PROFILE_PRODUCTION,Constants.SPRING_PROFILE_TEST)) {
+				Constants.SPRING_PROFILE_PRODUCTION)) {
 			http.requiresChannel().antMatchers("/**").requiresSecure();
 		}
 		http.formLogin()

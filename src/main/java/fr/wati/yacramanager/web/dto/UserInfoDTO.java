@@ -8,6 +8,7 @@ public class UserInfoDTO extends Employe {
 	
 	
 	public static class ManagedEmployeInfoDTO{
+		private Long id;
 		private String name;
 		private String label;
 		public String getName() {
@@ -21,6 +22,18 @@ public class UserInfoDTO extends Employe {
 		}
 		public void setLabel(String label) {
 			this.label = label;
+		}
+		/**
+		 * @return the id
+		 */
+		public Long getId() {
+			return id;
+		}
+		/**
+		 * @param id the id to set
+		 */
+		public void setId(Long id) {
+			this.id = id;
 		}
 		
 		

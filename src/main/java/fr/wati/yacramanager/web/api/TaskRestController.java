@@ -99,7 +99,7 @@ public class TaskRestController {
 				project, employe);
 		if (tasks != null && !tasks.isEmpty()) {
 			ResponseWrapper<List<TaskDTO>> responseWrapper = new ResponseWrapper<>(
-					dtoMapper.mapTasks(tasks), tasks.size());
+					taskService.toTaskDTOs(tasks), tasks.size());
 			return responseWrapper;
 		}
 		return new ResponseWrapper<List<TaskDTO>>(null);

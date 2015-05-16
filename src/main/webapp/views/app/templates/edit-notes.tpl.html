@@ -1,0 +1,29 @@
+<div class="modal" id="editionFormModal" tabindex="-1"
+	role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" ng-click="$hide()">
+					<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+				</button>
+				<h3 data-ng-show="!edition" class="panel-title">Nouvelle note
+					de frais</h3>
+				<h3 data-ng-show="edition" class="panel-title">Edition de la
+					note de frais</h3>
+			</div>
+			<div class="modal-body">
+				<div data-ng-include="'/views/app/templates/partials/frais-form.html'"></div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary"
+					data-ng-click="postAttachement($hide)" data-ng-show="!edition" data-ng-disabled="!canPostNote()">Post</button>
+				<button type="button" class="btn btn-primary"
+					data-ng-click="putNote()" data-ng-show="edition">Edit</button>
+				<button type="button" class="btn btn-link" data-ng-click="$hide()">Cancel</button>
+			</div>
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->

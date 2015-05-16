@@ -1,0 +1,31 @@
+<div>
+	<h4 class="header smaller lighter blue" translate="configuration.title">configuration</h4>
+    <p>{{'metrics.configuration.filter' | translate}}</p> 
+	<div class="row">
+		<div class="">
+			<div class="input-group input-group-sm">
+				<span class="input-group-addon "><i class="fa fa-search"></i></span>
+				<input type="text"  data-ng-model="filter" class="form-control input-sm">
+			</div>
+		</div>
+	</div>
+	   <hr>
+    <table class="table table-condensed table-striped table-bordered table-responsive" style="table-layout:fixed">
+        <thead>
+        <tr>
+            <th ng-click="predicate = 'prefix'; reverse=!reverse">{{'metrics.configuration.table.prefix' | translate}}</th>
+            <th>{{'metrics.configuration.table.properties' | translate}}</th>
+        </tr>
+        </thead>
+        
+        <tr ng-repeat="entry in configuration | filter:filter | orderBy:predicate:reverse">
+            <td><span>{{entry.prefix}}</span></td>
+            <td>
+                <div class="row" ng-repeat="(key, value) in entry.properties">
+                    <div class="col-md-6">{{key}}</div>
+                    <div class="col-md-6"><span class="pull-right label label-info" style="white-space: normal;word-break:break-all">{{value}}</span></div>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>

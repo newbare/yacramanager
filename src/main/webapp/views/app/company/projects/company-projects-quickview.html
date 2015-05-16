@@ -1,0 +1,26 @@
+
+<div class="row">
+	<div class="col-md-2">
+		<div class="table-responsive">
+			<table
+				class="table table-striped table-bordered table-hover ng-table-rowselected "
+				data-ng-table="tableParams" >
+				<tr align="left" data-ng-repeat="project in $data" style="height: 50px"
+					data-ng-click="project.$selected = !project.$selected; changeSelection(project)"
+					data-ng-class="{'active': project.$selected}">
+					<td data-title="'Project'" data-sortable="'name'" data-ui-sref="company.projects.view.quick.overview({ id: project.id })">
+						{{project.name}}
+						<i data-ng-if="$state.is('company.projects.view.quick.overview',{ id: ''+project.id+'' })" class="fa fa-hand-o-right text-primary" style="float: right;"></i>
+					</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+	<div class="col-md-10">
+		<!-- <div class="panel panel-default">
+			<div class="panel-body"> -->
+				<div data-ui-view class=""></div>
+			<!-- </div>
+		</div> -->
+	</div>
+</div>

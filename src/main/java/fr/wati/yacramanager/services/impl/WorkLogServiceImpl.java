@@ -27,6 +27,7 @@ import fr.wati.yacramanager.services.ServiceException;
 import fr.wati.yacramanager.services.SpecificationFactory;
 import fr.wati.yacramanager.services.WorkLogService;
 import fr.wati.yacramanager.utils.Filter;
+import fr.wati.yacramanager.web.dto.WorkLogDTO;
 
 @Service("workLogService")
 @Transactional
@@ -50,7 +51,7 @@ public class WorkLogServiceImpl implements WorkLogService,SpecificationFactory<W
 		applicationEventPublisher.publishEvent(ActivityEvent
 				.createWithSource(this).user()
 				.operation(activityOperation)
-				.onEntity(WorkLog.class, save.getId()));
+				.onEntity(WorkLog.class, save.getId()).dto(map(save)));
 		return save;
 	}
 
@@ -167,12 +168,44 @@ public class WorkLogServiceImpl implements WorkLogService,SpecificationFactory<W
 			applicationEventPublisher.publishEvent(ActivityEvent
 					.createWithSource(this).user()
 					.operation(ActivityOperation.REJECT)
-					.onEntity(WorkLog.class, findOne.getId()));
+					.onEntity(WorkLog.class, findOne.getId()).dto(map(findOne)));
 		}else {
 			throw new ServiceException(validator.getFullName()+ " is not the manager of "+findOne.getEmploye().getFullName());
 		}
 	}
 
+	public  WorkLogDTO map(WorkLog workLog) {
+		WorkLogDTO workLogDTO=new WorkLogDTO();
+		workLogDTO.setStart(workLog.getStartDate());
+		workLogDTO.setEnd(workLog.getEndDate());
+		workLogDTO.setId(workLog.getId());
+		workLogDTO.setEditable(ValidationStatus.APPROVED!= workLog.getValidationStatus());
+		workLogDTO.setValidationStatus(workLog.getValidationStatus());
+		if(workLog.getTask()!=null){
+			workLogDTO.setTaskName(workLog.getTask().getName());
+			workLogDTO.setTitle(workLog.getTask().getName());
+			workLogDTO.setProjectName(workLog.getTask().getProject().getName());
+			workLogDTO.setClientName(workLog.getTask().getProject().getClient().getName());
+			workLogDTO.setColor(workLog.getTask().getColor() != null ? workLog
+					.getTask().getColor() : workLog.getTask().getProject()
+					.getColor());
+		}
+		workLogDTO.setType(String.valueOf(workLog.getWorkLogType()));
+		switch (workLog.getWorkLogType()) {
+		case DURATION:
+			workLogDTO.setAllDay(true);
+			workLogDTO.setDuration(workLog.getDuration());
+			break;
+		default:
+			workLogDTO.setAllDay(false);
+			break;
+		}
+		workLogDTO.setDescription(workLog.getDescription());
+		workLogDTO.setExtraTime(workLog.isExtraTime());
+		
+		return workLogDTO;
+	}
+	
 	/* (non-Javadoc)
 	 * @see fr.wati.yacramanager.services.StatusValidator#getEntitiesToApproved(java.lang.Long)
 	 */

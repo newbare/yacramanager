@@ -22,7 +22,6 @@ import fr.wati.yacramanager.beans.Employe;
 import fr.wati.yacramanager.beans.NoteDeFrais;
 import fr.wati.yacramanager.beans.NoteDeFrais_;
 import fr.wati.yacramanager.beans.ValidationStatus;
-import fr.wati.yacramanager.beans.WorkLog;
 import fr.wati.yacramanager.dao.repository.NoteDeFraisRepository;
 import fr.wati.yacramanager.dao.specifications.CommonSpecifications;
 import fr.wati.yacramanager.listeners.ActivityEvent;
@@ -302,7 +301,7 @@ public class NoteDeFraisServiceImpl implements NoteDeFraisService {
 			applicationEventPublisher.publishEvent(ActivityEvent
 					.createWithSource(this).user(validator)
 					.operation(ActivityOperation.REJECT)
-					.onEntity(NoteDeFrais.class, save.getId()));
+					.onEntity(NoteDeFrais.class, save.getId()).dto(map(save)));
 		}else {
 			throw new ServiceException(validator.getFullName()+ " is not the manager of "+findOne.getEmploye().getFullName());
 		}

@@ -61,7 +61,7 @@ public class TaskServiceImpl implements TaskService {
 		applicationEventPublisher.publishEvent(ActivityEvent
 				.createWithSource(this).user()
 				.operation(activityOperation)
-				.onEntity(Task.class, save.getId()));
+				.onEntity(Task.class, save.getId()).dto(toTaskDTO(save)));
 		return save;
 	}
 
@@ -172,6 +172,13 @@ public class TaskServiceImpl implements TaskService {
 						taskStatus.add(TaskStatus.valueOf(filterArrayValue.getName()));
 					}
 					return CommonSpecifications.equalsAny(taskStatus, Task_.taskStatus);
+				}
+				if("project".equals(filter.getField())){
+					List<Project> projects=new ArrayList<>();
+					for(FilterArrayValue filterArrayValue: filterArray.getValue()){
+						projects.add(projectService.findOne(Long.valueOf(filterArrayValue.getName())));
+					}
+					return CommonSpecifications.equalsAny(projects, Task_.project);
 				}
 				if("employe".equals(filter.getField())){
 					List<Employe> employes=new ArrayList<>();
