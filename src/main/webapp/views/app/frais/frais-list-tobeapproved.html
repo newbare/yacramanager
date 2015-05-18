@@ -1,0 +1,47 @@
+  <div class="tab-pane">
+  		<ul class="list-group">
+		<!-- Iterate over Employe -->
+		<li class="list-group-item" data-ng-repeat="approvement in approvements" style="border: none;">
+			<h4><span class="text-muted"><i class="fa fa-user"></i><strong> {{approvement.employeFirstName}} {{approvement.employeLastName}}</strong></span></h4>
+			<div class="table-responsive">
+				<table class="table table-striped table-bordered table-hover">
+					<tr>
+						<th style="width:20px;">
+							<label class="checkbox-inline">
+							  <input type="checkbox"  data-ng-model="checkboxes.items[absence.id]" class="ace">
+							  <span class="lbl"></span>
+							</label>
+						</th>
+						<th>Submit date</th>
+						<th class="hidden-xs">Description</th>
+						<th>Amount</th>
+						<th><i class="fa fa-paperclip"></i></th>
+						<th>Status</th>
+						<th></th>
+					</tr>
+					<tr data-ng-repeat="expense in approvement.approvalEntities">
+						<td>
+							<label class="checkbox-inline">
+							  <input type="checkbox"  data-ng-model="checkboxes.items[absence.id]" class="ace">
+							  <span class="lbl"></span>
+							</label>
+						</td>
+						<td>{{ expense.date | date : 'short'}}</td>
+						<td class="hidden-xs">{{ expense.description}}</td>
+						<td>{{ expense.amount | currency:"EUR " }}</td>
+						<td style="width:20px;" align="center" >
+								<a href="api/attachements/{{id}}" data-ng-repeat="id in expense.attachementsIds" data-ng-show="expense.attachementsIds.length>0" >
+									<i class="fa fa-cloud-download"></i>
+								</a>
+						</td>
+						<td><span class="label" data-ng-class="{'label-success' : isValidated(expense) , 'label-warning' : isWaiting(expense), 'label-danger' : isRejected(expense)}">{{expense.validationStatus}}</span></td>
+						<td>
+							<button type="button" class="btn btn-success btn-xs" data-ng-click="approve(expense.id)">Approve</button>
+							<button type="button" class="btn btn-danger btn-xs" data-ng-click="reject(expense.id)">Reject</button>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</li>
+	</ul>
+  </div>

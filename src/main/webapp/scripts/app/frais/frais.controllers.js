@@ -1,9 +1,39 @@
-App.controller('FraisDetailController',function ($scope,frais,NoteREST){
-	$scope.currentNote=frais;
-	$scope.currentNote.date=new Date(frais.date);
+App.controller('FraisListController',function ($scope,NoteREST,$http,USERINFO,alertService){
+	$scope.currentNote={};
+	$scope.approvementTotal=0;
+	
+	$scope.refreshApproval=function(){
+		$http.get(_contextPath+"app/api/frais/approval",{params:{"requesterId":USERINFO.id} })
+		.success(function(data, status) {
+			$scope.approvementTotal=data.totalCount;
+			$scope.approvements=data.result;
+		});
+	};
+	
+	$scope.refreshApproval();
+	
+}); 
+
+
+App.controller('FraisListToBeApprovedController',function($scope,$rootScope,$http,USERINFO,alertService){
+	
+	$scope.approve=function(id){
+		$http.put(_contextPath+"app/api/frais/approval/approve/"+parseInt(USERINFO.id)+"/"+id)
+		.success(function(data, status) {
+			alertService.show('success','Updated', 'Data has been updated');
+			$scope.refreshApproval();
+		});
+	};
+	$scope.reject=function(id){
+		$http.put(_contextPath+"app/api/frais/approval/reject/"+parseInt(USERINFO.id)+"/"+id)
+		.success(function(data, status) {
+			alertService.show('success','Updated', 'Data has been updated');
+			$scope.refreshApproval();
+		});
+	};
 });
 
-App.controller('FraisController',function ($scope, $rootScope, NoteREST, alertService,
+App.controller('FraisListMineController',function ($scope, $rootScope, NoteREST, alertService,
 		ngTableParams, notifService, $upload,$modal,$http,$filter,USERINFO,NgStomp) {
 	var filterRef="";
 	$scope.client = NgStomp('/websocket/event');
@@ -16,8 +46,64 @@ App.controller('FraisController',function ($scope, $rootScope, NoteREST, alertSe
         });
     }, function(){}, '/');
 	$scope.currentTab='myExpenses';
-	$scope.approvementTotal=0;
+	
 	$scope.approvements=[];
+	$scope.canPostNote=function(){
+		return $scope.currentNote.date!='' && $scope.currentNote.date!=undefined && $scope.currentNote.amount!=0 && $scope.currentNote.amount!=undefined;
+	};
+	
+	$scope.postNote=function(note,hideFn){
+		 NoteREST.save(note).$promise.then(function(result) {
+			alertService.show('success', 'Created', 'Nouvelle note sauvegarde');
+			hideFn();
+			$scope.reset();
+			$scope.tableParams.reload();
+		}, function(error) {
+			console.log(error);
+			notifService.notify('error', '' + error.status, error.data);
+			hideFn();
+			$scope.reset();
+		});
+	};
+	
+	$scope.postAttachement = function(hideFn) {
+		if($scope.selectedFile){
+			$scope.upload = $upload.upload({
+				url : _contextPath+'app/api/attachements', // upload.php script, node.js route, or
+											// servlet url
+				file : $scope.selectedFile, // or list of files: $files for html5
+											// only
+			}).progress(
+					function(evt) {
+						console.log('percent: '	+ parseInt(100.0 * evt.loaded / evt.total));
+					}).success(function(data, status, headers, config) {
+				// file is uploaded successfully
+				console.log(data);
+				if(status==201){
+					$scope.currentNote.attachementsIds=[];
+					$scope.currentNote.attachementsIds.push(data);
+					$scope.postNote($scope.currentNote,hideFn);
+				}else {
+					hideFn();
+				}
+			});
+		}else {
+			$scope.postNote($scope.currentNote,hideFn);
+		}
+	};
+	$scope.reset = function() {
+		$scope.initialSelectionChanged = false;
+		$scope.selectedActionLabel = $scope.initialActionLabel;
+		$scope.currentNote={};
+		$scope.currentNote.id=undefined;
+		$scope.currentNote.date = new Date(moment());
+		$scope.currentNote.description = undefined;
+		$scope.currentNote.amount = 0;
+		$scope.currentNote.attachements=undefined;
+		$scope.edition = false;
+		$scope.selectedFile=undefined;
+	};
+	$scope.reset();
 	
 	$scope.activateTab=function(tab){
 		$scope.currentTab=tab;
@@ -33,29 +119,6 @@ App.controller('FraisController',function ($scope, $rootScope, NoteREST, alertSe
 	$scope.selectedFile=undefined;
 	var allNote = [];
 	
-	$scope.refreshApproval=function(){
-		$http.get(_contextPath+"app/api/frais/approval",{params:{"requesterId":USERINFO.id} })
-		.success(function(data, status) {
-			$scope.approvementTotal=data.totalCount;
-			$scope.approvements=data.result;
-		});
-	};
-	
-	$scope.refreshApproval();
-	$scope.approve=function(id){
-		$http.put(_contextPath+"app/api/frais/approval/approve/"+parseInt(USERINFO.id)+"/"+id)
-		.success(function(data, status) {
-			alertService.show('success','Updated', 'Data has been updated');
-			$scope.refreshApproval();
-		});
-	};
-	$scope.reject=function(id){
-		$http.put(_contextPath+"app/api/frais/approval/reject/"+parseInt(USERINFO.id)+"/"+id)
-		.success(function(data, status) {
-			alertService.show('success','Updated', 'Data has been updated');
-			$scope.refreshApproval();
-		});
-	};
 	$scope.tableFilter="";
 	$scope.employeCriteriaConfig={
 			name:"employe",
@@ -131,9 +194,7 @@ App.controller('FraisController',function ($scope, $rootScope, NoteREST, alertSe
 		filters:[]
 	};
 	
-	$scope.canPostNote=function(){
-		return $scope.currentNote.date!='' && $scope.currentNote.date!=undefined && $scope.currentNote.amount!=0 && $scope.currentNote.amount!=undefined;
-	};
+	
 	
 	$scope.doFilter=function(data){
 		var serverFilter={filter:data};
@@ -163,18 +224,6 @@ App.controller('FraisController',function ($scope, $rootScope, NoteREST, alertSe
 		$scope.initialSelectionChanged = true;
 	};
 
-	$scope.reset = function() {
-		$scope.initialSelectionChanged = false;
-		$scope.selectedActionLabel = $scope.initialActionLabel;
-		$scope.currentNote={};
-		$scope.currentNote.id=undefined;
-		$scope.currentNote.date = new Date(moment());
-		$scope.currentNote.description = undefined;
-		$scope.currentNote.amount = 0;
-		$scope.currentNote.attachements=undefined;
-		$scope.edition = false;
-		$scope.selectedFile=undefined;
-	};
 
 	function clone(obj) {
 		if (null === obj || "object" != typeof obj)
@@ -191,45 +240,7 @@ App.controller('FraisController',function ($scope, $rootScope, NoteREST, alertSe
 		$scope.selectedFile=file;
 	};
 	
-	$scope.postNote=function(note,hideFn){
-		 NoteREST.save(note).$promise.then(function(result) {
-			alertService.show('success', 'Created', 'Nouvelle note sauvegarde');
-			hideFn();
-			$scope.reset();
-			$scope.tableParams.reload();
-		}, function(error) {
-			console.log(error);
-			notifService.notify('error', '' + error.status, error.data);
-			hideFn();
-			$scope.reset();
-		});
-	};
 	
-	$scope.postAttachement = function(hideFn) {
-		if($scope.selectedFile){
-			$scope.upload = $upload.upload({
-				url : _contextPath+'app/api/attachements', // upload.php script, node.js route, or
-											// servlet url
-				file : $scope.selectedFile, // or list of files: $files for html5
-											// only
-			}).progress(
-					function(evt) {
-						console.log('percent: '	+ parseInt(100.0 * evt.loaded / evt.total));
-					}).success(function(data, status, headers, config) {
-				// file is uploaded successfully
-				console.log(data);
-				if(status==201){
-					$scope.currentNote.attachementsIds=[];
-					$scope.currentNote.attachementsIds.push(data);
-					$scope.postNote($scope.currentNote,hideFn);
-				}else {
-					hideFn();
-				}
-			});
-		}else {
-			$scope.postNote($scope.currentNote,hideFn);
-		}
-	};
 	$scope.putNote = function() {
 		NoteREST.update(clone($scope.currentNote)).$promise.then(function(result) {
 			notifService.notify('info', 'Created', 'Data updated');
@@ -354,3 +365,8 @@ App.controller('FraisController',function ($scope, $rootScope, NoteREST, alertSe
 	}, true);
 
 });
+
+App.controller('FraisDetailController',function ($scope,frais,NoteREST){
+	$scope.currentNote=frais;
+	$scope.currentNote.date=new Date(frais.date);
+}); 

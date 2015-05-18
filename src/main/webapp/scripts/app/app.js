@@ -1,3 +1,9 @@
+	$(document).on('click', '.navbar-collapse.collapse.in a:not(.dropdown-toggle)', function() {
+	    $(this).closest(".navbar-collapse").collapse('hide');
+	});
+	$(document).on('click', '.navbar-collapse.collapse.in button:not(.navbar-toggle)', function() {
+	    $(this).closest(".navbar-collapse").collapse('hide');
+	});
 angular.module('truncate', [])
     .filter('characters', function () {
         return function (input, chars, breakOnWord) {
@@ -126,6 +132,7 @@ App.run(function($rootScope,$q, $templateCache, UsersREST,$state,ENV,VERSION,USE
 	$rootScope.$on('event:userInfo-Refresh', function() {
 		loadUserInfo();
 	});
+	$templateCache.put('ng-table/pager.html', '<div class="ng-cloak ng-table-pager" ng-if="params.data.length"> <div ng-if="params.settings().counts.length" class="ng-table-counts btn-group pull-right"> <button ng-repeat="count in params.settings().counts" type="button" ng-class="{\'active\':params.count()==count}" ng-click="params.count(count)" class="btn btn-default btn-sm"> <span ng-bind="count"></span> </button> </div> <ul class="pagination ng-table-pagination"> <li ng-class="{\'disabled\': !page.active && !page.current, \'active\': page.current}" ng-repeat="page in pages" ng-switch="page.type"> <a ng-switch-when="prev" ng-click="params.page(page.number)" href="">&laquo;</a> <a ng-switch-when="first" ng-click="params.page(page.number)" href=""><span ng-bind="page.number"></span></a> <a ng-switch-when="page" ng-click="params.page(page.number)" href=""><span ng-bind="page.number"></span></a> <a ng-switch-when="more" ng-click="params.page(page.number)" href="">&#8230;</a> <a ng-switch-when="last" ng-click="params.page(page.number)" href=""><span ng-bind="page.number"></span></a> <a ng-switch-when="next" ng-click="params.page(page.number)" href="">&raquo;</a> </li> </ul> </div>');
 });
 
 App.run(function(editableOptions,editableThemes) {
@@ -140,6 +147,7 @@ App.config(function($urlRouterProvider) {
 	.when('','/home')
 	.when('/absence', '/absence/list')
 	.when('/frais', '/frais/list')
+	.when('/frais/list', '/frais/list/mine')
 	.when('/company', '/company/home')
 	.when('/admin/company', '/admin/company/view/quickview')
 	.when('/company/employees', '/company/employees/view/quickview')

@@ -7,6 +7,19 @@ overflow-y: visible!important;
 	padding-left:5px; 
 }
 
+
+.navbar-collapse.collapsing > .nav.nav-pills> li,
+.navbar-collapse.collapse.in>.nav.nav-pills > li{
+	float: none;
+}
+
+.navbar-collapse.collapsing > .nav.nav-pills > li + li,
+.navbar-collapse.collapse.in>.nav.nav-pills > li + li{
+	margin-top: 2px;
+  	margin-left: 0;
+}
+
+
 /* CSS Trick Enable Bootstrap 3 Hover Dropdowns */
 
 @media only screen and (min-width : 992px) {
@@ -854,8 +867,8 @@ body>.container,body>.container-fluid {
 
 /*$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$*/
 .navbar .container-fluid {
-	padding-left: 10px !important;
-	padding-right: 10px !important;
+	padding-left: 15px !important;
+	padding-right: 30px !important;
 }
 
 .navtop>li>a {

@@ -9,12 +9,30 @@ App.config(function ($stateProvider) {
 	}).state('absence.list', {
 		url : "/list",
 		templateUrl : _contextPath+'views/app/absence/absence-list.html',
-		controller : 'AbsencesController',
+		controller : 'AbsencesListController',
 		data: {
 	        pageTitle: 'Absences',
 	        ncyBreadcrumbLabel: 'List view'
 	      }
-	}).state('absence.detail', {
+	}).state('absence.list.mine', {
+		url : "/mine",
+		templateUrl : _contextPath+'views/app/absence/absence-list-mine.html',
+		controller : 'AbsencesListMineController',
+		data: {
+	        pageTitle: 'My time off',
+	        ncyBreadcrumbLabel: 'Mine'
+	      }
+	})
+	.state('absence.list.tobeapproved', {
+		url : "/tobeapproved",
+		templateUrl : _contextPath+'views/app/absence/absence-list-tobeapproved.html',
+		controller : 'AbsencesListToBeApprovedController',
+		data: {
+	        pageTitle: 'Time off to be approved',
+	        ncyBreadcrumbLabel: 'To be approved'
+	      }
+	})
+	.state('absence.detail', {
 		url : "/detail/:id",
 		templateUrl : _contextPath+'views/app/absence/absence-detail.html',
 		controller : 'AbsencesDetailController',

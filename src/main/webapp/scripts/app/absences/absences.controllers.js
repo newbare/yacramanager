@@ -10,7 +10,15 @@ App.controller('AbsencesDetailController',function ($scope,AbsenceREST,absence,a
 	});
 });
 
-App.controller('AbsencesController',function ($scope, $rootScope, AbsenceREST,NgStomp, alertService,ngTableParams,notifService,$http,USERINFO) {
+App.controller('AbsencesListMineController',function($scope){
+	
+});
+
+App.controller('AbsencesListToBeApprovedController',function($scope){
+	
+});
+
+App.controller('AbsencesListController',function ($scope, $rootScope, AbsenceREST,NgStomp, alertService,ngTableParams,notifService,$http,USERINFO) {
 	$scope.client = NgStomp('/websocket/event');
 	$scope.client.connect( function(){
         $scope.client.subscribe("/topic/company/"+USERINFO.company.id+"/event", function(event) {
@@ -24,13 +32,6 @@ App.controller('AbsencesController',function ($scope, $rootScope, AbsenceREST,Ng
 	$scope.approvementTotal=0;
 	$scope.approvements=[];
 	var absenceDateFormat="YYYY-MM-DD";
-	
-	$scope.activateTab=function(tab){
-		$scope.currentTab=tab;
-	};
-	$scope.isActiveTab=function(tab){
-		return tab==$scope.currentTab;
-	};
 	
 	/*
 	 * criteria config

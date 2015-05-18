@@ -669,3 +669,20 @@ App.directive('activitiesTimeline', function() {
         }
     };
 });
+
+App.directive('subMenuNavPill', function($rootScope) {
+	  return {
+		restrict: 'A',
+	    link: function(scope, element,attrs) {
+	    	element.addClass('sub-menu');
+	    	var parent=element.parent();
+	    	scope.$watch(function(){
+	    		return parent;
+	    	},function(newValue, oldValue){
+	    		if(parent.hasClass('collapse') && parent.hasClass('in')){
+	    			element.toggleClass('nav-stacked');
+	    		}
+	    	});
+	    }
+	  };
+	});

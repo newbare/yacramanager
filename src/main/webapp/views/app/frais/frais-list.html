@@ -1,132 +1,19 @@
-<div class="row">
-	<div class="btn-toolbar" role="toolbar">
-	  <div class="btn-group btn-group-sm">
-	  	<button type="button" class="btn btn-success btn-sm" data-template="{{appContextPath}}views/app/templates/edit-notes.tpl.html"  data-bs-modal="modal" >
-			<i class="fa fa-plus-circle"></i> Ajouter
-		</button>
-	  </div>
-	</div>
+<div class="navbar navbar-default" role="navigation">
+	<div class="navbar-header">
+       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#frais-menu-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <div class="collapse navbar-collapse" id="frais-menu-navbar">
+    		<ul class="nav nav-pills sub-menu" role="tablist" id="tabs">
+			  <li data-ng-class="{ active: $state.includes('frais.list.mine') }"><a href="" role="tab"  data-ui-sref="frais.list.mine">My expenses</a></li>
+			  <li data-ng-class="{ active: $state.includes('frais.list.tobeapproved') }"><a href="" role="tab"  data-ui-sref="frais.list.tobeapproved">To be aproved <span class="badge">{{approvementTotal}}</span></a></li>
+			</ul>
+    </div>
 </div>
-<ul class="nav nav-pills sub-menu" role="tablist" id="tabs">
-  <li class="active"><a href="" role="tab" data-toggle="tab" data-ng-click="activateTab('myExpenses')">My expenses</a></li>
-  <li ><a href="" role="tab" data-toggle="tab" data-ng-click="activateTab('toBeApprouved')">To be aproved <span class="badge">{{approvementTotal}}</span></a></li>
-</ul>
 <div class="tab-content">
-  <div class="tab-pane" data-ng-class="{'active' : isActiveTab('myExpenses') }">
-  	<div class="row">
-		<div data-ng-criteria-bar data-criteria-bar-config="criteriaBarConfig" data-do-filter="doFilter(criteriaBarConfig.filters)"></div>		
-		<div class="alert alert-info text-center" role="alert" ng-show="!hasDatas && !tableParams.settings().$loading">
-			<h4>No data found for selected criterias</h4>
-		</div>
-		<div class="row " data-ng-show="hasDatas"> 
-				<span style="vertical-align: middle;" data-ng-show="tableParams.settings().total>0"><b>{{startIndex}}</b> - <b>{{endIndex}}</b> of <b>{{tableParams.settings().total}}</b></span>
-				<div class="btn-group" style="padding-left:5px;" >
-			    	<a href="" data-ng-click="refreshDatas()"><i class="fa fa-refresh"></i></a> 
-				</div>
-				<div class="btn-group pull-right">
-				  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" data-ng-disabled="selectedNotes.length<=1">
-				    <i class="fa fa-cog"></i> Bulk <span  data-ng-show ="selectedNotes.length>1" class="badge">{{selectedNotes.length}}</span> <span class="caret"></span>
-				  </button>
-				  <ul class="dropdown-menu" role="menu">
-				    <li><a href="" data-ng-click="deleteSelectedNote()"><i class="fa fa-trash-o" style="color: red;"></i>Delete</a></li>
-				  </ul>
-				</div>
-		</div>
-		
-		<div class="table-responsive">
-				<table class="table table-striped table-bordered table-hover" data-ng-table="tableParams" data-ng-show="hasDatas">
-					<tr data-ng-repeat="note in $data">
-						<td style="width:20px;" data-header="'ng-table/headers/checkbox.html'">
-							<label class="checkbox-inline">
-							  <input type="checkbox"  data-ng-model="checkboxes.items[note.id]" class="ace">
-							  <span class="lbl"></span>
-							</label>
-						</td>
-						<td data-title="'Date'" data-sortable="'date'">{{ note.date | date : 'short'}}</td>
-						<td data-title="'Employee'" data-sortable="'employe'" >{{ note.employeName}}</td>
-						<td data-title="'Description'" data-sortable="'description'" class="hidden-xs">{{ note.description}}</td>
-						<td data-title="'Amount'" data-sortable="'amount'">{{ note.amount | currency:"EUR " }} </td>
-						<td data-title="'Validation'" data-sortable="'validationStatus'"><span class="label" data-ng-class="{'label-success' : isValidated(note) , 'label-warning' : isWaiting(note), 'label-danger' : isRejected(note)}">{{note.validationStatus}}</span></td>
-						<td style="width:20px;" align="center" data-header="'ng-table/headers/attachement.html'">
-							<a href="{{appContextPath}}app/api/attachements/{{id}}" data-ng-repeat="id in note.attachementsIds" data-ng-show="note.attachementsIds.length>0" >
-								<i class="fa fa-cloud-download"></i>
-							</a>
-						</td>
-						<td class="">
-							<div class="btn-group actions-btn" role="group">
-							  <button type="button" class="btn btn-link" data-ui-sref="frais.detail({id:note.id})"><span class="fa fa-eye"></span></button>
-							  <button type="button" class="btn btn-link" data-ng-click="editNote(note.id)"><span class="fa fa-pencil"></span></button>
-							  <button type="button" class="btn btn-link" data-ng-click="deleteNote(note.id)" data-ng-confirm="Do you want to delete this entry ?"><span class="fa fa-trash-o red"></span></button>
-							</div>
-							<!-- <div class="btn-group">
-							  <button type="button" class="btn btn-link dropdown-toggle tool-btn" style="color: grey;" data-toggle="dropdown">
-							    <i class="fa fa-cog"></i><span class="caret"></span>
-							  </button>
-							  <ul class="dropdown-menu table-action" role="menu">
-							    <li><a href="" data-ng-click="editNote(note.id)"><i class="fa fa-pencil-square-o"></i>Edit</a></li>
-							    <li class="divider"></li>
-							    <li><a href="" data-ng-click="deleteNote(note.id)" data-ng-confirm="Do you want to delete this entry ?"><i class="fa fa-trash-o" style="color: red;"></i>Delete</a></li>
-							  </ul>
-							</div> -->
-						</td>
-					</tr>
-			</table>
-			<script type="text/ng-template" id="ng-table/headers/checkbox.html">
-        			<label class="checkbox-inline">
-						<input type="checkbox" data-ng-model="checkboxes.checked" id="select_all" name="filter-checkbox" value="" class="ace"/>
-						<span class="lbl"></span>
-					</label>
-   				 </script>
-  				 <script type="text/ng-template" id="ng-table/headers/attachement.html">
-        			<i class="fa fa-paperclip"></i>
-   				 </script>
-		</div>
-	</div>
-  </div>
-  <div class="tab-pane" data-ng-class="{'active' : isActiveTab('toBeApprouved') }">
-  		<ul class="list-group">
-		<!-- Iterate over Employe -->
-		<li class="list-group-item" data-ng-repeat="approvement in approvements" style="border: none;">
-			<h4><span class="text-muted"><i class="fa fa-user"></i><strong> {{approvement.employeFirstName}} {{approvement.employeLastName}}</strong></span></h4>
-			<div class="table-responsive">
-				<table class="table table-striped table-bordered table-hover">
-					<tr>
-						<th style="width:20px;">
-							<label class="checkbox-inline">
-							  <input type="checkbox"  data-ng-model="checkboxes.items[absence.id]" class="ace">
-							  <span class="lbl"></span>
-							</label>
-						</th>
-						<th>Submit date</th>
-						<th class="hidden-xs">Description</th>
-						<th>Amount</th>
-						<th><i class="fa fa-paperclip"></i></th>
-						<th>Status</th>
-						<th></th>
-					</tr>
-					<tr data-ng-repeat="expense in approvement.approvalEntities">
-						<td>
-							<label class="checkbox-inline">
-							  <input type="checkbox"  data-ng-model="checkboxes.items[absence.id]">
-							</label>
-						</td>
-						<td>{{ expense.date | date : 'short'}}</td>
-						<td class="hidden-xs">{{ expense.description}}</td>
-						<td>{{ expense.amount | currency:"EUR " }}</td>
-						<td style="width:20px;" align="center" >
-								<a href="api/attachements/{{id}}" data-ng-repeat="id in expense.attachementsIds" data-ng-show="expense.attachementsIds.length>0" >
-									<i class="fa fa-cloud-download"></i>
-								</a>
-						</td>
-						<td><span class="label" data-ng-class="{'label-success' : isValidated(expense) , 'label-warning' : isWaiting(expense), 'label-danger' : isRejected(expense)}">{{expense.validationStatus}}</span></td>
-						<td>
-							<button type="button" class="btn btn-success btn-xs" data-ng-click="approve(expense.id)">Approve</button>
-							<button type="button" class="btn btn-danger btn-xs" data-ng-click="reject(expense.id)">Reject</button>
-						</td>
-					</tr>
-				</table>
-			</div>
-		</li>
-	</ul>
-  </div>
+  	<div data-ui-view=""></div>
 </div>

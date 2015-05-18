@@ -1,28 +1,28 @@
 <!-- Menu on the left -->
 <div class="navbar navbar-default" role="navigation">
 	<div class="navbar-header">
-       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#company-menu-navbar">
         <span class="sr-only">Toggle navigation</span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
     </div>
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+    <div class="collapse navbar-collapse" id="company-menu-navbar">
 		<ul class="nav nav-pills sub-menu">
-			<li data-ng-class="navClass('company/home')"><a
+			<li data-ui-sref-active="active"><a
 				data-ui-sref="company.home">Home</a></li>
-			<li data-ng-class="{ active: $state.includes('company.employees') }"><a
+			<li data-ui-sref-active="active"><a
 				data-ui-sref="company.employees.view.quick">Employees</a></li>
-			<li data-ng-class="{ active: $state.includes('company.clients') }"><a
+			<li data-ui-sref-active="active"><a
 				data-ui-sref="company.clients.view.quick">Clients</a></li>
-			<li data-ng-class="{ active: $state.includes('company.projects') }"><a
+			<li data-ui-sref-active="active"><a
 				data-ui-sref="company.projects.view.quick">Projects</a></li>
 			<!-- <li data-ng-class="{ active: $state.includes('company.messages') }"><a
 				data-ui-sref="company.messages">Messages</a></li> -->
-			<li data-ng-class="{ active: $state.includes('company.settings') }"><a
+			<li data-ui-sref-active="active"><a
 				data-ui-sref="company.settings">Settings</a></li>
-			<li data-ng-class="{ active: $state.includes('company.activities') }"><a
+			<li data-ui-sref-active="active"><a
 			data-ui-sref="company.activities">Activities</a></li>
 		</ul>
 	</div>

@@ -64,16 +64,16 @@
 					<li data-has-role="ROLE_SSII_ADMIN" data-ng-cloak=""
 						data-ng-class="{ active: $state.includes('company') }" ><a
 						data-ui-sref="company.home"><i class="fa fa-university"></i>{{userInfo.company.name}}</a></li>
-					<li class="dropdown" data-ng-class="navClass('frais') + navClass('activity-report') + navClass('absences') + navClass('timesheet')">
+					<li class="dropdown" data-ng-class="navClass('frais') + navClass('activity-report') + navClass('absence') + navClass('timesheet')">
 						<a href="" class="dropdown-toggle" data-toggle="dropdown">{{'app.navbar.menu.workspace' | translate}}<span class="caret"></span></a>
 						<ul class="workspace-menu dropdown-menu " role="menu">
 							<li data-ui-sref-active="active"  class="visible-xs-inline visible-sm-inline">
 								<a data-ui-sref="tasks"><i class="fa fa-tasks"></i>{{'app.navbar.menu.tasks' | translate}}</a>
 							</li>
-							<li data-ui-sref-active="active" ><a data-ui-sref="frais.list">{{'app.navbar.menu.frais' | translate}}</a></li>
+							<li data-ui-sref-active="active" ><a data-ui-sref="frais.list.mine">{{'app.navbar.menu.frais' | translate}}</a></li>
 							<li data-ui-sref-active="active" ><a data-ui-sref="activity-report">{{'app.navbar.menu.cra' | translate}}</a></li>
 							<li data-ui-sref-active="active" ><a
-								data-ui-sref="absence.list">{{'app.navbar.menu.absences' | translate}}</a></li>
+								data-ui-sref="absence.list.mine">{{'app.navbar.menu.absences' | translate}}</a></li>
 							<li data-ui-sref-active="active"><a
 								data-ui-sref="timesheet">{{'app.navbar.menu.timesheet' | translate}}</a></li>
 							<li data-ui-sref-active="active"><a
@@ -150,12 +150,12 @@
 			         		<i class="fa fa-user" data-ng-show="userInfo.profileImageUrl==null"></i>{{userInfo.firstName}} {{userInfo.lastName}}
 			         		<span class="caret"></span></a>
 						<ul class="dropdown-menu" role="menu">
-							<li data-ng-class="navClass('user-messages')" >
+							<li data-ui-sref-active="active" >
 								<a data-ui-sref="user-messages">Messages</a>
 							</li>
-							<li data-ng-class="navClass('user-settings')"><a data-ui-sref="user-settings">{{'app.navbar.menu.settings' | translate}}</a></li>
-							<li data-ng-class="navClass('user-profile')"><a data-ui-sref="user-profile">{{'app.navbar.menu.profile' | translate}}</a></li>
-							<li data-has-role="ROLE_ADMIN" data-ng-class="navClass('api-docs')"><a data-ui-sref="api-docs">{{'app.navbar.menu.api.doc' | translate}}</a></li>
+							<li data-ui-sref-active="active"><a data-ui-sref="user-settings">{{'app.navbar.menu.settings' | translate}}</a></li>
+							<li data-ui-sref-active="active"><a data-ui-sref="user-profile">{{'app.navbar.menu.profile' | translate}}</a></li>
+							<li data-ui-sref-active="active" data-has-role="ROLE_ADMIN" ><a data-ui-sref="api-docs">{{'app.navbar.menu.api.doc' | translate}}</a></li>
 							<li><a href="/auth/logout"><i
 									class="fa fa-sign-out"></i>{{'app.navbar.menu.logout' | translate}}</a></li>
 						</ul></li>
