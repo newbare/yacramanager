@@ -43,7 +43,7 @@
 	<!-- Fixed navbar -->
 	<div class="navbar navbar-custom navbar-fixed-top" role="navigation"
 		data-ng-cloak="">
-		<div data-ng-class="containerNavClass()">
+		<div data-ng-class="userLocalSettings.container">
 			<div class="navbar-header">
 				<button type="button" class="navbar-toggle" data-toggle="collapse"
 					data-target=".navbar-collapse">
@@ -150,12 +150,12 @@
 			         		<i class="fa fa-user" data-ng-show="userInfo.profileImageUrl==null"></i>{{userInfo.firstName}} {{userInfo.lastName}}
 			         		<span class="caret"></span></a>
 						<ul class="dropdown-menu" role="menu">
-							<li data-ng-class="navClass('messages')" >
-								<a data-ui-sref="messages">Messages</a>
+							<li data-ng-class="navClass('user-messages')" >
+								<a data-ui-sref="user-messages">Messages</a>
 							</li>
-							<li><a data-ui-sref="user-settings">{{'app.navbar.menu.settings' | translate}}</a></li>
-							<li><a data-ui-sref="user-profile">{{'app.navbar.menu.profile' | translate}}</a></li>
-							<li data-has-role="ROLE_ADMIN"><a data-ui-sref="api-docs">{{'app.navbar.menu.api.doc' | translate}}</a></li>
+							<li data-ng-class="navClass('user-settings')"><a data-ui-sref="user-settings">{{'app.navbar.menu.settings' | translate}}</a></li>
+							<li data-ng-class="navClass('user-profile')"><a data-ui-sref="user-profile">{{'app.navbar.menu.profile' | translate}}</a></li>
+							<li data-has-role="ROLE_ADMIN" data-ng-class="navClass('api-docs')"><a data-ui-sref="api-docs">{{'app.navbar.menu.api.doc' | translate}}</a></li>
 							<li><a href="/auth/logout"><i
 									class="fa fa-sign-out"></i>{{'app.navbar.menu.logout' | translate}}</a></li>
 						</ul></li>
@@ -166,7 +166,7 @@
 		</div>
 	</div>
 	<!-- End Fixed navbar -->
-	<div data-ng-class="containerClass()" data-ng-cloak="" data-http-request-error=""><!-- class="global-container" --> 
+	<div data-ng-class="userLocalSettings.container" data-ng-cloak="" data-http-request-error=""><!-- class="global-container" --> 
 		<!-- <div class="sidebar sidebar-fixed">hey i'am a side bar</div> -->
 		<div class="main"><!-- <div class="main-content"> -->
 			<!-- <div class="page-header">
@@ -189,7 +189,7 @@
 	</div>
 	</div>
 	<div class="footer">
-			<div class="container">
+			<div data-ng-class="userLocalSettings.container">
 				<div id="footer-main">
 					<div class="row">
 					<p>@Wati - Copyrigth 2014</p>
@@ -258,6 +258,7 @@
 	<script src="../../bower_components/angular-breadcrumb/dist/angular-breadcrumb.min.js"></script>
 	<script src="../../bower_components/ng-finder/ng-finder.src.js"></script>
 	<script src="../../bower_components/elfinder/js/elfinder.min.js"></script>
+	<script src="../../bower_components/angular-cache-buster/angular-cache-buster.js"></script>
  	<script src="../../bower_components/angular-translate-storage-cookie/angular-translate-storage-cookie.js"></script>
  	<script src="../../bower_components/angular-dynamic-locale/src/tmhDynamicLocale.js"></script>
  	<script src="../../bower_components/fullcalendar/fullcalendar.js"></script>
@@ -293,6 +294,8 @@
 	<script	src="../../scripts/app/users/profile/users.profile.js"></script>
 	<script	src="../../scripts/app/users/settings/users.settings.controllers.js"></script>
 	<script	src="../../scripts/app/users/settings/users.settings.js"></script>
+	<script	src="../../scripts/app/users/messages/users.messages.controllers.js"></script>
+	<script	src="../../scripts/app/users/messages/users.messages.js"></script>
 	<script	src="../../scripts/app/documents/documents.controllers.js"></script>
 	<script	src="../../scripts/app/documents/documents.js"></script>
 	<script	src="../../scripts/app/admin/admin.js"></script>

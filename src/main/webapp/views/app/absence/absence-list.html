@@ -40,7 +40,8 @@
 				<tr align="left" data-ng-repeat="absence in $data" class="">
 					<td style="width:20px;" data-header="'ng-table/headers/checkbox.html'">
 						<label class="checkbox-inline">
-						  <input type="checkbox"  data-ng-model="checkboxes.items[absence.id]">
+						  <input type="checkbox"  data-ng-model="checkboxes.items[absence.id]" class="ace">
+						  <span class="lbl"></span>
 						</label>
 					</td>
 					<td data-title="'Posted'" data-sortable="'date'">{{ absence.date | date : 'short'}}</td>
@@ -61,7 +62,8 @@
 		</table>
 		<script type="text/ng-template" id="ng-table/headers/checkbox.html">
         			<label class="checkbox-inline">
-						  <input type="checkbox" data-ng-model="checkboxes.checked" id="select_all" name="filter-checkbox" value="" />
+						  <input type="checkbox" data-ng-model="checkboxes.checked" id="select_all" name="filter-checkbox" value="" class="ace"/>
+						<span class="lbl"></span>
 					</label>
    		</script>
 	</div>

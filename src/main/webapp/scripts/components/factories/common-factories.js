@@ -356,7 +356,7 @@ App.factory('NgStomp', function($rootScope) {
 App.factory('ConfigurationService', function ($rootScope, $filter, $http) {
     return {
         get: function() {
-            return $http.get('configprops').then(function (response) {
+            return $http.get(_contextPath + 'app/admin/management/configprops').then(function (response) {
                 var properties = [];
                 angular.forEach(response.data, function (data) {
                     properties.push(data);

@@ -744,7 +744,7 @@
 								</goals>
 								<configuration>
 									<buildTool>grunt</buildTool>
-									<buildArgs>build --force --no-color</buildArgs>
+									<buildArgs>build --force</buildArgs>
 									<skipTests>true</skipTests>
 								</configuration>
 							</execution>

@@ -2,11 +2,15 @@
  * 
  */
 
-App.controller('UserSettingsController',function ($scope,$rootScope,UserSettingsREST) {
+App.controller('UserSettingsController',function ($scope,$rootScope,UserSettingsREST,localStorageService) {
 	$rootScope.page={"title":"User settings","description":"Edit your settings"};
 	
 	$scope.settingsFilter='';
 	
+	
+	$scope.setFullPage=function(){
+		localStorageService.set('userLocalSettings.container',$rootScope.userLocalSettings.container);
+	}
 	$scope.settings=[];
 	$scope.inserted={};
 	

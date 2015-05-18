@@ -9,11 +9,11 @@ spring:
         active: test
     datasource:
         dataSourceClassName: org.postgresql.ds.PGSimpleDataSource
-        url: 
+        url: jdbc:postgresql://localhost:5432/yacra
         databaseName: yacra
         serverName: localhost
         username: yacra
-        password: 
+        password: yacra
         continueOnError: true
         init-db: true
 

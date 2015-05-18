@@ -66,7 +66,7 @@ var App = angular.module('yaCRAApp', [ 'ngResource', 'mgcrea.ngStrap',
 		'http-auth-interceptor', 'timer', 'localytics.directives',
 		'daterangepicker', 'pascalprecht.translate', 'angular-loading-bar',
 		'ngQuickDate', 'xeditable', 'colorpicker.module', 'angular.filter',
-		'truncate','ncy-angular-breadcrumb','ngCookies','tmh.dynamicLocale','ngFinder']);
+		'truncate','ncy-angular-breadcrumb','ngCookies','tmh.dynamicLocale','ngFinder','ngCacheBuster','LocalStorageModule']);
 
 
 App.config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
@@ -79,8 +79,8 @@ App.run(function($rootScope,$q, $templateCache, UsersREST,$state,ENV,VERSION,USE
 	$rootScope.page = '';
 	$rootScope.$state = $state;
 	$rootScope.appContextPath=_contextPath;
-	 $rootScope.ENV = ENV;
-     $rootScope.VERSION = VERSION;
+	$rootScope.ENV = ENV;
+    $rootScope.VERSION = VERSION;
      var hasAnyOneOfRole=function(userRoles,definedRoles){
 			result=false;
 			definedRoles.forEach(function(entry) {
@@ -163,7 +163,15 @@ App.config(function($urlRouterProvider) {
 });
 
 
-App.config(function ($stateProvider,$translateProvider,tmhDynamicLocaleProvider) {
+App.config(function ($stateProvider,$translateProvider,$httpProvider,tmhDynamicLocaleProvider,httpRequestInterceptorCacheBusterProvider,localStorageServiceProvider) {
+	
+	
+	//enable CSRF
+    $httpProvider.defaults.xsrfCookieName = 'CSRF-TOKEN';
+    $httpProvider.defaults.xsrfHeaderName = 'X-CSRF-TOKEN';
+	
+	//Cache everything except rest api requests
+    httpRequestInterceptorCacheBusterProvider.setMatchlist([/.*api.*/, /.*protected.*/], true);
 	
 	$translateProvider.preferredLanguage('en');
 	
@@ -180,6 +188,8 @@ App.config(function ($stateProvider,$translateProvider,tmhDynamicLocaleProvider)
 			.localeLocationPattern(_contextPath+'bower_components/angular-i18n/angular-locale_{{locale}}.js');
 	tmhDynamicLocaleProvider
 			.useCookieStorage('NG_TRANSLATE_LANG_KEY');
+	
+	localStorageServiceProvider.setPrefix('yacra.config');
 });
 
 //define custom handler
@@ -257,11 +267,20 @@ App.config(function($tooltipProvider) {
   });
 });
 
-App.controller('AppCtrl', [ '$scope', '$location', 'UsersREST','$rootScope','$translate','$locale','LanguageService','$state','ENV','VERSION','USERINFO',
-		function($scope, $location, UsersREST,$rootScope,$translate,$locale,LanguageService,$state,ENV,VERSION,USERINFO) {
+App.controller('AppCtrl', [ '$scope', '$location', 'UsersREST','$rootScope','$translate','$locale','LanguageService','$state','ENV','VERSION','USERINFO','localStorageService',
+		function($scope, $location, UsersREST,$rootScope,$translate,$locale,LanguageService,$state,ENV,VERSION,USERINFO,localStorageService) {
 			$scope.ENV=ENV;
 			$scope.VERSION=VERSION;
 			$scope.eventsToWait=['userInfo'];
+			$rootScope.userLocalSettings={}
+			if(localStorageService.get('userLocalSettings.container')!=undefined){
+				$rootScope.userLocalSettings.container=	localStorageService.get('userLocalSettings.container');
+				
+			}else {
+				localStorageService.set('userLocalSettings.container','container');
+				$rootScope.userLocalSettings.container='container';
+			}
+			
 			$scope.navClass = function(page) {
 				var currentRoute = $location.path().substring(1) || 'home';
 				return currentRoute.indexOf(page)===0 ? 'active' :'';

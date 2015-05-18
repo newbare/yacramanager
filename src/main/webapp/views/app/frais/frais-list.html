@@ -1,15 +1,15 @@
 <div class="row">
 	<div class="btn-toolbar" role="toolbar">
 	  <div class="btn-group btn-group-sm">
-	  	<button type="button" class="btn btn-default" data-template="{{appContextPath}}views/app/templates/edit-notes.tpl.html"  data-bs-modal="modal" >
-			<strong>+</strong> Ajouter
+	  	<button type="button" class="btn btn-success btn-sm" data-template="{{appContextPath}}views/app/templates/edit-notes.tpl.html"  data-bs-modal="modal" >
+			<i class="fa fa-plus-circle"></i> Ajouter
 		</button>
 	  </div>
 	</div>
 </div>
 <ul class="nav nav-pills sub-menu" role="tablist" id="tabs">
   <li class="active"><a href="" role="tab" data-toggle="tab" data-ng-click="activateTab('myExpenses')">My expenses</a></li>
-  <li data-ng-show="approvementTotal>0"><a href="" role="tab" data-toggle="tab" data-ng-click="activateTab('toBeApprouved')">To be aproved <span class="badge" data-ng-show="approvementTotal>0">{{approvementTotal}}</span></a></li>
+  <li ><a href="" role="tab" data-toggle="tab" data-ng-click="activateTab('toBeApprouved')">To be aproved <span class="badge">{{approvementTotal}}</span></a></li>
 </ul>
 <div class="tab-content">
   <div class="tab-pane" data-ng-class="{'active' : isActiveTab('myExpenses') }">
@@ -38,7 +38,8 @@
 					<tr data-ng-repeat="note in $data">
 						<td style="width:20px;" data-header="'ng-table/headers/checkbox.html'">
 							<label class="checkbox-inline">
-							  <input type="checkbox"  data-ng-model="checkboxes.items[note.id]">
+							  <input type="checkbox"  data-ng-model="checkboxes.items[note.id]" class="ace">
+							  <span class="lbl"></span>
 							</label>
 						</td>
 						<td data-title="'Date'" data-sortable="'date'">{{ note.date | date : 'short'}}</td>
@@ -72,7 +73,8 @@
 			</table>
 			<script type="text/ng-template" id="ng-table/headers/checkbox.html">
         			<label class="checkbox-inline">
-						  <input type="checkbox" data-ng-model="checkboxes.checked" id="select_all" name="filter-checkbox" value="" />
+						<input type="checkbox" data-ng-model="checkboxes.checked" id="select_all" name="filter-checkbox" value="" class="ace"/>
+						<span class="lbl"></span>
 					</label>
    				 </script>
   				 <script type="text/ng-template" id="ng-table/headers/attachement.html">
@@ -91,7 +93,8 @@
 					<tr>
 						<th style="width:20px;">
 							<label class="checkbox-inline">
-							  <input type="checkbox"  data-ng-model="checkboxes.items[absence.id]">
+							  <input type="checkbox"  data-ng-model="checkboxes.items[absence.id]" class="ace">
+							  <span class="lbl"></span>
 							</label>
 						</th>
 						<th>Submit date</th>
