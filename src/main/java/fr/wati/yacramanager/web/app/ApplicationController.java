@@ -15,7 +15,7 @@ import fr.wati.yacramanager.utils.SecurityUtils;
 @Controller
 public class ApplicationController {
 
-	@RequestMapping(value = "/app/view/")
+	@RequestMapping(value = "/app/view/**")
 	public ModelAndView index(Principal principal){
 		ModelAndView modelAndView=new ModelAndView("app/index");
 		Employe connectedUser = SecurityUtils.getConnectedUser();

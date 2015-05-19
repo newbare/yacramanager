@@ -3,6 +3,7 @@ App.config(function ($stateProvider) {
 		url : "/company",
 		templateUrl : _contextPath+'views/app/company/company.html',
 		data: {
+			roles:['ROLE_SSII_ADMIN'],
 	        pageTitle: 'Company management',
 	        ncyBreadcrumbLabel: 'Company'
 	      }

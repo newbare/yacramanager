@@ -416,7 +416,7 @@ body.waiting-for-angular div#initializing-panel {
 }
 
 .sub-menu {
-	padding-bottom: 10px;
+	padding-top: 5px;
 }
 
 .sub-menu.nav>li>a {

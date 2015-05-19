@@ -72,7 +72,8 @@ var App = angular.module('yaCRAApp', [ 'ngResource', 'mgcrea.ngStrap',
 		'http-auth-interceptor', 'timer', 'localytics.directives',
 		'daterangepicker', 'pascalprecht.translate', 'angular-loading-bar',
 		'ngQuickDate', 'xeditable', 'colorpicker.module', 'angular.filter',
-		'truncate','ncy-angular-breadcrumb','ngCookies','tmh.dynamicLocale','ngFinder','ngCacheBuster','LocalStorageModule']);
+		'truncate','ncy-angular-breadcrumb','ngCookies','tmh.dynamicLocale','ngFinder',
+		'ngCacheBuster','LocalStorageModule']);
 
 
 App.config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
@@ -88,7 +89,7 @@ App.run(function($rootScope,$q, $templateCache, UsersREST,$state,ENV,VERSION,USE
 	$rootScope.ENV = ENV;
     $rootScope.VERSION = VERSION;
      var hasAnyOneOfRole=function(userRoles,definedRoles){
-			result=false;
+			var result=false;
 			definedRoles.forEach(function(entry) {
 			    if(hasTheRole(userRoles,entry)) {
 			    	result=true;
@@ -97,7 +98,7 @@ App.run(function($rootScope,$q, $templateCache, UsersREST,$state,ENV,VERSION,USE
 			return result;
 		};
 		var hasTheRole=function(roles,role){
-				result=false;
+				var result=false;
 				roles.forEach(function(entry) {
 				    if(entry.role==role) {
 				    	result=true;
@@ -142,9 +143,20 @@ App.run(function(editableOptions,editableThemes) {
 	editableOptions.activate= 'select';
 });
 
+//App.run(function(Permission,USERINFO){
+//	 Permission.defineRole('ROLE_ADMIN', function (stateParams) {
+//	        return USERINFO.roles.indexOf('ROLE_ADMIN')>-1;
+//	      });
+//	 Permission.defineRole('ROLE_SSII_ADMIN', function (stateParams) {
+//	        return USERINFO.roles.indexOf('ROLE_SSII_ADMIN')>-1;
+//	      });
+//});
+
+
 App.config(function($urlRouterProvider) {
 	$urlRouterProvider
 	.when('','/home')
+	.when('/','/home')
 	.when('/absence', '/absence/list')
 	.when('/frais', '/frais/list')
 	.when('/frais/list', '/frais/list/mine')
@@ -167,12 +179,18 @@ App.config(function($urlRouterProvider) {
 
 	// If the url is ever invalid, e.g. '/asdf', then redirect to '/'
 	// aka the home state
-	.otherwise('/error404');
+	//.otherwise('/error404')
+	.otherwise( function($injector, $location) {
+            var $state = $injector.get("$state");
+            $state.go("error404");
+        });;
 });
 
 
-App.config(function ($stateProvider,$translateProvider,$httpProvider,tmhDynamicLocaleProvider,httpRequestInterceptorCacheBusterProvider,localStorageServiceProvider) {
+App.config(function ($stateProvider,$translateProvider,$httpProvider,tmhDynamicLocaleProvider,httpRequestInterceptorCacheBusterProvider,localStorageServiceProvider,$locationProvider) {
 	
+	
+	$locationProvider.html5Mode(true).hashPrefix('!');
 	
 	//enable CSRF
     $httpProvider.defaults.xsrfCookieName = 'CSRF-TOKEN';
