@@ -2,25 +2,19 @@ App.config(function ($stateProvider) {
 	$stateProvider.state('absence', {
 		url : "/absence",
 		templateUrl : _contextPath+'views/app/absence/absence.html',
-		data: {
-	        pageTitle: 'Absences',
-	        ncyBreadcrumbLabel: 'Absences'
-	      }
+		abstract: true
 	}).state('absence.list', {
 		url : "/list",
 		templateUrl : _contextPath+'views/app/absence/absence-list.html',
-		controller : 'AbsencesListController',
-		data: {
-	        pageTitle: 'Absences',
-	        ncyBreadcrumbLabel: 'List view'
-	      }
+		abstract: true,
+		controller : 'AbsencesListController'
 	}).state('absence.list.mine', {
 		url : "/mine",
 		templateUrl : _contextPath+'views/app/absence/absence-list-mine.html',
 		controller : 'AbsencesListMineController',
 		data: {
 	        pageTitle: 'My time off',
-	        ncyBreadcrumbLabel: 'Mine'
+	        ncyBreadcrumbLabel: 'My time off'
 	      }
 	})
 	.state('absence.list.tobeapproved', {
@@ -29,7 +23,7 @@ App.config(function ($stateProvider) {
 		controller : 'AbsencesListToBeApprovedController',
 		data: {
 	        pageTitle: 'Time off to be approved',
-	        ncyBreadcrumbLabel: 'To be approved'
+	        ncyBreadcrumbLabel: 'Time off To be approved'
 	      }
 	})
 	.state('absence.detail', {

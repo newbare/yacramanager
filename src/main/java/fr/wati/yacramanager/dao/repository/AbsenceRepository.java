@@ -19,5 +19,7 @@ public interface AbsenceRepository extends JpaRepository<Absence, Long>, JpaSpec
 	
 	List<Absence> findByEmployeAndStartDateBetween(Employe employe,LocalDate DateTimeDebut,LocalDate DateTimeFin);
 	
+	List<Absence> findByEmployeAndStartDateBetweenOrEndDateBetween(Employe employe,LocalDate start1,LocalDate end1,LocalDate start2,LocalDate end2);
+	
 	Page<Absence> findByEmploye(Employe employe,Pageable pageable);
 }

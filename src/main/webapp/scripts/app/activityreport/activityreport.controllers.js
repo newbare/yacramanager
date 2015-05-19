@@ -1,5 +1,17 @@
 'use strict';
 
+App.controller('ActivityReportListController',function ($scope,$rootScope,ActivityReportREST,NgStomp,$filter,$http,WorkLogREST,alertService,AbsenceREST,USERINFO,ClientsREST,ProjectsREST,TasksREST) {
+	
+});
+
+App.controller('ActivityReportListMineController',function ($scope,$rootScope,ActivityReportREST,NgStomp,$filter,$http,WorkLogREST,alertService,AbsenceREST,USERINFO,ClientsREST,ProjectsREST,TasksREST) {
+	
+});
+
+App.controller('ActivityReportListToBeApprovedController',function ($scope,$rootScope,ActivityReportREST,NgStomp,$filter,$http,WorkLogREST,alertService,AbsenceREST,USERINFO,ClientsREST,ProjectsREST,TasksREST) {
+	
+});
+
 App.controller('ActivityReportController',function ($scope,$rootScope,ActivityReportREST,NgStomp,$filter,$http,WorkLogREST,alertService,AbsenceREST,USERINFO,ClientsREST,ProjectsREST,TasksREST) {
 	$scope.client = NgStomp('/websocket/event');
 	$scope.client.connect( function(){
@@ -220,6 +232,8 @@ App.controller('ActivityReportController',function ($scope,$rootScope,ActivityRe
 			hideFn();
 			$scope.retrieveCraDetails($scope.currentFilter);
 			$scope.$broadcast('absence-portfolio-changed');
+		},function(error){
+			hideFn();
 		});
 	};
 	

@@ -306,6 +306,34 @@ public class AbsenceServiceImpl implements AbsenceService {
 		if((absence.getDaysBetween()+absencePortfolio.getWaiting())>absencePortfolio.getRemaining()){
 			throw new ServiceException("You do not have enought remainnig days for "+typeAbsence.getLabel()+" Remaining: "+absencePortfolio.getRemaining()+" Waiting: "+absencePortfolio.getWaiting());
 		}
+		List<Absence> absencesWithSameStartingDate=Lists.newArrayList();
+		absencesWithSameStartingDate=absenceRepository.findByEmployeAndStartDateBetweenOrEndDateBetween(employe, absence.getStartDate(),absence.getEndDate(), absence.getStartDate(),absence.getEndDate());
+		if(absencesWithSameStartingDate!=null && !absencesWithSameStartingDate.isEmpty()){
+			absencesWithSameStartingDate.add(absence);
+			for (LocalDate currentDate = absence.getStartDate(); currentDate
+					.isBefore(absence.getEndDate())
+					|| currentDate.equals(absence.getEndDate()); currentDate = currentDate
+					.plusDays(1)) {
+				double totalLoggedDays=0;
+				boolean totalLoggedDaysModified=false;
+				for(Absence currentAbsence:absencesWithSameStartingDate){
+					if(currentAbsence.getStartDate().equals(currentDate) || currentAbsence.getEndDate().equals(currentDate)){
+						if(currentAbsence.isStartAfternoon() || currentAbsence.isEndMorning()){
+							totalLoggedDays+=0.5;
+						}else {
+							totalLoggedDays+=1;
+						}
+						totalLoggedDaysModified=true;
+					}
+					if(!totalLoggedDaysModified && currentDate.compareTo(currentAbsence.getStartDate()) >= 0 && currentDate.compareTo(currentAbsence.getEndDate()) <= 0){
+						totalLoggedDays+=1;
+					}
+					if(totalLoggedDays>1){
+						throw new ServiceException("You cannot post absence for this date as you already have absence posted for: "+currentDate);
+					}
+				}
+			}
+		}
 		//Check for no activity already validated
 		List<ActivityReport> activityReports = activityReportService.findApprovedBetweenDate(employeId, absence.getStartDate(), absence.getEndDate(),Lists.newArrayList(ValidationStatus.APPROVED));
 		if(activityReports!=null && activityReports.size()>0){

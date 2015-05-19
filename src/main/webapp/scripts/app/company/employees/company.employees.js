@@ -5,7 +5,6 @@ App.config(function ($stateProvider) {
 		templateUrl : _contextPath+'views/app/templates/partials/panel-view.html',
 		controller : 'CompanyEmployeesController',
 		data: {
-			roles:['ROLE_SSII_ADMIN'],
 			pageTitle: 'Employe view',
 			ncyBreadcrumbLabel : 'Employees'
 		  }
@@ -26,6 +25,7 @@ App.config(function ($stateProvider) {
 	.state('company.employees.view', {
 		url : "/view",
 		templateUrl : _contextPath+'views/app/company/employees/company-employees-view.html',
+		abstract : true,
 		controller : 'CompanyEmployeesViewController',
 		data: {ncyBreadcrumbSkip: true}
 	})
@@ -41,7 +41,7 @@ App.config(function ($stateProvider) {
 		templateUrl : _contextPath+'views/app/company/employees/company-employees-quickview.html',
 		controller : 'CompanyEmployeesQuickViewController',
 		data : {
-			roles:['ROLE_SSII_ADMIN'],
+			
 			ncyBreadcrumbLabel : 'QuickView'
 		}
 	})

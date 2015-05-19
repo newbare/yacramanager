@@ -196,6 +196,7 @@ App.controller('AbsencesListController',function ($scope, $rootScope, AbsenceRES
 			$scope.tableParams.reload();
 			hideFn();
 		},function(){
+			$scope.reset();
 			hideFn();
 		});
 	};

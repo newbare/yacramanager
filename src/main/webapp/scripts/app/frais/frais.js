@@ -2,14 +2,15 @@ App.config(function ($stateProvider) {
 	$stateProvider.state('frais', {
 		url : "/frais",
 		templateUrl : _contextPath+'views/app/frais/frais.html',
+		abstract : true,
 		data: {
 	        pageTitle: 'Frais',
 	        ncyBreadcrumbLabel: 'Frais'
 	      }
 	}).state('frais.list', {
-		url : "/list",
 		templateUrl : _contextPath+'views/app/frais/frais-list.html',
 		controller : 'FraisListController',
+		abstract : true,
 		data: {
 	        pageTitle: 'Fees',
 	        ncyBreadcrumbLabel: 'List view'

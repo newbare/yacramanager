@@ -423,7 +423,7 @@ body.waiting-for-angular div#initializing-panel {
 	position: relative;
 	display: block;
 	padding: 5px 10px;
-	border-bottom: 5px solid transparent;
+	border-bottom: 3px solid transparent;
 }
 
 .sub-menu.nav>li>a:HOVER,.sub-menu.nav-pills>li.active>a,.sub-menu.nav-pills>li.active>a:HOVER
@@ -952,7 +952,7 @@ a .badge {
 .panel-body .row {
 	margin-right: inherit;
 	margin-left: inherit;
-	margin-bottom: 15px;
+	margin-bottom: 5px;
 }
 
 .datepicker.table>thead>tr>th,.datepicker.table>tbody>tr>th,.datepicker.table>tfoot>tr>th,.datepicker.table>thead>tr>td,.datepicker.table>tbody>tr>td,.datepicker.table>tfoot>tr>td

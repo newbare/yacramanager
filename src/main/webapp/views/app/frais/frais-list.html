@@ -9,8 +9,8 @@
     </div>
     <div class="collapse navbar-collapse" id="frais-menu-navbar">
     		<ul class="nav nav-pills sub-menu" role="tablist" id="tabs">
-			  <li data-ng-class="{ active: $state.includes('frais.list.mine') }"><a href="" role="tab"  data-ui-sref="frais.list.mine">My expenses</a></li>
-			  <li data-ng-class="{ active: $state.includes('frais.list.tobeapproved') }"><a href="" role="tab"  data-ui-sref="frais.list.tobeapproved">To be aproved <span class="badge">{{approvementTotal}}</span></a></li>
+			  <li data-ui-sref-active="active"><a href="" role="tab"  data-ui-sref="frais.list.mine">My expenses</a></li>
+			  <li data-ui-sref-active="active"><a href="" role="tab"  data-ui-sref="frais.list.tobeapproved">To be aproved <span class="badge">{{approvementTotal}}</span></a></li>
 			</ul>
     </div>
 </div>

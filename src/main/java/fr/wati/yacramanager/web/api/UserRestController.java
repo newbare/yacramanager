@@ -139,7 +139,7 @@ public class UserRestController {
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-	@RolesAllowed(Role.SSII_ADMIN)
+	@RolesAllowed({Role.SSII_ADMIN,Role.ADMIN})
     public ResponseEntity<?> updateUserRights(@PathVariable("employeeId") Long employeeId ,@RequestBody(required=true) List<String> roles) throws RestServiceException {
     	try {
 			employeService.updateUserRights(employeeId,roles);

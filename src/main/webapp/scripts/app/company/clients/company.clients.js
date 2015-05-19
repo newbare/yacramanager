@@ -23,6 +23,7 @@ App.config(function ($stateProvider) {
 	.state('company.clients.view', {
 		url : "/view",
 		templateUrl : _contextPath+'views/app/company/clients/company-clients-view.html',
+		abstract : true,
 		controller : 'CompanyClientsViewController',
 		data: {ncyBreadcrumbSkip: true}
 	})

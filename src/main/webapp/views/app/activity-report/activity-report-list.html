@@ -1,0 +1,69 @@
+<div class="navbar navbar-default" role="navigation">
+	<div class="navbar-header">
+       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#activity-report-menu-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <div class="collapse navbar-collapse" id="activity-report-menu-navbar">
+    		<ul class="nav nav-pills sub-menu" role="tablist" id="tabs">
+				<li data-ui-sref-active="active"><a href="" role="tab" data-ui-sref="activity-report.list.mine">{{'app.cra.mycra'
+						| translate}}</a></li>
+				<li data-ui-sref-active="active"><a href="" role="tab" data-ui-sref="activity-report.list.tobeapproved">{{'app.cra.tobeapprouved'
+						| translate}}<span class="badge">{{approvementTotal}}</span>
+				</a></li>
+			</ul>
+    </div>
+</div>
+<div class="tab-content">
+  	<div data-ui-view=""></div>
+</div>
+<script type="text/ng-template"
+	id="cra/timeoff/edit-timeoff-popover.html">
+<form editable-form name="editableForm" class="timeoff-popover-form" role="form" onaftersave="saveTimeOff(day.date,$hide)">
+<table class="table borderless">
+	<tr>
+    	<td>Type: </td>
+    	<td>
+			<span editable-select="newAbsence.typeAbsence" e-class="form-control" e-name="typeAbsence" onshow="loadAbsenceTypes()"  e-ng-options="a.name as a.label for a in absencesTypes">
+				{{ newAbsence.typeAbsence.label || 'Type' }}
+			</span>
+		</td>
+  	</tr>
+	<tr>
+    	<td>Description: </td>
+    	<td>
+			<span editable-text="newAbsence.description" e-class="form-control" e-name="description">
+				{{ newAbsence.description || 'Description' }}
+			</span>
+		</td>
+  	</tr>
+	<tr>
+    	<td>Period: </td>
+    	<td>
+			<span editable-select="newAbsence.period" e-class="form-control" e-name="period"  e-ng-options="p.name as p.label for p in absencePeriods">
+				{{ newAbsence.period || 'Period' }}
+			</span>
+		</td>
+  	</tr>
+</table>
+ <!-- button to show form -->
+<button type="button" class="btn btn-default" ng-click="editableForm.$show()" ng-show="!editableForm.$visible">
+   Edit
+</button>
+<button type="button" class="btn btn-danger pull-right" ng-click="$hide()">
+       Close
+</button>
+     <!-- buttons to submit / cancel form -->
+	<span ng-show="editableForm.$visible">
+    	<button type="submit" class="btn btn-success" ng-disabled="editableForm.$waiting">
+        	 Save
+       	</button>
+       	<button type="button" class="btn btn-default" ng-disabled="editableForm.$waiting" ng-click="editableForm.$cancel()">
+        	Cancel
+       	</button>
+    </span>
+</form>
+	</script>
