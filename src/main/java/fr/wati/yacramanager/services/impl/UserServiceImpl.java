@@ -202,6 +202,15 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public void sendActivationMail(Long userId) throws ServiceException {
 	}
+
+	/* (non-Javadoc)
+	 * @see fr.wati.yacramanager.services.UserService#findBySocialUserIdAndSocialProviderId(java.lang.String, java.lang.String)
+	 */
+	@Override
+	public Users findBySocialUserIdAndSocialProviderId(String socialUserId,
+			String socialProviderId) {
+		return userRepository.findBySocialUserIdAndSocialProviderId(socialUserId, socialProviderId);
+	}
 	
 }
 

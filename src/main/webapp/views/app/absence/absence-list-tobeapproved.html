@@ -1,5 +1,7 @@
   <div class="tab-pane" data-ng-class="{'active' : isActiveTab('toBeApprouved') }">
-  	
+  	<div class="alert alert-warning text-center" role="alert" ng-show="approvementTotal==0">
+		<h4>No data found for selected criterias</h4>
+	</div>
 	<ul class="list-group">
 		<!-- Iterate over Employe -->
 		<li class="list-group-item" data-ng-repeat="approvement in approvements" style="border: none;">

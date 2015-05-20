@@ -1,4 +1,6 @@
-
+<div class="alert alert-warning text-center" role="alert" ng-show="approvementTotal==0">
+	<h4>No data found</h4>
+</div>
 <div id="activity-report-fragment" data-ng-repeat="approvement in approvements">
 	<div class=""
 		data-ng-repeat="employeCraDetail in approvement.employeCraDetailsDTOs">

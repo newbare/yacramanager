@@ -1,7 +1,7 @@
 /**
  * 
  */
-package fr.wati.yacramanager.web.api;
+package fr.wati.yacramanager.web.auth;
 
 import java.util.HashMap;
 import java.util.Locale;

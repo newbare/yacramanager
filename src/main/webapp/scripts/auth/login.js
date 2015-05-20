@@ -130,6 +130,7 @@ App.controller('RegisterController',function ($scope, $location,$window,Registra
 		$scope.user.birthDay=preFillRegistrationDTO.birthDay;
 		$scope.user.socialUser=preFillRegistrationDTO.socialUser;
 		$scope.user.socialUserId=preFillRegistrationDTO.socialUserId;
+		$scope.user.socialProviderId=preFillRegistrationDTO.socialProviderId;
 		$scope.user.profileImageUrl=preFillRegistrationDTO.profileImageUrl;
 		$scope.user.profileUrl=preFillRegistrationDTO.profileUrl;
 		if(preFillRegistrationDTO.gender!=null && preFillRegistrationDTO.gender!=undefined){

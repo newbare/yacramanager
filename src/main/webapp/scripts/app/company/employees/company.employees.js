@@ -26,8 +26,7 @@ App.config(function ($stateProvider) {
 		url : "/view",
 		templateUrl : _contextPath+'views/app/company/employees/company-employees-view.html',
 		abstract : true,
-		controller : 'CompanyEmployeesViewController',
-		data: {ncyBreadcrumbSkip: true}
+		controller : 'CompanyEmployeesViewController'
 	})
 	.state('company.employees.view.list', {
 		url : "/list",
@@ -41,8 +40,7 @@ App.config(function ($stateProvider) {
 		templateUrl : _contextPath+'views/app/company/employees/company-employees-quickview.html',
 		controller : 'CompanyEmployeesQuickViewController',
 		data : {
-			
-			ncyBreadcrumbLabel : 'QuickView'
+			ncyBreadcrumbSkip: true
 		}
 	})
 	.state('company.employees.view.quick.overview', {

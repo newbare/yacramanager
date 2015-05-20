@@ -133,7 +133,9 @@ public class ActivityEvent<DTO> extends ApplicationEvent {
 	public ActivityEvent<DTO> user(){
 		Employe connectedUser = SecurityUtils.getConnectedUser();
 		setUser(connectedUser);
-		setUserId(connectedUser.getId());
+		if(connectedUser!=null){
+			setUserId(connectedUser.getId());
+		}
 		return this;
 	}
 	

@@ -27,7 +27,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import fr.wati.yacramanager.services.ServiceException;
 import fr.wati.yacramanager.web.api.AbsenceController;
 import fr.wati.yacramanager.web.api.ActivityReportController;
-import fr.wati.yacramanager.web.api.AuthenticationController;
 import fr.wati.yacramanager.web.api.ClientController;
 import fr.wati.yacramanager.web.api.CompanyController;
 import fr.wati.yacramanager.web.api.CustomMapEditor;
@@ -37,6 +36,7 @@ import fr.wati.yacramanager.web.api.RestServiceException;
 import fr.wati.yacramanager.web.api.TaskRestController;
 import fr.wati.yacramanager.web.api.UserRestController;
 import fr.wati.yacramanager.web.api.WorkLogRestController;
+import fr.wati.yacramanager.web.auth.AuthenticationController;
 import fr.wati.yacramanager.web.dto.ExceptionDto;
 
 /**

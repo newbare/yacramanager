@@ -39,6 +39,9 @@ public final class SimpleSignInAdapter implements SignInAdapter {
 
 	public String signIn(String userId, Connection<?> connection, NativeWebRequest request) {
 		Users existingUser = userService.findByEmail(userId);
+		if(existingUser==null){
+			existingUser = userService.findBySocialUserIdAndSocialProviderId(connection.getKey().getProviderUserId(), connection.getKey().getProviderId());
+		}
 		if(existingUser!=null){
 			existingUser.setPassword("");
 			CustomUserDetails customUserDetails=new CustomUserDetails(existingUser);

@@ -117,7 +117,7 @@
 									<span class="text-muted">{{taskRow.project.client.name}}
 										- {{taskRow.project.name}}</span>
 										<button class="btn btn-link btn-sm red pull-right" data-ng-if="taskRow.isNew" data-ng-click="deleteTaskRow(employeCraDetail.taskRows,$index)">
-											<strong><i class="fa fa-trash-o"></i> Remove</strong></button>
+											<strong><i class="fa fa-trash-o"></i></strong></button>
 								</h6></td>
 							<td data-ng-repeat="day in employeCraDetail.days"
 								data-ng-class="{'cra-we' : day.dayOff, 'cra-today' : isToday(day.date)}"

@@ -3,10 +3,7 @@ App.config(function ($stateProvider) {
 		url : "/activity-report",
 		templateUrl : _contextPath+'views/app/activity-report/activity-report.html',
 		controller : 'ActivityReportController',
-		data: {
-	        pageTitle: 'Activity report',
-	        ncyBreadcrumbLabel: 'Activity report'
-	      }
+		abstract:true
 	}).state('activity-report.list', {
 		templateUrl : _contextPath+'views/app/activity-report/activity-report-list.html',
 		controller : 'ActivityReportListController',

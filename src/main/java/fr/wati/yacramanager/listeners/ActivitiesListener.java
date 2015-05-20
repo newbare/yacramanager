@@ -24,9 +24,11 @@ public class ActivitiesListener implements ApplicationListener<ActivityEvent>{
 	@Override
 	public void onApplicationEvent(ActivityEvent event) {
 		activityRepository.save(event.toActivities());
-		Long companyId = ((Employe)event.getUser()).getCompany().getId();
-		event.setUser(null);
-		messagingTemplate.convertAndSend("/topic/company/"+companyId+"/event", event);
+		if(event.getUser()!=null){
+			Long companyId = ((Employe)event.getUser()).getCompany().getId();
+			event.setUser(null);
+			messagingTemplate.convertAndSend("/topic/company/"+companyId+"/event", event);
+		}
 	}
 
 }

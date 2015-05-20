@@ -175,7 +175,7 @@
 						style="font-size: 80%"></i><small> {{page.description | translate}}</small>
 				</h4>
 			</div> -->
-			<div data-ncy-breadcrumb="" class="hidden-xs"></div>
+			<div data-ncy-breadcrumb="" data-ng-if="desktopScreen"></div>
 			
 			<div id="main-view" >
 				<div class="panel panel-default">
@@ -270,6 +270,7 @@
  	<script src="../../bower_components/angular-timer/dist/angular-timer.js"></script>
  	<script src="../../bower_components/sockjs-client/dist/sockjs.js"></script>
  	<script src="../../bower_components/stomp-websocket/lib/stomp.js"></script>
+ 	<script src="../../bower_components/angular-media-queries/match-media.js"></script>
     <!-- endbuild -->
 	
 	<!-- build:js /scripts/app/app.js -->

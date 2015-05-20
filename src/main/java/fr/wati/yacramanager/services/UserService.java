@@ -9,4 +9,5 @@ public interface UserService extends CrudService<Users, Long>,SpecificationFacto
 	Users activateRegistration(String key);
 	void sendActivationMail(Long userId) throws ServiceException;
 	Users findByEmail(String email);
+	Users findBySocialUserIdAndSocialProviderId(String socialUserId,String socialProviderId);
 }

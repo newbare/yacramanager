@@ -283,9 +283,6 @@ App.directive('absencePortfolio',['AbsenceREST','USERINFO', function(AbsenceREST
         		return total;
         	};
         	scope.refreshPortfolio();
-        	if(initialisation){
-        		$('#absencePortfolioBody').collapse();
-        	}
         }
       };
     }]);

@@ -18,6 +18,7 @@ public interface UserRepository extends JpaRepository<Users, Long>,JpaSpecificat
 
 //	Users findByUsername(String username);
 	Users findByEmail(String email);
+	Users findBySocialUserIdAndSocialProviderId(String socialUserId,String socialProviderId);
 	Page<Users> findByEmailLike(String email, Pageable pageable);
 	/**
 	 * @param key

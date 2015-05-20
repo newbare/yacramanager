@@ -73,7 +73,7 @@ var App = angular.module('yaCRAApp', [ 'ngResource', 'mgcrea.ngStrap',
 		'daterangepicker', 'pascalprecht.translate', 'angular-loading-bar',
 		'ngQuickDate', 'xeditable', 'colorpicker.module', 'angular.filter',
 		'truncate','ncy-angular-breadcrumb','ngCookies','tmh.dynamicLocale','ngFinder',
-		'ngCacheBuster','LocalStorageModule']);
+		'ngCacheBuster','LocalStorageModule','matchMedia']);
 
 
 App.config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
@@ -82,12 +82,19 @@ App.config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
 
   
   
-App.run(function($rootScope,$q, $templateCache, UsersREST,$state,ENV,VERSION,USERINFO) {
+App.run(function($rootScope,$q, $templateCache, UsersREST,$state,ENV,VERSION,USERINFO,screenSize) {
 	$rootScope.page = '';
 	$rootScope.$state = $state;
 	$rootScope.appContextPath=_contextPath;
 	$rootScope.ENV = ENV;
     $rootScope.VERSION = VERSION;
+    
+    $rootScope.desktopScreen = screenSize.on('md, lg', function(match){
+    	$rootScope.desktopScreen = match;
+    });
+    $rootScope.mobileScreen = screenSize.on('xs, sm', function(match){
+    	$rootScope.mobileScreen  = match;
+    });
      var hasAnyOneOfRole=function(userRoles,definedRoles){
 			var result=false;
 			definedRoles.forEach(function(entry) {
