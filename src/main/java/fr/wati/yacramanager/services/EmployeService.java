@@ -2,6 +2,7 @@ package fr.wati.yacramanager.services;
 
 import java.util.List;
 
+import fr.wati.yacramanager.beans.CompanyTempInvitation;
 import fr.wati.yacramanager.beans.Employe;
 import fr.wati.yacramanager.dao.repository.EmployeDto;
 import fr.wati.yacramanager.web.dto.RegistrationDTO;
@@ -12,6 +13,8 @@ public interface EmployeService extends CrudService<Employe, Long>,Specification
 	UserInfoDTO toUserInfoDTO(Long idPersonne) throws Exception;
 	
 	Employe registerEmploye(RegistrationDTO registrationDTO,boolean isSocialRegistration) throws ServiceException;
+	
+	public void processInvitation(Employe employe,CompanyTempInvitation givenInvitation) throws ServiceException;
 
 	List<Employe> getManagedEmployees(Long requesterId);
 	

@@ -201,6 +201,7 @@ public class EmployeServiceImpl implements EmployeService {
 		Employe employe=new Employe();
 		employe.setUserName(registrationDTO.getEmail());
 		Set<Role> roles=new HashSet<>();
+		employe.setRoles(roles);
 		if(isSocialRegistration){
 			employe.setEnabled(true);
 			employe.setSocialUser(true);
@@ -227,19 +228,7 @@ public class EmployeServiceImpl implements EmployeService {
 			employe.setActivationKey(null);
 			//check invitation validity
 			CompanyTempInvitation givenInvitation = registrationDTO.getCompanyInvitation();
-			CompanyTempInvitation invitation = companyInvitationRepository.findInvitationWithToken(givenInvitation.getUserId(), givenInvitation.getCompanyId(), givenInvitation.getToken());
-			if(invitation!=null && invitation.isStillValid()){
-				Company company2 = companyService.findOne(Long.valueOf(invitation.getCompanyId()));
-				employe.setCompany(company2);
-				employe.getProjects().add(company2.getClients().get(0).getProjects().get(0));
-				employe.getTasks().add(company2.getClients().get(0).getProjects().get(0).getTasks().get(0));
-				company2.getClients().get(0).getProjects().get(0).getAssignedEmployees().add(employe);
-				company2.getClients().get(0).getProjects().get(0).getTasks().get(0).getAssignedEmployees().add(employe);
-				
-			}else {
-				throw new ServiceException("The given invitation is not valid");
-			}
-			roles.add(roleRepository.findByRole(Role.SALARIE));
+			processInvitation(employe, givenInvitation);
 		}else {
 			roles.add(roleRepository.findByRole(Role.SSII_ADMIN));
 			roles.add(roleRepository.findByRole(Role.INDEP));
@@ -257,14 +246,27 @@ public class EmployeServiceImpl implements EmployeService {
 			createCompany.getClients().get(0).getProjects().get(0).getTasks().get(0).getAssignedEmployees().add(employe);
 			employe.getTasks().add(createCompany.getClients().get(0).getProjects().get(0).getTasks().get(0));
 		}
-		
-		
-		
-		employe.setRoles(roles);
 		Employe saveEmploye = employeRepository.save(employe);
 		return saveEmploye;
 	}
 
+	public void processInvitation(Employe employe,CompanyTempInvitation givenInvitation) throws ServiceException{
+		CompanyTempInvitation invitation = companyInvitationRepository.findInvitationWithToken(givenInvitation.getUserId(), givenInvitation.getCompanyId(), givenInvitation.getToken());
+		if(invitation!=null && invitation.isStillValid()){
+			Company company2 = companyService.findOne(Long.valueOf(invitation.getCompanyId()));
+			employe.setCompany(company2);
+			employe.getProjects().add(company2.getClients().get(0).getProjects().get(0));
+			employe.getTasks().add(company2.getClients().get(0).getProjects().get(0).getTasks().get(0));
+			company2.getClients().get(0).getProjects().get(0).getAssignedEmployees().add(employe);
+			company2.getClients().get(0).getProjects().get(0).getTasks().get(0).getAssignedEmployees().add(employe);
+			
+		}else {
+			throw new ServiceException("The given invitation is not valid");
+		}
+		employe.getRoles().clear();
+		employe.getRoles().add(roleRepository.findByRole(Role.SALARIE));
+	}
+	
 	@Override
 	public Page<Employe> findAll(Specification<Employe> spec, Pageable pageable) {
 		return employeRepository.findAll(spec, pageable);

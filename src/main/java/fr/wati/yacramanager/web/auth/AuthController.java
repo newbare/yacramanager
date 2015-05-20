@@ -23,11 +23,15 @@ import org.springframework.web.servlet.view.RedirectView;
 import com.codahale.metrics.annotation.Timed;
 
 import fr.wati.yacramanager.beans.CompanyTempInvitation;
+import fr.wati.yacramanager.beans.Employe;
 import fr.wati.yacramanager.beans.Users;
 import fr.wati.yacramanager.config.social.DefaultConnectionSignUp;
 import fr.wati.yacramanager.dao.JdbcCompanyInvitationRepository;
+import fr.wati.yacramanager.services.EmployeService;
+import fr.wati.yacramanager.services.ServiceException;
 import fr.wati.yacramanager.services.UserService;
 import fr.wati.yacramanager.web.ResourceNotFoundException;
+import fr.wati.yacramanager.web.api.RestServiceException;
 import fr.wati.yacramanager.web.dto.RegistrationDTO;
 
 @Controller
@@ -37,6 +41,9 @@ public class AuthController {
 
 	@Inject
 	private UserService userService;
+	
+	@Inject
+	private EmployeService employeService;
 
 	@Inject
 	private DefaultConnectionSignUp connectionSignUp;
@@ -140,13 +147,24 @@ public class AuthController {
 			@RequestParam(value = "token", required = true) String token,
 			@RequestParam(value = "user", required = true) String user,
 			@RequestParam(value = "company", required = true) String company,
-			final RedirectAttributes redirectAttrs) {
+			final RedirectAttributes redirectAttrs) throws RestServiceException {
 		CompanyTempInvitation invitation = companyInvitationRepository
 				.findInvitationWithToken(user, company, token);
 		RedirectView redirectView = new RedirectView();
 		if (invitation != null) {
-			redirectView.setUrl("/auth/register");
-			redirectAttrs.addFlashAttribute("invitation", invitation);
+			Employe existingEmploye=employeService.findByEmail(invitation.getUserId());
+			if(existingEmploye!=null){
+				try {
+					employeService.processInvitation(existingEmploye, invitation);
+					redirectView.setUrl("/");
+				} catch (ServiceException e) {
+					log.error(e.getMessage(), e);
+					throw new RestServiceException(e);
+				}
+			}else {
+				redirectView.setUrl("/auth/register");
+				redirectAttrs.addFlashAttribute("invitation", invitation);
+			}
 			return redirectView;
 		}
 		// Redirect to not found
