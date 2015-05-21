@@ -683,3 +683,28 @@ App.directive('subMenuNavPill', function($rootScope) {
 	    }
 	  };
 	});
+
+
+App.directive('scrollToTop', function() {
+	  return {
+		restrict: 'A',
+	    link: function(scope, element,attrs) {
+	    	var scrollToTop=function () {
+	    		verticalOffset = typeof(verticalOffset) != 'undefined' ? verticalOffset : 0;
+	    		body = $('body');
+	    		offset = body.offset();
+	    		offsetTop = offset.top;
+	    		$('html, body').animate({scrollTop: offsetTop}, 500, 'linear');
+	    	};
+	    	$(document).on('scroll', function(){
+		    	if ($(window).scrollTop() > attrs['scrollToTop']) {
+		    		element.addClass('show');
+				} else {
+					element.removeClass('show');
+				}
+	    	});
+	    	element.on('click', scrollToTop);
+	    }
+	  };
+	});
+ 

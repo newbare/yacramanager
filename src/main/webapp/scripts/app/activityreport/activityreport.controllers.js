@@ -5,28 +5,7 @@ App.controller('ActivityReportListController',function ($scope,$rootScope,Activi
 });
 
 App.controller('ActivityReportListMineController',function ($scope,$rootScope,ActivityReportREST,NgStomp,$filter,$http,WorkLogREST,alertService,AbsenceREST,USERINFO,ClientsREST,ProjectsREST,TasksREST) {
-	
-});
-
-App.controller('ActivityReportListToBeApprovedController',function ($scope,$rootScope,ActivityReportREST,NgStomp,$filter,$http,WorkLogREST,alertService,AbsenceREST,USERINFO,ClientsREST,ProjectsREST,TasksREST) {
-	
-});
-
-App.controller('ActivityReportController',function ($scope,$rootScope,ActivityReportREST,NgStomp,$filter,$http,WorkLogREST,alertService,AbsenceREST,USERINFO,ClientsREST,ProjectsREST,TasksREST) {
-	$scope.client = NgStomp('/websocket/event');
-	$scope.client.connect( function(){
-        $scope.client.subscribe("/topic/company/"+USERINFO.company.id+"/event", function(event) {
-			if(event.entityType==='ActivityReport' && USERINFO.id!=event.userId){
-				$scope.refreshView();
-			}
-			$scope.refreshApproval();
-        });
-    }, function(){}, '/');
-	$scope.dateFormat="dd MMMM yyyy";
-	$scope.craDateFormat="EEE dd/MM";
-	$scope.numberOfWeek=0;
-	$scope.approvementTotal=0;
-	$scope.currentTab='viewActivityReport';
+	$scope.durationMode='showHours';
 	$scope.taskToAdd={};
 	$scope.resetTaskToAdd=function(){
 		$scope.taskToAdd.client=undefined;
@@ -367,6 +346,27 @@ App.controller('ActivityReportController',function ($scope,$rootScope,ActivityRe
 			alertService.show('success', 'Confirmation', 'Data saved');
 		});
 	};
+});
+
+App.controller('ActivityReportListToBeApprovedController',function ($scope,$rootScope,ActivityReportREST,NgStomp,$filter,$http,WorkLogREST,alertService,AbsenceREST,USERINFO,ClientsREST,ProjectsREST,TasksREST) {
+	
+});
+
+App.controller('ActivityReportController',function ($scope,$rootScope,ActivityReportREST,NgStomp,$filter,$http,WorkLogREST,alertService,AbsenceREST,USERINFO,ClientsREST,ProjectsREST,TasksREST) {
+	$scope.client = NgStomp('/websocket/event');
+	$scope.client.connect( function(){
+        $scope.client.subscribe("/topic/company/"+USERINFO.company.id+"/event", function(event) {
+			if(event.entityType==='ActivityReport' && USERINFO.id!=event.userId){
+				$scope.refreshView();
+			}
+			$scope.refreshApproval();
+        });
+    }, function(){}, '/');
+	$scope.dateFormat="dd MMMM yyyy";
+	$scope.craDateFormat="EEE dd/MM";
+	$scope.numberOfWeek=0;
+	$scope.approvementTotal=0;
+	
 	
 	$scope.refreshApproval=function(){
 		ActivityReportREST.getApprovals({

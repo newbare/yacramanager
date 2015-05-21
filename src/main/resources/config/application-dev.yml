@@ -31,8 +31,8 @@ spring:
         show_sql: false
         generate-ddl: false
         hibernate:
-        #update
-            ddl-auto: create-drop
+        #update create-drop
+            ddl-auto: update
             naming-strategy: org.hibernate.cfg.EJB3NamingStrategy
         properties:
             hibernate.cache.use_second_level_cache: true

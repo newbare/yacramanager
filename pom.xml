@@ -764,9 +764,9 @@
 								<fileset>
 									<directory>.tmp</directory>
 								</fileset>
-								<fileset>
+								<!-- <fileset>
 									<directory>node_modules</directory>
-								</fileset>
+								</fileset> -->
 							</filesets>
 						</configuration>
 					</plugin>
