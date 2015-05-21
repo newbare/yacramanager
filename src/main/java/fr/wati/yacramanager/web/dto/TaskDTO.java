@@ -20,6 +20,7 @@ public class TaskDTO extends AuditableDTO{
 	private Long id;
 	private String name;
 	private DateTime createdDate;
+	private DateTime lastModifiedDate;
 	private String description;
 	private Long projectId;
 	private TaskStatus taskStatus;
@@ -133,6 +134,12 @@ public class TaskDTO extends AuditableDTO{
 	}
 	
 	
+	public DateTime getLastModifiedDate() {
+		return lastModifiedDate;
+	}
+	public void setLastModifiedDate(DateTime modifiedDate) {
+		this.lastModifiedDate = modifiedDate;
+	}
 	public List<Long> getAssignedEmployeesIds() {
 		return assignedEmployeesIds;
 	}

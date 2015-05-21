@@ -23,6 +23,8 @@ import org.springframework.data.domain.Sort.Order;
 import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.method.P;
+import org.springframework.security.access.prepost.PostFilter;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -93,7 +95,7 @@ public class NoteDeFraisController {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(method = RequestMethod.GET)
 	@Timed
-	public ResponseWrapper<List<NoteDeFraisDTO>> getAll(
+	public ResponseWrapper<List<NoteDeFraisDTO>> getExpenses(
 			@RequestParam(required = false) Integer page,
 			@RequestParam(required = false) Integer size,
 			@RequestParam(value = "sort", required = false) Map<String, String> sort,
@@ -149,6 +151,60 @@ public class NoteDeFraisController {
 		return responseWrapper;
 	}
 
+	
+	@RequestMapping(value = "/{employeId}/all",method = RequestMethod.GET)
+	@PostFilter("filterObject.getEmployeId().equals(#employeId)")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@Timed
+	public List<NoteDeFraisDTO> getAll(
+			@RequestParam(required = false) Integer page,
+			@RequestParam(required = false) Integer size,
+			@RequestParam(value = "sort", required = false) Map<String, String> sort,
+			@RequestParam(value = "filter", required = false) String filter,
+			@PathVariable("employeId") @P("employeId") Long employeId) throws RestServiceException {
+		if (page == null) {
+			page = 0;
+		}
+		if (size == null) {
+			size = 100;
+		}
+		List filters = new ArrayList<>();
+		if (StringUtils.isNotEmpty(filter)) {
+			try {
+				filters = FilterBuilder.parse(filter);
+			} catch (Exception e) {
+				LOG.error(e.getMessage(), e);
+				throw new RestServiceException(e);
+			}
+		}
+		Specifications<NoteDeFrais> specifications = null;
+		if (!filters.isEmpty()) {
+			specifications = Specifications.where(SpecificationBuilder
+					.buildSpecification(filters, noteDeFraisService));
+		}
+		PageRequest pageable = null;
+		if (sort != null) {
+			List<Order> orders = new ArrayList<>();
+			for (Entry<String, String> entry : sort.entrySet()) {
+				Order order = new Order(
+						"asc".equals(entry.getValue()) ? Direction.ASC
+								: Direction.DESC, entry.getKey());
+				orders.add(order);
+			}
+			if (!orders.isEmpty()) {
+				pageable = new PageRequest(page, size, new Sort(orders));
+			} else {
+				pageable = new PageRequest(page, size);
+			}
+		} else {
+			pageable = new PageRequest(page, size);
+		}
+
+		Page<NoteDeFrais> findBySpecificationAndOrder = noteDeFraisService
+				.findAll(specifications, pageable);
+		List<NoteDeFraisDTO> response = noteDeFraisService.mapNoteDeFrais(findBySpecificationAndOrder);
+		return response;
+	}
 	@RequestMapping(method = RequestMethod.POST)
 	@Timed
 	public ResponseEntity<String> create(@RequestBody NoteDeFraisDTO dto) {

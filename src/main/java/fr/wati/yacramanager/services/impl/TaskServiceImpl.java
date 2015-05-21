@@ -259,6 +259,7 @@ public class TaskServiceImpl implements TaskService {
 		TaskDTO dto=new TaskDTO();
 		task=findOne(task.getId());
 		dto.setCreatedDate(task.getCreatedDate());
+		dto.setLastModifiedDate(task.getLastModifiedDate());
 		dto.setDescription(task.getDescription());
 		dto.setColor(task.getColor());
 		if(task.getCreatedBy()!=null){

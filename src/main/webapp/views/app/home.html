@@ -1,1 +1,75 @@
-		Home
+<div class="row">
+	<div class="col-sm-6 widget-container-col" data-widget-container="">
+		<div class="widget-box light-border" data-widget-box="" data-refresh-action="refreshTask">
+			<div class="widget-header widget-header-small widget-header-flat">
+				<span class="widget-title">Task</span>
+				<div class="widget-toolbar no-border">
+					<a data-action="reload" href="#" > <i class="ace-icon fa fa-refresh green"></i></a>
+					<a data-action="collapse" href="#"> <i class="ace-icon fa fa-chevron-up"></i></a>
+				</div>
+			</div>
+			<div class="widget-body">
+				<div class="widget-main">
+					<ul class="list-group">
+						<li class="list-group-item" data-ng-repeat="task in tasks">
+							<ul class="list-inline">
+								<li>{{task.name}}</li>
+								<li>{{task.description}}</li>
+								<li>
+									<span class="label" data-ng-class="{'label-success' : task.taskStatus==='OPEN' , 'label-danger' : task.taskStatus==='COMPLETED'}">
+									{{task.taskStatus}}
+									</span>
+								</li>
+								<li>
+									{{task.assignedEmployeesIds.length}} <i class="fa fa-male"></i>
+								</li>
+								<li class="pull-right">
+									<a data-ui-sref="tasks({id:task.id})">
+										<i class="fa fa-arrow-right"></i>
+									</a>
+								</li>
+							</ul>
+							 
+							
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-sm-6 widget-container-col" data-widget-container="">
+		<div class="widget-box light-border" data-widget-box="" data-refresh-action="refreshExpenses">
+			<div class="widget-header widget-header-small widget-header-flat">
+				<span class="widget-title">Expenses</span>
+				<div class="widget-toolbar no-border">
+					<a data-action="reload" href="#" > <i class="ace-icon fa fa-refresh green"></i></a>
+					<a data-action="collapse" href="#"> <i class="ace-icon fa fa-chevron-up"></i></a>
+				</div>
+			</div>
+			<div class="widget-body">
+				<div class="widget-main">
+					<ul class="list-group">
+						<li class="list-group-item" data-ng-repeat="expense in expenses">
+							<ul class="list-inline">
+								<li>{{expense.date | date :'short'}}</li>
+								<li>{{expense.amount}}</li>
+								<li>
+									<span class="label" data-ng-class="{'label-success' : isValidated(expense) , 'label-warning' : isWaiting(expense), 'label-danger' : isRejected(expense)}">
+									{{expense.validationStatus}}
+									</span>
+								</li>
+								<li class="pull-right">
+									<a data-ui-sref="frais.detail({id:expense.id})">
+										<i class="fa fa-arrow-right"></i>
+									</a>
+								</li>
+							</ul>
+							 
+							
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

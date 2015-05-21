@@ -242,6 +242,11 @@ App.factory("NoteREST", function($resource) {
 			params : {
 				id : '@id'
 			}
+		},
+		getAll:{
+			url : _contextPath + "app/api/frais/:employeId/all",
+			method : 'GET',
+			isArray : true
 		}
 	});
 });
