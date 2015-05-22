@@ -67,7 +67,7 @@ var clone=function(obj) {
 var yaCRAApp = {};
 
 var App = angular.module('yaCRAApp', [ 'ngResource', 'mgcrea.ngStrap',
-		'ng-criterias', 'ngHtmlCompile', 'ngRoute', 'ngAnimate', 'ngTable',
+		'ng-criterias', 'ngHtmlCompile', 'ngAnimate', 'ngTable',
 		'ui.router', 'angularFileUpload', 'ui.calendar',
 		'http-auth-interceptor', 'timer', 'localytics.directives',
 		'daterangepicker', 'pascalprecht.translate', 'angular-loading-bar',
@@ -160,6 +160,38 @@ App.run(function(editableOptions,editableThemes) {
 //});
 
 
+App.config(function ($stateProvider,$translateProvider,$httpProvider,tmhDynamicLocaleProvider,httpRequestInterceptorCacheBusterProvider,localStorageServiceProvider,$locationProvider) {
+	
+	
+	$locationProvider.html5Mode(true).hashPrefix('!');
+	
+	//enable CSRF
+    $httpProvider.defaults.xsrfCookieName = 'CSRF-TOKEN';
+    $httpProvider.defaults.xsrfHeaderName = 'X-CSRF-TOKEN';
+	
+	//Cache everything except rest api requests
+    httpRequestInterceptorCacheBusterProvider.setMatchlist([/.*api.*/, /.*protected.*/], true);
+	
+	$translateProvider.preferredLanguage('en');
+	
+	$translateProvider.useStaticFilesLoader({
+	      prefix: _contextPath+'i18n/',
+	      suffix: '.json'
+	});
+
+	// tell angular-translate to use your custom handler
+	$translateProvider.useMissingTranslationHandler('translationMissingErrorHandlerFactory');
+	$translateProvider.useCookieStorage();
+
+	tmhDynamicLocaleProvider
+			.localeLocationPattern(_contextPath+'bower_components/angular-i18n/angular-locale_{{locale}}.js');
+	tmhDynamicLocaleProvider
+			.useCookieStorage('NG_TRANSLATE_LANG_KEY');
+	
+	localStorageServiceProvider.setPrefix('yacra.config');
+});
+
+
 App.config(function($urlRouterProvider) {
 	$urlRouterProvider
 	.when('','/home')
@@ -191,38 +223,6 @@ App.config(function($urlRouterProvider) {
             var $state = $injector.get("$state");
             $state.go("error404");
         });;
-});
-
-
-App.config(function ($stateProvider,$translateProvider,$httpProvider,tmhDynamicLocaleProvider,httpRequestInterceptorCacheBusterProvider,localStorageServiceProvider,$locationProvider) {
-	
-	
-	$locationProvider.html5Mode(true).hashPrefix('!');
-	
-	//enable CSRF
-    $httpProvider.defaults.xsrfCookieName = 'CSRF-TOKEN';
-    $httpProvider.defaults.xsrfHeaderName = 'X-CSRF-TOKEN';
-	
-	//Cache everything except rest api requests
-    httpRequestInterceptorCacheBusterProvider.setMatchlist([/.*api.*/, /.*protected.*/], true);
-	
-	$translateProvider.preferredLanguage('en');
-	
-	$translateProvider.useStaticFilesLoader({
-	      prefix: _contextPath+'i18n/',
-	      suffix: '.json'
-	});
-
-	// tell angular-translate to use your custom handler
-	$translateProvider.useMissingTranslationHandler('translationMissingErrorHandlerFactory');
-	$translateProvider.useCookieStorage();
-
-	tmhDynamicLocaleProvider
-			.localeLocationPattern(_contextPath+'bower_components/angular-i18n/angular-locale_{{locale}}.js');
-	tmhDynamicLocaleProvider
-			.useCookieStorage('NG_TRANSLATE_LANG_KEY');
-	
-	localStorageServiceProvider.setPrefix('yacra.config');
 });
 
 //define custom handler

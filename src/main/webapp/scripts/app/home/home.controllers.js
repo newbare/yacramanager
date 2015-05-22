@@ -1,4 +1,4 @@
-App.controller('HomeController',function ($scope,$rootScope,$translate,TasksREST,NoteREST,USERINFO) {
+App.controller('HomeController',function ($scope,$rootScope,$translate,TasksREST,NoteREST,USERINFO,ActivitiesREST) {
 	
 //	Tasks section
 	$scope.tasks=[];
@@ -35,4 +35,10 @@ App.controller('HomeController',function ($scope,$rootScope,$translate,TasksREST
 	};
 	$scope.refreshExpenses();
 	
+//	Activities feed
+	$scope.timelineData=undefined
+	$scope.refreshLastActivities=function(){
+		$scope.timelineData=ActivitiesREST.forUser({id:USERINFO.id});
+	};
+	$scope.refreshLastActivities();
 });

@@ -356,7 +356,10 @@
 		    USERINFO: ['$http', function ($http) {
 		      return $http.get(_contextPath + 'app/api/users/user-info');
 		    }]
-		  }
+		  },
+		  onError: function (error) {
+			    alert('Could not bootstrap, error: ' + error);
+			  }
 		});
 	</script>
 </body>
