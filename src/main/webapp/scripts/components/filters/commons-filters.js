@@ -18,3 +18,9 @@ App.filter("dateFromNow", function() {
 		return iscurrentDate ? 'Today':moment(input).from(moment());
 	};
 });
+
+App.filter("timeFromNow", function() {
+	return function(input) {
+		return moment(input).from(moment());
+	};
+});

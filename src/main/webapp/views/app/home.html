@@ -1,7 +1,7 @@
 <div class="row">
 	<div class="col-sm-6 widget-container-col" data-widget-container="">
 		<div class="widget-box light-border" data-widget-box="" data-refresh-action="refreshTask">
-			<div class="widget-header widget-header-small widget-header-flat">
+			<div class="widget-header widget-header-small ">
 				<span class="widget-title">Task</span>
 				<div class="widget-toolbar no-border">
 					<a data-action="reload" href="#" > <i class="ace-icon fa fa-refresh green"></i></a>
@@ -9,35 +9,43 @@
 				</div>
 			</div>
 			<div class="widget-body collapse in" id="taskWidgetBody">
-				<div class="widget-main">
-					<ul class="list-group">
-						<li class="list-group-item" data-ng-repeat="task in tasks">
-							<ul class="list-inline">
-								<li>{{task.name}}</li>
-								<li>{{task.description}}</li>
-								<li>
-									<span class="label" data-ng-class="{'label-success' : task.taskStatus==='OPEN' , 'label-danger' : task.taskStatus==='COMPLETED'}">
+				<div class="widget-main no-padding">
+					<table class="table table-striped table-bordered table-hover">
+				      <thead class="thin-border-bottom">
+				      		<tr>
+				      			<th>Name</th>
+				      			<th>Description</th>
+				      			<th>Status</td>
+				      			<th colspan="2"></th>
+				      		</tr>
+				      </thead>
+				      <tbody>
+				      	<tr data-ng-repeat="task in tasks">
+				      		<td>{{task.name}}</td>
+				      		<td>{{task.description}}</td>
+				      		<td>
+				      			<span class="label" data-ng-class="{'label-success' : task.taskStatus==='OPEN' , 'label-danger' : task.taskStatus==='COMPLETED'}">
 									{{task.taskStatus}}
-									</span>
-								</li>
-								<li>
-									{{task.assignedEmployeesIds.length}} <i class="fa fa-male"></i>
-								</li>
-								<li class="pull-right">
-									<a data-ui-sref="tasks({id:task.id})">
-										<i class="fa fa-arrow-right"></i>
-									</a>
-								</li>
-							</ul>
-						</li>
-					</ul>
+								</span>
+				      		</td>
+				      		<td>
+				      			{{task.assignedEmployeesIds.length}} <i class="fa fa-male"></i>
+				      		</td>
+				      		<td>
+				      			<a data-ui-sref="tasks({id:task.id})">
+									<i class="fa fa-arrow-right"></i>
+								</a>
+				      		</td>
+				      	</tr>
+				      </tbody>
+				    </table>
 				</div>
 			</div>
 		</div>
 	</div>
 	<div class="col-sm-6 widget-container-col" data-widget-container="">
 		<div class="widget-box light-border" data-widget-box="" data-refresh-action="refreshExpenses">
-			<div class="widget-header widget-header-small widget-header-flat">
+			<div class="widget-header widget-header-small">
 				<span class="widget-title">Expenses</span>
 				<div class="widget-toolbar no-border">
 					<a data-action="reload" href="#" > <i class="ace-icon fa fa-refresh green"></i></a>
@@ -45,25 +53,33 @@
 				</div>
 			</div>
 			<div class="widget-body collapse in" id="expensesWidgetBody">
-				<div class="widget-main">
-					<ul class="list-group">
-						<li class="list-group-item" data-ng-repeat="expense in expenses">
-							<ul class="list-inline">
-								<li>{{expense.date | date :'short'}}</li>
-								<li>{{expense.amount}}</li>
-								<li>
-									<span class="label" data-ng-class="{'label-success' : isValidated(expense) , 'label-warning' : isWaiting(expense), 'label-danger' : isRejected(expense)}">
+				<div class="widget-main no-padding">
+					<table class="table table-striped table-bordered table-hover">
+				      <thead class="thin-border-bottom">
+				      		<tr>
+				      			<th>Date</th>
+				      			<th>Amount</th>
+				      			<th>Status</td>
+				      			<th></th>
+				      		</tr>
+				      </thead>
+				      <tbody>
+				      	<tr data-ng-repeat="expense in expenses">
+				      		<td>{{expense.date | date :'short'}}</td>
+				      		<td>{{expense.amount}}</td>
+				      		<td>
+				      			<span class="label" data-ng-class="{'label-success' : isValidated(expense) , 'label-warning' : isWaiting(expense), 'label-danger' : isRejected(expense)}">
 									{{expense.validationStatus}}
-									</span>
-								</li>
-								<li class="pull-right">
-									<a data-ui-sref="frais.detail({id:expense.id})">
-										<i class="fa fa-arrow-right"></i>
-									</a>
-								</li>
-							</ul>
-						</li>
-					</ul>
+								</span>
+				      		</td>
+				      		<td>
+				      			<a data-ui-sref="frais.detail({id:expense.id})">
+									<i class="fa fa-arrow-right"></i>
+								</a>
+				      		</td>
+				      	</tr>
+				      </tbody>
+					</table>
 				</div>
 			</div>
 		</div>
@@ -72,7 +88,7 @@
 <div class="row">
 	<div class="col-sm-6 widget-container-col" data-widget-container="">
 		<div class="widget-box light-border" data-widget-box="" data-refresh-action="refreshTask">
-			<div class="widget-header widget-header-small widget-header-flat">
+			<div class="widget-header widget-header-small ">
 				<span class="widget-title">Last Activities</span>
 				<div class="widget-toolbar no-border">
 					<a data-action="reload" href="#" > <i class="ace-icon fa fa-refresh green"></i></a>
@@ -82,80 +98,53 @@
 			<div class="widget-body collapse in" id="taskWidgetBody">
 				<div class="widget-main">
 					<div class="profile-feed">
-					  <div class="profile-activity clearfix" data-ng-repeat="day in timelineData.days">
-					    <div>
-					        <img class="pull-left" alt="user avatar" src="path/to/avatar" />
-					        <!-- or icon ->
-					        <!-- <i class="pull-left thumbicon btn-success no-hover"></i> -->
-					        <a class="user" href="#">Name</a>
-					        <div class="time"><i class="ace-icon fa fa-clock-o bigger-110"></i> {{day.date | dateFromNow}}</div>
-					    </div>
-					    <div class="tools action-buttons">
-					        <a href="#" class="blue"><i class="ace-icon fa fa-pencil"></i></a>
-					        <a href="#" class="red"><i class="ace-icon fa fa-times"></i></a>
-					    </div>
+						<div data-ng-repeat="day in timelineData.days">
+						  <div class="profile-activity clearfix" data-ng-repeat="activityItem in day.activityItems">
+						    	<span class="pull-left" data-ng-class="{'text-success' : activityItem.activityDTO.activityOperation=='CREATE' || activityItem.activityDTO.activityOperation=='VALIDATE' , 'text-warning' : activityItem.activityDTO.activityOperation=='UPDATE', 'text-danger' : activityItem.activityDTO.activityOperation=='DELETE' || activityItem.activityDTO.activityOperation=='REJECT'}">
+									<strong>{{activityItem.activityDTO.activityOperation}} </strong>
+								</span>
+						        <!-- <img class="pull-left" alt="user avatar" src="path/to/avatar" /> -->
+						        <!-- or icon ->
+						        <!-- <i class="pull-left thumbicon btn-success no-hover"></i> -->
+						        <span class="text-info">
+									<strong>{{activityItem.activityDTO.employe.firstName}} {{activityItem.activityDTO.employe.lastName}}</strong>
+								</span>
+								<span class="text-muted">Entity 
+										<a data-ng-if="activityItem.activityDTO.entityType==='Employe'" data-ui-sref="company.employees.view.quick.overview({ id: activityItem.activityDTO.entityId })">
+											{{activityItem.activityDTO.entityType}}
+										</a>
+										<a data-ng-if="activityItem.activityDTO.entityType==='Task'" data-ui-sref="tasks.detail({ id: activityItem.activityDTO.entityId })">
+											{{activityItem.activityDTO.entityType}}
+										</a>
+										<a data-ng-if="activityItem.activityDTO.entityType==='Project'" data-ui-sref="company.projects.view.quick.overview({ id: activityItem.activityDTO.entityId })">
+											{{activityItem.activityDTO.entityType}}
+										</a>
+										<a data-ng-if="activityItem.activityDTO.entityType==='Client'" data-ui-sref="company.clients.view.quick.overview({ id: activityItem.activityDTO.entityId })">
+											{{activityItem.activityDTO.entityType}}
+										</a>
+										<a data-ng-if="activityItem.activityDTO.entityType==='WorkLog'" data-ui-sref="company.clients.view.quick.overview({ id: activityItem.activityDTO.entityId })">
+											{{activityItem.activityDTO.entityType}}
+										</a>
+										<a data-ng-if="activityItem.activityDTO.entityType==='Absence'" data-ui-sref="absence.detail({ id: activityItem.activityDTO.entityId })">
+											{{activityItem.activityDTO.entityType}}
+										</a>
+										<a data-ng-if="activityItem.activityDTO.entityType==='NoteDeFrais'" data-ui-sref="frais.detail({ id: activityItem.activityDTO.entityId })">
+											{{activityItem.activityDTO.entityType}}
+										</a>
+										<span class="label label-info" data-ng-if="activityItem.activityDTO.entityType==='Company'"">
+											{{activityItem.activityDTO.entityType}}
+										</span>
+								</span>
+						        <div class="time"><i class="ace-icon fa fa-clock-o bigger-110"></i> {{day.date | timeFromNow}}</div>
+						    <div class="tools action-buttons">
+						    </div>
+						  </div>
 					  </div>
-					</div>
-					
-					
-					<!-- #section:pages/timeline.style2 -->
-					<div class="timeline-container timeline-style2" data-ng-repeat="day in timelineData.days" data-ng-show="timelineData.days.length>0">
-						<span class="timeline-label">
-							<span class="label label-primary arrowed-in-right label-lg">
-								<b>{{day.date | dateFromNow}}</b>
-							</span> 
-						</span>
-						<div class="timeline-items">
-							<div class="timeline-item clearfix" data-ng-repeat="activityItem in day.activityItems">
-								<div class="timeline-info">
-									<span class="timeline-date">{{activityItem.time | date: 'shortTime'}}</span> <i
-										class="timeline-indicator btn btn-info no-hover"></i>
-								</div>
-								<div class="widget-box transparent">
-									<div class="widget-body">
-										<div class="widget-main no-padding">
-											<span class="text-info">
-												<strong>{{activityItem.activityDTO.employe.firstName}} {{activityItem.activityDTO.employe.lastName}}</strong>
-											</span>
-											<i class="fa fa-hand-o-right"></i>
-											<span class="" data-ng-class="{'text-success' : activityItem.activityDTO.activityOperation=='CREATE' || activityItem.activityDTO.activityOperation=='VALIDATE' , 'text-warning' : activityItem.activityDTO.activityOperation=='UPDATE', 'text-danger' : activityItem.activityDTO.activityOperation=='DELETE' || activityItem.activityDTO.activityOperation=='REJECT'}">
-												<strong>{{activityItem.activityDTO.activityOperation}}</strong>
-											</span> 
-											<span class="text-muted">Entity 
-													<a data-ng-if="activityItem.activityDTO.entityType==='Employe'" data-ui-sref="company.employees.view.quick.overview({ id: activityItem.activityDTO.entityId })">
-														{{activityItem.activityDTO.entityType}}
-													</a>
-													<a data-ng-if="activityItem.activityDTO.entityType==='Task'" data-ui-sref="task.detail({ id: activityItem.activityDTO.entityId })">
-														{{activityItem.activityDTO.entityType}}
-													</a>
-													<a data-ng-if="activityItem.activityDTO.entityType==='Project'" data-ui-sref="company.projects.view.quick.overview({ id: activityItem.activityDTO.entityId })">
-														{{activityItem.activityDTO.entityType}}
-													</a>
-													<a data-ng-if="activityItem.activityDTO.entityType==='Client'" data-ui-sref="company.clients.view.quick.overview({ id: activityItem.activityDTO.entityId })">
-														{{activityItem.activityDTO.entityType}}
-													</a>
-													<a data-ng-if="activityItem.activityDTO.entityType==='WorkLog'" data-ui-sref="company.clients.view.quick.overview({ id: activityItem.activityDTO.entityId })">
-														{{activityItem.activityDTO.entityType}}
-													</a>
-													<a data-ng-if="activityItem.activityDTO.entityType==='Absence'" data-ui-sref="absence.detail({ id: activityItem.activityDTO.entityId })">
-														{{activityItem.activityDTO.entityType}}
-													</a>
-													<a data-ng-if="activityItem.activityDTO.entityType==='NoteDeFrais'" data-ui-sref="frais.detail({ id: activityItem.activityDTO.entityId })">
-														{{activityItem.activityDTO.entityType}}
-													</a>
-													<span class="label label-info" data-ng-if="activityItem.activityDTO.entityType==='Company'"">
-														{{activityItem.activityDTO.entityType}}
-													</span>
-											</span>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<!-- /.timeline-items -->
 					</div>
 				</div>
 			</div>
 		</div>
+	</div>
+	<div class="col-sm-6 widget-container-col" data-widget-container="">
 	</div>
 </div>

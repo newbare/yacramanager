@@ -25,7 +25,7 @@ App.controller('HomeController',function ($scope,$rootScope,$translate,TasksREST
 				{
 					employeId:USERINFO.id,
 					page:0,
-					size:20,
+					size:10,
 					sort:{
 						date : 'desc' // initial sorting
 					}
