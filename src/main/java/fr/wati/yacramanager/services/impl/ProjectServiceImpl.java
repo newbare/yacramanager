@@ -1,5 +1,6 @@
 package fr.wati.yacramanager.services.impl;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,11 +19,13 @@ import org.springframework.transaction.annotation.Transactional;
 import fr.wati.yacramanager.beans.Activities.ActivityOperation;
 import fr.wati.yacramanager.beans.Client;
 import fr.wati.yacramanager.beans.Employe;
+import fr.wati.yacramanager.beans.EmployesProjects;
 import fr.wati.yacramanager.beans.Project;
 import fr.wati.yacramanager.beans.Project_;
 import fr.wati.yacramanager.beans.Task;
 import fr.wati.yacramanager.beans.TaskStatus;
 import fr.wati.yacramanager.dao.repository.ClientRepository;
+import fr.wati.yacramanager.dao.repository.EmployesProjectsRepository;
 import fr.wati.yacramanager.dao.repository.ProjectRepository;
 import fr.wati.yacramanager.dao.specifications.CommonSpecifications;
 import fr.wati.yacramanager.dao.specifications.ProjectSpecification;
@@ -30,6 +33,7 @@ import fr.wati.yacramanager.listeners.ActivityEvent;
 import fr.wati.yacramanager.services.ClientService;
 import fr.wati.yacramanager.services.CompanyService;
 import fr.wati.yacramanager.services.ProjectService;
+import fr.wati.yacramanager.services.ServiceException;
 import fr.wati.yacramanager.services.TaskService;
 import fr.wati.yacramanager.utils.Filter;
 import fr.wati.yacramanager.utils.Filter.FilterArray;
@@ -47,6 +51,8 @@ public class ProjectServiceImpl implements ProjectService{
 	
 	@Inject
 	private ProjectRepository projectRepository;
+	@Inject
+	private EmployesProjectsRepository employesProjectsRepository;
 	@Inject
 	private ClientRepository clientRepository;
 	@Inject
@@ -76,7 +82,7 @@ public class ProjectServiceImpl implements ProjectService{
 		 */
 		Task defaulTask=new Task();
 		defaulTask.setCreatedDate(new DateTime());
-		defaulTask.setName("[Default task]");
+		defaulTask.setName(project.getName()+" task");
 		defaulTask.setColor(project.getColor());
 		defaulTask.setTaskStatus(TaskStatus.OPEN);
 		taskService.createTask(saveProject.getId(), defaulTask);
@@ -227,7 +233,7 @@ public class ProjectServiceImpl implements ProjectService{
 		dto.setDescription(project.getDescription());
 		dto.setTasks(dtoMapper.mapTasks(project.getTasks()));
 		dto.setClient(clientService.toClientDTO(project.getClient()));
-		dto.setNumberOfEmployes(project.getAssignedEmployees().size());
+		dto.setNumberOfEmployes(project.getEmployes().size());
 		dto.setNumberOfTasks(project.getTasks().size());
 		return dto;
 	}
@@ -242,7 +248,7 @@ public class ProjectServiceImpl implements ProjectService{
 
 	@Override
 	public List<Project> findByAssignedEmployeesIn(Employe employe) {
-		return projectRepository.findByAssignedEmployeesIn(employe);
+		return projectRepository.findByEmployes_employee(employe);
 	}
 	@Override
 	public void setApplicationEventPublisher(
@@ -252,7 +258,7 @@ public class ProjectServiceImpl implements ProjectService{
 
 	@Override
 	public long countNumberOfEmployeeForProject(Project project) {
-		return project.getAssignedEmployees().size();
+		return project.getEmployes().size();
 	}
 
 	@Override
@@ -270,5 +276,21 @@ public class ProjectServiceImpl implements ProjectService{
 			projectDTOs.add(toProjectDTO(project));
 		}
 		return projectDTOs;
+	}
+
+	/* (non-Javadoc)
+	 * @see fr.wati.yacramanager.services.ProjectService#addEmployeToProject(fr.wati.yacramanager.beans.Project, fr.wati.yacramanager.beans.Employe, boolean, java.math.BigDecimal)
+	 */
+	@Override
+	@Transactional
+	public void addEmployeToProject(Project project, Employe employe,
+			boolean teamLead, BigDecimal dailyRate) throws ServiceException {
+		EmployesProjects employesProjects=new EmployesProjects(employe,project,teamLead,dailyRate);
+		employesProjectsRepository.save(employesProjects);
+		
+		employe.getProjects().add(employesProjects);
+		
+		project.getEmployes().add(employesProjects);
+		
 	}
 }

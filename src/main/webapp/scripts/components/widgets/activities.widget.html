@@ -1,0 +1,59 @@
+<div class="col-sm-6 widget-container-col" data-widget-container="">
+	<div class="widget-box light-border" data-widget-box="" data-refresh-action="refreshTask">
+		<div class="widget-header widget-header-small ">
+			<span class="widget-title">Last Activities</span>
+			<div class="widget-toolbar no-border">
+				<a data-action="reload" href="#" > <i class="ace-icon fa fa-refresh green"></i></a>
+				<a data-toggle="collapse" data-target="#taskWidgetBody" href=""> <i class="ace-icon fa fa-chevron-up"></i></a>
+			</div>
+		</div>
+		<div class="widget-body collapse in" id="taskWidgetBody">
+			<div class="widget-main">
+				<div class="profile-feed">
+					<div data-ng-repeat="day in timelineData.days">
+					  <div class="profile-activity clearfix" data-ng-repeat="activityItem in day.activityItems">
+					    	<span class="pull-left" data-ng-class="{'text-success' : activityItem.activityDTO.activityOperation=='CREATE' || activityItem.activityDTO.activityOperation=='VALIDATE' , 'text-warning' : activityItem.activityDTO.activityOperation=='UPDATE', 'text-danger' : activityItem.activityDTO.activityOperation=='DELETE' || activityItem.activityDTO.activityOperation=='REJECT'}">
+								<strong>{{activityItem.activityDTO.activityOperation}} </strong>
+							</span>
+					        <!-- <img class="pull-left" alt="user avatar" src="path/to/avatar" /> -->
+					        <!-- or icon ->
+					        <!-- <i class="pull-left thumbicon btn-success no-hover"></i> -->
+					        <span class="text-info">
+								<strong>{{activityItem.activityDTO.employe.firstName}} {{activityItem.activityDTO.employe.lastName}}</strong>
+							</span>
+							<span class="text-muted">Entity 
+									<a data-ng-if="activityItem.activityDTO.entityType==='Employe'" data-ui-sref="company.employees.view.quick.overview({ id: activityItem.activityDTO.entityId })">
+										{{activityItem.activityDTO.entityType}}
+									</a>
+									<a data-ng-if="activityItem.activityDTO.entityType==='Task'" data-ui-sref="tasks.detail({ id: activityItem.activityDTO.entityId })">
+										{{activityItem.activityDTO.entityType}}
+									</a>
+									<a data-ng-if="activityItem.activityDTO.entityType==='Project'" data-ui-sref="company.projects.view.quick.overview({ id: activityItem.activityDTO.entityId })">
+										{{activityItem.activityDTO.entityType}}
+									</a>
+									<a data-ng-if="activityItem.activityDTO.entityType==='Client'" data-ui-sref="company.clients.view.quick.overview({ id: activityItem.activityDTO.entityId })">
+										{{activityItem.activityDTO.entityType}}
+									</a>
+									<a data-ng-if="activityItem.activityDTO.entityType==='WorkLog'" data-ui-sref="company.clients.view.quick.overview({ id: activityItem.activityDTO.entityId })">
+										{{activityItem.activityDTO.entityType}}
+									</a>
+									<a data-ng-if="activityItem.activityDTO.entityType==='Absence'" data-ui-sref="absence.detail({ id: activityItem.activityDTO.entityId })">
+										{{activityItem.activityDTO.entityType}}
+									</a>
+									<a data-ng-if="activityItem.activityDTO.entityType==='NoteDeFrais'" data-ui-sref="frais.detail({ id: activityItem.activityDTO.entityId })">
+										{{activityItem.activityDTO.entityType}}
+									</a>
+									<span class="label label-info" data-ng-if="activityItem.activityDTO.entityType==='Company'"">
+										{{activityItem.activityDTO.entityType}}
+									</span>
+							</span>
+					        <div class="time"><i class="ace-icon fa fa-clock-o bigger-110"></i> {{day.date | timeFromNow}}</div>
+					    <div class="tools action-buttons">
+					    </div>
+					  </div>
+				  </div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

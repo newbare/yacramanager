@@ -175,7 +175,7 @@ public class ActivityReportController {
 					return employe.getId();
 				}
 			};
-			List<ActivityReport> activityReportsToApprove = activityReportService.findByEmployeInAndValidationStatusIn(Lists.transform(managedEmployees, idExtractor), Lists.newArrayList(ValidationStatus.WAIT_FOR_APPROVEMENT));
+			List<ActivityReport> activityReportsToApprove = activityReportService.findByEmployeInAndValidationStatusIn(Lists.transform(managedEmployees, idExtractor), Lists.newArrayList(ValidationStatus.PENDING));
 			for(ActivityReport currentActivityReport:activityReportsToApprove){
 				craDetailsDTOs.add(craService.generateCraDetail(Lists.newArrayList(employeService.findOne(currentActivityReport.getEmployeId())), currentActivityReport.getStartDate(), currentActivityReport.getEndDate()));
 			}

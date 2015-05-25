@@ -13,7 +13,7 @@ public interface TaskService extends CrudService<Task, Long>,SpecificationFactor
 
 	void deleteTask(Long projectId, Long taskId);
 	
-	void assignEmployeToTask(Long employeId,Long taskId);
+	void assignEmployeToTask(Long employeId,Long taskId) throws ServiceException;
 	
 	void unAssignEmployeToTask(Long employeId,Long taskId);
 	

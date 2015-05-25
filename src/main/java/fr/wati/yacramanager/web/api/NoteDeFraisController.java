@@ -209,7 +209,7 @@ public class NoteDeFraisController {
 	@Timed
 	public ResponseEntity<String> create(@RequestBody NoteDeFraisDTO dto) {
 		try {
-			dto.setValidationStatus(ValidationStatus.WAIT_FOR_APPROVEMENT);
+			dto.setValidationStatus(ValidationStatus.PENDING);
 			NoteDeFrais noteDeFrais = dto.toNoteDeFrais();
 			noteDeFrais.setDate(new DateTime());
 			noteDeFrais.setEmploye(SecurityUtils.getConnectedUser());

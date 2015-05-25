@@ -1,0 +1,80 @@
+<div class="tab-pane">
+  	<div class="row">
+	<div class="btn-toolbar" role="toolbar">
+	  <div class="btn-group">
+	  	<button type="button" class="btn btn-sm btn-success btn-white btn-round" data-template="/scripts/templates/edit-notes.tpl.html"  data-bs-modal="modal" >
+			<i class="ace-icon fa fa-plus"></i>Ajouter
+		</button>
+	  </div>
+	</div>
+	</div>
+  	<div class="row">
+		<div data-ng-criteria-bar data-criteria-bar-config="criteriaBarConfig" data-do-filter="doFilter(criteriaBarConfig.filters)"></div>		
+		<div class="alert alert-warning text-center" role="alert" ng-show="!hasDatas && !tableParams.settings().$loading">
+			<h4>No data found for selected criterias</h4>
+		</div>
+		<div class="row " data-ng-show="hasDatas"> 
+				<span style="vertical-align: middle;" data-ng-show="tableParams.settings().total>0"><b>{{startIndex}}</b> - <b>{{endIndex}}</b> of <b>{{tableParams.settings().total}}</b></span>
+				<div class="btn-group" style="padding-left:5px;" >
+			    	<a href="" data-ng-click="refreshDatas()"><i class="fa fa-refresh"></i></a> 
+				</div>
+				<div class="btn-group pull-right">
+				  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" data-ng-disabled="selectedNotes.length<=1">
+				    <i class="fa fa-cog"></i> Bulk <span  data-ng-show ="selectedNotes.length>1" class="badge">{{selectedNotes.length}}</span> <span class="caret"></span>
+				  </button>
+				  <ul class="dropdown-menu" role="menu">
+				    <li><a href="" data-ng-click="deleteSelectedNote()"><i class="fa fa-trash-o" style="color: red;"></i>Delete</a></li>
+				  </ul>
+				</div>
+		</div>
+		
+		<div class="table-responsive">
+				<table class="table table-striped table-bordered table-hover" data-ng-table="tableParams" data-ng-show="hasDatas">
+					<tr data-ng-repeat="note in $data">
+						<td style="width:20px;" data-header="'ng-table/headers/checkbox.html'">
+							<label class="checkbox-inline">
+							  <input type="checkbox"  data-ng-model="checkboxes.items[note.id]" class="ace">
+							  <span class="lbl"></span>
+							</label>
+						</td>
+						<td data-title="'Date'" data-sortable="'date'">{{ note.date | date : 'short'}}</td>
+						<td data-title="'Employee'" data-sortable="'employe'" >{{ note.employeName}}</td>
+						<td data-title="'Description'" data-sortable="'description'" class="hidden-xs">{{ note.description}}</td>
+						<td data-title="'Amount'" data-sortable="'amount'">{{ note.amount | currency:"EUR " }} </td>
+						<td data-title="'Validation'" data-sortable="'validationStatus'"><span class="label" data-ng-class="{'label-success' : isValidated(note) , 'label-warning' : isWaiting(note), 'label-danger' : isRejected(note)}">{{note.validationStatus}}</span></td>
+						<td style="width:20px;" align="center" data-header="'ng-table/headers/attachement.html'">
+							<a href="{{appContextPath}}app/api/attachements/{{id}}" data-ng-repeat="id in note.attachementsIds" data-ng-show="note.attachementsIds.length>0" >
+								<i class="fa fa-cloud-download"></i>
+							</a>
+						</td>
+						<td class="">
+							<div class="btn-group actions-btn" role="group">
+							  <button type="button" class="btn btn-link" data-ui-sref="frais.detail({id:note.id})"><span class="fa fa-eye"></span></button>
+							  <button type="button" class="btn btn-link" data-ng-click="editNote(note.id)"><span class="fa fa-pencil"></span></button>
+							  <button type="button" class="btn btn-link" data-ng-click="deleteNote(note.id)" data-ng-confirm="Do you want to delete this entry ?"><span class="fa fa-trash-o red"></span></button>
+							</div>
+							<!-- <div class="btn-group">
+							  <button type="button" class="btn btn-link dropdown-toggle tool-btn" style="color: grey;" data-toggle="dropdown">
+							    <i class="fa fa-cog"></i><span class="caret"></span>
+							  </button>
+							  <ul class="dropdown-menu table-action" role="menu">
+							    <li><a href="" data-ng-click="editNote(note.id)"><i class="fa fa-pencil-square-o"></i>Edit</a></li>
+							    <li class="divider"></li>
+							    <li><a href="" data-ng-click="deleteNote(note.id)" data-ng-confirm="Do you want to delete this entry ?"><i class="fa fa-trash-o" style="color: red;"></i>Delete</a></li>
+							  </ul>
+							</div> -->
+						</td>
+					</tr>
+			</table>
+			<script type="text/ng-template" id="ng-table/headers/checkbox.html">
+        			<label class="checkbox-inline">
+						<input type="checkbox" data-ng-model="checkboxes.checked" id="select_all" name="filter-checkbox" value="" class="ace"/>
+						<span class="lbl"></span>
+					</label>
+   				 </script>
+  				 <script type="text/ng-template" id="ng-table/headers/attachement.html">
+        			<i class="fa fa-paperclip"></i>
+   				 </script>
+		</div>
+	</div>
+  </div>

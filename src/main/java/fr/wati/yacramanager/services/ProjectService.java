@@ -1,5 +1,6 @@
 package fr.wati.yacramanager.services;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import fr.wati.yacramanager.beans.Client;
@@ -28,4 +29,6 @@ public interface ProjectService extends CrudService<Project, Long>,Specification
 	long countNumberOfEmployeeForProject(Project project);
 	
 	long countNumberOfTaskForProject(Project project);
+	
+	void addEmployeToProject(Project project,Employe employe,boolean teamLead,BigDecimal dailyRate) throws ServiceException;
 }

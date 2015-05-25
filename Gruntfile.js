@@ -215,7 +215,7 @@ module.exports = function(grunt) {
 	            ngtemplates:    {
 	                dist: {
 	                    cwd: 'src/main/webapp',
-	                    src: ['views/app/components/**/*.html','templates/**/*.html'],
+	                    src: ['scripts/app/**/*.html','scripts/components/**/*.html','scripts/templates/**/*.html'],
 	                    dest: '.tmp/templates/templates.js',
 	                    options: {
 	                        module: 'yaCRAApp',

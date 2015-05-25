@@ -1,16 +1,16 @@
 App.config(function ($stateProvider) {
 	$stateProvider.state('activity-report', {
 		url : "/activity-report",
-		templateUrl : _contextPath+'views/app/activity-report/activity-report.html',
+		templateUrl : _contextPath+'scripts/app/activityreport/activity-report.html',
 		controller : 'ActivityReportController',
 		abstract:true
 	}).state('activity-report.list', {
-		templateUrl : _contextPath+'views/app/activity-report/activity-report-list.html',
+		templateUrl : _contextPath+'scripts/app/activityreport/activity-report-list.html',
 		controller : 'ActivityReportListController',
 		abstract : true,
 	}).state('activity-report.list.mine', {
 		url : "/mine",
-		templateUrl : _contextPath+'views/app/activity-report/activity-report-list-mine.html',
+		templateUrl : _contextPath+'scripts/app/activityreport/activity-report-list-mine.html',
 		controller : 'ActivityReportListMineController',
 		data: {
 	        pageTitle: 'My Activity report',
@@ -18,7 +18,7 @@ App.config(function ($stateProvider) {
 	      }
 	}).state('activity-report.list.tobeapproved', {
 		url : "/tobeapproved",
-		templateUrl : _contextPath+'views/app/activity-report/activity-report-list-tobeapproved.html',
+		templateUrl : _contextPath+'scripts/app/activityreport/activity-report-list-tobeapproved.html',
 		controller : 'ActivityReportListToBeApprovedController',
 		data: {
 	        pageTitle: 'Activity report to approve',

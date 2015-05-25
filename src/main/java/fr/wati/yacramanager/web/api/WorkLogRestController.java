@@ -182,7 +182,7 @@ public class WorkLogRestController {
 		if(dto.getTaskId()==null){
 			throw new RestServiceException("No given task ID error");
 		}
-		dto.setValidationStatus(ValidationStatus.WAIT_FOR_APPROVEMENT);
+		dto.setValidationStatus(ValidationStatus.PENDING);
 		WorkLog workLog = dto.toWorkLog();
 		workLog.setCreatedDate(new DateTime());
 		if(dto.getEmployeId()==null){

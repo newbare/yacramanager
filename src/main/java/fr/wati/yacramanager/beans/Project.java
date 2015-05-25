@@ -6,14 +6,10 @@ package fr.wati.yacramanager.beans;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
@@ -35,12 +31,8 @@ public class Project extends AuditableEntity  {
 	private String name;
 	private String description;
 	private String color;
-	@ManyToMany(cascade = CascadeType.ALL)
-	@JoinTable(
-			name = "projects_employees",
-			joinColumns = { @JoinColumn(name = "projectId", referencedColumnName = "id") },
-			inverseJoinColumns = { @JoinColumn(name = "employeId", referencedColumnName = "id") })
-	private List<Employe> assignedEmployees = new ArrayList<>();
+	@OneToMany
+	private List<EmployesProjects> employes=new ArrayList<>();
 	@OneToMany(mappedBy = "project")
 	private List<Task> tasks = new ArrayList<>();
 	@ManyToOne
@@ -123,18 +115,17 @@ public class Project extends AuditableEntity  {
 	}
 
 	/**
-	 * @return the assignedEmployees
+	 * @return the employes
 	 */
-	public List<Employe> getAssignedEmployees() {
-		return assignedEmployees;
+	public List<EmployesProjects> getEmployes() {
+		return employes;
 	}
 
 	/**
-	 * @param assignedEmployees
-	 *            the assignedEmployees to set
+	 * @param employes the employes to set
 	 */
-	public void setAssignedEmployees(List<Employe> assignedEmployees) {
-		this.assignedEmployees = assignedEmployees;
+	public void setEmployes(List<EmployesProjects> employes) {
+		this.employes = employes;
 	}
 
 	/**

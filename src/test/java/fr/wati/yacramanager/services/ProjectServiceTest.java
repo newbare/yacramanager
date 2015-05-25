@@ -23,6 +23,7 @@ import fr.wati.yacramanager.beans.Client;
 import fr.wati.yacramanager.beans.Company;
 import fr.wati.yacramanager.beans.Company_;
 import fr.wati.yacramanager.beans.Employe;
+import fr.wati.yacramanager.beans.EmployesProjects;
 import fr.wati.yacramanager.beans.Project;
 import fr.wati.yacramanager.config.TestServicesConfig;
 import fr.wati.yacramanager.dao.repository.ProjectRepository;
@@ -117,8 +118,8 @@ public class ProjectServiceTest extends
 		managedEmploye1.setLastName("managedEmploye1");
 		managedEmploye1.setFirstName("managedEmploye1");
 		employeService.save(managedEmploye1);
-		saveCompany.getClients().get(0).getProjects().get(0).getAssignedEmployees().add(managedEmploye1);
-		List<Project> findByAssignedEmployeesIn = projectRepository.findByAssignedEmployeesIn(managedEmploye1);
+		saveCompany.getClients().get(0).getProjects().get(0).getEmployes().add(new EmployesProjects(managedEmploye1, saveCompany.getClients().get(0).getProjects().get(0), false));
+		List<Project> findByAssignedEmployeesIn = projectRepository.findByEmployes_employee(managedEmploye1);
 		Assert.assertTrue(1==findByAssignedEmployeesIn.size());
 	}
 }

@@ -3,7 +3,7 @@ App.controller('TimeSheetController',function ($scope,$rootScope,$http,$sce,Work
 	$scope.timeType="duration";
 	var worklogDateFormat="YYYY-MM-DDTHH:mm:ss.SSS";
 	$scope.timesheetCalendarTitle=undefined;
-	var editWorklogModal = $modal({scope: $scope, template: _contextPath+'views/app/templates/edit-worklog.tpl.html', show: false});
+	var editWorklogModal = $modal({scope: $scope, template: _contextPath+'scripts/templates/edit-worklog.tpl.html', show: false});
 	$scope.showEditWorkLogModal = function() {
 		editWorklogModal.$promise.then(editWorklogModal.show);
 	};
@@ -159,7 +159,7 @@ App.controller('TimeSheetController',function ($scope,$rootScope,$http,$sce,Work
     };
     
     $scope.eventRender=function(event, element,view) {
-    	popover=$popover(element, {title: event.title,placement:'top',trigger:'click',html:true,template: _contextPath+'views/app/templates/worklog.popover.tpl.html',container:'body' });
+    	popover=$popover(element, {title: event.title,placement:'top',trigger:'click',html:true,template: _contextPath+'scripts/templates/worklog.popover.tpl.html',container:'body' });
     	popover.$scope.event = event;
     	popover.$scope.isValidated=$scope.isValidated;
     	popover.$scope.isWaiting=$scope.isWaiting;

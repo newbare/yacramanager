@@ -11,7 +11,6 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -41,11 +40,8 @@ public class Employe extends Personne {
 	@OneToMany(mappedBy="manager")
 	private List<Employe> managedEmployes=new ArrayList<>();
 	
-	@ManyToMany(mappedBy="assignedEmployees")
-	private List<Project> projects=new ArrayList<>();
-	
-	@OneToOne
-	private Project activeProject;
+	@OneToMany
+	private List<EmployesProjects> projects=new ArrayList<>();
 	
 	@ManyToMany(mappedBy="assignedEmployees")
 	private List<Task> tasks=new ArrayList<>();
@@ -92,12 +88,7 @@ public class Employe extends Personne {
 	public void setManagedEmployes(List<Employe> managedEmployes) {
 		this.managedEmployes = managedEmployes;
 	}
-	public List<Project> getProjects() {
-		return projects;
-	}
-	public void setProjects(List<Project> projects) {
-		this.projects = projects;
-	}
+	
 	/**
 	 * @return the tasks
 	 */
@@ -110,17 +101,25 @@ public class Employe extends Personne {
 	public void setTasks(List<Task> tasks) {
 		this.tasks = tasks;
 	}
-	public Project getActiveProject() {
-		return activeProject;
-	}
-	public void setActiveProject(Project activeProject) {
-		this.activeProject = activeProject;
-	}
+	
 	public List<WorkLog> getWorkLogs() {
 		return workLogs;
 	}
 	public void setWorkLogs(List<WorkLog> workLogs) {
 		this.workLogs = workLogs;
 	}
+	/**
+	 * @return the projects
+	 */
+	public List<EmployesProjects> getProjects() {
+		return projects;
+	}
+	/**
+	 * @param projects the projects to set
+	 */
+	public void setProjects(List<EmployesProjects> projects) {
+		this.projects = projects;
+	}
+	
 	
 }

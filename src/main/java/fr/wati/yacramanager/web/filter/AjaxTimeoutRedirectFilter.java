@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationTrustResolver;
 import org.springframework.security.authentication.AuthenticationTrustResolverImpl;
@@ -75,7 +76,7 @@ public class AjaxTimeoutRedirectFilter extends GenericFilterBean
                         {
                             logger.debug("Ajax call detected, send "+this.customSessionExpiredErrorCode+" error code");
                             HttpServletResponse resp = (HttpServletResponse) response;
-                            resp.sendError(this.customSessionExpiredErrorCode);
+                            resp.sendError(HttpStatus.FORBIDDEN.value());
                         }
                         else
                         {

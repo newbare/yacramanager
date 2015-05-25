@@ -1,5 +1,6 @@
 package fr.wati.yacramanager.services.impl;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -34,6 +35,7 @@ import fr.wati.yacramanager.beans.CompanyAccountInfo;
 import fr.wati.yacramanager.beans.CompanyTempInvitation;
 import fr.wati.yacramanager.beans.Contact;
 import fr.wati.yacramanager.beans.Employe;
+import fr.wati.yacramanager.beans.EmployesProjects;
 import fr.wati.yacramanager.beans.Gender;
 import fr.wati.yacramanager.beans.Project;
 import fr.wati.yacramanager.beans.Role;
@@ -155,10 +157,10 @@ public class EmployeServiceImpl implements EmployeService {
 	@Override
 	@Transactional
 	public void delete(Employe entity) {
-		for (Project project: entity.getProjects()) {
-			if(project.getAssignedEmployees().contains(entity)){
-				project.getAssignedEmployees().remove(entity);
-				projectService.save(project);
+		for (EmployesProjects employesProjects: entity.getProjects()) {
+			if(employesProjects.getEmployee().equals(entity)){
+//				employesProjects.getAssignedEmployees().remove(entity);
+//				projectService.save(project);
 			}
 		}
 		entity.getProjects().clear();
@@ -223,12 +225,13 @@ public class EmployeServiceImpl implements EmployeService {
 		Company company=new Company();
 		company.setName(registrationDTO.getCompanyName());
 		company.setRegisteredDate(new DateTime());
+		Employe saveEmploye = employeRepository.save(employe);
 		if(registrationDTO.getCompanyInvitation()!=null){
 			employe.setEnabled(true);
 			employe.setActivationKey(null);
 			//check invitation validity
 			CompanyTempInvitation givenInvitation = registrationDTO.getCompanyInvitation();
-			processInvitation(employe, givenInvitation);
+			processInvitation(saveEmploye, givenInvitation);
 		}else {
 			roles.add(roleRepository.findByRole(Role.SSII_ADMIN));
 			roles.add(roleRepository.findByRole(Role.INDEP));
@@ -241,12 +244,11 @@ public class EmployeServiceImpl implements EmployeService {
 			companyAccountInfo.setCompany(createCompany);
 			CompanyAccountInfo savedCompanyAccountInfo = companyAccountInfoRepository.save(companyAccountInfo);
 			createCompany.setCompanyAccountInfo(savedCompanyAccountInfo);
-			createCompany.getClients().get(0).getProjects().get(0).getAssignedEmployees().add(employe);
-			employe.getProjects().add(createCompany.getClients().get(0).getProjects().get(0));
-			createCompany.getClients().get(0).getProjects().get(0).getTasks().get(0).getAssignedEmployees().add(employe);
+			projectService.addEmployeToProject(createCompany.getClients().get(0).getProjects().get(0), saveEmploye, false, BigDecimal.ZERO);
+			createCompany.getClients().get(0).getProjects().get(0).getTasks().get(0).getAssignedEmployees().add(saveEmploye);
 			employe.getTasks().add(createCompany.getClients().get(0).getProjects().get(0).getTasks().get(0));
 		}
-		Employe saveEmploye = employeRepository.save(employe);
+		
 		return saveEmploye;
 	}
 
@@ -255,11 +257,9 @@ public class EmployeServiceImpl implements EmployeService {
 		if(invitation!=null && invitation.isStillValid()){
 			Company company2 = companyService.findOne(Long.valueOf(invitation.getCompanyId()));
 			employe.setCompany(company2);
-			employe.getProjects().add(company2.getClients().get(0).getProjects().get(0));
+			projectService.addEmployeToProject(company2.getClients().get(0).getProjects().get(0), employe, false, BigDecimal.ZERO);
 			employe.getTasks().add(company2.getClients().get(0).getProjects().get(0).getTasks().get(0));
-			company2.getClients().get(0).getProjects().get(0).getAssignedEmployees().add(employe);
 			company2.getClients().get(0).getProjects().get(0).getTasks().get(0).getAssignedEmployees().add(employe);
-			
 		}else {
 			throw new ServiceException("The given invitation is not valid");
 		}

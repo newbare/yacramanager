@@ -316,7 +316,7 @@ public class NoteDeFraisServiceImpl implements NoteDeFraisService {
 		List<NoteDeFrais> noteDeFraisToApproved=new ArrayList<>();
 		for (Employe employe : managedEmployes) {
 			Specifications<NoteDeFrais> specifications = Specifications.where(CommonSpecifications.equals(employe, NoteDeFrais_.employe))
-			.and(CommonSpecifications.equalsAny(Lists.newArrayList(ValidationStatus.WAIT_FOR_APPROVEMENT), NoteDeFrais_.validationStatus));
+			.and(CommonSpecifications.equalsAny(Lists.newArrayList(ValidationStatus.PENDING), NoteDeFrais_.validationStatus));
 			noteDeFraisToApproved.addAll(noteDeFraisRepository.findAll(specifications));
 		}
 		return noteDeFraisToApproved;

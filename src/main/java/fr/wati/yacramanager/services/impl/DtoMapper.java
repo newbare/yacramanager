@@ -153,7 +153,7 @@ public class DtoMapper {
 //			ClientDTO clientDTO=map(project.getClient());
 //			dto.setClient(clientDTO);
 //		}
-		dto.setNumberOfEmployes(projectService.findOne(project.getId()).getAssignedEmployees().size());
+		dto.setNumberOfEmployes(projectService.findOne(project.getId()).getEmployes().size());
 		dto.setNumberOfTasks(projectService.findOne(project.getId()).getTasks().size());
 		return dto;
 	}

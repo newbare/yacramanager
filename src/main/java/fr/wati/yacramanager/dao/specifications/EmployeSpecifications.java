@@ -11,6 +11,7 @@ import org.joda.time.DateTime;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.domain.Specifications;
 
+import fr.wati.yacramanager.beans.EmployesProjects_;
 import fr.wati.yacramanager.beans.Gender;
 import fr.wati.yacramanager.beans.Company;
 import fr.wati.yacramanager.beans.Employe;
@@ -62,7 +63,7 @@ public class EmployeSpecifications {
 		return new Specification<Employe>() {
 			public Predicate toPredicate(Root<Employe> root,
 					CriteriaQuery<?> query, CriteriaBuilder builder) {
-				return builder.isMember(project, root.get(Employe_.projects));
+				return builder.equal(root.join(Employe_.projects).join(EmployesProjects_.project),project);
 			}
 		};
 	}

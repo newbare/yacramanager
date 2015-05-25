@@ -20,6 +20,6 @@ public interface ProjectRepository extends JpaRepository<Project, Long>,JpaSpeci
 	@Query("select p from Project p,Company comp,Client client  where comp.id = ?1 and client.company = comp and p.client =client")
 	Page<Project> find(Long companyId, Specification<Project> specification,Pageable pageable);
 	
-	List<Project> findByAssignedEmployeesIn(Employe employe);
+	List<Project> findByEmployes_employee(Employe employe);
 	
 }

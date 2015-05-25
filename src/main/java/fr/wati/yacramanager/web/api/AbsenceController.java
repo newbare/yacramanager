@@ -162,7 +162,7 @@ public class AbsenceController  {
 		Absence absence = dto.toAbsence();
 		absence.setDate(new DateTime());
 		absence.setEmploye(SecurityUtils.getConnectedUser());
-		absence.setValidationStatus(ValidationStatus.WAIT_FOR_APPROVEMENT);
+		absence.setValidationStatus(ValidationStatus.PENDING);
 		try {
 			absenceService.postAbsence(
 					SecurityUtils.getConnectedUser().getId(), absence);

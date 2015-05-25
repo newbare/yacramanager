@@ -212,7 +212,7 @@ public class AbsenceServiceImpl implements AbsenceService {
 					if(filterBoolean.getValue()){
 						return CommonSpecifications.equalsAny(Lists.newArrayList(ValidationStatus.APPROVED), Absence_.validationStatus);
 					}else {
-						return CommonSpecifications.equalsAny(Lists.newArrayList(ValidationStatus.WAIT_FOR_APPROVEMENT,ValidationStatus.SAVED), Absence_.validationStatus);
+						return CommonSpecifications.equalsAny(Lists.newArrayList(ValidationStatus.PENDING,ValidationStatus.SAVED), Absence_.validationStatus);
 					}
 				}
 				break;
@@ -281,7 +281,7 @@ public class AbsenceServiceImpl implements AbsenceService {
 		List<Absence> absencesToApproved=new ArrayList<>();
 		for (Employe employe : managedEmployes) {
 			Specifications<Absence> specifications = Specifications.where(CommonSpecifications.equals(employe, Absence_.employe))
-			.and(CommonSpecifications.equalsAny(Lists.newArrayList(ValidationStatus.WAIT_FOR_APPROVEMENT), Absence_.validationStatus));
+			.and(CommonSpecifications.equalsAny(Lists.newArrayList(ValidationStatus.PENDING), Absence_.validationStatus));
 			absencesToApproved.addAll(absenceRepository.findAll(specifications));
 		}
 		return absencesToApproved;

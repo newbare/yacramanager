@@ -2,7 +2,7 @@ App.config(function ($stateProvider) {
         
 	$stateProvider.state('company.employees', {
 		url : "/employees",
-		templateUrl : _contextPath+'views/app/templates/partials/panel-view.html',
+		templateUrl : _contextPath+'scripts/templates/partials/panel-view.html',
 		controller : 'CompanyEmployeesController',
 		data: {
 			pageTitle: 'Employe view',
@@ -10,7 +10,7 @@ App.config(function ($stateProvider) {
 		  }
 	}).state('company.employees.details', {
 		url : "/details/:id",
-		templateUrl : _contextPath+'views/app/company/employees/company-employees-overview.html',
+		templateUrl : _contextPath+'scripts/app/company/employees/company-employees-overview.html',
 		controller : 'CompanyEmployeesOverviewController',
 		resolve : {
 			employe :function(EmployeesREST,$stateParams) {
@@ -24,20 +24,20 @@ App.config(function ($stateProvider) {
 	})
 	.state('company.employees.view', {
 		url : "/view",
-		templateUrl : _contextPath+'views/app/company/employees/company-employees-view.html',
+		templateUrl : _contextPath+'scripts/app/company/employees/company-employees-view.html',
 		abstract : true,
 		controller : 'CompanyEmployeesViewController'
 	})
 	.state('company.employees.view.list', {
 		url : "/list",
-		templateUrl : _contextPath+'views/app/company/employees/company-employees-list.html',
+		templateUrl : _contextPath+'scripts/app/company/employees/company-employees-list.html',
 		controller : 'CompanyEmployeesListController',
 		data : {
 			ncyBreadcrumbLabel : 'List View'
 		}
 	}).state('company.employees.view.quick', {
 		url : "/quickview",
-		templateUrl : _contextPath+'views/app/company/employees/company-employees-quickview.html',
+		templateUrl : _contextPath+'scripts/app/company/employees/company-employees-quickview.html',
 		controller : 'CompanyEmployeesQuickViewController',
 		data : {
 			ncyBreadcrumbSkip: true
@@ -45,7 +45,7 @@ App.config(function ($stateProvider) {
 	})
 	.state('company.employees.view.quick.overview', {
 		url : "/:id",
-		templateUrl : _contextPath+'views/app/company/employees/company-employees-overview.html',
+		templateUrl : _contextPath+'scripts/app/company/employees/company-employees-overview.html',
 		controller : 'CompanyEmployeesOverviewController',
 		resolve : {
 			employe :function(EmployeesREST,$stateParams) {
@@ -58,7 +58,7 @@ App.config(function ($stateProvider) {
 	})
 	.state('company.employees.view.quick.overview.basic', {
 		url : "/basic",
-		templateUrl : _contextPath+'views/app/company/employees/company-employees-basics-infos.html',
+		templateUrl : _contextPath+'scripts/app/company/employees/company-employees-basics-infos.html',
 		controller : 'CompanyEmployeesBasicInfosController',
 		data : {
 			ncyBreadcrumbLabel : 'Basic infos'
@@ -66,7 +66,7 @@ App.config(function ($stateProvider) {
 	})
 	.state('company.employees.view.quick.overview.administration', {
 		url : "/administration",
-		templateUrl : _contextPath+'views/app/company/employees/company-employees-administration.html',
+		templateUrl : _contextPath+'scripts/app/company/employees/company-employees-administration.html',
 		controller : 'CompanyEmployeesAdministrationController',
 		data : {
 			ncyBreadcrumbLabel : 'Administration'
@@ -74,7 +74,7 @@ App.config(function ($stateProvider) {
 	})
 	.state('company.employees.view.quick.overview.salary', {
 		url : "/salary",
-		templateUrl : _contextPath+'views/app/company/employees/company-employees-salary.html',
+		templateUrl : _contextPath+'scripts/app/company/employees/company-employees-salary.html',
 		controller : 'CompanyEmployeesSalaryController',
 		data : {
 			ncyBreadcrumbLabel : 'Salary'
@@ -82,7 +82,7 @@ App.config(function ($stateProvider) {
 	})
 	.state('company.employees.view.quick.overview.activities', {
 		url : "/activities",
-		templateUrl : _contextPath+'views/app/company/employees/company-employees-activities.html',
+		templateUrl : _contextPath+'scripts/app/company/employees/company-employees-activities.html',
 		controller : 'CompanyEmployeesActivitiesController',
 		data : {
 			ncyBreadcrumbLabel : 'Activities'

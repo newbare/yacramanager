@@ -257,7 +257,7 @@ App.config(function($datepickerProvider) {
 	angular.extend($datepickerProvider.defaults, {
 		dateFormat : 'dd/MM/yyyy',
 		startWeek : 1,
-		template : _contextPath+'templates/datepicker/datepicker.tpl.html',
+		template : _contextPath+'scripts/templates/datepicker/datepicker.tpl.html',
 		autoclose : true,
 		modelDateFormat : 'dd/MM/yyyy',
 		todayHighlight : true
@@ -288,7 +288,7 @@ App.config(function(ngQuickDateDefaultsProvider) {
 
 App.config(function($timepickerProvider) {
 	angular.extend($timepickerProvider.defaults, {
-		template : _contextPath+'templates/timepicker/timepicker.tpl.html'
+		template : _contextPath+'scripts/templates/timepicker/timepicker.tpl.html'
 	});
 });
 
@@ -296,7 +296,7 @@ App.config(function($tooltipProvider) {
   angular.extend($tooltipProvider.defaults, {
     animation: 'am-flip-x',
     trigger: 'hover',
-    template: _contextPath+'templates/tooltip/tooltip.tpl.html'
+    template: _contextPath+'scripts/templates/tooltip/tooltip.tpl.html'
   });
 });
 
@@ -330,7 +330,7 @@ App.controller('AppCtrl', [ '$scope', '$location', 'UsersREST','$rootScope','$tr
 				return 'APPROVED'==data.validationStatus;
 			};
 			$scope.isWaiting=function(data){
-				return 'WAIT_FOR_APPROVEMENT'==data.validationStatus;
+				return 'PENDING'==data.validationStatus;
 			};
 			$scope.isRejected=function(data){
 				return 'REJECTED'==data.validationStatus;

@@ -1,14 +1,14 @@
 App.config(function ($stateProvider) {
 	$stateProvider.state('frais', {
 		url : "/frais",
-		templateUrl : _contextPath+'views/app/frais/frais.html',
+		templateUrl : _contextPath+'scripts/app/frais/frais.html',
 		abstract : true,
 		data: {
 	        pageTitle: 'Frais',
 	        ncyBreadcrumbLabel: 'Frais'
 	      }
 	}).state('frais.list', {
-		templateUrl : _contextPath+'views/app/frais/frais-list.html',
+		templateUrl : _contextPath+'scripts/app/frais/frais-list.html',
 		controller : 'FraisListController',
 		abstract : true,
 		data: {
@@ -17,7 +17,7 @@ App.config(function ($stateProvider) {
 	      }
 	}).state('frais.list.mine', {
 		url : "/mine",
-		templateUrl : _contextPath+'views/app/frais/frais-list-mine.html',
+		templateUrl : _contextPath+'scripts/app/frais/frais-list-mine.html',
 		controller : 'FraisListMineController',
 		data: {
 	        pageTitle: 'My fees',
@@ -25,7 +25,7 @@ App.config(function ($stateProvider) {
 	      }
 	}).state('frais.list.tobeapproved', {
 		url : "/tobeapproved",
-		templateUrl : _contextPath+'views/app/frais/frais-list-tobeapproved.html',
+		templateUrl : _contextPath+'scripts/app/frais/frais-list-tobeapproved.html',
 		controller : 'FraisListToBeApprovedController',
 		data: {
 	        pageTitle: 'Fees to be approved',
@@ -34,7 +34,7 @@ App.config(function ($stateProvider) {
 	})
 	.state('frais.detail', {
 		url : "/detail/:id",
-		templateUrl : _contextPath+'views/app/frais/frais-detail.html',
+		templateUrl : _contextPath+'scripts/app/frais/frais-detail.html',
 		controller : 'FraisDetailController',
 		resolve : {
 			frais :function(NoteREST,$stateParams) {

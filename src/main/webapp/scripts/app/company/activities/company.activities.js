@@ -1,7 +1,7 @@
 App.config(function ($stateProvider) {
 	$stateProvider.state('company.activities', {
 		url : "/activities",
-		templateUrl : _contextPath+'views/app/company/company-activities.html',
+		templateUrl : _contextPath+'scripts/app/company/activities/company-activities.html',
 		controller : 'CompanyActivitiesController',
 		resolve : {
 			company :function(CompanyREST,USERINFO) {

@@ -11,8 +11,8 @@ App.service('alertService', function($alert) {
 			//placement: 'top',
 			keyboard : true,
 			show : false,
-			duration: 60,
-			template:  _contextPath+'templates/alert/alert.tpl.html',
+			duration: 30,
+			template:  _contextPath+'scripts/templates/alert/alert.tpl.html',
 			container: '#alerts-container'
 			//container: 'body'
 			//container: '#main-view'

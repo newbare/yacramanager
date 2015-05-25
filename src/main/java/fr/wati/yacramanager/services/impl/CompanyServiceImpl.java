@@ -123,7 +123,7 @@ public class CompanyServiceImpl implements CompanyService {
 		 * client we create a default one
 		 */
 		Client defaultClient = new Client();
-		defaultClient.setName("[Default client]");
+		defaultClient.setName(company.getName()+ " client");
 		clientService.createClient(saveCompany.getId(), defaultClient);
 		return saveCompany;
 	}

@@ -1,16 +1,16 @@
 App.config(function ($stateProvider) {
 	$stateProvider.state('absence', {
 		url : "/absence",
-		templateUrl : _contextPath+'views/app/absence/absence.html',
+		templateUrl : _contextPath+'scripts/app/absences/absence.html',
 		abstract: true
 	}).state('absence.list', {
 		url : "/list",
-		templateUrl : _contextPath+'views/app/absence/absence-list.html',
+		templateUrl : _contextPath+'scripts/app/absences/absence-list.html',
 		abstract: true,
 		controller : 'AbsencesListController'
 	}).state('absence.list.mine', {
 		url : "/mine",
-		templateUrl : _contextPath+'views/app/absence/absence-list-mine.html',
+		templateUrl : _contextPath+'scripts/app/absences/absence-list-mine.html',
 		controller : 'AbsencesListMineController',
 		data: {
 	        pageTitle: 'My time off',
@@ -19,7 +19,7 @@ App.config(function ($stateProvider) {
 	})
 	.state('absence.list.tobeapproved', {
 		url : "/tobeapproved",
-		templateUrl : _contextPath+'views/app/absence/absence-list-tobeapproved.html',
+		templateUrl : _contextPath+'scripts/app/absences/absence-list-tobeapproved.html',
 		controller : 'AbsencesListToBeApprovedController',
 		data: {
 	        pageTitle: 'Time off to be approved',
@@ -28,7 +28,7 @@ App.config(function ($stateProvider) {
 	})
 	.state('absence.detail', {
 		url : "/detail/:id",
-		templateUrl : _contextPath+'views/app/absence/absence-detail.html',
+		templateUrl : _contextPath+'scripts/app/absences/absence-detail.html',
 		controller : 'AbsencesDetailController',
 		resolve : {
 			absence :function(AbsenceREST,$stateParams) {

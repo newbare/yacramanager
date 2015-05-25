@@ -4,24 +4,24 @@ import java.util.List;
 
 public enum ValidationStatus {
 
-	SAVED,WAIT_FOR_APPROVEMENT, APPROVED, REJECTED;
+	SAVED,PENDING, APPROVED, REJECTED;
 
 	public static ValidationStatus isApprovedAndOperator(ValidationStatus status1,
 			ValidationStatus status2) {
-		if ((WAIT_FOR_APPROVEMENT.equals(status1) && APPROVED.equals(status2))
-				|| (WAIT_FOR_APPROVEMENT.equals(status2) && APPROVED
+		if ((PENDING.equals(status1) && APPROVED.equals(status2))
+				|| (PENDING.equals(status2) && APPROVED
 						.equals(status1))) {
-			return WAIT_FOR_APPROVEMENT;
+			return PENDING;
 		}
-		if ((WAIT_FOR_APPROVEMENT.equals(status1) && REJECTED.equals(status2))
-				|| (WAIT_FOR_APPROVEMENT.equals(status2) && REJECTED
+		if ((PENDING.equals(status1) && REJECTED.equals(status2))
+				|| (PENDING.equals(status2) && REJECTED
 						.equals(status1))) {
-			return WAIT_FOR_APPROVEMENT;
+			return PENDING;
 		}
-		if ((WAIT_FOR_APPROVEMENT.equals(status1) && WAIT_FOR_APPROVEMENT.equals(status2))
-				|| (WAIT_FOR_APPROVEMENT.equals(status2) && WAIT_FOR_APPROVEMENT
+		if ((PENDING.equals(status1) && PENDING.equals(status2))
+				|| (PENDING.equals(status2) && PENDING
 						.equals(status1))) {
-			return WAIT_FOR_APPROVEMENT;
+			return PENDING;
 		}
 		if ((APPROVED.equals(status1) && APPROVED.equals(status2))
 				|| (APPROVED.equals(status2) && APPROVED

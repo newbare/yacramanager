@@ -194,12 +194,13 @@ App.directive('authApplicationSupport', function($timeout,$modal) {
         link: function(scope, elem, attrs) {
           var login = elem.find('#app-login-content');
           var main = elem.find('#app-content');
+          var mainFooter = elem.find('#main-footer');
 		  var loginModal = undefined;
 		  var modalInitialized=false;
           var initModal=function(){
         	  loginModal = $modal({
   				scope : scope,
-  				template : _contextPath	+ 'views/app/templates/partials/login-modal-.tpl.html',
+  				template : _contextPath	+ 'scripts/templates/partials/login-modal.tpl.html',
   				show : false,
   				backdrop : 'static',
   				placement : 'center'
@@ -215,6 +216,7 @@ App.directive('authApplicationSupport', function($timeout,$modal) {
         		  loginModal.$promise.then(loginModal.show);
         		  if(main.is(':visible')){
         			  main.hide();
+        			  mainFooter.hide();
         		  }
         	  //}
           });
@@ -226,6 +228,7 @@ App.directive('authApplicationSupport', function($timeout,$modal) {
         		  loginModal.$promise.then(loginModal.hide);
         		  if(!main.is(':visible')){
         			  main.show();
+        			  mainFooter.show();
         		  }
         	  //}
           });
@@ -258,7 +261,7 @@ App.directive('absencePortfolio',['AbsenceREST','USERINFO', function(AbsenceREST
 //					'	</div>'+
 //					'</div>'+
 //					'</fieldset>',
-        templateUrl: _contextPath	+ 'views/app/templates/partials/absence-portfolio.tpl.html',
+        templateUrl: _contextPath	+ 'scripts/templates/partials/absence-portfolio.tpl.html',
         link: function(scope, elem, attrs) {
         	scope.absencePortfolio={};
         	var userID=attrs.userId || USERINFO.id;
@@ -346,7 +349,7 @@ App.directive('ngConfirm',function($modal) {
 							// scope.$on('application-loaded', function() {
 							var confirmModal = $modal({
 								scope : scope,
-								template : _contextPath	+ 'views/app/templates/partials/confirm-dialog.tpl.html',
+								template : _contextPath	+ 'scripts/templates/partials/confirm-dialog.tpl.html',
 								placement : 'center',
 								backdrop : 'static',
 								show : false
@@ -565,7 +568,7 @@ App.directive('contactsManager',['$sce',
 			'<div ng-html-compile="filterContentHTML">'+
 			'</div>',
         link: function($scope, elem, attrs) {
-        	var textFilterTemplate = _contextPath + 'templates/contact-manager.tpl.html';
+        	var textFilterTemplate = _contextPath + 'scripts/templates/contact-manager.tpl.html';
         	$scope.filterContentHTML=undefined;
         	
         	$scope.contactsManagerConfig.dataObject.$promise.then(function(value) {
@@ -652,7 +655,7 @@ App.directive('activitiesTimeline', function() {
     	replace:true,
         restrict: 'E',
         scope : false,
-        templateUrl: _contextPath	+ 'views/app/templates/timeline/timeline.tpl.html',
+        templateUrl: _contextPath	+ 'scripts/templates/timeline/timeline.tpl.html',
         link: function (scope, element,attrs) {
         	 scope.$watch(attrs['source'], function(newValue, oldValue) {
         		    if (scope[attrs['source']]!==undefined) {

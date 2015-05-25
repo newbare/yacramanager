@@ -55,7 +55,7 @@ public class ActivityReportServiceImpl implements ActivityReportService {
 			activityReport.setStartDate(startDate);
 			activityReport.setEndDate(endDate);
 		}
-		activityReport.setValidationStatus(ValidationStatus.WAIT_FOR_APPROVEMENT);
+		activityReport.setValidationStatus(ValidationStatus.PENDING);
 		activityReportRepository.save(activityReport);
 		applicationEventPublisher.publishEvent(ActivityEvent
 				.createWithSource(this).user()
@@ -144,7 +144,7 @@ public class ActivityReportServiceImpl implements ActivityReportService {
 			throw new ServiceException("Activity report not found");
 		}
 		if(employeService.isManager(employe.getId(), activityReport.getEmployeId()) || employe.getId().equals(activityReport.getEmployeId())){
-			if(ValidationStatus.WAIT_FOR_APPROVEMENT.equals(activityReport.getValidationStatus())){
+			if(ValidationStatus.PENDING.equals(activityReport.getValidationStatus())){
 				logger.debug("Delete submitted activity report as requested {}",activityReport);
 				activityReportRepository.delete(activityReport);
 				applicationEventPublisher.publishEvent(ActivityEvent
@@ -164,11 +164,11 @@ public class ActivityReportServiceImpl implements ActivityReportService {
 	@Override
 	public void approveSubmittedActivityReport(Employe employeManager,ActivityReport activityReport)
 			throws ServiceException {
-		if(activityReport!=null && !ValidationStatus.WAIT_FOR_APPROVEMENT.equals(activityReport.getValidationStatus())){
+		if(activityReport!=null && !ValidationStatus.PENDING.equals(activityReport.getValidationStatus())){
 			throw new ServiceException("The activity report should be in a right status");
 		}
 		if(employeService.isManager(employeManager.getId(), activityReport.getEmployeId())){
-			if(ValidationStatus.WAIT_FOR_APPROVEMENT.equals(activityReport.getValidationStatus())){
+			if(ValidationStatus.PENDING.equals(activityReport.getValidationStatus())){
 				activityReport.setValidationStatus(ValidationStatus.APPROVED);
 				activityReportRepository.save(activityReport);
 				applicationEventPublisher.publishEvent(ActivityEvent
@@ -199,11 +199,11 @@ public class ActivityReportServiceImpl implements ActivityReportService {
 	@Override
 	public void rejectSubmittedActivityReport(Employe employeManager,
 			ActivityReport activityReport) throws ServiceException {
-		if(activityReport!=null && !ValidationStatus.WAIT_FOR_APPROVEMENT.equals(activityReport.getValidationStatus())){
+		if(activityReport!=null && !ValidationStatus.PENDING.equals(activityReport.getValidationStatus())){
 			throw new ServiceException("The activity report should be in a right status");
 		}
 		if(employeService.isManager(employeManager.getId(), activityReport.getEmployeId())){
-			if(ValidationStatus.WAIT_FOR_APPROVEMENT.equals(activityReport.getValidationStatus())){
+			if(ValidationStatus.PENDING.equals(activityReport.getValidationStatus())){
 				activityReport.setValidationStatus(ValidationStatus.REJECTED);
 				activityReportRepository.save(activityReport);
 				applicationEventPublisher.publishEvent(ActivityEvent

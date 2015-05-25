@@ -346,6 +346,28 @@ App.controller('ActivityReportListMineController',function ($scope,$rootScope,Ac
 			alertService.show('success', 'Confirmation', 'Data saved');
 		});
 	};
+	
+	$scope.sendForApproval=function(employeId){
+		ActivityReportREST.submit({
+			employeId : employeId,
+			startDate : $scope.dateRange.startDate.format('YYYY-MM-DD'),
+			endDate : $scope.dateRange.endDate.format('YYYY-MM-DD')
+		},{}).$promise.then(function(result) {
+			$scope.retrieveCraDetails($scope.currentFilter);
+			alertService.show('success','Activity report','The request has been sent!');
+		});
+	};
+	
+	$scope.cancelActivityReport=function(employeId,startDate,endDate){
+		ActivityReportREST.cancel({
+			employeId : employeId,
+			startDate : startDate,
+			endDate: endDate
+		},{}).$promise.then(function(result) {
+			$scope.retrieveCraDetails($scope.currentFilter);
+			alertService.show('success','Activity report has been canceled','The request has been sent!');
+		});
+	};
 });
 
 App.controller('ActivityReportListToBeApprovedController',function ($scope,$rootScope,ActivityReportREST,NgStomp,$filter,$http,WorkLogREST,alertService,AbsenceREST,USERINFO,ClientsREST,ProjectsREST,TasksREST) {
@@ -382,27 +404,7 @@ App.controller('ActivityReportController',function ($scope,$rootScope,ActivityRe
 //		});
 	};
 	$scope.refreshApproval();
-	$scope.sendForApproval=function(employeId){
-		ActivityReportREST.submit({
-			employeId : employeId,
-			startDate : $scope.dateRange.startDate.format('YYYY-MM-DD'),
-			endDate : $scope.dateRange.endDate.format('YYYY-MM-DD')
-		},{}).$promise.then(function(result) {
-			$scope.retrieveCraDetails($scope.currentFilter);
-			alertService.show('success','Activity report','The request has been sent!');
-		});
-	};
 	
-	$scope.cancelActivityReport=function(employeId,startDate,endDate){
-		ActivityReportREST.cancel({
-			employeId : employeId,
-			startDate : startDate,
-			endDate: endDate
-		},{}).$promise.then(function(result) {
-			$scope.retrieveCraDetails($scope.currentFilter);
-			alertService.show('success','Activity report has been canceled','The request has been sent!');
-		});
-	};
 	
 	$scope.approveActivityReport=function(employeId,startDate,endDate){
 		ActivityReportREST.approve({

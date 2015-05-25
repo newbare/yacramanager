@@ -41,6 +41,7 @@ import fr.wati.yacramanager.dao.repository.EmployeDto;
 import fr.wati.yacramanager.services.CompanyService;
 import fr.wati.yacramanager.services.EmployeService;
 import fr.wati.yacramanager.services.ProjectService;
+import fr.wati.yacramanager.services.ServiceException;
 import fr.wati.yacramanager.services.TaskService;
 import fr.wati.yacramanager.services.impl.DtoMapper;
 import fr.wati.yacramanager.utils.Filter.FilterBuilder;
@@ -144,7 +145,7 @@ public class TaskRestController {
 	public void assignEmployeesToTask(
 			@PathVariable("companyId") Long companyId,
 			@PathVariable(value = "taskId") Long taskId,
-			@RequestParam(value = "employeesIds", required = true) List<Long> employeesIds) {
+			@RequestParam(value = "employeesIds", required = true) List<Long> employeesIds) throws ServiceException {
 		for (Long employeeId : employeesIds) {
 			taskService.assignEmployeToTask(employeeId, taskId);
 		}
@@ -244,7 +245,7 @@ public class TaskRestController {
 
 	@RequestMapping(method = RequestMethod.POST)
 	@Timed
-	public ResponseEntity<String> create(@RequestBody TaskDTO dto) {
+	public ResponseEntity<String> create(@RequestBody TaskDTO dto) throws ServiceException {
 		Task createTask = taskService.createTask(dto.getProjectId(),
 				dto.toTask(new Task()));
 		taskService.assignEmployeToTask(dto.getEmployeId(), createTask.getId());

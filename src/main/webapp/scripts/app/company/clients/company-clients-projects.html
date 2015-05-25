@@ -1,0 +1,37 @@
+<div class="tab-pane">
+	<h3 class="header smaller lighter blue">{{client.projects.length}} Projects for {{ client.name || 'Name' }}</h3>
+	<div class="row">
+		<div class="col-lg-6">
+			<div class="input-group input-group-sm">
+				<span class="input-group-addon "><i class="fa fa-search"></i></span>
+				<input type="text" data-ng-model="projectFilter" class="form-control input-sm" placeholder="Filter projects">
+				 <span class="input-group-btn">
+					<button class="btn btn-success" data-ng-click="addNewProject(client)"><i class="fa fa-plus"></i> Add project</button>
+				</span>
+			</div>
+		</div>
+	</div>
+	<ul class="list-group">
+	  <li class="list-group-item am-fade"  data-ng-repeat="project in client.projects | searchField: 'name': 'description' | filter: projectFilter" >
+	    <ul class="list-inline">
+	    	<span style="float: right;" data-ng-if="!project.isnew">
+	    		<a data-ui-sref="company.projects.view.quick.overview({ id: project.id })">
+					Go to <i class="fa fa-arrow-right"></i>
+				</a>
+	    	</span>
+	    	<li><p class="text-muted">Created on {{project.createdDate  | date:'medium'}}</p></li>
+	    	<li>|</li>
+	    	<li><a href="#" onaftersave="updateProject(project)" buttons="no" editable-text="project.name">{{ project.name || 'Name' }}</a></li>
+	    	<li>|</li>
+	    	<li><a href="#" onaftersave="updateProject(project)"  editable-textarea="project.description" e-rows="3">{{project.description || "Description"}}</a></li>
+	    	<li>|</li>
+	    	<li data-ng-if="!project.isnew"><p class="text-warning">{{project.numberOfTasks}} task(s)</p></li>
+	    	<li data-ng-if="!project.isnew">|</li>
+	    	<li data-ng-if="!project.isnew"><p class="text-warning">{{project.numberOfEmployes}} employee(s)</p></li>
+	    	<li data-ng-if="!project.isnew">|</li>
+	    	<li><button type="button" class="btn btn-success btn-xs" data-ng-if="project.isnew" data-ng-click="saveProject(project,client)">Save</button></li>
+	    	<li><button type="button" class="btn btn-danger btn-xs" data-ng-if="project.isnew" data-ng-click="deleteProject(project,$index)">Cancel</button></li>
+	    </ul>
+	  </li>
+	</ul>
+</div>

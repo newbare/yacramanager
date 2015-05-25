@@ -1,7 +1,7 @@
 App.config(function ($stateProvider) {
 	$stateProvider.state('admin.company', {
 		url : "/company",
-		templateUrl : _contextPath+'views/app/templates/partials/panel-view.html',
+		templateUrl : _contextPath+'scripts/templates/partials/panel-view.html',
 		controller : 'AdminCompaniesController',
 		data: {
 			roles: ['ROLE_ADMIN'],
@@ -9,7 +9,7 @@ App.config(function ($stateProvider) {
 		  }
 	}).state('admin.company.details', {
 		url : "/details/:id",
-		templateUrl : _contextPath+'views/app/admin/company/admin-company-overview.html',
+		templateUrl : _contextPath+'scripts/app/admin/company/admin-company-overview.html',
 		controller : 'AdminCompanyOverviewController',
 		resolve : {
 			roles: ['ROLE_ADMIN'],
@@ -23,7 +23,7 @@ App.config(function ($stateProvider) {
 	})
 	.state('admin.company.view', {
 		url : "/view",
-		templateUrl : _contextPath+'views/app/admin/company/admin-company-view.html',
+		templateUrl : _contextPath+'scripts/app/admin/company/admin-company-view.html',
 		controller : 'AdminCompanyViewController',
 		data: {
 			roles: ['ROLE_ADMIN'],
@@ -32,7 +32,7 @@ App.config(function ($stateProvider) {
 	})
 	.state('admin.company.view.list', {
 		url : "/list",
-		templateUrl : _contextPath+'views/app/admin/company/admin-company-list.html',
+		templateUrl : _contextPath+'scripts/app/admin/company/admin-company-list.html',
 		controller : 'AdminCompanyListController',
 		data: {
 			roles: ['ROLE_ADMIN'],
@@ -40,7 +40,7 @@ App.config(function ($stateProvider) {
 		  }
 	}).state('admin.company.view.quick', {
 		url : "/quickview",
-		templateUrl : _contextPath+'views/app/admin/company/admin-company-quickview.html',
+		templateUrl : _contextPath+'scripts/app/admin/company/admin-company-quickview.html',
 		controller : 'AdminCompanyQuickViewController',
 		data: {
 			roles: ['ROLE_ADMIN'],
@@ -50,7 +50,7 @@ App.config(function ($stateProvider) {
 	})
 	.state('admin.company.view.quick.overview', {
 		url : "/:id",
-		templateUrl : _contextPath+'views/app/admin/company/admin-company-overview.html',
+		templateUrl : _contextPath+'scripts/app/admin/company/admin-company-overview.html',
 		controller : 'AdminCompanyOverviewController',
 		resolve : {
 			company :function(CompanyREST,$stateParams,USERINFO) {

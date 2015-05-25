@@ -1,11 +1,13 @@
 package fr.wati.yacramanager.services.impl;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.Predicate;
 import org.apache.commons.collections.Transformer;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.ApplicationEventPublisher;
@@ -16,10 +18,12 @@ import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
 
 import fr.wati.yacramanager.beans.Activities.ActivityOperation;
 import fr.wati.yacramanager.beans.Employe;
+import fr.wati.yacramanager.beans.EmployesProjects;
 import fr.wati.yacramanager.beans.Project;
 import fr.wati.yacramanager.beans.Task;
 import fr.wati.yacramanager.beans.TaskStatus;
@@ -30,6 +34,7 @@ import fr.wati.yacramanager.dao.specifications.CommonSpecifications;
 import fr.wati.yacramanager.listeners.ActivityEvent;
 import fr.wati.yacramanager.services.EmployeService;
 import fr.wati.yacramanager.services.ProjectService;
+import fr.wati.yacramanager.services.ServiceException;
 import fr.wati.yacramanager.services.TaskService;
 import fr.wati.yacramanager.utils.Filter;
 import fr.wati.yacramanager.utils.Filter.FilterArray;
@@ -220,8 +225,8 @@ public class TaskServiceImpl implements TaskService {
 
 	@Override
 	@Transactional
-	public void assignEmployeToTask(Long employeId, Long taskId) {
-		Employe employe = employeService.findOne(employeId);
+	public void assignEmployeToTask(Long employeId, Long taskId) throws ServiceException {
+		final Employe employe = employeService.findOne(employeId);
 		//Task part
 		Task task=findOne(taskId);
 		if(task.getAssignedEmployees()==null){
@@ -229,14 +234,18 @@ public class TaskServiceImpl implements TaskService {
 		}
 		task.getAssignedEmployees().add(employe);
 		employe.getTasks().add(task);
-		//Project part
+//		//Project part
 		Project project = task.getProject();
-		if(project.getAssignedEmployees()==null){
-			project.setAssignedEmployees(new ArrayList<Employe>());
-		}
-		if(!project.getAssignedEmployees().contains(employe)){
-			project.getAssignedEmployees().add(employe);
-			employe.getProjects().add(project);
+		int countMatches = CollectionUtils.countMatches(project.getEmployes(), new Predicate() {
+			
+			@Override
+			public boolean evaluate(Object object) {
+				EmployesProjects employesProjects=(EmployesProjects) object;
+				return employesProjects.getEmployee().equals(employe);
+			}
+		});
+		if(countMatches==0){
+			projectService.addEmployeToProject(project, employe, false, BigDecimal.ZERO);
 		}
 	}
 
