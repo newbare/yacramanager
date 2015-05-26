@@ -3,7 +3,7 @@ App.config(function ($stateProvider) {
 		url : "/home",
 		views:{
 			'': {
-				templateUrl : _contextPath+'views/app/home.html',
+				templateUrl : _contextPath+'scripts/app/home/home.html',
 				controller : 'HomeController'
             },
 			'taskWidget@home':{

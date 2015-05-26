@@ -179,7 +179,7 @@
 			
 			<div id="main-view" >
 				<div class="panel panel-default">
-					<div class="panel-body">
+					<div class="panel-body" data-ng-class="{ 'with-sub-navbar': $state.includes('company') || $state.includes('admin') }">
 					<div id="alerts-container"></div>
 					<div id="main-view" data-ui-view="" class="" data-ng-cloak=""></div>
 					</div>
@@ -225,11 +225,12 @@
 				</div>
 			</div>
 		</div>
-		<div class="scroll-top-wrapper" data-scroll-to-top="100">
+		<div id="topcontrol" data-scroll-to-top="50" title="Scroll Back to Top" ></div>
+		<!-- <div class="scroll-top-wrapper" data-scroll-to-top="100">
 			<span class="scroll-top-inner">
 				<i class="fa fa-2x fa-arrow-circle-up"></i>
 			</span>
-		</div>
+		</div> -->
 	<!-- Bootstrap core JavaScript
     ================================================== -->
 	<!-- Placed at the end of the document so the pages load faster -->

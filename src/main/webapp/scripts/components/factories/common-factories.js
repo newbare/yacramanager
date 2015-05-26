@@ -163,6 +163,20 @@ App.factory("ProjectsREST", function($resource) {
 	});
 });
 
+App.factory("EmployeesProjectsREST", function($resource) {
+	return $resource(_contextPath + "app/api/:companyId/:clientId/employesprojects/:projectId/:employeeId", {
+		companyId : '@companyId',
+		clientId: '@clientId'
+	}, {
+		update : {
+			method : 'PUT',
+			params : {
+				id : '@id'
+			}
+		}
+	});
+});
+
 App.factory("TasksREST", function($resource) {
 	return $resource(_contextPath + "app/api/:companyId/task/:id", {
 		companyId : '@companyId'

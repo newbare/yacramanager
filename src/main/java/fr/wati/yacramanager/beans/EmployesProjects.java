@@ -31,6 +31,8 @@ public class EmployesProjects {
 	private BigDecimal dailyRate;
 	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDate")
 	private LocalDate joinDate;
+	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDate")
+	private LocalDate leaveDate;
 	@ManyToOne
 	@PrimaryKeyJoinColumn(name = "EMPLOYEEID", referencedColumnName = "ID")
 	private Employe employee;
@@ -173,6 +175,16 @@ public class EmployesProjects {
 	 */
 	public void setProject(Project project) {
 		this.project = project;
+	}
+
+
+	public LocalDate getLeaveDate() {
+		return leaveDate;
+	}
+
+
+	public void setLeaveDate(LocalDate leaveDate) {
+		this.leaveDate = leaveDate;
 	}
 
 }

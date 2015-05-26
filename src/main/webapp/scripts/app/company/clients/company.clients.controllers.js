@@ -128,7 +128,7 @@ App.controller('CompanyClientsListController',function ($scope, $rootScope,$http
 	 $scope.tableParams.settings().counts=[10, 25, 50, 100];
 });
 
-App.controller('CompanyClientsOverviewController',function ($scope,ClientsREST,ProjectsREST,client,alertService,USERINFO,ActivitiesREST){
+App.controller('CompanyClientsOverviewController',function ($scope,ClientsREST,ProjectsREST,client,alertService,USERINFO,ActivitiesREST,EmployeesProjectsREST,ngTableParams){
 	$scope.client=client;
 	$scope.contactFilter='';
 	$scope.timelineSource=undefined;
@@ -186,5 +186,90 @@ App.controller('CompanyClientsOverviewController',function ($scope,ClientsREST,P
 		client.projects.splice(index,1);
 	};
 	
+	//company.clients.projects
+	$scope.employeesProjectsTableFilter="";
+	
+	$scope.employeesProjectsDoFilter=function(data){
+		var serverFilter={filter:data};
+		$scope.employeesProjectsCriteriaBarFilter=JSON.stringify(serverFilter);
+		$scope.$broadcast('employeesProjectsCriteriaDofilter', JSON.stringify(serverFilter));
+	};
+	$scope.$on('employeesProjectsCriteriaDofilter', function(event, args) {
+		$scope.employeesProjectsDoFilterList(args);
+	});
+	
+	$scope.employeesProjectsDoFilterList=function(data){
+		$scope.employeesProjectsTableFilter=data;
+		$scope.refreshEmployeesProjectsDatas();
+	};
+	$scope.refreshEmployeesProjectsDatas=function(){
+		$scope.clientsEmployeesTableParams.reload();
+	};
+	
+	$scope.employeesProjectsClientCriteriaConfig={
+			name:"client",
+			defaultButtonLabel:"Client",
+			filterType:"ARRAY",
+			closeable:false,
+			editable:false,
+			buttonSelectedItemsFormater:function(data){
+				return data.label;
+			},
+			filterValue:[{name:""+$scope.client.id+"",label:$scope.client.name,ticked:false}],
+			defaultSelectedItems:function(data){
+				var items=[];
+				angular.forEach(data,function(item){
+					if(item.name==""+$scope.client.id+""){
+						items.push(item);
+					}
+				});
+				return items;
+			},
+			currentFilter:{},
+			displayed: true
+	};
+	
+	$scope.employeesProjectsCriteriaBarConfig={
+			criterions:[$scope.employeesProjectsClientCriteriaConfig],
+			autoFilter:true,
+			filters:[]
+		};
+	
+	$scope.clientsEmployeesTableParams = new ngTableParams({
+        page: 1,            // show first page
+        count: 10 ,
+        sorting : {
+			createdDate : 'desc' // initial sorting
+		}// count per page
+    }, {
+        groupBy: function (task) {
+          return task.project.name;
+        },
+        getData: function($defer, params) {
+        	if($scope.employeesProjectsTableFilter!==undefined && $scope.employeesProjectsTableFilter!==''){
+        		EmployeesProjectsREST.get(
+						{
+        					companyId:USERINFO.company.id,
+        					clientId:client.id,
+							page:params.$params.page-1,
+							size:params.$params.count,
+							sort:params.$params.sorting,
+							filter:$scope.employeesProjectsTableFilter
+						},function(data) {
+					params.total(data.length);
+					$scope.employeesProjectsStartIndex=(params.$params.page-1)*params.$params.count+1;
+					$scope.employeesProjectsEndIndex=$scope.employeesProjectsStartIndex+data.length-1;
+					if(data.length>=1){
+						$scope.hasDatas=true;
+					}else {
+						$scope.hasDatas=false;
+					}
+					employeesProjects=data;
+					// set new data
+					$defer.resolve(data);
+				});
+			}
+        }
+    });
 });
 /*COMPANY-CLIENT End of section*/
