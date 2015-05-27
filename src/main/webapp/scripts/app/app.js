@@ -267,7 +267,8 @@ App.config(function($datepickerProvider) {
 App.config(function($breadcrumbProvider) {
     $breadcrumbProvider.setOptions({
         prefixStateName: 'home',
-        template: 'bootstrap3'
+        template: 'bootstrap3',
+        templateUrl: '/scripts/templates/breadcrumb/breadcrumb.tpl.html'
       });
     });
 

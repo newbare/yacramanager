@@ -13,12 +13,12 @@
 	</div>
 </div>
 <div class="row">
-	<div class="col-md-6 col-lg-4 am-fade" data-ng-repeat="contact in dataObject.contacts | searchField: 'name': 'email' | filter: contactFilter">
+	<div class="col-md-6 col-lg-6 am-fade" data-ng-repeat="contact in dataObject.contacts | searchField: 'name': 'email' | filter: contactFilter">
 	    <div class="contact-box">
 	        <button type="button" class="close" data-ng-confirm="Do you want to delete contact {{contact.name}} ?" data-ng-click="deleteContact(dataObject,$index)" ><i class="fa fa-times text-danger"></i><span class="sr-only">Close</span></button>
 	        <div class="col-sm-4">
 	            <div class="text-center">
-	                <img alt="image" class="img-circle m-t-xs img-responsive" style="width: 75px; height: 75px;">
+	                <img alt="image" class="img-circle m-t-xs img-responsive" style="width: 75px; height: 75px;" src="http://webapplayers.com/inspinia_admin-v2.1/img/a3.jpg">
 	                <div class="m-t"><strong><a href="#" onaftersave="update()" buttons="no" editable-text="contact.role">{{ contact.role || 'Role' }}</a></strong></div>
 	            </div>
 	        </div>

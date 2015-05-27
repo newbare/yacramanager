@@ -1,5 +1,10 @@
 package fr.wati.yacramanager.web.api;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -9,9 +14,11 @@ import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -241,4 +248,29 @@ public class UserRestController {
 		return dtoMapper.mapManagedEmployeInfoDTOs(managedEmployes);
 	}
 
+	@RequestMapping(value = "/avatar/{userId}", method = RequestMethod.GET)
+	@ResponseBody
+	public ResponseEntity<InputStreamResource> downloadUserAvatarImage(@PathVariable Long userId,HttpServletRequest httpServletRequest) {
+		Employe employe = employeService.findOne(userId);
+		if(employe!=null){
+			if(!employe.isSocialUser()){
+				
+			}else {
+				
+				try {
+					byte[] profileImage= IOUtils.toByteArray(new URI(employe.getProfileImageUrl()));
+					return ResponseEntity.ok()
+				            .contentType(MediaType.IMAGE_JPEG)
+				            .body(new InputStreamResource(new ByteArrayInputStream(profileImage)));
+				} catch (IOException | URISyntaxException e) {
+					LOG.error(e.getMessage(), e);
+				}
+			}
+		}
+		InputStream defaultAvatar = httpServletRequest.getServletContext().getResourceAsStream("/assets/images/users/no_user_pic.jpg");
+	    return ResponseEntity.ok()
+	            .contentType(MediaType.IMAGE_JPEG)
+	            .body(new InputStreamResource(defaultAvatar));
+	}
+	
 }

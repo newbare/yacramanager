@@ -2,29 +2,28 @@
 	<h3 class="header smaller lighter blue">Project assignation</h3>
 	<div class="row">
 		<div data-ng-criteria-bar data-criteria-bar-config="employeesProjectsCriteriaBarConfig" data-do-filter="employeesProjectsDoFilter(employeesProjectsCriteriaBarConfig.filters)"></div>
-		<div class="table-responsive" data-ng-if="desktopScreen">
-			<table data-ng-table="clientsEmployeesTableParams" class="table table-striped table-bordered table-hover ng-table-responsive">
+		<div class="table-responsive project-list" data-ng-if="desktopScreen">
+			<table data-ng-table="clientsEmployeesTableParams" class="table table-striped table-hover ng-table-responsive">
 			     <tbody data-ng-repeat="group in $groups">
 			     <tr class="ng-table-group">
 			         <td colspan="{{$columns.length}}">
 			             <a href="" data-ng-click="group.$hideRows = !group.$hideRows">
 			                 <span class="glyphicon" data-ng-class="{ 'glyphicon-chevron-right': group.$hideRows, 'glyphicon-chevron-down': !group.$hideRows }"></span>
-			                 Project: <strong>{{group.value}}</strong>
+			                 <strong>{{group.value}}</strong>
 			             </a>
-			             <button  type="button" class="btn btn-success btn-xs" data-ng-click="selectActiveTask(task)" data-placement="top " data-title="Select employee ..." data-template="{{appContextPath}}scripts/templates/partials/search-employees-popover.tpl.html" data-animation="am-flip-x" data-auto-close="1" data-bs-popover><i class="fa fa-plus"></i> Assign employe to this project</button>
+			             <button  type="button" class="btn btn-success btn-white btn-xs pull-right" data-ng-click="selectActiveTask(task)" data-placement="top " data-title="Select employee ..." data-template="{{appContextPath}}scripts/templates/partials/search-employees-popover.tpl.html" data-animation="am-flip-x" data-auto-close="1" data-bs-popover><i class="fa fa-plus"></i> Assign employe to this project</button>
 			         </td>
 			     </tr>
 			     <tr data-ng-hide="group.$hideRows" data-ng-repeat="employeesProject in group.data">
 			        <td data-ng-style="{'background-color': employeesProject.project.color}"></td>
-			        <td data-title="'Assign date'" data-sortable="'joinDate'">{{ employeesProject.joinDate | date : 'short'}}</td>
-					<td data-title="'Employee'" data-sortable="'name'">{{employeesProject.employe.firstName}} {{employeesProject.employe.lastName}}</td>
-					<td data-title="'Daily rate'" data-sortable="'dailyRate'">{{ employeesProject.dailyRate}}</td>
-					<td data-title="'Leave date'" data-sortable="'joinDate'">{{ employeesProject.leaveDate | date : 'short'}}</td>
-					<td class="tool-btn-col">
-						<div class="btn-group actions-btn" role="group" data-ng-if="task.assignedEmployeesIds.indexOf(currentEmployeId)>-1">
-						  <button type="button" class="btn btn-link" data-ng-click="editTask(task.id)"><span class="fa fa-pencil"></span></button>
-						  <button type="button" class="btn btn-link" data-ng-if="task.createdBy==currentEmployeId" data-ng-click="deleteTask(task.id)" data-ng-confirm="Do you want to delete this entry ?"><span class="fa fa-trash-o red"></span></button>
-						</div>
+			        <td class="project-people"><img alt="image" class="img-circle" data-ng-src="/app/api/users/avatar/{{employeesProject.id.employeeId}}"></td>
+			        <!-- <td data-title="'Assign date'" data-sortable="'joinDate'">{{ employeesProject.joinDate | date : 'short'}}</td> -->
+					<td><span>{{employeesProject.employe.firstName}} {{employeesProject.employe.lastName}}</span><br/> <small class="text-muted">Joined {{ employeesProject.joinDate | date : 'short'}}</small></td>
+					<td data-sortable="'dailyRate'">{{ employeesProject.dailyRate | currency:"EUR"}}</td>
+					<td data-ng-if="employeesProject.leaveDate">{{ employeesProject.leaveDate | date : 'short'}}</td>
+					<td class="">
+						  <a type="button" class="btn btn-link" data-ng-click="editTask(task.id)"><span class="fa fa-pencil"></span></a>
+						  <a type="button" class="btn btn-link" data-ng-if="task.createdBy==currentEmployeId" data-ng-click="deleteTask(task.id)" data-ng-confirm="Do you want to delete this entry ?"><span class="fa fa-trash-o red"></span></a>
 					</td>
 			   	</tr>
 			     </tbody>

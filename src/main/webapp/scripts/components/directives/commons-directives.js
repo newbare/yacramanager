@@ -687,6 +687,26 @@ App.directive('subMenuNavPill', function($rootScope) {
 	  };
 	});
 
+App.directive('yacraStatus', function($rootScope) {
+	  return {
+		restrict: 'A',
+		replace: true,
+		template: '<span class="label" data-ng-class="{\'label-success\' : isValidated() , \'label-warning\' : isWaiting(), \'label-danger\' : isRejected()}">'
+			+'{{status}}</span>',
+	    link: function(scope, element,attrs) {
+	    	scope.isValidated=function(){
+				return 'APPROVED'==scope.status || 'OPEN'==scope.status;
+			};
+			scope.isWaiting=function(){
+				return 'PENDING'==scope.status;
+			};
+			scope.isRejected=function(){
+				return 'REJECTED'==scope.status;
+			};
+	    	scope.status=attrs['yacraStatus'];
+	    }
+	  };
+	});
 
 App.directive('scrollToTop', function() {
 	  return {
