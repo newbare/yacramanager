@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.jaxb.SpringDataJaxb.PageDto;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,6 +16,7 @@ import com.google.common.collect.Lists;
 
 import fr.wati.yacramanager.beans.EmployesProjects;
 import fr.wati.yacramanager.beans.EmployesProjectsId;
+import fr.wati.yacramanager.dao.repository.EmployeDto;
 import fr.wati.yacramanager.dao.repository.EmployesProjectsRepository;
 import fr.wati.yacramanager.services.EmployeService;
 import fr.wati.yacramanager.services.EmployesProjectsService;
@@ -119,8 +121,16 @@ public class EmployesProjectsServiceImpl implements EmployesProjectsService {
 	public EmployesProjectsDTO toEmployeesProjectsDTO(
 			EmployesProjects employesProjects) {
 		EmployesProjectsDTO dto=new EmployesProjectsDTO();
-		//TODO complete mapping
-		
+		dto.setDailyRate(employesProjects.getDailyRate());
+		dto.setId(new EmployesProjectsId(employesProjects.getEmployeeId(), employesProjects.getProjectId()));
+		dto.setJoinDate(employesProjects.getJoinDate());
+		dto.setLeaveDate(employesProjects.getLeaveDate());
+		EmployeDto employeDto=new EmployeDto();
+		employeDto.setFirstName(employesProjects.getEmployee().getFirstName());
+		employeDto.setLastName(employesProjects.getEmployee().getLastName());
+		dto.setEmploye(employeDto);
+		ProjectDTO projectDTO=projectService.toProjectDTO(employesProjects.getProject());
+		dto.setProject(projectDTO);
 		return dto;
 	}
 

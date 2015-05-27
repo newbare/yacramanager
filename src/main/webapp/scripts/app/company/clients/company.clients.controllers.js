@@ -239,15 +239,15 @@ App.controller('CompanyClientsOverviewController',function ($scope,ClientsREST,P
         page: 1,            // show first page
         count: 10 ,
         sorting : {
-			createdDate : 'desc' // initial sorting
+        	joinDate : 'desc' // initial sorting
 		}// count per page
     }, {
-        groupBy: function (task) {
-          return task.project.name;
+        groupBy: function (employeesProjects) {
+          return employeesProjects.project.name;
         },
         getData: function($defer, params) {
         	if($scope.employeesProjectsTableFilter!==undefined && $scope.employeesProjectsTableFilter!==''){
-        		EmployeesProjectsREST.get(
+        		EmployeesProjectsREST.query(
 						{
         					companyId:USERINFO.company.id,
         					clientId:client.id,

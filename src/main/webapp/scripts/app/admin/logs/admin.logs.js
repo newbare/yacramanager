@@ -1,7 +1,7 @@
 App.config(function ($stateProvider) {
 	$stateProvider.state('admin.logs', {
 		url : "/logs",
-		templateUrl : _contextPath+'views/app/admin/admin-logs.html',
+		templateUrl : _contextPath+'scripts/app/admin/logs/admin-logs.html',
 		controller : 'LogsController',
          data: {
         	roles: ['ROLE_ADMIN'],

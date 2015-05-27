@@ -9,23 +9,17 @@
 			         <td colspan="{{$columns.length}}">
 			             <a href="" data-ng-click="group.$hideRows = !group.$hideRows">
 			                 <span class="glyphicon" data-ng-class="{ 'glyphicon-chevron-right': group.$hideRows, 'glyphicon-chevron-down': !group.$hideRows }"></span>
-			                 Project: <strong>{{group.value }}</strong>
+			                 Project: <strong>{{group.value}}</strong>
 			             </a>
+			             <button  type="button" class="btn btn-success btn-xs" data-ng-click="selectActiveTask(task)" data-placement="top " data-title="Select employee ..." data-template="{{appContextPath}}scripts/templates/partials/search-employees-popover.tpl.html" data-animation="am-flip-x" data-auto-close="1" data-bs-popover><i class="fa fa-plus"></i> Assign employe to this project</button>
 			         </td>
 			     </tr>
-			     <tr data-ng-hide="group.$hideRows" data-ng-repeat="task in group.data">
-			        <td data-ng-style="{'background-color': task.color}"></td>
-			        <td data-title="'Created date'" data-sortable="'createdDate'">{{ task.createdDate | date : 'short'}}</td>
-					<td data-title="'Name'" data-sortable="'name'">{{ task.name}}</td>
-					<td data-title="'Description'" data-sortable="'description'">{{ task.description}}</td>
-					<td data-title="'Status'" data-sortable="'taskStatus'"><span class="label" data-ng-class="{'label-success' : task.taskStatus==='OPEN' , 'label-danger' : task.taskStatus==='COMPLETED'}">{{task.taskStatus}}</span></td>
-					<td data-title="'Assigned to'">
-						<span class="text-muted" data-ng-if="task.assignedEmployeesIds.indexOf(currentEmployeId)>-1" >
-							<strong>You</strong>
-						</span>
-						<span class="text-muted" data-ng-if="task.assignedEmployeesIds.length>1"> and {{task.assignedEmployeesIds.length-1}} others</span>
-						<span class="text-muted" data-ng-if="task.assignedEmployeesIds.length>0 && task.assignedEmployeesIds.indexOf(currentEmployeId)==-1">{{task.assignedEmployeesIds.length}} employees</span>
-					</td>
+			     <tr data-ng-hide="group.$hideRows" data-ng-repeat="employeesProject in group.data">
+			        <td data-ng-style="{'background-color': employeesProject.project.color}"></td>
+			        <td data-title="'Assign date'" data-sortable="'joinDate'">{{ employeesProject.joinDate | date : 'short'}}</td>
+					<td data-title="'Employee'" data-sortable="'name'">{{employeesProject.employe.firstName}} {{employeesProject.employe.lastName}}</td>
+					<td data-title="'Daily rate'" data-sortable="'dailyRate'">{{ employeesProject.dailyRate}}</td>
+					<td data-title="'Leave date'" data-sortable="'joinDate'">{{ employeesProject.leaveDate | date : 'short'}}</td>
 					<td class="tool-btn-col">
 						<div class="btn-group actions-btn" role="group" data-ng-if="task.assignedEmployeesIds.indexOf(currentEmployeId)>-1">
 						  <button type="button" class="btn btn-link" data-ng-click="editTask(task.id)"><span class="fa fa-pencil"></span></button>
