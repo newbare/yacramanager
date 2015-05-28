@@ -336,6 +336,11 @@ public class EmployeServiceImpl implements EmployeService {
 				if("firstName".equals(filterText.getField())){
 					return EmployeSpecifications.firstNamelike(filterText.getValue());
 				}
+				if("global".equals(filterText.getField())){
+					return Specifications
+							.where(EmployeSpecifications.firstNamelike(filterText.getValue()))
+							.or(EmployeSpecifications.lastNamelike(filterText.getValue()));
+				}
 				break;
 			case DATE:
 			case DATE_RANGE:

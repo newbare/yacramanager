@@ -46,8 +46,7 @@
 	             </a>
 	         </td>
 	     </tr>
-	     <tr data-ng-hide="group.$hideRows" data-ng-repeat="task in group.data">
-	        <td><i data-ng-if="task.color" class="fa fa-circle fa-2x" data-ng-style="{'color': task.color}"></i></td>
+	     <tr class="task-element" data-ng-style="{'border-left-color' : task.color}" data-ng-hide="group.$hideRows" data-ng-repeat="task in group.data">
 	        <!-- <td data-title="'Created date'" data-sortable="'createdDate'">{{ task.createdDate | date : 'short'}}</td> -->
 			<td ><a href="">{{ task.name}}</a><br><small>Created {{ task.createdDate | date : 'short'}}</small></td>
 			<!-- <td data-title="'Description'" data-sortable="'description'">{{ task.description}}</td> -->

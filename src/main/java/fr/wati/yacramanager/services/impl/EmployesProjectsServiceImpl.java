@@ -3,12 +3,17 @@ package fr.wati.yacramanager.services.impl;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.jaxb.SpringDataJaxb.PageDto;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,6 +21,8 @@ import com.google.common.collect.Lists;
 
 import fr.wati.yacramanager.beans.EmployesProjects;
 import fr.wati.yacramanager.beans.EmployesProjectsId;
+import fr.wati.yacramanager.beans.Project;
+import fr.wati.yacramanager.beans.Project_;
 import fr.wati.yacramanager.dao.repository.EmployeDto;
 import fr.wati.yacramanager.dao.repository.EmployesProjectsRepository;
 import fr.wati.yacramanager.services.EmployeService;
@@ -102,7 +109,24 @@ public class EmployesProjectsServiceImpl implements EmployesProjectsService {
 	@Override
 	public Page<EmployesProjects> findAll(Specification<EmployesProjects> spec,
 			Pageable pageable) {
-		return employesProjectsRepository.findAll(spec, pageable);
+		Page<EmployesProjects> pageEmployesProjects= employesProjectsRepository.findAll(spec, pageable);
+		//Add project that not have any assign employees
+		Page<Project> pageProject = projectService.findAll(Specifications.where(new Specification<Project>() {
+			@Override
+			public Predicate toPredicate(Root<Project> paramRoot,
+					CriteriaQuery<?> paramCriteriaQuery,
+					CriteriaBuilder paramCriteriaBuilder) {
+				return paramCriteriaBuilder.isEmpty(paramRoot.get(Project_.employes));
+			}
+		}), null);
+		List<EmployesProjects> employesProjects=Lists.newArrayList(pageEmployesProjects.getContent());
+		for(Project project:pageProject){
+			EmployesProjects employesProjects2=new EmployesProjects();
+			employesProjects2.setProject(project);
+			employesProjects2.setProjectId(project.getId());
+			employesProjects.add(employesProjects2);
+		}
+		return new PageImpl<>(employesProjects, pageable, employesProjects.size());
 	}
 
 	@Override
@@ -125,10 +149,12 @@ public class EmployesProjectsServiceImpl implements EmployesProjectsService {
 		dto.setId(new EmployesProjectsId(employesProjects.getEmployeeId(), employesProjects.getProjectId()));
 		dto.setJoinDate(employesProjects.getJoinDate());
 		dto.setLeaveDate(employesProjects.getLeaveDate());
-		EmployeDto employeDto=new EmployeDto();
-		employeDto.setFirstName(employesProjects.getEmployee().getFirstName());
-		employeDto.setLastName(employesProjects.getEmployee().getLastName());
-		dto.setEmploye(employeDto);
+		if(employesProjects.getEmployee()!=null){
+			EmployeDto employeDto=new EmployeDto();
+			employeDto.setFirstName(employesProjects.getEmployee().getFirstName());
+			employeDto.setLastName(employesProjects.getEmployee().getLastName());
+			dto.setEmploye(employeDto);
+		}
 		ProjectDTO projectDTO=projectService.toProjectDTO(employesProjects.getProject());
 		dto.setProject(projectDTO);
 		return dto;

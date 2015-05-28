@@ -12,6 +12,10 @@ import java.util.Map.Entry;
 
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.io.IOUtils;
@@ -24,6 +28,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.domain.Sort.Order;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -39,7 +44,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.codahale.metrics.annotation.Timed;
 
+import fr.wati.yacramanager.beans.Company_;
 import fr.wati.yacramanager.beans.Employe;
+import fr.wati.yacramanager.beans.Employe_;
 import fr.wati.yacramanager.beans.Role;
 import fr.wati.yacramanager.dao.repository.EmployeDto;
 import fr.wati.yacramanager.dao.repository.EmployeRepository;
@@ -187,13 +194,18 @@ public class UserRestController {
 				LOG.error(e.getMessage(), e);
 				throw new RestServiceException(e);
 			}
-		}else {
-			throw new RestServiceException("At least one filter should be submit");
 		}
 		Specifications<Employe> specifications=null;
 		if(!filters.isEmpty()){
 			specifications=Specifications.where(SpecificationBuilder.buildSpecification(filters, employeService));
 		}
+		//Force filter on company id
+		specifications=Specifications.where(new Specification<Employe>() {
+			public Predicate toPredicate(Root<Employe> root,
+					CriteriaQuery<?> query, CriteriaBuilder builder) {
+				return builder.equal(root.join(Employe_.company).get(Company_.id),SecurityUtils.getConnectedUser().getCompany().getId());
+			}
+		}).and(specifications);
 		PageRequest pageable=null;
 		if(sort!=null){
 			List<Order> orders=new ArrayList<>();

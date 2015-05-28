@@ -150,15 +150,6 @@ App.run(function(editableOptions,editableThemes) {
 	editableOptions.activate= 'select';
 });
 
-//App.run(function(Permission,USERINFO){
-//	 Permission.defineRole('ROLE_ADMIN', function (stateParams) {
-//	        return USERINFO.roles.indexOf('ROLE_ADMIN')>-1;
-//	      });
-//	 Permission.defineRole('ROLE_SSII_ADMIN', function (stateParams) {
-//	        return USERINFO.roles.indexOf('ROLE_SSII_ADMIN')>-1;
-//	      });
-//});
-
 
 App.config(function ($stateProvider,$translateProvider,$httpProvider,tmhDynamicLocaleProvider,httpRequestInterceptorCacheBusterProvider,localStorageServiceProvider,$locationProvider) {
 	
@@ -312,8 +303,8 @@ App.controller('AppCtrl', [ '$scope', '$location', 'UsersREST','$rootScope','$tr
 				$rootScope.userLocalSettings.container=	localStorageService.get('userLocalSettings.container');
 				
 			}else {
-				localStorageService.set('userLocalSettings.container','container');
-				$rootScope.userLocalSettings.container='container';
+				localStorageService.set('userLocalSettings.container','container-fluid');
+				$rootScope.userLocalSettings.container='container-fluid';
 			}
 			
 			$scope.navClass = function(page) {

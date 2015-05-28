@@ -23,6 +23,8 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.method.P;
+import org.springframework.security.access.prepost.PostFilter;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -84,9 +86,10 @@ public class EmployesProjectsController {
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(method = RequestMethod.GET)
+	@PostFilter("filterObject.getProject().getClient().getId().equals(#clientId)")
 	public List<EmployesProjectsDTO> getAll(
 			@PathVariable("companyId") Long companyId,
-			@PathVariable("clientId") final Long clientId,
+			@PathVariable("clientId") @P("clientId") final Long clientId,
 			@RequestParam(required = false) Integer page,
 			@RequestParam(required = false) Integer size,
 			@RequestParam(required = false, value = "sort") Map<String, String> sort,

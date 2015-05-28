@@ -188,43 +188,47 @@
 		</div>
 	</div>
 	</div>
-	<div id="main-footer" class="footer">
-			<div>
-				<div id="footer-main">
-					<div class="row">
-					<p>@Wati - Copyrigth 2014</p>
-					<div class="col-md-4">
-						<ul>
-							<li>Social</li>
-							<li><a href=""><i class="fa fa-twitter"></i> Twitter</a></li>
-							<li><a href=""><i class="fa fa-facebook"></i> Facebook</a></li>
-							<li><a href=""><i class="fa fa-youtube"></i> YouTube</a></li>
+	<div class="footer-v1">
+        <div class="copyright">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6">                     
+                        <p>
+                            2015 © All Rights Reserved.
+                           <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a>
+                        </p>
+                    </div>
 
-						</ul>
-					</div>
-					<div class="col-md-4">
-						<ul>
-							<li>Quick links</li>
-							<li><a href="">Home</a></li>
-							<li><a href="">Company</a></li>
-							<li><a href="">Clients</a></li>
-
-						</ul>
-					</div>
-					<div class="col-md-4">
-						<ul>
-							<li>Contact us</li>
-							<li><a href=""><i class="fa fa-envelope"></i> YACRA
-									support team</a></li>
-							<li><a href=""><i class="fa fa-facebook"></i> Facebook</a></li>
-							<li><a href=""><i class="fa fa-youtube"></i> YouTube</a></li>
-
-						</ul>
-					</div>
-					</div>
-				</div>
-			</div>
-		</div>
+                    <!-- Social Links -->
+                    <div class="col-md-6">
+                        <ul class="footer-socials list-inline">
+                            <li>
+                                <a href="#" class="tooltips" data-toggle="tooltip" data-placement="top" title="" data-original-title="Facebook">
+                                    <i class="fa fa-facebook"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" class="tooltips" data-toggle="tooltip" data-placement="top" title="" data-original-title="Google Plus">
+                                    <i class="fa fa-google-plus"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" class="tooltips" data-toggle="tooltip" data-placement="top" title="" data-original-title="Linkedin">
+                                    <i class="fa fa-linkedin"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" class="tooltips" data-toggle="tooltip" data-placement="top" title="" data-original-title="Twitter">
+                                    <i class="fa fa-twitter"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- End Social Links -->
+                </div>
+            </div> 
+        </div><!--/copyright-->
+    </div>
 		<div id="topcontrol" data-scroll-to-top="50" title="Scroll Back to Top" ></div>
 		<!-- <div class="scroll-top-wrapper" data-scroll-to-top="100">
 			<span class="scroll-top-inner">
@@ -344,7 +348,6 @@
 	<script	src="../../scripts/components/directives/angular-criterias.js"></script>
 	<script	src="../../scripts/components/widgets/widgets.controllers.js"></script>
 	<script	src="../../scripts/components/others/ace.js"></script>
-	<script	src="../../scripts/components/others/responsive-tabs.js"></script>
 	<!-- endbuild -->
 	
 	<script th:inline="javascript" type="text/javascript">
@@ -364,9 +367,6 @@
 			    alert('Could not bootstrap, error: ' + error);
 			  }
 		});
-		 (function($) {
-		      fakewaffle.responsiveTabs(['xs', 'sm']);
-		  })(jQuery);
 	</script>
 </body>
 </html>

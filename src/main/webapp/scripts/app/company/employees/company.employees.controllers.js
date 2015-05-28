@@ -71,139 +71,6 @@ App.controller('CompanyEmployeesViewController',function ($scope, $rootScope,$ht
 	$scope.viewStyle=undefined;
 	$scope.employe={};
 	$scope.employeToInvite={};
-	$scope.companyCriteriaConfig={
-			name:"company",
-			defaultButtonLabel:"Company",
-			filterType:"ARRAY",
-			closeable:false,
-			editable:false,
-			buttonSelectedItemsFormater:function(data){
-				return data.label;
-			},
-			filterValue:[{name:""+USERINFO.company.id+"",label:USERINFO.company.name,ticked:false}],
-			defaultSelectedItems:function(data){
-				var items=[];
-				angular.forEach(data,function(item){
-					if(item.name==""+USERINFO.company.id+""){
-						items.push(item);
-					}
-				});
-				return items;
-			},
-			currentFilter:{},
-			displayed: true
-	};
-	$scope.firstNameCriteriaConfig={
-			name:"firstName",
-			defaultButtonLabel:"First name",
-			filterType:"TEXT",
-			closeable:true,
-			filterValue:"",
-			onFilter: function(value) {
-				console.log('Filter text ['+value.field+'] searching: '+value.value);
-			},
-			currentFilter:{},
-			displayed: true
-	};
-	
-	$scope.lastNameCriteriaConfig={
-			name:"lastName",
-			defaultButtonLabel:"Last name",
-			filterType:"TEXT",
-			closeable:true,
-			filterValue:"",
-			onFilter: function(value) {
-				console.log('Filter text ['+value.field+'] searching: '+value.value);
-			},
-			currentFilter:{},
-			displayed: true
-	};
-	
-	$scope.civilityCriteriaConfig={
-			name:"gender",
-			defaultButtonLabel:"H/F",
-			filterType:"ARRAY",
-			closeable:true,
-			filterValue:
-				[{name:"HOMME",label:"Homme",ticked:false},{name:"FEMME",label:"Femme",ticked:false}],
-			onFilter: function(value) {
-				console.log('Filter checkbox ['+value.field+'] selected items '+value.value.length);
-			},
-			currentFilter:{},
-			displayed: false
-	};
-	
-	$scope.dateNaissanceCriteriaConfig={
-			name:"birthDay",
-			defaultButtonLabel:"Date",
-			filterType:"DATE",
-			closeable:true,
-			filterValue:"",
-			onFilter: function(value) {
-				console.log('Filter text ['+value.field+'] searching: '+value.value);
-			},
-			currentFilter:{},
-			displayed: false
-	};
-	
-	$scope.criteriaBarConfig={
-		criterions:[$scope.companyCriteriaConfig,$scope.civilityCriteriaConfig,$scope.firstNameCriteriaConfig,$scope.lastNameCriteriaConfig,$scope.dateNaissanceCriteriaConfig],
-		autoFilter:true,
-		filters:[]
-	};
-	
-	$scope.doFilter=function(data){
-		var serverFilter={filter:data};
-		$scope.criteriaBarFilter=JSON.stringify(serverFilter);
-		$scope.$broadcast('criteriaDofilter', JSON.stringify(serverFilter));
-	};
-	
-	$scope.refreshDatas=function(){
-		$scope.tableParams.reload();
-	};
-	$scope.tableFilter="";
-	
-	
-	$scope.doFilterList=function(data){
-		$scope.tableFilter=data;
-		$scope.refreshDatas();
-	};
-	
-	$scope.$on('criteriaDofilter', function(event, args) {
-		$scope.doFilterList(args);
-	});
-	
-	$scope.tableParams = new ngTableParams({
-		page : 1, // show first page
-		count : 10, // count per page
-		sorting : {
-			id : 'desc' // initial sorting
-		}
-	}, {
-		total : 0, // length of data
-		getData : function($defer, params) {
-			if($scope.tableFilter!=="" && $scope.tableFilter!==undefined){
-				EmployeesREST.get(
-						{
-							page:params.$params.page-1,
-							size:params.$params.count,
-							sort:params.$params.sorting,
-							filter:$scope.tableFilter
-						},function(data) {
-					params.total(data.totalCount);
-					$scope.startIndex=data.startIndex;
-					$scope.endIndex=data.endIndex;
-					if(data.totalCount>=1){
-						$scope.hasDatas=true;
-					}else {
-						$scope.hasDatas=false;
-					}
-					allAbsence=data.result;
-					// set new data
-					$defer.resolve(data.result);
-				});
-			}
-		}});
 	
 	$scope.postEmploye=function(hideFn){
 		$scope.employe.companyId=USERINFO.company.id;
@@ -223,15 +90,44 @@ App.controller('CompanyEmployeesViewController',function ($scope, $rootScope,$ht
 
 App.controller('CompanyEmployeesQuickViewController',function ($scope,$http,EmployeesREST,ngTableParams,$state,USERINFO){
 	$scope.employees=[];
-	$scope.employeesListFilter="";
+	$scope.employeesFilterText="";
+	$scope.employeesFilter="";
 	$scope.doFilterList=function(data){
 		$scope.employeesListFilter=data;
 	};
-	$scope.tableParams.settings().counts=[];
-	$scope.doFilterList($scope.criteriaBarFilter);
-	$scope.$on('criteriaDofilter', function(event, args) {
-		$scope.doFilterList(args);
-	});
+	$scope.filterEmployees=function(employeesFilterText){
+		$scope.employeesFilter="{\"filter\":[{\"type\":\"TEXT\",\"field\":\"global\",\"value\":\""+employeesFilterText+"\"}]}";
+		$scope.tableParams.reload();
+	};
+	$scope.tableParams = new ngTableParams({
+		page : 1, // show first page
+		count : 10, // count per page
+		sorting : {
+			id : 'desc' // initial sorting
+		}
+	}, {
+		total : 0, // length of data
+		getData : function($defer, params) {
+				EmployeesREST.get(
+						{
+							page:params.$params.page-1,
+							size:params.$params.count,
+							sort:params.$params.sorting,
+							filter:$scope.employeesFilter
+						},function(data) {
+					params.total(data.totalCount);
+					$scope.startIndex=data.startIndex;
+					$scope.endIndex=data.endIndex;
+					if(data.totalCount>=1){
+						$scope.hasDatas=true;
+					}else {
+						$scope.hasDatas=false;
+					}
+					allAbsence=data.result;
+					// set new data
+					$defer.resolve(data.result);
+				});
+		}});
 });
 
 App.controller('CompanyEmployeesListController',function ($scope, $rootScope,$http,EmployeesREST,ngTableParams,$state){
@@ -240,7 +136,7 @@ App.controller('CompanyEmployeesListController',function ($scope, $rootScope,$ht
 	        //console.info(user);
 	        $state.go('company.employees.details',{ id:user.id });
 	 };
-	 $scope.tableParams.settings().counts=[10, 25, 50, 100];
+//	 $scope.tableParams.settings().counts=[10, 25, 50, 100];
 	 
 });
 

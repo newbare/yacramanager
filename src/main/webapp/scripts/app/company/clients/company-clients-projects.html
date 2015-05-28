@@ -11,15 +11,18 @@
 			                 <span class="glyphicon" data-ng-class="{ 'glyphicon-chevron-right': group.$hideRows, 'glyphicon-chevron-down': !group.$hideRows }"></span>
 			                 <strong>{{group.value}}</strong>
 			             </a>
-			             <button  type="button" class="btn btn-success btn-white btn-xs pull-right" data-ng-click="selectActiveTask(task)" data-placement="top " data-title="Select employee ..." data-template="{{appContextPath}}scripts/templates/partials/search-employees-popover.tpl.html" data-animation="am-flip-x" data-auto-close="1" data-bs-popover><i class="fa fa-plus"></i> Assign employe to this project</button>
+			             <span class="text-muted m-l-sm"><small>{{group.data[0].project.description}}</small></span>
+			             <span class="text-warning m-l-md">{{group.data[0].project.numberOfEmployes}} employees assigned</span>
+			             <span class="text-warning m-l-md">{{group.data[0].project.numberOfTasks}} task</span>
+			             <button  type="button" class="btn btn-success btn-white btn-xs m-l-md" data-ng-click="selectActiveProject(task)" data-placement="top " data-title="Select employee ..." data-template="{{appContextPath}}scripts/templates/partials/search-employees-popover.tpl.html" data-animation="am-flip-x" data-auto-close="1" data-bs-popover><i class="fa fa-plus"></i> Assign employe to this project</button>
 			         </td>
 			     </tr>
-			     <tr data-ng-hide="group.$hideRows" data-ng-repeat="employeesProject in group.data">
+			     <tr data-ng-hide="group.$hideRows" data-ng-repeat="employeesProject in group.data" data-ng-if="employeesProject.employe">
 			        <td class="project-color"><i data-ng-if="employeesProject.project.color" class="fa fa-circle fa-2x" data-ng-style="{'color': employeesProject.project.color}"></i></td>
 			        <td class="project-people"><img alt="image" class="img-circle" data-ng-src="/app/api/users/avatar/{{employeesProject.id.employeeId}}"></td>
 			        <!-- <td data-title="'Assign date'" data-sortable="'joinDate'">{{ employeesProject.joinDate | date : 'short'}}</td> -->
 					<td><span>{{employeesProject.employe.firstName}} {{employeesProject.employe.lastName}}</span><br/> <small class="text-muted">Joined {{ employeesProject.joinDate | date : 'short'}}</small></td>
-					<td data-sortable="'dailyRate'"><a href="#" data-editable-number="employeesProject.dailyRate" data-buttons="no">{{ (employeesProject.dailyRate | currency )|| 0}}</a></td>
+					<td class="project-daily-rate" data-sortable="'dailyRate'"><strong><a href="#" data-editable-number="employeesProject.dailyRate" data-buttons="no" data-e-style="width: 100px;">{{ (employeesProject.dailyRate | currency )|| 0}}</a></strong></td>
 					<td data-ng-if="employeesProject.leaveDate">{{ employeesProject.leaveDate | date : 'short'}}</td>
 					<td class="">
 						  <a type="button" class="btn btn-link" data-ng-click="editTask(task.id)"><span class="fa fa-pencil"></span></a>

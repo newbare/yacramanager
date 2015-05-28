@@ -1,3 +1,46 @@
+tr.task-element,
+tr.project-element{
+	border-left: 3px solid;
+}
+
+tr.ng-table-group:HOVER{
+	background-color: inherit !important;
+}
+tr.ng-table-group{
+	background-color:#eee; 
+}
+
+.footer-v1 .copyright p {
+	color: #eee;
+	margin-top: 14px;
+}
+.footer-v1 .copyright {
+	background: #222;
+	border-top: none;
+	padding: 10px 0 5px;
+}
+.footer-v1 .footer-socials {
+	margin-top: 12px;
+	text-align: right;
+}
+
+.footer-v1 .footer-socials li a {
+	color: #777;
+	font-size: 16px;
+}
+.footer-v1 .copyright a {
+	margin: 0 2px;
+}
+
+.footer-v1 .copyright a{
+	color: #777;
+}
+
+.footer-v1 .copyright a:HOVER{
+	color: #337ab7;
+	text-decoration: none;
+}
+
 @media (min-width: 768px) {
   .dl-horizontal dt {
   width: 80px;
@@ -23,6 +66,10 @@ td.project-color{
 }
 td.project-people{
 	width: 50px;
+}
+
+td.project-daily-rate{
+	width: 150px;
 }
 .panel-body.with-sub-navbar{
 	/* padding-top: 0px !important; */
@@ -777,7 +824,7 @@ timer>span {
 /* feat: before angular is ready, display loading animation */
 body.waiting-for-angular div#app-login-content,
 body.waiting-for-angular div#app-content,
-body.waiting-for-angular div.footer
+body.waiting-for-angular div.footer-v1
 	{
 	display: none;
 }

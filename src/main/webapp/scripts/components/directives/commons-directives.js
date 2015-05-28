@@ -194,7 +194,7 @@ App.directive('authApplicationSupport', function($timeout,$modal) {
         link: function(scope, elem, attrs) {
           var login = elem.find('#app-login-content');
           var main = elem.find('#app-content');
-          var mainFooter = elem.find('#main-footer');
+          var mainFooter = elem.find('.footer-v1');
 		  var loginModal = undefined;
 		  var modalInitialized=false;
           var initModal=function(){
