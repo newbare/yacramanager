@@ -206,6 +206,7 @@ App.config(function($urlRouterProvider) {
 	.when('/company/employees/view/quickview/{id}', '/company/employees/view/quickview/{id}/basic')
 	.when('/company/clients', '/company/clients/view/quickview')
 	.when('/company/clients/view', '/company/clients/view/quickview')
+	.when('/company/clients/view/quickview/{id}', '/company/clients/view/quickview/{id}/infos')
 	.when('/company/projects', '/company/projects/view/quickview')
 	.when('/company/projects/view', '/company/projects/view/quickview')
 	.when('/admin', '/admin/home')

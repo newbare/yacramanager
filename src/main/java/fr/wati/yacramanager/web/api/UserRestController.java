@@ -250,27 +250,36 @@ public class UserRestController {
 
 	@RequestMapping(value = "/avatar/{userId}", method = RequestMethod.GET)
 	@ResponseBody
-	public ResponseEntity<InputStreamResource> downloadUserAvatarImage(@PathVariable Long userId,HttpServletRequest httpServletRequest) {
+	public ResponseEntity<InputStreamResource> downloadUserAvatarImage(
+			@PathVariable Long userId, HttpServletRequest httpServletRequest) {
 		Employe employe = employeService.findOne(userId);
-		if(employe!=null){
-			if(!employe.isSocialUser()){
-				
-			}else {
-				
-				try {
-					byte[] profileImage= IOUtils.toByteArray(new URI(employe.getProfileImageUrl()));
-					return ResponseEntity.ok()
-				            .contentType(MediaType.IMAGE_JPEG)
-				            .body(new InputStreamResource(new ByteArrayInputStream(profileImage)));
-				} catch (IOException | URISyntaxException e) {
-					LOG.error(e.getMessage(), e);
+		try {
+			if (employe != null && userId != 0) {
+				if (!employe.isSocialUser()) {
+					return ResponseEntity
+							.ok()
+							.contentType(MediaType.IMAGE_JPEG)
+							.body(new InputStreamResource(
+									new ByteArrayInputStream(userService.getAvatar(userId))));
+				} else {
+
+					byte[] profileImage = IOUtils.toByteArray(new URI(employe
+							.getProfileImageUrl()));
+					return ResponseEntity
+							.ok()
+							.contentType(MediaType.IMAGE_JPEG)
+							.body(new InputStreamResource(
+									new ByteArrayInputStream(profileImage)));
+
 				}
 			}
+		} catch (IOException | URISyntaxException e) {
+			LOG.error(e.getMessage(), e);
 		}
-		InputStream defaultAvatar = httpServletRequest.getServletContext().getResourceAsStream("/assets/images/users/no_user_pic.jpg");
-	    return ResponseEntity.ok()
-	            .contentType(MediaType.IMAGE_JPEG)
-	            .body(new InputStreamResource(defaultAvatar));
+		InputStream defaultAvatar = httpServletRequest.getServletContext()
+				.getResourceAsStream("/assets/images/users/no_user_pic.jpg");
+		return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG)
+				.body(new InputStreamResource(defaultAvatar));
 	}
 	
 }

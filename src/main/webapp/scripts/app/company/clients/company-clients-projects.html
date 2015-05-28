@@ -15,11 +15,11 @@
 			         </td>
 			     </tr>
 			     <tr data-ng-hide="group.$hideRows" data-ng-repeat="employeesProject in group.data">
-			        <td data-ng-style="{'background-color': employeesProject.project.color}"></td>
+			        <td class="project-color"><i data-ng-if="employeesProject.project.color" class="fa fa-circle fa-2x" data-ng-style="{'color': employeesProject.project.color}"></i></td>
 			        <td class="project-people"><img alt="image" class="img-circle" data-ng-src="/app/api/users/avatar/{{employeesProject.id.employeeId}}"></td>
 			        <!-- <td data-title="'Assign date'" data-sortable="'joinDate'">{{ employeesProject.joinDate | date : 'short'}}</td> -->
 					<td><span>{{employeesProject.employe.firstName}} {{employeesProject.employe.lastName}}</span><br/> <small class="text-muted">Joined {{ employeesProject.joinDate | date : 'short'}}</small></td>
-					<td data-sortable="'dailyRate'">{{ employeesProject.dailyRate | currency:"EUR"}}</td>
+					<td data-sortable="'dailyRate'"><a href="#" data-editable-number="employeesProject.dailyRate" data-buttons="no">{{ (employeesProject.dailyRate | currency )|| 0}}</a></td>
 					<td data-ng-if="employeesProject.leaveDate">{{ employeesProject.leaveDate | date : 'short'}}</td>
 					<td class="">
 						  <a type="button" class="btn btn-link" data-ng-click="editTask(task.id)"><span class="fa fa-pencil"></span></a>

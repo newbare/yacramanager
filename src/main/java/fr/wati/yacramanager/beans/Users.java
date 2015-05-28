@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,6 +20,7 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
@@ -57,7 +59,9 @@ public class Users extends AuditableEntity  {
 	@OneToMany
 	@JoinColumn(name="userId", referencedColumnName="id")
 	private List<Settings> settings=new ArrayList<>();
-	
+	@Lob
+	@Basic(fetch=FetchType.LAZY)
+	private byte[] avatar;
 	/**
 	 * @return the password
 	 */
@@ -202,6 +206,20 @@ public class Users extends AuditableEntity  {
 
 	
 	
+	/**
+	 * @return the avatar
+	 */
+	public byte[] getAvatar() {
+		return avatar;
+	}
+
+	/**
+	 * @param avatar the avatar to set
+	 */
+	public void setAvatar(byte[] avatar) {
+		this.avatar = avatar;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;

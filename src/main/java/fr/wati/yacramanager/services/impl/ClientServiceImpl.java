@@ -9,6 +9,7 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -186,6 +187,11 @@ public class ClientServiceImpl implements ClientService {
 				FilterText filterText=(FilterText) filter;
 				if("name".equals(filterText.getField())){
 					return CommonSpecifications.likeIgnoreCase(filterText.getValue(), Client_.name);
+				}
+				if("global".equals(filterText.getField())){
+					return Specifications
+							.where(CommonSpecifications.likeIgnoreCase(
+									filterText.getValue(), Client_.name));
 				}
 				break;
 			default:

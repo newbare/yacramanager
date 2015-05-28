@@ -1,3 +1,13 @@
+@media (min-width: 768px) {
+  .dl-horizontal dt {
+  width: 80px;
+  }
+  .dl-horizontal dd {
+    margin-left: 100px;
+    margin-bottom: 5px;
+  }
+}
+
 .project-list table tr td {
 border-top: none;
 border-bottom: 1px solid #e7eaec;
@@ -7,6 +17,12 @@ vertical-align: middle;
 .project-people img {
 width: 32px;
 height: 32px;
+}
+td.project-color{
+	width: 50px;
+}
+td.project-people{
+	width: 50px;
 }
 .panel-body.with-sub-navbar{
 	/* padding-top: 0px !important; */
@@ -605,7 +621,7 @@ ul#strength {
 
 table.table>tr>td,table.table>tbody>tr>td {
 	/* max-width:50px; */
-	width: auto;
+	/* width: auto; */
 	min-width: 10px;
 }
 

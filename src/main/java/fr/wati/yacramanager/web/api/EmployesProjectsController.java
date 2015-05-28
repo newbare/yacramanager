@@ -6,6 +6,10 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.inject.Inject;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
@@ -15,6 +19,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.domain.Sort.Order;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,8 +32,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.codahale.metrics.annotation.Timed;
 
+import fr.wati.yacramanager.beans.Client_;
 import fr.wati.yacramanager.beans.EmployesProjects;
 import fr.wati.yacramanager.beans.EmployesProjectsId;
+import fr.wati.yacramanager.beans.EmployesProjects_;
+import fr.wati.yacramanager.beans.Project_;
+import fr.wati.yacramanager.dao.specifications.CommonSpecifications;
 import fr.wati.yacramanager.services.EmployeService;
 import fr.wati.yacramanager.services.EmployesProjectsService;
 import fr.wati.yacramanager.services.ProjectService;
@@ -77,7 +86,7 @@ public class EmployesProjectsController {
 	@RequestMapping(method = RequestMethod.GET)
 	public List<EmployesProjectsDTO> getAll(
 			@PathVariable("companyId") Long companyId,
-			@PathVariable("clientId") Long clientId,
+			@PathVariable("clientId") final Long clientId,
 			@RequestParam(required = false) Integer page,
 			@RequestParam(required = false) Integer size,
 			@RequestParam(required = false, value = "sort") Map<String, String> sort,
@@ -103,6 +112,13 @@ public class EmployesProjectsController {
 			specifications = Specifications.where(SpecificationBuilder
 					.buildSpecification(filters, employesProjectsService));
 		}
+		//Force filter on client id
+		specifications=Specifications.where(new Specification<EmployesProjects>() {
+			public Predicate toPredicate(Root<EmployesProjects> root,
+					CriteriaQuery<?> query, CriteriaBuilder builder) {
+				return builder.equal(root.join(EmployesProjects_.project).join(Project_.client).get(Client_.id),clientId);
+			}
+		}).and(specifications);
 		PageRequest pageable = null;
 		if (sort != null) {
 			List<Order> orders = new ArrayList<>();

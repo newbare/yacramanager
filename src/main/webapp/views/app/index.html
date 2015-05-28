@@ -344,6 +344,7 @@
 	<script	src="../../scripts/components/directives/angular-criterias.js"></script>
 	<script	src="../../scripts/components/widgets/widgets.controllers.js"></script>
 	<script	src="../../scripts/components/others/ace.js"></script>
+	<script	src="../../scripts/components/others/responsive-tabs.js"></script>
 	<!-- endbuild -->
 	
 	<script th:inline="javascript" type="text/javascript">
@@ -363,6 +364,9 @@
 			    alert('Could not bootstrap, error: ' + error);
 			  }
 		});
+		 (function($) {
+		      fakewaffle.responsiveTabs(['xs', 'sm']);
+		  })(jQuery);
 	</script>
 </body>
 </html>

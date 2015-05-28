@@ -211,6 +211,15 @@ public class UserServiceImpl implements UserService{
 			String socialProviderId) {
 		return userRepository.findBySocialUserIdAndSocialProviderId(socialUserId, socialProviderId);
 	}
+
+	/* (non-Javadoc)
+	 * @see fr.wati.yacramanager.services.UserService#getAvatar(java.lang.Long)
+	 */
+	@Override
+	@Transactional
+	public byte[] getAvatar(Long userId) {
+		return findOne(userId).getAvatar();
+	}
 	
 }
 

@@ -1,67 +1,18 @@
 /*COMPANY-CLIENT section*/
 App.controller('CompanyClientsViewController',function ($scope, $rootScope,$http,ClientsREST,ngTableParams,$state,alertService,$state,USERINFO){
 	$scope.tableFilter="";
+	$scope.clientFilterText="";
+	$scope.clientFilter="";
 	$scope.$state=$state;
 	$scope.client={};
-	$scope.companyCriteriaConfig={
-			name:"company",
-			defaultButtonLabel:"Company",
-			filterType:"ARRAY",
-			closeable:false,
-			editable:false,
-			buttonSelectedItemsFormater:function(data){
-				return data.label;
-			},
-			filterValue:[{name:""+USERINFO.company.id+"",label:USERINFO.company.name,ticked:false}],
-			defaultSelectedItems:function(data){
-				var items=[];
-				angular.forEach(data,function(item){
-					if(item.name==""+USERINFO.company.id+""){
-						items.push(item);
-					}
-				});
-				return items;
-			},
-			currentFilter:{},
-			displayed: true
-	};
-	$scope.nameCriteriaConfig={
-			name:"name",
-			defaultButtonLabel:"Client name",
-			filterType:"TEXT",
-			closeable:true,
-			filterValue:"",
-			onFilter: function(value) {
-				//console.log('Filter text ['+value.field+'] searching: '+value.value);
-			},
-			currentFilter:{},
-			displayed: true
-	};
-	
-	
-	$scope.criteriaBarConfig={
-		criterions:[$scope.companyCriteriaConfig,$scope.nameCriteriaConfig],
-		autoFilter:true,
-		filters:[]
-	};
-	
-	$scope.doFilter=function(data){
-		var serverFilter={filter:data};
-		$scope.criteriaBarFilter=JSON.stringify(serverFilter);
-		$scope.$broadcast('criteriaDofilter', JSON.stringify(serverFilter));
-	};
-	
-	$scope.refreshDatas=function(){
-		$scope.tableParams.reload();
-	};
 	
 	$scope.hasDatas=false;
 	
-	$scope.doFilterList=function(data){
-		$scope.tableFilter=data;
-		$scope.refreshDatas();
+
+	$scope.filterClients=function(clientFilterText){
+		$scope.clientFilter="{\"filter\":[{\"type\":\"TEXT\",\"field\":\"global\",\"value\":\""+clientFilterText+"\"}]}";
+		$scope.tableParams.reload();
 	};
-	
 	$scope.$on('criteriaDofilter', function(event, args) {
 		$scope.doFilterList(args);
 	});
@@ -75,14 +26,13 @@ App.controller('CompanyClientsViewController',function ($scope, $rootScope,$http
 	}, {
 		total : 0, // length of data
 		getData : function($defer, params) {
-			if($scope.tableFilter!=="" && $scope.tableFilter!==undefined){
 				ClientsREST.get(
 						{
 							companyId : USERINFO.company.id,
 							page:params.$params.page-1,
 							size:params.$params.count,
 							sort:params.$params.sorting,
-							filter:$scope.tableFilter
+							filter:$scope.clientFilter
 						},function(data) {
 					params.total(data.totalCount);
 					$scope.startIndex=data.startIndex;
@@ -96,7 +46,6 @@ App.controller('CompanyClientsViewController',function ($scope, $rootScope,$http
 					// set new data
 					$defer.resolve(data.result);
 				});
-			}
 		}});
 	$scope.postClient=function(hideFn){
 		$scope.client.companyId=parseInt(USERINFO.company.id);

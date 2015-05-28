@@ -13,11 +13,13 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import fr.wati.yacramanager.beans.Activities.ActivityOperation;
 import fr.wati.yacramanager.beans.Client;
+import fr.wati.yacramanager.beans.Client_;
 import fr.wati.yacramanager.beans.Employe;
 import fr.wati.yacramanager.beans.EmployesProjects;
 import fr.wati.yacramanager.beans.Project;
@@ -195,6 +197,11 @@ public class ProjectServiceImpl implements ProjectService{
 				}
 				if("name".equals(filterText.getField())){
 					return CommonSpecifications.likeIgnoreCase(filterText.getValue(), Project_.name);
+				}
+				if("global".equals(filterText.getField())){
+					return Specifications
+							.where(CommonSpecifications.likeIgnoreCase(filterText.getValue(), Project_.name))
+							.or(CommonSpecifications.likeIgnoreCase(filterText.getValue(), Project_.description));
 				}
 				break;
 			case DATE:
