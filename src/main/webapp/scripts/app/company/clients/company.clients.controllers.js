@@ -26,7 +26,7 @@ App.controller('CompanyClientsViewController',function ($scope, $rootScope,$http
 	}, {
 		total : 0, // length of data
 		getData : function($defer, params) {
-				ClientsREST.get(
+				ClientsREST.query(
 						{
 							companyId : USERINFO.company.id,
 							page:params.$params.page-1,
@@ -42,9 +42,9 @@ App.controller('CompanyClientsViewController',function ($scope, $rootScope,$http
 					}else {
 						$scope.hasDatas=false;
 					}
-					allAbsence=data.result;
+					allAbsence=data;
 					// set new data
-					$defer.resolve(data.result);
+					$defer.resolve(data);
 				});
 		}});
 	$scope.postClient=function(hideFn){
@@ -77,7 +77,7 @@ App.controller('CompanyClientsListController',function ($scope, $rootScope,$http
 	 $scope.tableParams.settings().counts=[10, 25, 50, 100];
 });
 
-App.controller('CompanyClientsOverviewController',function ($scope,ClientsREST,ProjectsREST,client,alertService,USERINFO,ActivitiesREST,EmployeesProjectsREST,ngTableParams){
+App.controller('CompanyClientsOverviewController',function ($scope,ClientsREST,ProjectsREST,client,alertService,USERINFO,ActivitiesREST,EmployeesProjectsREST,ngTableParams,EmployeesREST){
 	$scope.client=client;
 	$scope.contactFilter='';
 	$scope.timelineSource=undefined;
@@ -154,6 +154,36 @@ App.controller('CompanyClientsOverviewController',function ($scope,ClientsREST,P
 	$scope.refreshEmployeesProjectsDatas=function(){
 		$scope.clientsEmployeesTableParams.reload();
 	};
+	//Assign employe to project
+	$scope.format=function(employee){
+		return employee.firstName +' '+employee.lastName;
+	};
+	
+	$scope.selectActiveProject =function(project){
+		$scope.activeProject=project;
+	};
+	$scope.addSelectedEmployees=function(currentProject,foundEmployees,hideFn){
+		var employeesList=[];
+		angular.forEach(foundEmployees,function(employee){
+			employeesList.push(employee.id);
+		});
+		
+		ProjectsREST.assignEmployeeToProject({companyId:USERINFO.company.id,projectId:$scope.activeProject.id,employeesIds:employeesList},null,function(result){
+			$scope.reset();
+			hideFn();
+		});
+	};
+	
+	EmployeesREST.get(
+			{
+				page:0,
+				size:100,
+				sort:"lastName",
+				filter:{"filter":[{"type":"ARRAY","field":"company","value":[{"name":""+USERINFO.company.id+"","label":"","ticked":true}]}]}
+			},function(data) {
+				$scope.companyEmployees=data.result;
+	});
+	//End of assign employe to project
 	
 	$scope.employeesProjectsClientCriteriaConfig={
 			name:"client",
@@ -195,7 +225,6 @@ App.controller('CompanyClientsOverviewController',function ($scope,ClientsREST,P
           return employeesProjects.project.name;
         },
         getData: function($defer, params) {
-        	if($scope.employeesProjectsTableFilter!==undefined && $scope.employeesProjectsTableFilter!==''){
         		EmployeesProjectsREST.query(
 						{
         					companyId:USERINFO.company.id,
@@ -217,7 +246,6 @@ App.controller('CompanyClientsOverviewController',function ($scope,ClientsREST,P
 					// set new data
 					$defer.resolve(data);
 				});
-			}
         }
     });
 });

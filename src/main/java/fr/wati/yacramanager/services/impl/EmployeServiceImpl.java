@@ -244,7 +244,7 @@ public class EmployeServiceImpl implements EmployeService {
 			companyAccountInfo.setCompany(createCompany);
 			CompanyAccountInfo savedCompanyAccountInfo = companyAccountInfoRepository.save(companyAccountInfo);
 			createCompany.setCompanyAccountInfo(savedCompanyAccountInfo);
-			projectService.addEmployeToProject(createCompany.getClients().get(0).getProjects().get(0), saveEmploye, false, BigDecimal.ZERO);
+			projectService.assignEmployeToProject(createCompany.getClients().get(0).getProjects().get(0).getId(), saveEmploye.getId(), false, BigDecimal.ZERO);
 			createCompany.getClients().get(0).getProjects().get(0).getTasks().get(0).getAssignedEmployees().add(saveEmploye);
 			employe.getTasks().add(createCompany.getClients().get(0).getProjects().get(0).getTasks().get(0));
 		}
@@ -257,7 +257,7 @@ public class EmployeServiceImpl implements EmployeService {
 		if(invitation!=null && invitation.isStillValid()){
 			Company company2 = companyService.findOne(Long.valueOf(invitation.getCompanyId()));
 			employe.setCompany(company2);
-			projectService.addEmployeToProject(company2.getClients().get(0).getProjects().get(0), employe, false, BigDecimal.ZERO);
+			projectService.assignEmployeToProject(company2.getClients().get(0).getProjects().get(0).getId(), employe.getId(), false, BigDecimal.ZERO);
 			employe.getTasks().add(company2.getClients().get(0).getProjects().get(0).getTasks().get(0));
 			company2.getClients().get(0).getProjects().get(0).getTasks().get(0).getAssignedEmployees().add(employe);
 		}else {

@@ -11,6 +11,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -18,8 +19,12 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.domain.Sort.Order;
 import org.springframework.data.jpa.domain.Specifications;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.method.P;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -209,6 +214,34 @@ public class WorkLogRestController {
 		workLogService.delete(id);
 	}
 	
-
+	@RequestMapping(value = "/client/{clientId}", method = RequestMethod.GET)
+	@PreAuthorize("@clientService.findOne(#clientId).getCompany().getId().equals(principal.getDomainUser().getCompany().getId())")
+	@Timed
+	public Long clientWorkLog(
+			@PathVariable("clientId") @P("clientId") Long clientId,
+			@RequestParam(value="startDate",required=false) @DateTimeFormat(iso = ISO.DATE) LocalDate startDate,
+			@RequestParam(value="endDate",required=false) @DateTimeFormat(iso = ISO.DATE) LocalDate endDate) {
+		return 0L;
+	}
+	
+	@RequestMapping(value = "/project/{projectId}", method = RequestMethod.GET)
+	@PreAuthorize("@projectService.findOne(#projectId).getClient().getCompany().getId().equals(principal.getDomainUser().getCompany().getId())")
+	@Timed
+	public Long projectWorkLog(
+			@PathVariable("projectId") @P("projectId") Long projectId,
+			@RequestParam(value="startDate",required=false) @DateTimeFormat(iso = ISO.DATE) LocalDate startDate,
+			@RequestParam(value="endDate",required=false) @DateTimeFormat(iso = ISO.DATE) LocalDate endDate) {
+		return 0L;
+	}
+	
+	@RequestMapping(value = "/task/{taskId}", method = RequestMethod.GET)
+	@PreAuthorize("@taskService.findOne(#taskId).getProject().getClient().getCompany().getId().equals(principal.getDomainUser().getCompany().getId())")
+	@Timed
+	public Long taskWorkLog(
+			@PathVariable("taskId") @P("taskId") Long clientId,
+			@RequestParam(value="startDate",required=false) @DateTimeFormat(iso = ISO.DATE) LocalDate startDate,
+			@RequestParam(value="endDate",required=false) @DateTimeFormat(iso = ISO.DATE) LocalDate endDate) {
+		return 0L;
+	}
 	
 }

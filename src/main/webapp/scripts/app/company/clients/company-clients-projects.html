@@ -1,10 +1,17 @@
 <div class="tab-pane">
 	<h3 class="header smaller lighter blue">Project assignation</h3>
 	<div class="row">
-		<div data-ng-criteria-bar data-criteria-bar-config="employeesProjectsCriteriaBarConfig" data-do-filter="employeesProjectsDoFilter(employeesProjectsCriteriaBarConfig.filters)"></div>
+		<div class="row">
+			<div class="col-lg-6">
+				<div class="input-group input-group-sm">
+					<input type="text" data-ng-model="projectFilter" class="form-control input-sm" placeholder="Filter projects">
+					<span class="input-group-addon "><i class="fa fa-search"></i></span>
+				</div>
+			</div>
+		</div>
 		<div class="table-responsive project-list" data-ng-if="desktopScreen">
 			<table data-ng-table="clientsEmployeesTableParams" class="table ng-table-responsive">
-			     <tbody data-ng-repeat="group in $groups">
+			     <tbody data-ng-repeat="group in $groups | searchField: 'name': 'description' | filter: projectFilter">
 			     <tr class="ng-table-group">
 			         <td colspan="{{$columns.length}}">
 			             <a href="" data-ng-click="group.$hideRows = !group.$hideRows">
@@ -14,37 +21,25 @@
 			             <span class="text-muted m-l-sm"><small>{{group.data[0].project.description}}</small></span>
 			             <span class="text-warning m-l-md">{{group.data[0].project.numberOfEmployes}} employees assigned</span>
 			             <span class="text-warning m-l-md">{{group.data[0].project.numberOfTasks}} task</span>
-			             <button  type="button" class="btn btn-success btn-white btn-xs m-l-md" data-ng-click="selectActiveProject(task)" data-placement="top " data-title="Select employee ..." data-template="{{appContextPath}}scripts/templates/partials/search-employees-popover.tpl.html" data-animation="am-flip-x" data-auto-close="1" data-bs-popover><i class="fa fa-plus"></i> <strong>Assign employe to this project</strong></button>
+			             <button  type="button" class="btn btn-success btn-white btn-xs m-l-md" data-ng-click="selectActiveProject(group.data[0].project)" data-placement="top " data-title="Select employee ..." data-template="{{appContextPath}}scripts/templates/partials/search-employees-popover.tpl.html" data-animation="am-flip-x" data-auto-close="1" data-bs-popover><i class="fa fa-plus"></i> <strong>Assign employe to this project</strong></button>
 			         </td>
 			     </tr>
-			     <tr class="project-element" data-ng-style="{'border-left-color' : employeesProject.project.color}"  data-ng-hide="group.$hideRows" data-ng-repeat="employeesProject in group.data" data-ng-if="employeesProject.employe">
+			     <tr class="project-element" data-ng-style="{'border-left-color' : employeesProject.project.color}"  data-ng-hide="group.$hideRows" data-ng-repeat="employeesProject in group.data | searchField: 'name': 'description' | filter: projectFilter" data-ng-if="employeesProject.employe">
 			        <td class="project-people"><img alt="image" class="img-circle" data-ng-src="/app/api/users/avatar/{{employeesProject.id.employeeId}}"></td>
 			        <!-- <td data-title="'Assign date'" data-sortable="'joinDate'">{{ employeesProject.joinDate | date : 'short'}}</td> -->
 					<td><span>{{employeesProject.employe.firstName}} {{employeesProject.employe.lastName}}</span><br/> <small class="text-muted">Joined {{ employeesProject.joinDate | date : 'short'}}</small></td>
 					<td class="project-daily-rate" data-sortable="'dailyRate'"><strong><a href="#" data-editable-number="employeesProject.dailyRate" data-buttons="no" data-e-style="width: 100px;">{{ (employeesProject.dailyRate | currency )|| 0}}</a></strong></td>
 					<td data-ng-if="employeesProject.leaveDate">{{ employeesProject.leaveDate | date : 'short'}}</td>
-					<td class="">
-						  <a type="button" class="btn btn-link" data-ng-click="editTask(task.id)"><span class="fa fa-pencil"></span></a>
-						  <a type="button" class="btn btn-link" data-ng-if="task.createdBy==currentEmployeId" data-ng-click="deleteTask(task.id)" data-ng-confirm="Do you want to delete this entry ?"><span class="fa fa-trash-o red"></span></a>
+					<td class="project-actions">
+						  <button  class="btn btn-link" data-ng-click="editTask(task.id)"><span class="fa fa-pencil"></span></button>
+						  <button  class="btn btn-link" data-ng-if="task.createdBy==currentEmployeId" data-ng-click="deleteTask(task.id)" data-ng-confirm="Do you want to delete this entry ?"><span class="fa fa-trash-o red"></span></button>
 					</td>
 			   	</tr>
 			     </tbody>
 			</table>
 		</div>
 	</div>
-	<h3 class="header smaller lighter blue">{{client.projects.length}} Projects for {{ client.name || 'Name' }}</h3>
-	<div class="row">
-		<div class="col-lg-6">
-			<div class="input-group input-group-sm">
-				<span class="input-group-addon "><i class="fa fa-search"></i></span>
-				<input type="text" data-ng-model="projectFilter" class="form-control input-sm" placeholder="Filter projects">
-				 <span class="input-group-btn">
-					<button class="btn btn-success" data-ng-click="addNewProject(client)"><i class="fa fa-plus"></i> Add project</button>
-				</span>
-			</div>
-		</div>
-	</div>
-	<ul class="list-group">
+	<!-- <ul class="list-group">
 	  <li class="list-group-item am-fade"  data-ng-repeat="project in client.projects | searchField: 'name': 'description' | filter: projectFilter" >
 	    <ul class="list-inline">
 	    	<span style="float: right;" data-ng-if="!project.isnew">
@@ -66,5 +61,5 @@
 	    	<li><button type="button" class="btn btn-danger btn-xs" data-ng-if="project.isnew" data-ng-click="deleteProject(project,$index)">Cancel</button></li>
 	    </ul>
 	  </li>
-	</ul>
+	</ul> -->
 </div>

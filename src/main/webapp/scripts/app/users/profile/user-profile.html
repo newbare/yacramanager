@@ -2,8 +2,8 @@
 		<div>
 			<div class="row" >
 				<div class="col-md-3">
-			         <img data-ng-src="{{userInfo.profileImageUrl}}" class="img-thumbnail profile-picture" height="140" width="140"
-			         alt="Generic placeholder thumbnail">
+			         <img id="avatar" data-ng-src="/app/api/users/avatar/{{userInfo.id}}" class="img-thumbnail profile-picture editable-click" height="140" width="140"
+			         alt="Generic placeholder thumbnail" data-template="{{appContextPath}}scripts/templates/edit-avatar.tpl.html" data-bs-modal="modal">
 				</div>
 				<div class="col-md-9">
 					<h4><span class="">{{employe.lastName}} - {{employe.firstName}}</span></h4>

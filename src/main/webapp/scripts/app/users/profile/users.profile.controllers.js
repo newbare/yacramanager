@@ -2,7 +2,7 @@
  * 
  */
 
-App.controller('UserProfileController',function ($scope, $rootScope, UsersREST, alertService,EmployeesREST,USERINFO,ActivitiesREST) {
+App.controller('UserProfileController',function ($scope, $rootScope, UsersREST, alertService,EmployeesREST,USERINFO,ActivitiesREST,$upload) {
 	$rootScope.page = {
 		"title" : "User profile",
 		"description" : "Edit your profile"
@@ -14,6 +14,8 @@ App.controller('UserProfileController',function ($scope, $rootScope, UsersREST, 
 		value : 'FEMME',
 		text : 'Femme'
 	} ];
+	
+	$scope.selectedFile=undefined;
 	$scope.newPassword = "";
 	$scope.confirmPassword = "";
 	$scope.canChangePassword = function() {
@@ -42,5 +44,33 @@ App.controller('UserProfileController',function ($scope, $rootScope, UsersREST, 
 	
 	$scope.updateEmploye = function() {
 		return $scope.employe.$update();
+	};
+	
+	$scope.onFileSelect=function(selectedFile){
+		$scope.selectedFile=selectedFile;
+	}
+	
+	$scope.uploadAvatar = function(hideFn) {
+		if($scope.selectedFile){
+			$scope.upload = $upload.upload({
+				url : _contextPath+'app/api/users/avatar/'+USERINFO.id, // upload.php script, node.js route, or
+											// servlet url
+				file : $scope.selectedFile, // or list of files: $files for html5
+											// only
+			}).progress(
+					function(evt) {
+						console.log('percent: '	+ parseInt(100.0 * evt.loaded / evt.total));
+					}).success(function(data, status, headers, config) {
+				// file is uploaded successfully
+				console.log(data);
+				if(status==200){
+					hideFn();
+				}else {
+					hideFn();
+				}
+			});
+		}else {
+			
+		}
 	};
 });

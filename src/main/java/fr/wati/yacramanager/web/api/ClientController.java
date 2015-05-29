@@ -19,6 +19,8 @@ import org.springframework.data.domain.Sort.Order;
 import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.method.P;
+import org.springframework.security.access.prepost.PostFilter;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,7 +40,6 @@ import fr.wati.yacramanager.utils.Filter.FilterBuilder;
 import fr.wati.yacramanager.utils.SpecificationBuilder;
 import fr.wati.yacramanager.web.dto.ClientDTO;
 import fr.wati.yacramanager.web.dto.ContactDTO;
-import fr.wati.yacramanager.web.dto.ResponseWrapper;
 
 @RestController
 @RequestMapping("/app/api/{companyId}/client")
@@ -88,9 +89,10 @@ public class ClientController {
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(method = RequestMethod.GET)
+	@PostFilter("filterObject.getCompanyId().equals(#companyId)")
 	@Timed
-	public ResponseWrapper<List<ClientDTO>> getAll(
-			@PathVariable("companyId") Long companyId,
+	public List<ClientDTO> getAll(
+			@PathVariable("companyId") @P("companyId") Long companyId,
 			@RequestParam(required = false) Integer page,
 			@RequestParam(required = false) Integer size,
 			@RequestParam(required = false, value = "sort") Map<String, String> sort,
@@ -136,15 +138,12 @@ public class ClientController {
 
 		Page<Client> findBySpecificationAndOrder = clientService.findAll(
 				specifications, pageable);
-		ResponseWrapper<List<ClientDTO>> responseWrapper = new ResponseWrapper<>(
-				clientService.toClientDTOs(findBySpecificationAndOrder),
-				findBySpecificationAndOrder.getTotalElements());
+		List<ClientDTO> clientDTOs = clientService.toClientDTOs(findBySpecificationAndOrder);
 		long startIndex = findBySpecificationAndOrder.getNumber() * size + 1;
 		long endIndex = startIndex
 				+ findBySpecificationAndOrder.getNumberOfElements() - 1;
-		responseWrapper.setStartIndex(startIndex);
-		responseWrapper.setEndIndex(endIndex);
-		return responseWrapper;
+		
+		return clientDTOs;
 	}
 
 	@RequestMapping(method = RequestMethod.POST)

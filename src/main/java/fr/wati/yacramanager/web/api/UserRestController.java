@@ -41,6 +41,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.codahale.metrics.annotation.Timed;
 
@@ -48,6 +49,7 @@ import fr.wati.yacramanager.beans.Company_;
 import fr.wati.yacramanager.beans.Employe;
 import fr.wati.yacramanager.beans.Employe_;
 import fr.wati.yacramanager.beans.Role;
+import fr.wati.yacramanager.beans.Users;
 import fr.wati.yacramanager.dao.repository.EmployeDto;
 import fr.wati.yacramanager.dao.repository.EmployeRepository;
 import fr.wati.yacramanager.services.EmployeService;
@@ -267,13 +269,16 @@ public class UserRestController {
 		Employe employe = employeService.findOne(userId);
 		try {
 			if (employe != null && userId != 0) {
-				if (!employe.isSocialUser()) {
-					return ResponseEntity
-							.ok()
-							.contentType(MediaType.IMAGE_JPEG)
-							.body(new InputStreamResource(
-									new ByteArrayInputStream(userService.getAvatar(userId))));
-				} else {
+				if (employe.getAvatar()!=null) {
+					byte[] userAvatar = userService.getAvatar(userId);
+					if(userAvatar!=null){
+						return ResponseEntity
+								.ok()
+								.contentType(MediaType.IMAGE_JPEG)
+								.body(new InputStreamResource(
+										new ByteArrayInputStream(userService.getAvatar(userId))));
+					}
+				} else if(employe.isSocialUser()){
 
 					byte[] profileImage = IOUtils.toByteArray(new URI(employe
 							.getProfileImageUrl()));
@@ -294,4 +299,22 @@ public class UserRestController {
 				.body(new InputStreamResource(defaultAvatar));
 	}
 	
+	@RequestMapping(value="/avatar/{userId}",method = RequestMethod.POST)
+	@Timed
+	public ResponseEntity<String> updateAvatar(@PathVariable("userId") Long userId, @RequestParam("file") MultipartFile file) {
+		try {
+			if (file != null) {
+				Users user = userService.findOne(userId);
+				user.setAvatar(IOUtils.toByteArray(file
+						.getInputStream()));
+				userService.save(user);
+				return new ResponseEntity<>( HttpStatus.OK);
+			}
+			return new ResponseEntity<String>(HttpStatus.NOT_MODIFIED);
+		} catch (Exception exception) {
+			LOG.error(exception.getMessage(), exception);
+			return new ResponseEntity<String>(exception.getMessage(),
+					HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
 }

@@ -19,9 +19,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import fr.wati.yacramanager.beans.Activities.ActivityOperation;
 import fr.wati.yacramanager.beans.Client;
-import fr.wati.yacramanager.beans.Client_;
 import fr.wati.yacramanager.beans.Employe;
 import fr.wati.yacramanager.beans.EmployesProjects;
+import fr.wati.yacramanager.beans.EmployesProjectsId;
 import fr.wati.yacramanager.beans.Project;
 import fr.wati.yacramanager.beans.Project_;
 import fr.wati.yacramanager.beans.Task;
@@ -34,6 +34,7 @@ import fr.wati.yacramanager.dao.specifications.ProjectSpecification;
 import fr.wati.yacramanager.listeners.ActivityEvent;
 import fr.wati.yacramanager.services.ClientService;
 import fr.wati.yacramanager.services.CompanyService;
+import fr.wati.yacramanager.services.EmployeService;
 import fr.wati.yacramanager.services.ProjectService;
 import fr.wati.yacramanager.services.ServiceException;
 import fr.wati.yacramanager.services.TaskService;
@@ -59,6 +60,8 @@ public class ProjectServiceImpl implements ProjectService{
 	private ClientRepository clientRepository;
 	@Inject
 	private ClientService  clientService;
+	@Inject
+	private EmployeService employeService;
 	
 	@Inject
 	private DtoMapper dtoMapper;
@@ -290,14 +293,25 @@ public class ProjectServiceImpl implements ProjectService{
 	 */
 	@Override
 	@Transactional
-	public void addEmployeToProject(Project project, Employe employe,
+	public void assignEmployeToProject(Long projectId, Long employeId,
 			boolean teamLead, BigDecimal dailyRate) throws ServiceException {
-		EmployesProjects employesProjects=new EmployesProjects(employe,project,teamLead,dailyRate);
+		Employe employeFound=employeService.findOne(employeId);
+		Project projectFound = findOne(projectId);
+		EmployesProjects employesProjects=new EmployesProjects(employeFound,projectFound,teamLead,dailyRate);
 		employesProjectsRepository.save(employesProjects);
-		
-		employe.getProjects().add(employesProjects);
-		
-		project.getEmployes().add(employesProjects);
-		
+		employeFound.getProjects().add(employesProjects);
+		projectFound.getEmployes().add(employesProjects);
+	}
+
+	@Override
+	@Transactional
+	public void unassignEmployeFromProject(Long projectId, Long employeId)
+			throws ServiceException {
+		Employe employeFound=employeService.findOne(employeId);
+		Project projectFound = findOne(projectId);
+		EmployesProjects employesProjects = employesProjectsRepository.findOne(new EmployesProjectsId(employeId, projectId));
+		employeFound.getProjects().remove(employesProjects);
+		projectFound.getEmployes().remove(employesProjects);
+		employesProjectsRepository.delete(new EmployesProjectsId(employeId, projectId));
 	}
 }

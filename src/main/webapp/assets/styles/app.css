@@ -1,10 +1,16 @@
+.editable-click {
+	border-bottom: 1px dashed #BBB;
+	cursor: pointer;
+	font-weight: normal;
+	}
+
 tr.task-element,
 tr.project-element{
 	border-left: 3px solid;
 }
 
 tr.ng-table-group:HOVER{
-	background-color: inherit !important;
+	background-color: #eee !important;
 }
 tr.ng-table-group{
 	background-color:#eee; 
@@ -70,6 +76,11 @@ vertical-align: middle;
 .project-people img {
 width: 32px;
 height: 32px;
+}
+
+.project-actions {
+text-align: right;
+vertical-align: middle;
 }
 td.project-color{
 	width: 50px;

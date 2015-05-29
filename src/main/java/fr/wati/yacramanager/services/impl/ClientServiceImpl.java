@@ -152,6 +152,7 @@ public class ClientServiceImpl implements ClientService {
 		ClientDTO clientDTO=new ClientDTO();
 		clientDTO.setName(client.getName());
 		clientDTO.setId(client.getId());
+		clientDTO.setCompanyId(client.getCompany().getId());
 		clientDTO.setContacts(dtoMapper.mapContacts(client));
 		clientDTO.setProjects(dtoMapper.mapProjects(client));
 		clientDTO.setCreatedDate(client.getCreatedDate());

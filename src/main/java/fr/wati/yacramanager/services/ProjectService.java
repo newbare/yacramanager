@@ -30,5 +30,7 @@ public interface ProjectService extends CrudService<Project, Long>,Specification
 	
 	long countNumberOfTaskForProject(Project project);
 	
-	void addEmployeToProject(Project project,Employe employe,boolean teamLead,BigDecimal dailyRate) throws ServiceException;
+	void assignEmployeToProject(Long projectId,Long employeId,boolean teamLead,BigDecimal dailyRate) throws ServiceException;
+	
+	void unassignEmployeFromProject(Long projectId,Long employeId) throws ServiceException;
 }

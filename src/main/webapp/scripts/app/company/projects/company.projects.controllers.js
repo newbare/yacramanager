@@ -11,7 +11,7 @@ App.controller('CompanyProjectsController',function ($scope, $rootScope,$http,ng
 				_contextPath + "app/api/" + USERINFO.company.id + "/client", {
 					params : {}
 				}).then(function(response) {
-					$scope.clients=response.data.result;
+					$scope.clients=response.data;
 				});
 	}; 
 
@@ -172,111 +172,14 @@ App.controller('CompanyProjectsViewController',function ($scope, $rootScope,$htt
 	$scope.tableFilter="";
 	$scope.$state=$state;
 	$scope.project={};
-	$scope.companyCriteriaConfig={
-			name:"company",
-			defaultButtonLabel:"Company",
-			filterType:"ARRAY",
-			closeable:false,
-			editable:false,
-			buttonSelectedItemsFormater:function(data){
-				return data.label;
-			},
-			filterValue:[{name:""+USERINFO.company.id+"",label:USERINFO.company.name,ticked:false}],
-			defaultSelectedItems:function(data){
-				var items=[];
-				angular.forEach(data,function(item){
-					if(item.name==""+USERINFO.company.id+""){
-						items.push(item);
-					}
-				});
-				return items;
-			},
-			currentFilter:{},
-			displayed: true
+	$scope.projectFilterText="";
+	$scope.projectFilter="";
+	
+	$scope.filterProjects=function(projectFilterText){
+		$scope.projectFilter="{\"filter\":[{\"type\":\"TEXT\",\"field\":\"global\",\"value\":\""+projectFilterText+"\"}]}";
+		$scope.tableParams.reload();
 	};
 	
-	$scope.clientCriteriaConfig={
-			name:"client",
-			defaultButtonLabel:"Client",
-			filterType:"ARRAY",
-			closeable:false,
-			filterValue:[],
-			buttonSelectedItemsFormater:function(data){
-				return "["+data.label+"]";
-			},
-			getData:function($defer){
-				$http.get(_contextPath+"app/api/"+USERINFO.company.id+"/client",
-						{
-							params:
-								{	
-									sort:{}, 
-									filter:{filter:[{"type":"ARRAY","field":"company","value":$scope.companyCriteriaConfig.filterValue}]}
-								} 
-						})
-					.success(function(data, status) {
-						var value=[];
-						if(data.totalCount>0){
-							angular.forEach(data.result,function(entry){
-								value.push({name: ""+entry.id, label: entry.name});
-							});
-						}
-						$defer.resolve(value);
-					});
-			},
-			currentFilter:{},
-			displayed: true
-	};
-	
-	$scope.nameCriteriaConfig={
-			name:"name",
-			defaultButtonLabel:"Project name",
-			filterType:"TEXT",
-			closeable:true,
-			filterValue:"",
-			onFilter: function(value) {
-				//console.log('Filter text ['+value.field+'] searching: '+value.value);
-			},
-			currentFilter:{},
-			displayed: true
-	};
-	
-	$scope.descriptionCriteriaConfig={
-			name:"description",
-			defaultButtonLabel:"Description",
-			filterType:"TEXT",
-			closeable:true,
-			filterValue:"",
-			onFilter: function(value) {
-				//console.log('Filter text ['+value.field+'] searching: '+value.value);
-			},
-			currentFilter:{},
-			displayed: true
-	};
-	
-	$scope.createdDateCriteriaConfig={
-			name:"createdDate",
-			defaultButtonLabel:"Date",
-			filterType:"DATE",
-			closeable:true,
-			filterValue:"",
-			onFilter: function(value) {
-				//console.log('Filter text ['+value.field+'] searching: '+value.value);
-			},
-			currentFilter:{},
-			displayed: true
-	};
-	
-	$scope.criteriaBarConfig={
-		criterions:[$scope.companyCriteriaConfig,$scope.clientCriteriaConfig,$scope.nameCriteriaConfig,$scope.descriptionCriteriaConfig,$scope.createdDateCriteriaConfig],
-		autoFilter:true,
-		filters:[]
-	};
-	
-	$scope.doFilter=function(data){
-		var serverFilter={filter:data};
-		$scope.criteriaBarFilter=JSON.stringify(serverFilter);
-		$scope.$broadcast('criteriaDofilter', JSON.stringify(serverFilter));
-	};
 	
 	$scope.hasDatas=false;
 	
@@ -299,14 +202,13 @@ App.controller('CompanyProjectsViewController',function ($scope, $rootScope,$htt
 	}, {
 		total : 0, // length of data
 		getData : function($defer, params) {
-			if($scope.tableFilter!=="" && $scope.tableFilter!==undefined){
 				ProjectsREST.get(
 						{
 							companyId : USERINFO.company.id,
 							page:params.$params.page-1,
 							size:params.$params.count,
 							sort:params.$params.sorting,
-							filter:$scope.tableFilter
+							filter:$scope.projectFilter
 						},function(data) {
 					params.total(data.totalCount);
 					$scope.startIndex=data.startIndex;
@@ -320,7 +222,6 @@ App.controller('CompanyProjectsViewController',function ($scope, $rootScope,$htt
 					// set new data
 					$defer.resolve(data.result);
 				});
-			}
 		}});
 	$scope.doFilterList($scope.criteriaBarFilter);
 	$scope.$on('criteriaDofilter', function(event, args) {

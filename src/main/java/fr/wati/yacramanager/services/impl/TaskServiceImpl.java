@@ -18,7 +18,6 @@ import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
 
 import fr.wati.yacramanager.beans.Activities.ActivityOperation;
@@ -245,7 +244,7 @@ public class TaskServiceImpl implements TaskService {
 			}
 		});
 		if(countMatches==0){
-			projectService.addEmployeToProject(project, employe, false, BigDecimal.ZERO);
+			projectService.assignEmployeToProject(project.getId(), employe.getId(), false, BigDecimal.ZERO);
 		}
 	}
 

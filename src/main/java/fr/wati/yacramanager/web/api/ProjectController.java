@@ -1,10 +1,12 @@
 package fr.wati.yacramanager.web.api;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -38,9 +40,11 @@ import fr.wati.yacramanager.beans.Company_;
 import fr.wati.yacramanager.beans.Employe;
 import fr.wati.yacramanager.beans.Project;
 import fr.wati.yacramanager.beans.Project_;
+import fr.wati.yacramanager.beans.Role;
 import fr.wati.yacramanager.services.CompanyService;
 import fr.wati.yacramanager.services.EmployeService;
 import fr.wati.yacramanager.services.ProjectService;
+import fr.wati.yacramanager.services.ServiceException;
 import fr.wati.yacramanager.utils.Filter.FilterBuilder;
 import fr.wati.yacramanager.utils.SpecificationBuilder;
 import fr.wati.yacramanager.web.ResourceNotFoundException;
@@ -197,5 +201,28 @@ public class ProjectController {
 		return new ResponseWrapper<List<ProjectDTO>>(null);
 	}
 	
+	@RequestMapping(value = "/{projectId}/assign-employees", method = RequestMethod.POST)
+	@RolesAllowed({Role.ADMIN,Role.SSII_ADMIN})
+	@Timed
+	public void assignEmployeesToProject(
+			@PathVariable("companyId") Long companyId,
+			@PathVariable(value = "projectId") Long projectId,
+			@RequestParam(value = "employeesIds", required = true) List<Long> employeesIds) throws ServiceException {
+		for (Long employeeId : employeesIds) {
+			projectService.assignEmployeToProject(projectId, employeeId, false, BigDecimal.ZERO);
+		}
+	}
+	
+	@RequestMapping(value = "/{projectId}/unassign-employees", method = RequestMethod.POST)
+	@RolesAllowed({Role.ADMIN,Role.SSII_ADMIN})
+	@Timed
+	public void unassignEmployeesFromProject(
+			@PathVariable("companyId") Long companyId,
+			@PathVariable(value = "projectId") Long projectId,
+			@RequestParam(value = "employeesIds", required = true) List<Long> employeesIds) throws ServiceException {
+		for (Long employeeId : employeesIds) {
+			projectService.unassignEmployeFromProject(projectId, employeeId);
+		}
+	}
 
 }

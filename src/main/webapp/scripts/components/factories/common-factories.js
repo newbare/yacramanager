@@ -159,6 +159,10 @@ App.factory("ProjectsREST", function($resource) {
 			params : {
 				id : '@id'
 			}
+		},
+		assignEmployeeToProject:{
+			url : _contextPath + "app/api/:companyId/project/:projectId/assign-employees",
+			method : 'POST'
 		}
 	});
 });
