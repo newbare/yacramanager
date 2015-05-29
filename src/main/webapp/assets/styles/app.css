@@ -10,6 +10,12 @@ tr.ng-table-group{
 	background-color:#eee; 
 }
 
+.footer-v1{
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  z-index: 9999;
+}
 .footer-v1 .copyright p {
 	color: #eee;
 	margin-top: 14px;
@@ -39,6 +45,10 @@ tr.ng-table-group{
 .footer-v1 .copyright a:HOVER{
 	color: #337ab7;
 	text-decoration: none;
+}
+
+.footer-v1 .container-fluid .footer-socials {
+  margin-right: 40px;
 }
 
 @media (min-width: 768px) {

@@ -3,7 +3,7 @@
 	<div class="row">
 		<div data-ng-criteria-bar data-criteria-bar-config="employeesProjectsCriteriaBarConfig" data-do-filter="employeesProjectsDoFilter(employeesProjectsCriteriaBarConfig.filters)"></div>
 		<div class="table-responsive project-list" data-ng-if="desktopScreen">
-			<table data-ng-table="clientsEmployeesTableParams" class="table table-striped table-hover ng-table-responsive">
+			<table data-ng-table="clientsEmployeesTableParams" class="table ng-table-responsive">
 			     <tbody data-ng-repeat="group in $groups">
 			     <tr class="ng-table-group">
 			         <td colspan="{{$columns.length}}">
@@ -14,11 +14,10 @@
 			             <span class="text-muted m-l-sm"><small>{{group.data[0].project.description}}</small></span>
 			             <span class="text-warning m-l-md">{{group.data[0].project.numberOfEmployes}} employees assigned</span>
 			             <span class="text-warning m-l-md">{{group.data[0].project.numberOfTasks}} task</span>
-			             <button  type="button" class="btn btn-success btn-white btn-xs m-l-md" data-ng-click="selectActiveProject(task)" data-placement="top " data-title="Select employee ..." data-template="{{appContextPath}}scripts/templates/partials/search-employees-popover.tpl.html" data-animation="am-flip-x" data-auto-close="1" data-bs-popover><i class="fa fa-plus"></i> Assign employe to this project</button>
+			             <button  type="button" class="btn btn-success btn-white btn-xs m-l-md" data-ng-click="selectActiveProject(task)" data-placement="top " data-title="Select employee ..." data-template="{{appContextPath}}scripts/templates/partials/search-employees-popover.tpl.html" data-animation="am-flip-x" data-auto-close="1" data-bs-popover><i class="fa fa-plus"></i> <strong>Assign employe to this project</strong></button>
 			         </td>
 			     </tr>
-			     <tr data-ng-hide="group.$hideRows" data-ng-repeat="employeesProject in group.data" data-ng-if="employeesProject.employe">
-			        <td class="project-color"><i data-ng-if="employeesProject.project.color" class="fa fa-circle fa-2x" data-ng-style="{'color': employeesProject.project.color}"></i></td>
+			     <tr class="project-element" data-ng-style="{'border-left-color' : employeesProject.project.color}"  data-ng-hide="group.$hideRows" data-ng-repeat="employeesProject in group.data" data-ng-if="employeesProject.employe">
 			        <td class="project-people"><img alt="image" class="img-circle" data-ng-src="/app/api/users/avatar/{{employeesProject.id.employeeId}}"></td>
 			        <!-- <td data-title="'Assign date'" data-sortable="'joinDate'">{{ employeesProject.joinDate | date : 'short'}}</td> -->
 					<td><span>{{employeesProject.employe.firstName}} {{employeesProject.employe.lastName}}</span><br/> <small class="text-muted">Joined {{ employeesProject.joinDate | date : 'short'}}</small></td>
