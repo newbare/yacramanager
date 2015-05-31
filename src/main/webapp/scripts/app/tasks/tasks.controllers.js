@@ -1,6 +1,6 @@
 'use strict';
 
-App.controller('TasksController',function ($scope, $rootScope,ngTableParams, alertService,ProjectsREST,TasksREST, $http,USERINFO,NgStomp) {
+App.controller('TasksController',function ($scope, $rootScope,ngTableParams, alertService,ProjectsREST,TasksREST, WorkLogREST,$http,USERINFO,NgStomp,$timeout) {
 	$scope.client = NgStomp('/websocket/event');
 	$scope.managedEmployeIds=[];
 	$scope.client.connect( function(){
@@ -13,6 +13,9 @@ App.controller('TasksController',function ($scope, $rootScope,ngTableParams, ale
 	$scope.currentEmployeId=USERINFO.id;
 	$scope.tableFilter="";
 	var allTask=[];
+	$scope.percents=[];
+	$scope.totalDurations=[];
+	$scope.userDurations=[];
 	$scope.resetTaskToAdd=function(){
 		$scope.taskToAdd={};
 		$scope.projectToAdd=undefined;
@@ -149,7 +152,9 @@ App.controller('TasksController',function ($scope, $rootScope,ngTableParams, ale
 		
 	};
 	
-
+	$scope.refreshDatas=function(){
+		$scope.tableParams.reload();
+	};
 
 	$scope.refreshProjects = function() {
 		$http.get(_contextPath+"app/api/"+USERINFO.company.id+"/project/employe/"+USERINFO.id)
@@ -198,6 +203,28 @@ App.controller('TasksController',function ($scope, $rootScope,ngTableParams, ale
 					}else {
 						$scope.hasDatas=false;
 					}
+					
+					 $timeout(function(){
+				    	 angular.forEach(data,function(task){
+				    		 $scope.percents[task.id]=0;
+				    		 $scope.totalDurations[task.id]=0;
+				    		 $scope.userDurations[task.id]=0;
+				    		 $http.get(_contextPath + "app/api/worklog/task/"+task.id,{})
+						 		.success(function(data, status) {
+						 			$scope.totalDurations[task.id]=data;
+						 			$http.get(_contextPath + "app/api/worklog/task/"+task.id,{params:{'employeId':''+USERINFO.id+''}})
+						 				.success(function(data, status) {
+						 					$scope.userDurations[task.id]=data;
+						 					if($scope.totalDurations[task.id]==0){
+						 						$scope.percents[task.id]=0;
+						 					}else {
+						 						$scope.percents[task.id]= Math.round( ((data/$scope.totalDurations[task.id])*100) * 100 ) / 100;
+											}
+						 				});
+						 		});
+				    	 });
+				     }, 1000);
+					
 					allTask=data;
 					// set new data
 					$defer.resolve(data);
@@ -207,4 +234,14 @@ App.controller('TasksController',function ($scope, $rootScope,ngTableParams, ale
     });
 	
 	$scope.refreshProjects();
+	$scope.percent = 0;
+     $scope.options = {
+         animate:{ duration: 1000, enabled: true },
+         barColor:'#3983c2',
+         scaleColor:false,
+         lineWidth:3,
+         size:50,
+         lineCap: 'butt'
+     };
+    
 });

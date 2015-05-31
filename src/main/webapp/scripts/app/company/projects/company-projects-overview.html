@@ -80,7 +80,10 @@
 	    	</span>
 	    	<li ><button class="btn btn-danger btn-xs" data-ng-click="unAssignEmploye(task,employee)" data-ng-confirm="Do you want to remove this employe from task {{task.name}} ?"><i class="fa fa-times"></i></button></li>
 	    	<li >|</li>
-	    	<li><i class="fa text-primary" data-ng-class="{'fa-female' : employee.gender=='FEMME','fa-male' : employee.gender=='HOMME','fa-user' : (employee.gender!='FEMME' && employee.gender!='HOMME')}"></i></li>
+	    	<li>
+	    		<img alt="image" class="img-circle" data-ng-src="/app/api/users/avatar/{{employee.id}}">
+	    		<!-- <i class="fa text-primary" data-ng-class="{'fa-female' : employee.gender=='FEMME','fa-male' : employee.gender=='HOMME','fa-user' : (employee.gender!='FEMME' && employee.gender!='HOMME')}"></i> -->
+	    	</li>
 	    	<li>|</li>
 	    	<li>{{ employee.firstName}} {{ employee.lastName}}</li>
 	    	<li>|</li>
@@ -103,7 +106,10 @@
 	    	<span style="float: right;">
 	    		<a href="mailto:{{employee.email}}"><i class="fa fa-envelope text-primary"></i></a>
 	    	</span>
-	    	<li><i class="fa text-primary" data-ng-class="{'fa-female' : employee.gender=='FEMME','fa-male' : employee.gender=='HOMME','fa-user' : (employee.gender!='FEMME' && employee.gender!='HOMME')}"></i></li>
+	    	<li>
+	    		<img alt="image" class="img-circle" data-ng-src="/app/api/users/avatar/{{employee.id}}">
+	    		<!-- <i class="fa text-primary" data-ng-class="{'fa-female' : employee.gender=='FEMME','fa-male' : employee.gender=='HOMME','fa-user' : (employee.gender!='FEMME' && employee.gender!='HOMME')}"></i> -->
+	    	</li>
 	    	<li>|</li>
 	    	<li>{{ employee.firstName}} {{ employee.lastName}}</li>
 	    	<li>|</li>

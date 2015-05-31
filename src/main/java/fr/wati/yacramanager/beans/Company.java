@@ -3,12 +3,15 @@ package fr.wati.yacramanager.beans;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PreRemove;
@@ -41,6 +44,9 @@ public class Company extends AuditableEntity {
 	@OneToMany
 	@JoinColumn(name="companyId", referencedColumnName="id")
 	private List<Settings> settings=new ArrayList<>();
+	@Lob
+	@Basic(fetch=FetchType.LAZY)
+	private byte[] logo;
 	
 	public Long getId() {
 		return id;
@@ -113,6 +119,18 @@ public class Company extends AuditableEntity {
 	 */
 	public void setSettings(List<Settings> settings) {
 		this.settings = settings;
+	}
+	/**
+	 * @return the logo
+	 */
+	public byte[] getLogo() {
+		return logo;
+	}
+	/**
+	 * @param logo the logo to set
+	 */
+	public void setLogo(byte[] logo) {
+		this.logo = logo;
 	}
 	
 }

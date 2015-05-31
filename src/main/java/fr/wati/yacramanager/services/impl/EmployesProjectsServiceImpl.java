@@ -149,6 +149,7 @@ public class EmployesProjectsServiceImpl implements EmployesProjectsService {
 		dto.setId(new EmployesProjectsId(employesProjects.getEmployeeId(), employesProjects.getProjectId()));
 		dto.setJoinDate(employesProjects.getJoinDate());
 		dto.setLeaveDate(employesProjects.getLeaveDate());
+		dto.setProjectLead(employesProjects.isProjectLead());
 		if(employesProjects.getEmployee()!=null){
 			EmployeDto employeDto=new EmployeDto();
 			employeDto.setFirstName(employesProjects.getEmployee().getFirstName());

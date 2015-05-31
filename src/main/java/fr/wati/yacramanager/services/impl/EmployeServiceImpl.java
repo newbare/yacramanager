@@ -1,6 +1,9 @@
 package fr.wati.yacramanager.services.impl;
 
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -10,11 +13,14 @@ import javax.inject.Inject;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Transformer;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.dozer.Mapper;
 import org.dozer.spring.DozerBeanMapperFactoryBean;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Page;
@@ -67,6 +73,8 @@ import fr.wati.yacramanager.web.dto.UserInfoDTO;
 @Service("employeService")
 public class EmployeServiceImpl implements EmployeService {
 
+	private Logger logger = LoggerFactory
+			.getLogger(EmployeServiceImpl.class);
 	@Inject
 	private EmployeRepository employeRepository;
 	
@@ -211,11 +219,21 @@ public class EmployeServiceImpl implements EmployeService {
 			employe.setSocialProviderId(registrationDTO.getSocialProviderId());
 		}else {
 			employe.setActivationKey(RandomUtil.generateActivationKey());
+			
 		}
 		employe.setPassword(passwordEncoder.encode(registrationDTO.getPassword()));
 		employe.setLastName(registrationDTO.getLastName());
 		employe.setFirstName(registrationDTO.getFirstName());
 		employe.setGender(registrationDTO.getGender());
+		if(StringUtils.isNotEmpty(registrationDTO.getProfileImageUrl())){
+			employe.setProfileImageUrl(registrationDTO.getProfileImageUrl());
+			try {
+				byte[] profileImage = IOUtils.toByteArray(new URI(registrationDTO.getProfileImageUrl()));
+				employe.setAvatar(profileImage);
+			} catch (IOException | URISyntaxException e) {
+				logger.error(e.getMessage(), e);
+			}
+		}
 		employe.setProfileImageUrl(registrationDTO.getProfileImageUrl());
 		employe.setProfileUrl(registrationDTO.getProfileUrl());
 		Contact contact=new Contact();

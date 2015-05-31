@@ -5,8 +5,8 @@
 			<span class="text-muted">Created on {{client.createdDate  | date:'medium'}}</span>
 		</div>
 		<div class="col-md-3 col-lg-2 pull-right" data-ng-show="client">
-			<img data-ng-src="{{client.logoUrl}}" class="img-thumbnail profile-picture"  max-height="140" max-width="140"
-	         alt="Generic placeholder thumbnail">
+			<img  data-ng-src="/app/api/{{userInfo.company.id}}/client/logo/{{client.id}}" class="img-thumbnail profile-picture editable-click" height="140" width="140"
+		         alt="Generic placeholder thumbnail" data-template="{{appContextPath}}scripts/templates/edit-avatar.tpl.html" data-bs-modal="modal">
 			<h3><span class="label label-info label-xlg  arrowed-in arrowed-in-right">{{client.name}}</span></h3>
 		</div>
 	</div>

@@ -9,7 +9,7 @@
 		</div>
 		<div class="widget-body collapse in" id="taskWidgetBody">
 			<div class="widget-main no-padding">
-				<table class="table table-striped table-bordered table-hover">
+				<table class="table table-hover task-list">
 			      <thead class="thin-border-bottom">
 			      		<tr>
 			      			<th>Name</th>
@@ -27,8 +27,11 @@
 								{{task.taskStatus}}
 							</span>
 			      		</td>
-			      		<td>
-			      			{{task.assignedEmployeesIds.length}} <i class="fa fa-male"></i>
+			      		<td class="task-people">
+			      			<!-- {{task.assignedEmployeesIds.length}} <i class="fa fa-male"></i> -->
+			      			<a href="" data-ng-repeat="employeesId in task.assignedEmployeesIds">
+								<img alt="image" class="img-circle" data-ng-src="/app/api/users/avatar/{{employeesId}}">
+							</a>
 			      		</td>
 			      		<td>
 			      			<a data-ui-sref="tasks({id:task.id})">

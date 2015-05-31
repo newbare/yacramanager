@@ -6,11 +6,14 @@
 				<button type="button" class="close" data-dismiss="modal" ng-click="$hide()">
 					<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
 				</button>
-				<h3 data-ng-show="!edition" class="panel-title">Add employe</h3>
-				<h3 data-ng-show="edition" class="panel-title">Edit employe</h3>
+				<h3 data-ng-show="!edition" class="panel-title">Invite employe to join you</h3>
 			</div>
 			<div class="modal-body" >
 				<form role="form" class="">
+					<div class="form-group">
+					    <label for="email">{{'global.form.email' | translate}}</label>
+					    <input type="email" data-ng-model="employeToInvite.userId" class="form-control" id="email" placeholder="{{'global.form.email.placeholder' | translate}}" required autofocus="autofocus">
+					</div>
 					<div class="form-group">
 					    <label for="firstname">{{'global.form.firstname' | translate}}</label>
 					    <input type="text" data-ng-model="employeToInvite.firstName" class="form-control" id="firstname" placeholder="{{'global.form.firstname.placeholder' | translate}}" required autofocus="autofocus">
@@ -18,10 +21,6 @@
 					  <div class="form-group">
 					    <label for="lastname">{{'global.form.lastname' | translate}}</label>
 					    <input type="text" data-ng-model="employeToInvite.lastName" class="form-control" id="lastname" placeholder="{{'global.form.lastname.placeholder' | translate}}" required>
-					</div>
-					<div class="form-group">
-					    <label for="email">{{'global.form.email' | translate}}</label>
-					    <input type="email" data-ng-model="employeToInvite.userId" class="form-control" id="email" placeholder="{{'global.form.email.placeholder' | translate}}" required>
 					</div>
 				</form>
 			</div>

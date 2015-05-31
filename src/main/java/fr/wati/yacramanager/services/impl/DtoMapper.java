@@ -140,6 +140,7 @@ public class DtoMapper {
 	}
 	@Transactional
 	public  ProjectDTO map(Project project) {
+		project=projectService.findOne(project.getId());
 		ProjectDTO dto = new ProjectDTO();
 		dto.setId(project.getId());
 		dto.setName(project.getName());

@@ -13,4 +13,5 @@ public interface CompanyService extends CrudService<Company, Long>,Specification
 	CompanyDTO toCompanyDTO(Company company);
 	
 	Page<Company> findAll(Pageable pageable);
+	byte[] getLogo(Long companyId);
 }

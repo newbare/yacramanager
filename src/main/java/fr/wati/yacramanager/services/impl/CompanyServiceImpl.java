@@ -224,4 +224,13 @@ public class CompanyServiceImpl implements CompanyService {
 			ApplicationEventPublisher applicationEventPublisher) {
 		this.applicationEventPublisher = applicationEventPublisher;
 	}
+
+	/* (non-Javadoc)
+	 * @see fr.wati.yacramanager.services.CompanyService#getLogo(java.lang.Long)
+	 */
+	@Override
+	@Transactional
+	public byte[] getLogo(Long companyId) {
+		return findOne(companyId).getLogo();
+	}
 }

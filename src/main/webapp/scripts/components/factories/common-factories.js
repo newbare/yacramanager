@@ -175,8 +175,27 @@ App.factory("EmployeesProjectsREST", function($resource) {
 		update : {
 			method : 'PUT',
 			params : {
+				companyId : '@companyId',
+				clientId: '@clientId',
+				projectId: '@projectId',
+				employeeId: '@employeeId'
+			}
+		}
+	});
+});
+
+App.factory("InvoicesREST", function($resource) {
+	return $resource(_contextPath + "app/api/invoices/:id", {}, {
+		update : {
+			method : 'PUT',
+			params : {
 				id : '@id'
 			}
+		},
+		getAll:{
+			url : _contextPath + "app/api/invoices/all",
+			method : 'GET',
+			isArray : true
 		}
 	});
 });
@@ -293,6 +312,21 @@ App.factory("WorkLogREST", function($resource) {
 			params : {
 				id : '@id'
 			}
+		},
+		task:{
+			url : _contextPath + "app/api/worklog/task/:taskId",
+			method : 'GET',
+			isArray : false
+		},
+		project:{
+			url : _contextPath + "app/api/worklog/project/:projectId",
+			method : 'GET',
+			isArray : false
+		},
+		client:{
+			url : _contextPath + "app/api/worklog/client/:clientId",
+			method : 'GET',
+			isArray : false
 		}
 	});
 });

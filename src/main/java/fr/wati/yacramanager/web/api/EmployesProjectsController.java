@@ -39,7 +39,6 @@ import fr.wati.yacramanager.beans.EmployesProjects;
 import fr.wati.yacramanager.beans.EmployesProjectsId;
 import fr.wati.yacramanager.beans.EmployesProjects_;
 import fr.wati.yacramanager.beans.Project_;
-import fr.wati.yacramanager.dao.specifications.CommonSpecifications;
 import fr.wati.yacramanager.services.EmployeService;
 import fr.wati.yacramanager.services.EmployesProjectsService;
 import fr.wati.yacramanager.services.ProjectService;
@@ -73,13 +72,13 @@ public class EmployesProjectsController {
 
 	@RequestMapping(value = "/{projectId}/{employeeId}", method = RequestMethod.PUT)
 	public ResponseEntity<String> update(
-			@PathVariable("companyId") Long companyId,@PathVariable("id") Long id,@PathVariable("projectId") Long projectId,@PathVariable("employeeId") Long employeeId, @RequestBody EmployesProjectsDTO dto) {
+			@PathVariable("companyId") Long companyId,@PathVariable("clientId") Long clientId,@PathVariable("projectId") Long projectId,@PathVariable("employeeId") Long employeeId, @RequestBody EmployesProjectsDTO dto) {
 		EmployesProjects employesProjects = employesProjectsService.findOne(new EmployesProjectsId(employeeId, projectId));
 		if (employesProjects != null) {
 			employesProjectsService.save(dto.toEmployeesProjects(employesProjects));
 			return new ResponseEntity<String>(HttpStatus.OK);
 		}
-		return new ResponseEntity<String>("Client with id: " + id
+		return new ResponseEntity<String>("Client with id: " + clientId
 				+ " and company id: " + companyId + " does not exist",
 				HttpStatus.NOT_MODIFIED);
 	}

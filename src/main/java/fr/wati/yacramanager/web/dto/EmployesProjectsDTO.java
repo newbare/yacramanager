@@ -16,11 +16,14 @@ public class EmployesProjectsDTO {
 	private LocalDate joinDate;
 	private LocalDate leaveDate;
 	private BigDecimal dailyRate;
+	private boolean projectLead;
 	
 	public EmployesProjectsDTO() {
 	}
 
 	public EmployesProjects toEmployeesProjects(EmployesProjects employesProjects) {
+		employesProjects.setDailyRate(getDailyRate());
+		employesProjects.setProjectLead(isProjectLead());
 		return employesProjects;
 	}
 
@@ -70,6 +73,20 @@ public class EmployesProjectsDTO {
 
 	public void setDailyRate(BigDecimal dailyRate) {
 		this.dailyRate = dailyRate;
+	}
+
+	/**
+	 * @return the projectLead
+	 */
+	public boolean isProjectLead() {
+		return projectLead;
+	}
+
+	/**
+	 * @param projectLead the projectLead to set
+	 */
+	public void setProjectLead(boolean projectLead) {
+		this.projectLead = projectLead;
 	}
 
 	

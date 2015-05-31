@@ -3,22 +3,20 @@
  */
 package fr.wati.yacramanager.web.api;
 
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Sort.Direction;
-import org.springframework.data.domain.Sort.Order;
 import org.springframework.data.jpa.domain.Specifications;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.method.P;
@@ -46,6 +44,7 @@ import fr.wati.yacramanager.services.TaskService;
 import fr.wati.yacramanager.services.impl.DtoMapper;
 import fr.wati.yacramanager.utils.Filter.FilterBuilder;
 import fr.wati.yacramanager.utils.SpecificationBuilder;
+import fr.wati.yacramanager.web.api.utils.PaginationUtil;
 import fr.wati.yacramanager.web.dto.ResponseWrapper;
 import fr.wati.yacramanager.web.dto.TaskDTO;
 
@@ -173,14 +172,9 @@ public class TaskRestController {
 			@RequestParam(required = false) Integer page,
 			@RequestParam(required = false) Integer size,
 			@RequestParam(required = false, value = "sort") Map<String, String> sort,
-			@RequestParam(value = "filter", required = false) String filter)
-			throws RestServiceException {
-		if (page == null) {
-			page = 0;
-		}
-		if (size == null) {
-			size = 100;
-		}
+			@RequestParam(value = "filter", required = false) String filter,
+			HttpServletResponse httpServletResponse)
+			throws RestServiceException, URISyntaxException {
 		List filters = new ArrayList<>();
 		if (StringUtils.isNotEmpty(filter)) {
 			try {
@@ -192,33 +186,18 @@ public class TaskRestController {
 		}
 		Specifications<Task> specifications = null;
 		if (!filters.isEmpty()) {
-			LOG.debug("Building Task specification");
+			//LOG.debug("Building Task specification");
 			specifications = Specifications.where(SpecificationBuilder
 					.buildSpecification(filters, taskService));
 		}
-		PageRequest pageable = null;
-		if (sort != null) {
-			List<Order> orders = new ArrayList<>();
-			for (Entry<String, String> entry : sort.entrySet()) {
-				Order order = new Order(
-						"asc".equals(entry.getValue()) ? Direction.ASC
-								: Direction.DESC, entry.getKey());
-				orders.add(order);
-			}
-			if (!orders.isEmpty()) {
-				pageable = new PageRequest(page, size, new Sort(orders));
-			} else {
-				pageable = new PageRequest(page, size);
-			}
-		} else {
-			pageable = new PageRequest(page, size);
-		}
-
+		
 		Page<Task> findBySpecificationAndOrder = taskService.findAll(
-				specifications, pageable);
-		List<TaskDTO> respone = taskService
+				specifications, PaginationUtil.generatePageRequest(page, size, sort));
+		List<TaskDTO> response = taskService
 				.toTaskDTOs(findBySpecificationAndOrder);
-		return respone;
+		HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(findBySpecificationAndOrder, "/app/api/"+companyId+"/task"+"/"+employeId+"/all", page, size);
+		PaginationUtil.enhanceHttpServletResponse(headers, httpServletResponse);
+		return response;
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)

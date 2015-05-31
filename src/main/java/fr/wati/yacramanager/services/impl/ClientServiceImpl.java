@@ -20,7 +20,6 @@ import fr.wati.yacramanager.beans.Company;
 import fr.wati.yacramanager.beans.Project;
 import fr.wati.yacramanager.dao.repository.ClientRepository;
 import fr.wati.yacramanager.dao.repository.CompanyRepository;
-import fr.wati.yacramanager.dao.repository.ContactRepository;
 import fr.wati.yacramanager.dao.specifications.CommonSpecifications;
 import fr.wati.yacramanager.listeners.ActivityEvent;
 import fr.wati.yacramanager.services.ClientService;
@@ -39,9 +38,6 @@ public class ClientServiceImpl implements ClientService {
 
 	@Inject
 	private ClientRepository clientRepository;
-	
-	@Inject
-	private ContactRepository contactRepository;
 	
 	@Inject
 	private DtoMapper dtoMapper;
@@ -214,5 +210,14 @@ public class ClientServiceImpl implements ClientService {
 			clientDTOs.add(toClientDTO(client));
 		}
 		return clientDTOs;
+	}
+
+	/* (non-Javadoc)
+	 * @see fr.wati.yacramanager.services.ClientService#getLogo(java.lang.Long)
+	 */
+	@Override
+	@Transactional
+	public byte[] getLogo(Long clientId) {
+		return findOne(clientId).getLogo();
 	}
 }

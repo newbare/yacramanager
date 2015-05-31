@@ -35,8 +35,8 @@
 	    <a href="" data-ng-click="refreshDatas()"><i class="fa fa-refresh"></i></a> 
 	</div>
 </div>
-<div class="table-responsive project-list" data-ng-if="desktopScreen">
-	<table data-ng-table="tableParams" class="table table-striped table-hover ng-table-responsive">
+<div class="table-responsive project-list">
+	<table data-ng-table="tableParams" class="table">
 	     <tbody data-ng-repeat="group in $groups">
 	     <tr class="ng-table-group">
 	         <td colspan="{{$columns.length}}">
@@ -48,17 +48,30 @@
 	     </tr>
 	     <tr class="task-element" data-ng-style="{'border-left-color' : task.color}" data-ng-hide="group.$hideRows" data-ng-repeat="task in group.data">
 	        <!-- <td data-title="'Created date'" data-sortable="'createdDate'">{{ task.createdDate | date : 'short'}}</td> -->
-			<td ><a href="">{{ task.name}}</a><br><small>Created {{ task.createdDate | date : 'short'}}</small></td>
+			<td ><a href=""><strong>{{ task.name}}</strong></a><br><small>Created {{ task.createdDate | date : 'short'}}</small></td>
 			<!-- <td data-title="'Description'" data-sortable="'description'">{{ task.description}}</td> -->
+			<td>
+				<div class="infobox infobox-blue2 no-border">
+				   <div class="infobox-progress">
+				    	<div data-easypiechart data-options="options" data-percent="percents[task.id]" class="easy-pie-chart percentage task-chart">
+							<span class="percent">{{percents[task.id]}}</span>%
+						</div>
+				   </div>
+				   <div class="infobox-data">
+				      <span class="infobox-text"><small>{{userDurations[task.id] | duration}} logged by you</small></span>
+				      <div class="infobox-content"><strong>Total:</strong>{{totalDurations[task.id] | duration}}</div>
+				   </div>
+				</div>
+			</td>
 			<td ><span data-yacra-status="{{task.taskStatus}}"></span></td>
 			<td class="project-people">
 				<a href="" data-ng-repeat="employeesId in task.assignedEmployeesIds">
-					<img alt="image" class="img-circle" ng-src="/app/api/users/avatar/{{employeesId}}">
+					<img alt="image" class="img-circle" data-ng-src="/app/api/users/avatar/{{employeesId}}">
 				</a>
 			</td>
 			<td class="">
 						<a type="button" class="btn btn-link" data-ng-click="editTask(task.id)"><span class="fa fa-pencil"></span></a>
-						<a type="button" class="btn btn-link" data-ng-if="task.createdBy==currentEmployeId" data-ng-click="deleteTask(task.id)" data-ng-confirm="Do you want to delete this entry ?"><span class="fa fa-trash-o red"></span></a>
+						<a type="button" class="btn btn-link" data-ng-if="task.createdBy==currentEmployeId" data-ng-click="deleteTask(task.id)" data-ng-confirm="Do you want to delete this entry ?"><span class="fa fa-sign-out red"></span></a>
 				<!-- <div class="btn-group actions-btn" role="group" data-ng-if="task.assignedEmployeesIds.indexOf(currentEmployeId)>-1">
 				  <button type="button" class="btn btn-link" data-ng-click="editTask(task.id)"><span class="fa fa-pencil"></span></button>
 				  <button type="button" class="btn btn-link" data-ng-if="task.createdBy==currentEmployeId" data-ng-click="deleteTask(task.id)" data-ng-confirm="Do you want to delete this entry ?"><span class="fa fa-trash-o red"></span></button>

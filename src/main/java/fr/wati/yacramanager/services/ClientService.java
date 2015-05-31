@@ -17,4 +17,5 @@ public interface ClientService extends CrudService<Client, Long>,SpecificationFa
 	ClientDTO toClientDTO(Client client);
 	List<ClientDTO> toClientDTOs(Iterable<Client> clients);
 	Page<Client> findByCompany(Company company, Pageable pageable);
+	byte[] getLogo(Long clientId);
 }

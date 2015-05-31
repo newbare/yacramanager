@@ -188,7 +188,7 @@
 		</div>
 	</div>
 	</div>
-	<div class="footer-v1">
+	<div class="footer-v1" data-ng-if="desktopScreen">
         <div class="copyright">
             <div data-ng-class="userLocalSettings.container">
                 <div class="row">
@@ -251,6 +251,7 @@
  	<script src="../../bower_components/angular-route/angular-route.min.js"></script>
  	<script src="../../bower_components/angular-animate/angular-animate.min.js"></script>
  	<script src="../../bower_components/moment/moment.js"></script>
+ 	<script src="../../bower_components/jquery.easy-pie-chart/dist/angular.easypiechart.js"></script>
  	<script src="../../bower_components/ng-table/dist/ng-table.js"></script>
  	<script src="../../bower_components/ng-file-upload/angular-file-upload-shim.min.js"></script>
 	<script src="../../bower_components/ng-file-upload/angular-file-upload.js"></script>
@@ -324,6 +325,8 @@
 	<script	src="../../scripts/app/admin/metrics/admin.metrics.controllers.js"></script>
 	<script	src="../../scripts/app/admin/metrics/admin.metrics.js"></script>
 	<script	src="../../scripts/app/company/company.js"></script>
+	<script	src="../../scripts/app/company/invoices/company.invoices.controllers.js"></script>
+	<script	src="../../scripts/app/company/invoices/company.invoices.js"></script>
 	<script	src="../../scripts/app/company/activities/company.activities.controllers.js"></script>
 	<script	src="../../scripts/app/company/activities/company.activities.js"></script>
 	<script	src="../../scripts/app/company/clients/company.clients.controllers.js"></script>

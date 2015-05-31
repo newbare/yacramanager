@@ -1,5 +1,7 @@
 package fr.wati.yacramanager.web.api;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -13,9 +15,11 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -23,6 +27,7 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.domain.Sort.Order;
 import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -33,6 +38,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.support.WebApplicationContextUtils;
+import org.springframework.web.multipart.MultipartFile;
 import org.thymeleaf.context.IWebContext;
 import org.thymeleaf.spring4.SpringTemplateEngine;
 import org.thymeleaf.spring4.context.SpringWebContext;
@@ -212,5 +218,46 @@ public class CompanyController {
 				WebApplicationContextUtils.getWebApplicationContext(request
 						.getServletContext()));
 		return templateEngine.process("companyInvitationEmail", context);
+	}
+	@RequestMapping(value = "/logo/{companyId}", method = RequestMethod.GET)
+	@ResponseBody
+	public ResponseEntity<InputStreamResource> downloadUserAvatarImage(
+			@PathVariable Long companyId, HttpServletRequest httpServletRequest) {
+		Company company = companyService.findOne(companyId);
+		if (company != null && companyId != 0) {
+			if (company.getLogo()!=null) {
+				byte[] companyLogo = companyService.getLogo(companyId);
+				if(companyLogo!=null){
+					return ResponseEntity
+							.ok()
+							.contentType(MediaType.IMAGE_JPEG)
+							.body(new InputStreamResource(
+									new ByteArrayInputStream(companyLogo)));
+				}
+			}
+		}
+		InputStream defaultLogo = httpServletRequest.getServletContext()
+				.getResourceAsStream("/assets/images/company/company-logo-default.jpg");
+		return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG)
+				.body(new InputStreamResource(defaultLogo));
+	}
+	
+	@RequestMapping(value="/logo/{companyId}",method = RequestMethod.POST)
+	@Timed
+	public ResponseEntity<String> updateLogo(@PathVariable("companyId") Long companyId, @RequestParam("file") MultipartFile file) {
+		try {
+			if (file != null) {
+				Company company=companyService.findOne(companyId);
+				company.setLogo(IOUtils.toByteArray(file
+						.getInputStream()));
+				companyService.save(company);
+				return new ResponseEntity<>( HttpStatus.OK);
+			}
+			return new ResponseEntity<String>(HttpStatus.NOT_MODIFIED);
+		} catch (Exception exception) {
+			LOG.error(exception.getMessage(), exception);
+			return new ResponseEntity<String>(exception.getMessage(),
+					HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 }

@@ -1,5 +1,7 @@
 package fr.wati.yacramanager.web.api;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -7,10 +9,12 @@ import java.util.Map.Entry;
 
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -18,6 +22,7 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.domain.Sort.Order;
 import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.method.P;
 import org.springframework.security.access.prepost.PostFilter;
@@ -26,6 +31,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.codahale.metrics.annotation.Timed;
@@ -166,6 +172,29 @@ public class ClientController {
 		if (client != null) {
 			clientService.delete(client);
 		}
+	}
+	
+	@RequestMapping(value = "/logo/{clientId}", method = RequestMethod.GET)
+	@ResponseBody
+	public ResponseEntity<InputStreamResource> downloadUserAvatarImage(
+			@PathVariable Long clientId, HttpServletRequest httpServletRequest) {
+		Client client = clientService.findOne(clientId);
+		if (client != null && clientId != 0) {
+			if (client.getLogo()!=null) {
+				byte[] clientLogo = clientService.getLogo(clientId);
+				if(clientLogo!=null){
+					return ResponseEntity
+							.ok()
+							.contentType(MediaType.IMAGE_JPEG)
+							.body(new InputStreamResource(
+									new ByteArrayInputStream(clientLogo)));
+				}
+			}
+		}
+		InputStream defaultLogo = httpServletRequest.getServletContext()
+				.getResourceAsStream("/assets/images/company/company-logo-default.jpg");
+		return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG)
+				.body(new InputStreamResource(defaultLogo));
 	}
 
 }

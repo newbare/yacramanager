@@ -25,15 +25,23 @@
 		</div>
 	</div>
 	<div class="form-group">
-		<label> <input type="checkbox" class=""
+		<label class="">
+			  <input type="checkbox" data-ng-model="currentAbsence.startAfternoon" value="" class="ace"/>
+			<span class="lbl padding-16">Start from afternoon</span>
+		</label>
+		<!-- <label> <input type="checkbox" class=""
 			ng-model="currentAbsence.startAfternoon" /> <span>Start from
 				afternoon</span>
-		</label>
+		</label> -->
 	</div>
 	<div class="form-group">
-		<label> <input type="checkbox" class=""
+		<label class="">
+			  <input type="checkbox" data-ng-model="currentAbsence.endMorning" class="ace"/>
+			<span class="lbl padding-16">End after morning</span>
+		</label>
+		<!-- <label> <input type="checkbox" class=""
 			ng-model="currentAbsence.endMorning" /> <span>End after
 				morning</span>
-		</label>
+		</label> -->
 	</div>
 </form>

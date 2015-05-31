@@ -8,13 +8,13 @@ App.service('alertService', function($alert) {
 			title : title,
 			content : content,
 			type : type,
-			//placement: 'top',
+			placement: 'top-right',
 			keyboard : true,
 			show : false,
 			duration: 30,
 			template:  _contextPath+'scripts/templates/alert/alert.tpl.html',
-			container: '#alerts-container'
-			//container: 'body'
+			//container: '#alerts-container'
+			container: 'body'
 			//container: '#main-view'
 		});
 		myAlert.$promise.then(myAlert.show);

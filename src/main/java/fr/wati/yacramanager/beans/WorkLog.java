@@ -134,6 +134,20 @@ public class WorkLog extends AuditableEntity implements Valideable {
 		this.validationStatus=validationStatus;
 	}
 	
-	
+	public Long calculateDuration() {
+		Long currentDuration = 0L;
+		switch (getWorkLogType()) {
+		case DURATION:
+			currentDuration = getDuration();
+			break;
+		case TIME:
+			currentDuration = (getEndDate().toDateTime().getMillis() - getStartDate()
+					.toDateTime().getMillis()) / 1000 / 60;
+			break;
+		default:
+			break;
+		}
+		return currentDuration;
+	}
 	
 }

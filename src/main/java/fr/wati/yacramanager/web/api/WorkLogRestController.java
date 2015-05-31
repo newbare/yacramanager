@@ -6,6 +6,10 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.inject.Inject;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
@@ -18,6 +22,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.domain.Sort.Order;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
@@ -36,10 +41,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.codahale.metrics.annotation.Timed;
 
+import fr.wati.yacramanager.beans.Client_;
 import fr.wati.yacramanager.beans.Employe;
+import fr.wati.yacramanager.beans.Employe_;
+import fr.wati.yacramanager.beans.Project_;
 import fr.wati.yacramanager.beans.Task;
+import fr.wati.yacramanager.beans.Task_;
 import fr.wati.yacramanager.beans.ValidationStatus;
 import fr.wati.yacramanager.beans.WorkLog;
+import fr.wati.yacramanager.beans.WorkLog_;
 import fr.wati.yacramanager.services.EmployeService;
 import fr.wati.yacramanager.services.ServiceException;
 import fr.wati.yacramanager.services.TaskService;
@@ -218,30 +228,139 @@ public class WorkLogRestController {
 	@PreAuthorize("@clientService.findOne(#clientId).getCompany().getId().equals(principal.getDomainUser().getCompany().getId())")
 	@Timed
 	public Long clientWorkLog(
-			@PathVariable("clientId") @P("clientId") Long clientId,
-			@RequestParam(value="startDate",required=false) @DateTimeFormat(iso = ISO.DATE) LocalDate startDate,
-			@RequestParam(value="endDate",required=false) @DateTimeFormat(iso = ISO.DATE) LocalDate endDate) {
-		return 0L;
+			@PathVariable("clientId") @P("clientId") final Long clientId,
+			@RequestParam(value="employeId",required=false) final Long employeId,
+			@RequestParam(value="startDate",required=false) @DateTimeFormat(iso = ISO.DATE) final LocalDate startDate,
+			@RequestParam(value="endDate",required=false) @DateTimeFormat(iso = ISO.DATE) final LocalDate endDate) {
+		Specifications<WorkLog> specifications = Specifications
+				.where(new Specification<WorkLog>() {
+					public Predicate toPredicate(Root<WorkLog> root,
+							CriteriaQuery<?> query, CriteriaBuilder cb) {
+						return cb.equal(
+								root.join(WorkLog_.task).join(Task_.project)
+										.join(Project_.client).get(Client_.id),
+								clientId);
+					}
+				});
+		if(startDate!=null && endDate!=null){
+			specifications=specifications.and(new Specification<WorkLog>() {
+				public Predicate toPredicate(Root<WorkLog> root,
+						CriteriaQuery<?> query, CriteriaBuilder cb) {
+					return cb.between(root.get(WorkLog_.startDate), startDate, endDate);
+				}
+			})
+			.or(new Specification<WorkLog>() {
+				public Predicate toPredicate(Root<WorkLog> root,
+						CriteriaQuery<?> query, CriteriaBuilder cb) {
+					return cb.between(root.get(WorkLog_.endDate), startDate, endDate);
+				}
+			});
+		}
+		if(employeId!=null){
+			specifications=specifications.and(new Specification<WorkLog>() {
+				public Predicate toPredicate(Root<WorkLog> root,
+						CriteriaQuery<?> query, CriteriaBuilder cb) {
+					return cb.equal(root.join(WorkLog_.employe).get(Employe_.id), employeId);
+				}
+			});
+		}
+		Page<WorkLog> workLogs = workLogService.findAll(specifications, null);
+		Long totalDuration=0L;
+		for(WorkLog workLog:workLogs){
+			totalDuration+=workLog.calculateDuration();
+		}
+		return totalDuration;
 	}
 	
 	@RequestMapping(value = "/project/{projectId}", method = RequestMethod.GET)
 	@PreAuthorize("@projectService.findOne(#projectId).getClient().getCompany().getId().equals(principal.getDomainUser().getCompany().getId())")
 	@Timed
 	public Long projectWorkLog(
-			@PathVariable("projectId") @P("projectId") Long projectId,
-			@RequestParam(value="startDate",required=false) @DateTimeFormat(iso = ISO.DATE) LocalDate startDate,
-			@RequestParam(value="endDate",required=false) @DateTimeFormat(iso = ISO.DATE) LocalDate endDate) {
-		return 0L;
+			@PathVariable("projectId") @P("projectId") final Long projectId,
+			@RequestParam(value="employeId",required=false) final Long employeId,
+			@RequestParam(value="startDate",required=false) @DateTimeFormat(iso = ISO.DATE) final LocalDate startDate,
+			@RequestParam(value="endDate",required=false) @DateTimeFormat(iso = ISO.DATE) final LocalDate endDate) {
+		Specifications<WorkLog> specifications = Specifications
+				.where(new Specification<WorkLog>() {
+					public Predicate toPredicate(Root<WorkLog> root,
+							CriteriaQuery<?> query, CriteriaBuilder cb) {
+						return cb.equal(root.join(WorkLog_.task).join(Task_.project).get(Project_.id),projectId);
+					}
+				});
+		if(startDate!=null && endDate!=null){
+			specifications=specifications.and(new Specification<WorkLog>() {
+				public Predicate toPredicate(Root<WorkLog> root,
+						CriteriaQuery<?> query, CriteriaBuilder cb) {
+					return cb.between(root.get(WorkLog_.startDate), startDate, endDate);
+				}
+			})
+			.or(new Specification<WorkLog>() {
+				public Predicate toPredicate(Root<WorkLog> root,
+						CriteriaQuery<?> query, CriteriaBuilder cb) {
+					return cb.between(root.get(WorkLog_.endDate), startDate, endDate);
+				}
+			});
+		}
+		if(employeId!=null){
+			specifications=specifications.and(new Specification<WorkLog>() {
+				public Predicate toPredicate(Root<WorkLog> root,
+						CriteriaQuery<?> query, CriteriaBuilder cb) {
+					return cb.equal(root.join(WorkLog_.employe).get(Employe_.id), employeId);
+				}
+			});
+		}
+		Page<WorkLog> workLogs = workLogService.findAll(specifications, null);
+		Long totalDuration=0L;
+		for(WorkLog workLog:workLogs){
+			totalDuration+=workLog.calculateDuration();
+		}
+		return totalDuration;
 	}
 	
 	@RequestMapping(value = "/task/{taskId}", method = RequestMethod.GET)
 	@PreAuthorize("@taskService.findOne(#taskId).getProject().getClient().getCompany().getId().equals(principal.getDomainUser().getCompany().getId())")
 	@Timed
 	public Long taskWorkLog(
-			@PathVariable("taskId") @P("taskId") Long clientId,
-			@RequestParam(value="startDate",required=false) @DateTimeFormat(iso = ISO.DATE) LocalDate startDate,
-			@RequestParam(value="endDate",required=false) @DateTimeFormat(iso = ISO.DATE) LocalDate endDate) {
-		return 0L;
+			@PathVariable("taskId") @P("taskId") final Long taskId,
+			@RequestParam(value="employeId",required=false) final Long employeId,
+			@RequestParam(value="startDate",required=false) @DateTimeFormat(iso = ISO.DATE) final LocalDate startDate,
+			@RequestParam(value="endDate",required=false) @DateTimeFormat(iso = ISO.DATE) final LocalDate endDate) {
+		Specifications<WorkLog> specifications = Specifications
+				.where(new Specification<WorkLog>() {
+					public Predicate toPredicate(Root<WorkLog> root,
+							CriteriaQuery<?> query, CriteriaBuilder cb) {
+						return cb.equal(
+								root.join(WorkLog_.task).get(Task_.id),	taskId);
+					}
+				});
+		if(startDate!=null && endDate!=null){
+			specifications=specifications.and(new Specification<WorkLog>() {
+				public Predicate toPredicate(Root<WorkLog> root,
+						CriteriaQuery<?> query, CriteriaBuilder cb) {
+					return cb.between(root.get(WorkLog_.startDate), startDate, endDate);
+				}
+			})
+			.or(new Specification<WorkLog>() {
+				public Predicate toPredicate(Root<WorkLog> root,
+						CriteriaQuery<?> query, CriteriaBuilder cb) {
+					return cb.between(root.get(WorkLog_.endDate), startDate, endDate);
+				}
+			});
+		}
+		if(employeId!=null){
+			specifications=specifications.and(new Specification<WorkLog>() {
+				public Predicate toPredicate(Root<WorkLog> root,
+						CriteriaQuery<?> query, CriteriaBuilder cb) {
+					return cb.equal(root.join(WorkLog_.employe).get(Employe_.id), employeId);
+				}
+			});
+		}
+		Page<WorkLog> workLogs = workLogService.findAll(specifications, null);
+		Long totalDuration=0L;
+		for(WorkLog workLog:workLogs){
+			totalDuration+=workLog.calculateDuration();
+		}
+		return totalDuration;
 	}
 	
 }

@@ -14,8 +14,8 @@ App.controller('ActivityReportListMineController',function ($scope,$rootScope,Ac
 	};
 
 	$scope.fetchClients = function() {
- 		ClientsREST.get({companyId:USERINFO.company.id}).$promise.then(function(data){
- 			$scope.taskToAdd.clients=data.result;
+ 		ClientsREST.query({companyId:USERINFO.company.id}).$promise.then(function(data){
+ 			$scope.taskToAdd.clients=data;
  		});
  	};
  	$scope.fetchClients();

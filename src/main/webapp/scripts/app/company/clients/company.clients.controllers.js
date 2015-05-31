@@ -77,7 +77,7 @@ App.controller('CompanyClientsListController',function ($scope, $rootScope,$http
 	 $scope.tableParams.settings().counts=[10, 25, 50, 100];
 });
 
-App.controller('CompanyClientsOverviewController',function ($scope,ClientsREST,ProjectsREST,client,alertService,USERINFO,ActivitiesREST,EmployeesProjectsREST,ngTableParams,EmployeesREST){
+App.controller('CompanyClientsOverviewController',function ($scope,ClientsREST,$timeout,$http,ProjectsREST,client,alertService,USERINFO,ActivitiesREST,EmployeesProjectsREST,ngTableParams,EmployeesREST){
 	$scope.client=client;
 	$scope.contactFilter='';
 	$scope.timelineSource=undefined;
@@ -154,6 +154,22 @@ App.controller('CompanyClientsOverviewController',function ($scope,ClientsREST,P
 	$scope.refreshEmployeesProjectsDatas=function(){
 		$scope.clientsEmployeesTableParams.reload();
 	};
+	
+	$scope.updateEmployeProject = function(employeesProject,dailyRate) {
+		var epToSave = {};
+		epToSave.dailyRate = dailyRate;
+		epToSave.projectLead = employeesProject.projectLead;
+		return EmployeesProjectsREST.update(
+				{
+					companyId:USERINFO.company.id,
+					clientId:client.id,
+					projectId: employeesProject.id.projectId,
+					employeeId: employeesProject.id.employeeId
+				},epToSave).$promise.then(function(result) {
+			alertService.show('success', 'Confirmation', 'Data has been updated');
+		});
+	};
+	
 	//Assign employe to project
 	$scope.format=function(employee){
 		return employee.firstName +' '+employee.lastName;
@@ -214,6 +230,18 @@ App.controller('CompanyClientsOverviewController',function ($scope,ClientsREST,P
 			filters:[]
 		};
 	
+	$scope.percents=[];
+	$scope.userDurations=[];
+	$scope.totalDurations=[];
+	 $scope.options = {
+	         animate:{ duration: 1000, enabled: true },
+	         barColor:'#3983c2',
+	         scaleColor:false,
+	         lineWidth:3,
+	         size:50,
+	         lineCap: 'butt'
+	     };
+	
 	$scope.clientsEmployeesTableParams = new ngTableParams({
         page: 1,            // show first page
         count: 10 ,
@@ -242,6 +270,33 @@ App.controller('CompanyClientsOverviewController',function ($scope,ClientsREST,P
 					}else {
 						$scope.hasDatas=false;
 					}
+					
+					angular.forEach(data,function(project){
+			    		 $scope.percents[project.project.id]=0;
+			    		 $scope.totalDurations[project.project.id]=0;
+			    		 $http.get(_contextPath + "app/api/worklog/project/"+project.project.id,{})
+					 		.success(function(data, status) {
+					 			$scope.totalDurations[project.project.id]=data;
+					 			
+					 			$http.get(_contextPath + "app/api/worklog/project/"+project.project.id,{params:{'employeId':''+project.id.employeeId+''}})
+					 				.success(function(data, status) {
+					 					$scope.userDurations[project.id.employeeId]=[];
+					 					$scope.userDurations[project.id.employeeId][project.project.id]=data;
+					 					$scope.percents[project.id.employeeId]=[];
+					 					var percent=0;
+					 					if($scope.totalDurations[project.project.id]==0){
+					 						percent=0;
+					 					}else {
+					 						percent= Math.round( ((data/$scope.totalDurations[project.project.id])*100) * 100 ) / 100;
+										}
+					 					$timeout(function(){
+					 						$scope.percents[project.id.employeeId][project.project.id]=percent;
+									     }, 1000);
+					 				});
+					 		});
+			    	 });
+					
+					 
 					employeesProjects=data;
 					// set new data
 					$defer.resolve(data);

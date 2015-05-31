@@ -1,0 +1,104 @@
+<div class="row"> 
+	<button class="btn btn-default btn-sm pull-right m-l-sm">
+		<i class="fa fa-print"></i>
+		Print
+	</button>
+	<button class="btn btn-default btn-sm pull-right m-l-sm">
+		<i class="fa fa-paper-plane"></i>
+		Send to client
+	</button>
+	<button class="btn btn-success btn-sm pull-right" data-ng-click="updateInvoice()">
+		<i class="fa fa-check"></i>
+		Save
+	</button>
+</div>
+<div class="hr hr24 hr-dotted"></div>
+<div class="row">
+	<div class="col-md-6">
+		<h5>From:</h5>
+        <address>
+            <strong>Inspinia, Inc.</strong><br>
+            106 Jorg Avenu, 600/10<br>
+            Chicago, VT 32456<br>
+            <abbr title="Phone">P:</abbr> (123) 601-4590
+        </address>
+	</div>
+	<div class="col-md-6 align-right">
+		<h4>Invoice No.</h4>
+        <h4 class="green">{{invoice.invoiceNumber}}</h4>
+        <span>To:</span>
+        <address>
+            <strong>Corporate, Inc.</strong><br>
+            112 Street Avenu, 1080<br>
+            Miami, CT 445611<br>
+            <abbr title="Phone">P:</abbr> (120) 9000-4321
+        </address>
+       	<div class="form-group form-group-sm">
+			<label class="col-sm-offset-4 col-md-offset-3 col-sm-4 col-md-4 control-label">Invoice Date:</label>
+			<div class="col-sm-4 col-md-5">
+				<input type="date" data-ng-model="invoice.invoiceDate" class="form-control">
+			</div>
+		</div>
+		<br>
+		<div class="form-group form-group-sm">
+			<label class="col-sm-offset-4 col-md-offset-3 col-sm-4 col-md-4 control-label">Due Date:</label>
+			<div class="col-sm-4 col-md-5">
+				<input type="date" data-ng-model="invoice.dueDate" class="form-control">
+			</div>
+		</div>
+	</div>
+</div>
+<div class="table-responsive m-t">
+    <table class="table table-hover invoice-table">
+        <thead>
+	        <tr>
+	        	<th></th>
+	            <th>Item List</th>
+	            <th>Quantity</th>
+	            <th>Unit Price</th>
+	            <th>Tax</th>
+	            <th>Total Price</th>
+	        </tr>
+        </thead>
+        <tbody>
+	        <tr data-ng-repeat="invoiceItem in invoice.invoiceItems">
+	        	<td><button class="btn btn-link" data-ng-click="deleteInvoiceItemRow($index)"><span class="fa fa-trash text-danger"></span></button></td>
+	            <td>
+	            	<div><strong><a href="#" data-editable-text="invoiceItem.itemLabel" data-buttons="no">{{ invoiceItem.itemLabel || 'Item label'}}</a></strong></div>
+	                <small><a href="#" data-editable-text="invoiceItem.itemDescription" data-buttons="no">{{ invoiceItem.itemDescription || 'Item description'}}</a></small>
+	            </td>
+	            <td><a href="#" data-editable-number="invoiceItem.quantity" data-buttons="no" data-e-style="width: 90px;">{{ invoiceItem.quantity || 0}}</a></td>
+	            <td><a href="#" data-editable-number="invoiceItem.unitPrice" data-buttons="no" data-e-style="width: 90px;">{{ invoiceItem.unitPrice || 0 | currency}}</a></td>
+	            <td><a href="#" data-editable-number="invoiceItem.taxes" data-buttons="no" data-e-style="width: 90px;">{{ invoiceItem.taxes || 0 | currency}}</a></td>
+	            <td><strong>{{invoiceItem.total || 0 | currency}}</strong></td>
+	        </tr>
+        </tbody>
+    </table>
+</div>
+<div class="row">
+	<button class="btn btn-primary btn-white btn-sm m-r-sm" data-ng-click="addEmptyInvoiceItemRow()">
+		<i class="ace fa fa-plus"></i>
+		Add empty row
+	</button>
+	<button class="btn btn-primary btn-white btn-sm">
+		<i class="ace fa fa-calendar"></i>
+		Add from activity report
+	</button>
+</div>
+<table class="table invoice-total">
+    <tbody>
+	    <tr>
+	        <td><strong>Sub Total :</strong></td>
+	        <td><a href="#" data-editable-number="invoice.subTotal" data-buttons="no" data-e-style="width: 90px;">{{ invoice.subTotal || 0}}</a></td>
+	    </tr>
+	    <tr>
+	        <td><strong>TAX :</strong></td>
+	        <td><a href="#" data-editable-number="invoice.taxes" data-buttons="no" data-e-style="width: 90px;">{{ invoice.taxes || 0}}</a></td>
+	    </tr>
+	    <tr>
+	        <td><strong>TOTAL :</strong></td>
+	        <td><a href="#" data-editable-number="invoice.total" data-buttons="no" data-e-style="width: 90px;">{{ invoice.total || 0}}</a></td>
+	    </tr>
+    </tbody>
+</table>
+

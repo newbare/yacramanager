@@ -1,3 +1,71 @@
+/* INVOICE */
+.invoice-table,.invoice-total{
+	font-size: 105%;
+}
+.invoice-table tbody > tr > td:last-child,
+.invoice-table tbody > tr > td:nth-child(5),
+.invoice-table tbody > tr > td:nth-child(4),
+.invoice-table tbody > tr > td:nth-child(3){
+  text-align: right;
+}
+.invoice-table tbody > tr > th:first-child,
+.invoice-table tbody > tr > td:first-child{
+	width: 80px;
+}
+.invoice-table thead > tr > th:last-child,
+.invoice-table thead > tr > th:nth-child(5),
+.invoice-table thead > tr > th:nth-child(4),
+.invoice-table thead > tr > th:nth-child(3){
+  text-align: right;
+}
+
+.invoice-table a.editable-click,
+.invoice-total a.editable-click{
+	font-weight: inherit;
+	font-style: inherit;
+	color: inherit;
+}
+.invoice-table a.editable-click:HOVER,
+.invoice-total a.editable-click:HOVER{
+	border-bottom: none;
+	color: #478fca;
+}
+.invoice-table a.editable-click:HOVER:AFTER,
+.invoice-total a.editable-click:HOVER:AFTER{
+	content: "\f044";
+	position: absolute;
+	text-align: center;
+	font-family: FontAwesome;
+	font-size: 125%;
+	padding-left: 10px;
+  	padding-top: 1px;
+  	color: #478fca;
+  	opacity: 0.4;
+}
+
+.invoice-total > tbody > tr > td:first-child {
+  text-align: right;
+}
+.invoice-total > tbody > tr > td {
+  border: 0 none;
+}
+.invoice-total > tbody > tr > td:last-child {
+  border-bottom: 1px solid #DDDDDD;
+  text-align: right;
+  width: 15%;
+}
+.task-chart{
+	height: 50px;
+  	width: 50px;
+  	line-height: 50px;
+}
+.easy-pie-chart-comment{
+	line-height: 50px;
+}
+h3, h4, h5 {
+  margin-top: 5px;
+  font-weight: 600;
+}
 .editable-click {
 	border-bottom: 1px dashed #BBB;
 	cursor: pointer;
@@ -29,7 +97,7 @@ tr.ng-table-group{
 .footer-v1 .copyright {
 	background: #222;
 	border-top: none;
-	padding: 10px 0 5px;
+	/* padding: 10px 0 5px; */
 }
 .footer-v1 .footer-socials {
 	margin-top: 12px;
@@ -73,7 +141,8 @@ border-bottom: 1px solid #e7eaec;
 padding: 15px 10px;
 vertical-align: middle;
 }
-.project-people img {
+.project-people img,
+.task-people img {
 width: 32px;
 height: 32px;
 }
@@ -86,7 +155,8 @@ td.project-color{
 	width: 50px;
 }
 td.project-people{
-	width: 50px;
+	/* width: 50px; */
+	text-align: center;
 }
 
 td.project-daily-rate{
@@ -1030,6 +1100,7 @@ body>.container,body>.container-fluid {
 
 #app-content {
 	padding-top: 60px;
+	padding-bottom: 60px;
 }
 
 .container-fluid.global-container {
