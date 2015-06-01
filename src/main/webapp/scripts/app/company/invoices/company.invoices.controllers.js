@@ -58,8 +58,10 @@ App.controller('CompanyInvoicesQuickViewController',function ($scope,USERINFO,In
 		}});
 });
 
-App.controller('CompanyInvoicesOverviewController',function ($scope,USERINFO,invoice,alertService,InvoicesREST){
+App.controller('CompanyInvoicesOverviewController',function ($scope,USERINFO,invoice,alertService,InvoicesREST,$state,$stateParams){
 	$scope.invoice=invoice;
+	$scope.invoice.invoiceDate=new Date(invoice.invoiceDate);
+	$scope.invoice.dueDate=new Date(invoice.dueDate);
 	var dateFormat="YYYY-MM-DD";
 	$scope.addEmptyInvoiceItemRow=function(){
 		$scope.invoice.invoiceItems.push({
@@ -69,10 +71,31 @@ App.controller('CompanyInvoicesOverviewController',function ($scope,USERINFO,inv
 			unitPrice:0
 		});
 	};
+	$scope.cancelEdition=function(){
+		$state.transitionTo($state.current, $stateParams, {
+		    reload: true,
+		    inherit: false,
+		    notify: true
+		});
+	};
+	
 	$scope.deleteInvoiceItemRow=function(index){
 		$scope.invoice.invoiceItems.splice(index,1);
 	};
+	$scope.invoiceItemTotal=function(invoiceItem){
+		return invoiceItem.quantity*invoiceItem.unitPrice;
+	}
+	$scope.invoiceSubTotal=function(){
+		var subTotal=0;
+		angular.forEach($scope.invoice.invoiceItems,function(invoiceItem){
+			subTotal+=$scope.invoiceItemTotal(invoiceItem);
+		});
+		return subTotal;
+	}
 	
+	$scope.invoiceTotal=function(){
+		return !$scope.invoice.taxes ? $scope.invoiceSubTotal():$scope.invoiceSubTotal()-$scope.invoice.taxes;
+	}
 	$scope.updateInvoice=function(){
 		var invoiceToSave=$scope.invoice;
 		invoiceToSave.invoiceDate=moment(invoiceToSave.invoiceDate).format(dateFormat)
@@ -81,6 +104,6 @@ App.controller('CompanyInvoicesOverviewController',function ($scope,USERINFO,inv
 			 alertService.show('success','Confirmation', 'Invoice updated');
 		});
 	}
-});
+	});
 
 

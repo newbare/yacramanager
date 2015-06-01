@@ -50,7 +50,7 @@ public class Invoice extends AuditableEntity{
 	private LocalDate invoiceDate;
 	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDate")
 	private LocalDate dueDate;
-	@OneToMany(cascade=CascadeType.ALL,fetch=FetchType.LAZY,mappedBy = "invoice")
+	@OneToMany(mappedBy = "invoice",cascade=CascadeType.ALL,orphanRemoval=true)
 	private List<InvoiceItem> invoiceItems=new ArrayList<>();
 	@OneToMany(cascade=CascadeType.ALL,fetch=FetchType.LAZY,mappedBy = "invoice")
 	private List<InvoicePayment> invoicePayments=new ArrayList<>();

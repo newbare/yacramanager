@@ -27,22 +27,22 @@
 		</div>
 		<div class="table-responsive">
 			<table
-				class="table table-hover ng-table-rowselected "
+				class="table ng-table-rowselected mini-list"
 				data-ng-table="tableParams" >
 				<tr align="left" data-ng-repeat="invoice in $data" style="height: 50px"
 					data-ng-click="invoice.$selected = !invoice.$selected; changeSelection(invoice)">
-					<td data-sortable="'invoiceNumber'" data-ui-sref="company.invoices.view.quick.overview({ id: invoice.id })">
-						<strong class="green">{{invoice.invoiceNumber}}</strong>
-						<span class="pull-right">{{invoice.invoiceDate | date : 'mediumDate'}}</span>
+					<td class="invoice" data-ui-sref-active="active" data-sortable="'invoiceNumber'" data-ui-sref="company.invoices.view.quick.overview({ id: invoice.id })">
+						<strong class="invoice-number">{{invoice.invoiceNumber}}</strong>
+						<span class="text-muted pull-right"><small>{{invoice.invoiceDate | date : 'mediumDate'}}</small></span>
 						<br>
-						<small class="text-muted">{{invoice.client.name}}</small>
-						<i data-ng-if="$state.is('company.invoices.view.quick.overview',{ id: ''+invoice.id+'' })" class="fa fa-hand-o-right text-primary" style="float: right;"></i>
+						<small class="invoice-client-name">{{invoice.client.name}}</small>
+						<!-- <i data-ng-if="$state.is('company.invoices.view.quick.overview',{ id: ''+invoice.id+'' })" class="fa fa-hand-o-right text-primary" style="float: right;"></i> -->
 					</td>
 				</tr>
 			</table>
 		</div>
 	</div>
-	<div class="col-md-10 p-md">
+	<div class="col-md-10">
 		<!-- <div class="panel panel-default">
 			<div class="panel-body"> -->
 				<div data-ui-view class=""></div>

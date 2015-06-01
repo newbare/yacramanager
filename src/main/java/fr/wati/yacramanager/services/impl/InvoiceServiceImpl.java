@@ -3,6 +3,7 @@
  */
 package fr.wati.yacramanager.services.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -211,11 +212,31 @@ public class InvoiceServiceImpl implements InvoiceService {
 		invoice.setTaxes(dto.getTaxes());
 		invoice.setSubTotal(dto.getSubTotal());
 		for(InvoiceItem invoiceItem: dto.getInvoiceItems()){
-			if(invoiceItem.getId()!=null){
+			if(invoice.getInvoiceItems().contains(invoiceItem)){
 				//update
+				InvoiceItem invoiceItemToUpdate = invoice.getInvoiceItems().get(invoice.getInvoiceItems().indexOf(invoiceItem));
+				invoiceItemToUpdate.setItemLabel(invoiceItem.getItemLabel());
+				invoiceItemToUpdate.setItemDescription(invoiceItem.getItemDescription());
+				invoiceItemToUpdate.setQuantity(invoiceItem.getQuantity());
+				invoiceItemToUpdate.setUnitPrice(invoiceItem.getUnitPrice());
 			}else {
+				//insert
 				invoiceItem.setInvoice(invoice);
 				invoice.getInvoiceItems().add(invoiceItem);
+				
+			}
+		}
+		List<Integer> indexToDelete=new ArrayList<>();
+		for(InvoiceItem invoiceItem: invoice.getInvoiceItems()){
+			if(!dto.getInvoiceItems().contains(invoiceItem)){
+				//delete
+				indexToDelete.add(invoice.getInvoiceItems().indexOf(invoiceItem));
+			}
+		}
+		if(!indexToDelete.isEmpty()){
+			for(Integer index:indexToDelete){
+				invoice.getInvoiceItems().get(index).setInvoice(null);
+				invoice.getInvoiceItems().remove(invoice.getInvoiceItems().get(index));
 			}
 		}
 		return invoice;
