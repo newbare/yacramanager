@@ -1,3 +1,44 @@
+@media ( max-width :768px) {
+	.navbar-form-custom,.navbar-right>ul.navbar-nav>li:not(.timer-widget),#logo {
+		display: none
+	}
+	.navbar-right,.navbar-right>ul.navbar-nav>li.timer-widget {
+		display: block;
+		float: right !important;
+	}
+}
+
+@media (max-width: 767px) {
+  .navbar-nav .open .dropdown-menu.timer-widget-content {
+   position: absolute;
+	z-index: 1000;
+	border: 1px solid #999;
+	border-radius: 4px;
+	-webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+	box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+	min-width: 278px;
+	/*margin-right: 30px;*/
+	padding: 8px;
+	background-color: #fff;
+	/* text-align: left; */
+	color: #080808;
+	left: auto;
+	right: 20px;
+  }
+  .timer-widget>a{
+  	right: 20px;
+  }
+}
+
+.p-l-xxs {
+	padding-left: 5px !important
+}
+.p-r-xxs {
+	padding-right: 5px !important
+}
+.content{
+	padding-left: 25px;
+}
 #logo{
 	height: 62px;
 }
@@ -143,7 +184,7 @@ tr.ng-table-group{
 .footer-v1{
   position: fixed;
   bottom: 0;
-  width: 100%;
+  min-width: 320px;
   z-index: 9999;
 }
 .footer-v1 .copyright p {
@@ -898,11 +939,14 @@ table.table>tr>td.tool-btn-col,table.table>tbody>tr>td.tool-btn-col {
 }
 
 .timer-widget>a>button {
-	margin: 0px inherit;
-	padding: 0px inherit;
+	/* margin: 0px inherit;
+	padding: 0px inherit; */
 	border: none;
 }
-
+.timer-widget>a>button i.fa{
+	margin-right: inherit;
+	font-size: inherit;
+}
 /* .timer-widget>a,
 timer{
 	padding-right: 5px;

@@ -1,7 +1,7 @@
 var yaCRAApp = {};
 
 var App = angular.module('yaCRAApp', [ 'ngResource',
-		'ui.router','pascalprecht.translate','ngCookies','tmh.dynamicLocale','ncy-angular-breadcrumb']);
+		'pascalprecht.translate','ngCookies','tmh.dynamicLocale','ncy-angular-breadcrumb']);
 App.controller('LanguageController', function ($scope, $translate, LanguageService) {
 LanguageService.getCurrent().then(function(langage){$scope.currentLanguage=langage}); 
 	
@@ -20,29 +20,30 @@ App.run(function($rootScope) {
 	$rootScope.appContextPath=_contextPath;
 });
 
-App
-		.config([
-				'$stateProvider',
-				'$urlRouterProvider',
-				'$locationProvider',
-				'$translateProvider',
-				'tmhDynamicLocaleProvider',
-				function($stateProvider, $urlRouterProvider, $locationProvider,
-						$translateProvider, tmhDynamicLocaleProvider) {
-					$translateProvider.determinePreferredLanguage();
-					$translateProvider.useStaticFilesLoader({
-						prefix : _contextPath + 'i18n/',
-						suffix : '.json'
-					});
-
-					$translateProvider.useCookieStorage();
-
-					tmhDynamicLocaleProvider
-							.localeLocationPattern(_contextPath	+ 'bower_components/angular-i18n/angular-locale_{{locale}}.js');
-					tmhDynamicLocaleProvider
-							.useCookieStorage('NG_TRANSLATE_LANG_KEY');
-
-				} ]);
+//App
+//		.config([
+//				'$stateProvider',
+//				'$urlRouterProvider',
+//				'$locationProvider',
+//				'$translateProvider',
+//				'tmhDynamicLocaleProvider',
+//				function($stateProvider, $urlRouterProvider, $locationProvider,
+//						$translateProvider, tmhDynamicLocaleProvider) {
+//					
+//					$translateProvider.determinePreferredLanguage();
+//					$translateProvider.useStaticFilesLoader({
+//						prefix : _contextPath + 'i18n/',
+//						suffix : '.json'
+//					});
+//
+//					$translateProvider.useCookieStorage();
+//
+//					tmhDynamicLocaleProvider
+//							.localeLocationPattern(_contextPath	+ 'bower_components/angular-i18n/angular-locale_{{locale}}.js');
+//					tmhDynamicLocaleProvider
+//							.useCookieStorage('NG_TRANSLATE_LANG_KEY');
+//
+//				} ]);
 
 
 App.factory('LanguageService', function ($http, $translate, LANGUAGES) {
@@ -94,69 +95,14 @@ App.controller('AppCtrl', [
 				ENV, VERSION) {
 			$scope.ENV = ENV;
 			$scope.VERSION = VERSION;
-			$scope.userName=_userName;
+			if((typeof(_userName)!='undefined')){
+				$scope.userName=_userName;
+			}
 		} ]);
-
-var whenConfig=[ '$urlRouterProvider',	function($urlRouterProvider) {
-	$urlRouterProvider
-	.when('','/home')
-	// The `when` method says if the url is ever the 1st param, then
-	// redirect to the 2nd param
-	// Here we are just setting up some convenience urls.
-	//.when('/c?id', '/contacts/:id').when('/user/:id', '/contacts/:id')
-
-	// If the url is ever invalid, e.g. '/asdf', then redirect to '/'
-	// aka the home state
-	.otherwise('/error404');
-}];
 
 
 var stateConfig =[ '$stateProvider','$locationProvider','$translateProvider','tmhDynamicLocaleProvider',
 		function($stateProvider,$locationProvider,$translateProvider,tmhDynamicLocaleProvider) {
-
-			$stateProvider
-			.state('error404', {
-				url : "/error404",
-				templateUrl : _contextPath+'views/app/templates/error-404.tpl.html',
-				controller : HomeController,
-				data: {
-			        pageTitle: 'Error 404'
-			      }
-			})
-			.state('home', {
-				url : "/home",
-				templateUrl : _contextPath+'views/home.html',
-				controller : HomeController,
-				data: {
-			        pageTitle: 'Home',
-			        ncyBreadcrumbLabel: 'Home'
-			      }
-			}).state('about', {
-				url : "/about",
-				templateUrl : _contextPath+'views/about.html',
-				controller : AboutController,
-				data: {
-			        pageTitle: 'About',
-			        ncyBreadcrumbLabel: 'About'
-			      }
-			})
-			.state('pricing', {
-				url : "/pricing",
-				templateUrl : _contextPath+'views/pricing.html',
-				controller : PricingController,
-				data: {
-			        pageTitle: 'Pricing',
-			        ncyBreadcrumbLabel: 'Princing'
-			      }
-			}).state('quick-tour', {
-				url : "/quick-tour",
-				templateUrl : _contextPath+'views/quick-tour.html',
-				controller : QuickTourController,
-				data: {
-			        pageTitle: 'Quick tour',
-			        ncyBreadcrumbLabel: 'Quick tour'
-			      }
-			});
 			
 			$translateProvider.preferredLanguage('en');
 //			$translateProvider.determinePreferredLanguage();
@@ -185,7 +131,7 @@ App.factory('translationMissingErrorHandlerFactory', function () {
   };
 });
 
-App.config(whenConfig).config(stateConfig);
+App.config(stateConfig);
 
 App.config(function($breadcrumbProvider) {
     $breadcrumbProvider.setOptions({

@@ -1,24 +1,29 @@
-<div class="row">
-	<div class="btn-toolbar" role="toolbar">
-	  <div class="btn-group btn-group-sm">
-	  	<button type="button" class="btn btn-success btn-round"  data-template="{{appContextPath}}scripts/templates/edit-worklog.tpl.html"
-			data-bs-modal="modal">
-			<i class="fa fa-plus"></i> Ajouter
-		</button>
-	  </div>
-	  <div class="btn-group btn-group-sm pull-right">
-	  		 <button class="btn btn-success" data-ng-class="{'active' : currentView.name=='agendaDay' && !tableVisible}" data-ng-click="changeView('agendaDay', 'timesheetCalendar')">{{'app.timesheet.toolbar.agendaDay' | translate}}</button>
-                   <button class="btn btn-success" data-ng-class="{'active' : currentView.name=='agendaWeek' && !tableVisible}" data-ng-click="changeView('agendaWeek', 'timesheetCalendar')">{{'app.timesheet.toolbar.agendaWeek' | translate}}</button>
-                   <button class="btn btn-success" data-ng-class="{'active' : currentView.name=='month' && !tableVisible}" data-ng-click="changeView('month', 'timesheetCalendar')">{{'app.timesheet.toolbar.agendaMonth' | translate}}</button>
-                   <button class="btn btn-success" data-ng-class="{'active' : tableVisible}" data-ng-click="showTable(true)">{{'app.timesheet.toolbar.agendaTable' | translate}}</button>
-	  </div>
-	  <div class="btn-group btn-group-sm pull-right">
-		<button class="btn btn-default" data-ng-class="{'active' : isTodaySelected()}" data-ng-disabled="isTodaySelected()" ng-click="today('timesheetCalendar')">{{'app.timesheet.toolbar.today' | translate}}</button>
-		<button class="btn btn-default" ><i class="fa fa-calendar"></i></button>
-	  </div>			  
+<div class="hpanel">
+	<div class="panel-body">
+		<div class="btn-toolbar" role="toolbar">
+		  <div class="btn-group btn-group-sm">
+		  	<button type="button" class="btn btn-success btn-round"  data-template="{{appContextPath}}scripts/templates/edit-worklog.tpl.html"
+				data-bs-modal="modal">
+				<i class="fa fa-plus"></i> Ajouter
+			</button>
+		  </div>
+		  <div class="btn-group btn-group-sm pull-right">
+		  		 <button class="btn btn-outline btn-info" data-ng-class="{'active' : currentView.name=='agendaDay' && !tableVisible}" data-ng-click="changeView('agendaDay', 'timesheetCalendar')">{{'app.timesheet.toolbar.agendaDay' | translate}}</button>
+                 <button class="btn btn-outline btn-info" data-ng-class="{'active' : currentView.name=='agendaWeek' && !tableVisible}" data-ng-click="changeView('agendaWeek', 'timesheetCalendar')">{{'app.timesheet.toolbar.agendaWeek' | translate}}</button>
+                 <button class="btn btn-outline btn-info" data-ng-class="{'active' : currentView.name=='month' && !tableVisible}" data-ng-click="changeView('month', 'timesheetCalendar')">{{'app.timesheet.toolbar.agendaMonth' | translate}}</button>
+                 <button class="btn btn-outline btn-info" data-ng-class="{'active' : tableVisible}" data-ng-click="showTable(true)">{{'app.timesheet.toolbar.agendaTable' | translate}}</button>
+		  </div>
+		  <div class="btn-group btn-group-sm pull-right">
+			<button class="btn btn-outline btn-info" data-ng-class="{'active' : isTodaySelected()}" data-ng-disabled="isTodaySelected()" ng-click="today('timesheetCalendar')">{{'app.timesheet.toolbar.today' | translate}}</button>
+			<button class="btn btn-default" ><i class="fa fa-calendar"></i></button>
+		  </div>			  
+		</div>
+		<div data-ng-criteria-bar data-criteria-bar-config="criteriaBarConfig" data-do-filter="doFilter(criteriaBarConfig.filters)"></div>
 	</div>
+			
 </div>
-<div data-ng-criteria-bar data-criteria-bar-config="criteriaBarConfig" data-do-filter="doFilter(criteriaBarConfig.filters)"></div>		
+<div class="hpanel">
+	<div class="panel-body">
 <div class="" data-ng-show="!tableVisible">
 	<div class="row">
 		<ul class="pager">
@@ -81,4 +86,6 @@
 						  <input type="checkbox" data-ng-model="checkboxes.checked" id="select_all" name="filter-checkbox" value="" />
 					</label>
    				 </script>
+</div>
+</div>
 </div>

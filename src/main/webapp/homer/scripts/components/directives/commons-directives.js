@@ -341,7 +341,7 @@ App.directive('connectionLostSupport', function($modal) {
 	};
 });
 
-App.directive('ngConfirm',function($modal) {
+App.directive('ngConfirm',function($modal,sweetAlert) {
 	return {
 		priority : -1,
 						link : function(scope, element, attr) {
@@ -369,7 +369,26 @@ App.directive('ngConfirm',function($modal) {
 								hide();
 							};
 							element.bind('click', function(event) {
-								scope.showModal();
+
+								sweetAlert.swal({
+					                title: msg,
+					                text: "Your will not be able to recover this imaginary file!",
+					                type: "warning",
+					                showCancelButton: true,
+					                confirmButtonColor: "#DD6B55",
+					                confirmButtonText: "Yes, delete it!",
+					                cancelButtonText: "No, cancel plx!",
+					                closeOnConfirm: true,
+					                closeOnCancel: true },
+					            function (isConfirm) {
+					                if (isConfirm) {
+					                	scope.$eval(clickAction);
+					                    //sweetAlert.swal("Done !", "", "success");
+					                } else {
+					                    //sweetAlert.swal("Cancelled", "Your imaginary file is safe :)", "error");
+					                }
+					            });
+								//scope.showModal();
 								event.stopImmediatePropagation();
 								event.preventDefault();
 							});

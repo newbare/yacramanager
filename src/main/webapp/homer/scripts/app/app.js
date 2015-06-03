@@ -88,6 +88,7 @@ App.run(function($rootScope,$q, $templateCache, UsersREST,$state,ENV,VERSION,USE
 	$rootScope.appContextPath=_contextPath;
 	$rootScope.ENV = ENV;
     $rootScope.VERSION = VERSION;
+    $rootScope.globalSearchText="";
     
     $rootScope.desktopScreen = screenSize.on('md, lg', function(match){
     	$rootScope.desktopScreen = match;
@@ -344,6 +345,14 @@ App.controller('LanguageController', function ($scope, $translate, LanguageServi
      });
     
 });
+App.controller('GlobalSearchController', function ($rootScope,$scope,$state) {
+	 
+	$scope.onGlobalSearch=function(globalSearchText){
+		$state.go('search', {'searchText':globalSearchText});
+	}
+    
+});
+
 
 
 

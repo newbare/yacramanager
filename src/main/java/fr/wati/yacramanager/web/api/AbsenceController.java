@@ -175,8 +175,12 @@ public class AbsenceController  {
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	@Timed
-	public void delete(@PathVariable("id") Long id) {
-		absenceService.delete(id);
+	public void delete(@PathVariable("id") Long id) throws RestServiceException {
+		if(absenceService.exists(id)){
+			absenceService.delete(id);
+		}else {
+			throw new RestServiceException("the selected absence does not exist in DB");
+		}
 	}
 
 	@RequestMapping(value = "/types", method = RequestMethod.GET)
