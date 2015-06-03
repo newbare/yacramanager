@@ -1,0 +1,65 @@
+<div class="row">
+	<div class="col-xs-12 col-sm-10">
+		<!-- #section:pages/timeline.style2 -->
+		<div class="timeline-container timeline-style2" data-ng-repeat="day in timelineData.days" data-ng-show="timelineData.days.length>0">
+			<span class="timeline-label">
+				<span class="label label-primary arrowed-in-right label-lg">
+					<b>{{day.date | dateFromNow}}</b>
+				</span> 
+			</span>
+			<div class="timeline-items">
+				<div class="timeline-item clearfix" data-ng-repeat="activityItem in day.activityItems">
+					<div class="timeline-info">
+						<span class="timeline-date">{{activityItem.time | date: 'shortTime'}}</span> <i
+							class="timeline-indicator btn btn-info no-hover"></i>
+					</div>
+					<div class="widget-box transparent">
+						<div class="widget-body">
+							<div class="widget-main no-padding">
+								<span class="text-info">
+									<strong>{{activityItem.activityDTO.employe.firstName}} {{activityItem.activityDTO.employe.lastName}}</strong>
+								</span>
+								<i class="fa fa-hand-o-right"></i>
+								<span class="" data-ng-class="{'text-success' : activityItem.activityDTO.activityOperation=='CREATE' || activityItem.activityDTO.activityOperation=='VALIDATE' , 'text-warning' : activityItem.activityDTO.activityOperation=='UPDATE', 'text-danger' : activityItem.activityDTO.activityOperation=='DELETE' || activityItem.activityDTO.activityOperation=='REJECT'}">
+									<strong>{{activityItem.activityDTO.activityOperation}}</strong>
+								</span> 
+								<span class="text-muted">Entity 
+										<a data-ng-if="activityItem.activityDTO.entityType==='Employe'" data-ui-sref="company.employees.view.quick.overview({ id: activityItem.activityDTO.entityId })">
+											{{activityItem.activityDTO.entityType}}
+										</a>
+										<a data-ng-if="activityItem.activityDTO.entityType==='Task'" data-ui-sref="task.detail({ id: activityItem.activityDTO.entityId })">
+											{{activityItem.activityDTO.entityType}}
+										</a>
+										<a data-ng-if="activityItem.activityDTO.entityType==='Project'" data-ui-sref="company.projects.view.quick.overview({ id: activityItem.activityDTO.entityId })">
+											{{activityItem.activityDTO.entityType}}
+										</a>
+										<a data-ng-if="activityItem.activityDTO.entityType==='Client'" data-ui-sref="company.clients.view.quick.overview({ id: activityItem.activityDTO.entityId })">
+											{{activityItem.activityDTO.entityType}}
+										</a>
+										<a data-ng-if="activityItem.activityDTO.entityType==='WorkLog'" data-ui-sref="company.clients.view.quick.overview({ id: activityItem.activityDTO.entityId })">
+											{{activityItem.activityDTO.entityType}}
+										</a>
+										<a data-ng-if="activityItem.activityDTO.entityType==='Absence'" data-ui-sref="absence.detail({ id: activityItem.activityDTO.entityId })">
+											{{activityItem.activityDTO.entityType}}
+										</a>
+										<a data-ng-if="activityItem.activityDTO.entityType==='NoteDeFrais'" data-ui-sref="frais.detail({ id: activityItem.activityDTO.entityId })">
+											{{activityItem.activityDTO.entityType}}
+										</a>
+										<span class="label label-info" data-ng-if="activityItem.activityDTO.entityType==='Company'"">
+											{{activityItem.activityDTO.entityType}}
+										</span>
+								</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- /.timeline-items -->
+		</div>
+		<!-- /.timeline-container -->
+		<div class="alert alert-warning" data-ng-show="timelineData.days.length==0">
+			No recent activity found
+		</div>
+	</div>
+</div>
+

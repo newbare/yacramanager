@@ -1,0 +1,109 @@
+.ng-criteria-bar {
+	padding-top: 5px;
+	padding-left: 5px;
+	/* background-color: #f5f5f5; */
+	border-top: 1px solid #f5f5f5;
+	border-bottom: 1px solid #f5f5f5;
+}
+
+.ng-criteria-bar li.list-group-item{
+	border: none;
+}
+/* the criteria button */
+.ng-criterion {
+	background-color: none;
+	border: 1px solid;
+	border-color: transparent;
+	padding-top: 5px;
+	padding-bottom: 6px;
+	padding-left: 2px;
+	padding-right: 2px;
+	text-align: center;
+	cursor: pointer;
+	border-radius: 4px;
+}
+
+.ng-criterion.disabled,.ng-criterion.disabled .criterion-btn {
+	cursor: not-allowed;
+}
+
+.ng-criterion:hover,.ng-criterion.active,.ng-criterion.noteditable {
+	border: 1px solid #ccc;
+	background-color: white;
+}
+
+.ng-criterion.active {
+	background-color: #f9f9f9;
+	border-bottom: none;
+}
+
+.ng-criterion .criterion-btn {
+	border: none;
+	padding: 6px 12px;
+	background-image: none;
+	background-color: transparent;
+}
+
+.ng-criterion .criterion-btn:FOCUS {
+	outline: none;
+}
+
+.ng-criterion .criterion-remove {
+	color: #bbb;
+}
+
+.ng-criterion .criterion-remove:HOVER {
+	color: red;
+}
+
+/* ! */
+.ng-criterion .inlineBlock {
+	display: inline-block;
+}
+
+.ng-criteria-bar .divider-vertical {
+	/* height: 90%; */
+	margin: 0;
+	border-right: 1px solid black;
+	border-left: 1px solid #f2f2f2;
+}
+
+.ng-criterion .filter-content{
+	max-width: 400px;
+}
+
+.ng-criterion .filter-content,.ng-criteria-bar .more-content {
+	position: absolute;
+	z-index: 999;
+	border: 1px solid rgba(0, 0, 0, 0.15);
+	border-radius: 4px;
+	-webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+	box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+	min-width: 278px;
+	/* margin-right: 30px; */
+	padding: 8px;
+	background-color: white;
+	text-align: left;
+	
+}
+
+.ng-criteria-bar .more-content {
+	left: auto;
+	right: 0;
+}
+
+.ng-criteria-bar .more-content{
+	/* right: 0; */
+}
+.ng-criterion ul>li,.ng-criteria-bar ul>li {
+	padding-top: 0px !important;
+	padding-bottom: 0px !important;
+	cursor: pointer;
+}
+
+.ng-criterion ul>li:HOVER
+.ng-criteria-bar ul>li:HOVER {
+	color: #555;
+	text-decoration: none;
+	background-color: #f5f5f5;
+}

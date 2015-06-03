@@ -1,0 +1,49 @@
+
+<div class="row">
+	<div class="col-md-2 no-padding">
+		<div class="hpanel">
+            <div class="panel-body">
+		<div class="row">
+			<div class="btn-toolbar" role="toolbar">
+			  <div class="btn-group btn-group-sm">
+			  	<button type="button" class="btn btn-success btn-round" data-template="{{appContextPath}}scripts/templates/invite-employe.tpl.html" data-bs-modal="modal" >
+					<i class="fa fa-user-plus"></i> Invite employe
+				</button>
+			  </div>
+			  <div class="btn-group btn-group-sm pull-right">
+			  		 <button class="btn btn-default" data-ui-sref-active="active" data-ui-sref="company.employees.view.list" data-title="List view" data-bs-tooltip><i class="fa fa-list"></i></button>
+					<button  class="btn btn-default" data-ui-sref-active="active" data-ui-sref="company.employees.view.quick" data-title="Quick view" data-bs-tooltip><i class="fa fa-columns"></i></button>
+			  </div>
+			</div>
+		</div>
+		<div class="row">
+			<form data-ng-submit="filterEmployees(employeesFilterText)">
+				<div class="input-group input-group-sm">
+					<input type="text" data-ng-model="employeesFilterText" class="form-control" placeholder="Filter employees"> <span class="input-group-btn">
+						<button class="btn btn-primary" type="submit">
+							<i class="fa fa-search"></i>
+						</button>
+					</span>
+				</div>
+			</form>
+		</div>
+		<div class="table-responsive">
+			<table
+				class="table table-hover ng-table-rowselected "
+				data-ng-table="tableParams" >
+				<tr align="left" data-ng-repeat="employe in $data" style="height: 50px"
+					data-ng-click="employe.$selected = !user.$selected; changeSelection(user)">
+					<td data-sortable="'lastName'" data-ui-sref="company.employees.view.quick.overview.basic({ id: employe.id })">
+							{{employe.lastName}} {{employe.firstName}}
+						<i data-ng-if="$state.includes('company.employees.view.quick.overview',{ id: ''+employe.id+'' })" class="fa fa-hand-o-right text-primary" style="float: right;"></i>
+					</td>
+				</tr>
+			</table>
+		</div>
+		</div>
+		</div>
+	</div>
+	<div class="col-md-10">
+		<div data-ui-view></div>
+	</div>
+</div>

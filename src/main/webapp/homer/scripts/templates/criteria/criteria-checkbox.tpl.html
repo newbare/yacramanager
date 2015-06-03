@@ -1,0 +1,21 @@
+<form data-role="search">
+	<div class="input-group">
+		<input type="search" data-ng-model="checkBoxFilterSearch" class="form-control" placeholder="Filter text"
+			name="srch-term" id="srch-term">
+		<span class="input-group-addon"><i class="fa fa-search"></i></span>
+	</div>
+	<br>
+	<label for="datepicker">Select options</label>
+	<ul class="list-group">
+		<li class="list-group-item"   data-ng-repeat="element in checkboxElements | filter : checkBoxFilterSearch">
+			<div class="checkbox">
+			    <label>
+			      <input type="checkbox" data-ng-model="element.ticked" data-ng-change="onFilterCheckBox()"> {{element.label}}
+			    </label>
+			  </div>
+		</li>
+	</ul>
+	<div class="">
+		<button class="btn btn-link" data-ng-click="reset()">Reset</button>
+	</div>
+</form>

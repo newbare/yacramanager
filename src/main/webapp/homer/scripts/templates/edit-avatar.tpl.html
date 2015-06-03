@@ -1,0 +1,29 @@
+<div class="modal" role="dialog" id="editAvatarModal">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" ng-click="$hide()">
+					<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+				</button>
+				<h4 class="blue">Change Avatar</h4>
+			</div>
+			<form class="no-margin">
+				<div class="modal-body">
+					<div class="space-4"></div>
+					<div style="width: 75%; margin-left: 12%;">
+						<input type="file" id="attachement" data-selected-file="selectedFile"
+			data-filename-placement="inside" data-file-Input>
+					</div>
+				</div>
+				<div class="modal-footer center">
+					<button type="submit" class="btn btn-sm btn-success" data-ng-click="uploadAvatar($hide)" data-ng-disabled="selectedFile==undefined">
+						<i class="ace-icon fa fa-check"></i> Submit
+					</button>
+					<button type="button" class="btn btn-sm" data-dismiss="modal" ng-click="$hide()">
+						<i class="ace-icon fa fa-times"></i> Cancel
+					</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>

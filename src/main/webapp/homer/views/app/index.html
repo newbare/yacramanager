@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en" >
+<head>
+<title data-update-title=""></title>
+<meta charset="utf-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<base th:href="@{/app/view/}" />
+
+    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+    <!--<link rel="shortcut icon" type="image/ico" href="favicon.ico" />-->
+
+    <!-- build:css /assets/styles/app/vendor.css -->
+<link rel="stylesheet" href="../../bower_components/bootstrap-additions/dist/bootstrap-additions.min.css"/>
+<link rel="stylesheet" href="../../bower_components/angular-motion/dist/angular-motion.css"/>
+<link rel="stylesheet" href="../../bower_components/angular-loading-bar/build/loading-bar.css"/>
+<link rel="stylesheet" href="../../bower_components/bootstrap-daterangepicker/daterangepicker-bs3.css"/>
+<link rel="stylesheet" href="../../bower_components/ng-table/dist/ng-table.css"/>
+<link rel="stylesheet" href="../../bower_components/angular-xeditable/dist/css/xeditable.css"/>
+<link rel="stylesheet" href="../../bower_components/angular-bootstrap-colorpicker/css/colorpicker.css"/>
+<link rel="stylesheet" href="../../bower_components/ngQuickDate/dist/ng-quick-date.css"/>
+<link rel="stylesheet" href="../../bower_components/ngQuickDate/dist/ng-quick-date-default-theme.css"/>
+<link rel="stylesheet" href="../../bower_components/fullcalendar/fullcalendar.css"/>
+<link rel="stylesheet" href="../../bower_components/ng-finder/examples/css/elfinder.css"/>
+<link rel="stylesheet" href="../../bower_components/chosen/chosen.min.css"/>
+<link rel="stylesheet" href="../../bower_components/jquery.gritter/css/jquery.gritter.css"/>
+<link rel="stylesheet" href="../../bower_components/bootstrap/dist/css/bootstrap.css" />
+<link rel="stylesheet" href="../../bower_components/font-awesome/css/font-awesome.min.css"/>
+<link rel="stylesheet" href="../../bower_components/angular-notify/dist/angular-notify.css" />
+<!-- endbuild -->
+
+<!-- build:css /assets/styles/app/main.css -->
+<link rel="stylesheet"	href="../../assets/styles/angular-criterias.css"/>
+<link rel="stylesheet" href="../../assets/fonts/pe-icon-7-stroke/css/pe-icon-7-stroke.css" />
+<link rel="stylesheet" href="../../assets/fonts/pe-icon-7-stroke/css/helper.css" />
+<link rel="stylesheet"	href="../../assets/styles/yacra-fonts.css"/>
+<!--<link rel="stylesheet"	href="../../assets/styles/yacrafooter.css"/> -->
+<link rel="stylesheet"	href="../../assets/styles/custom-ace.css"/>
+<link rel="stylesheet"	href="../../assets/styles/style.css"/>
+<link rel="stylesheet"	href="../../assets/styles/app.css"/>
+
+<!-- endbuild -->
+
+</head>
+
+<!-- Body -->
+<!-- appCtrl controller with serveral data used in theme on diferent view -->
+<body data-ng-controller="AppCtrl" class="{{$state.current.data.specialClass}} fixed-navbar fixed-sidebar fixed-breadcrumb" data-auth-application-support="" data-connection-lost-support="">
+
+<!-- Simple splash screen-->
+	<div class="splash" data-events-to-wait="eventsToWait" data-application-loading-support="">
+		<div class="splash-title">
+			<h1>Homer - Responsive Admin Theme</h1>
+			<p>Special AngularJS Admin Theme for small and medium webapp with
+				very clean and aesthetic style and feel.</p>
+			<img src="../../assets/images/loading-bars.svg" width="64" height="64" />
+		</div>
+	</div>
+	<!--[if lt IE 7]>
+<p class="alert alert-danger">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+<![endif]-->
+
+	<!-- Header -->
+	<div id="header" ng-include="'/homer/scripts/components/header/header.html'"></div>
+	
+	<!-- Navigation -->
+	<aside id="menu" ng-include="'/homer/scripts/components/navigation/navigation.html'"></aside>
+	
+	<div id="wrapper">
+    <div small-header class="normalheader transition animated fadeIn small-header">
+        <div class="hpanel">
+            <div class="panel-body">
+                <a ng-click="small()" href="">
+                    <div class="clip-header">
+                        <i class="fa fa-arrow-down"></i>
+                    </div>
+                </a>
+ 				
+                <div id="hbreadcrumb" class="pull-right m-t-xs">
+                    <div data-ncy-breadcrumb="" data-ng-if="desktopScreen"></div>
+                    <!-- <ol class="hbreadcrumb breadcrumb">
+                        <li><a ui-sref="dashboard">Dashboard</a></li>
+                        <li ng-repeat="state in $state.$current.path" ng-switch="$last || !!state.abstract" ng-class="{active: $last}">
+                            <a ng-switch-when="false" href="#{{state.url.format($stateParams)}}">{{state.data.pageTitle}}</a>
+                            <span ng-switch-when="true">{{state.data.pageTitle}}</span>
+                        </li>
+                    </ol> -->
+                </div>
+                <h2 class="font-light m-b-xs">
+                    {{ $state.current.data.pageTitle }}
+                </h2>
+                <small>{{ $state.current.data.pageDesc }}</small>
+            </div>
+        </div>
+    </div>
+    <div class="content">
+        <div ui-view animate-panel></div>
+    </div>
+ 
+</div>
+<div id="topcontrol" data-scroll-to-top="50" title="Scroll Back to Top" ></div>
+</body>
+
+<!-- build:js /scripts/app/vendor.js -->
+ 	<script src="../../bower_components/jquery/dist/jquery.js"></script>
+ 	<script src="../../bower_components/jquery-ui/jquery-ui.js"></script>
+ 	<script src="../../bower_components/angular/angular.js"></script>
+ 	<script src="../../bower_components/angular-deferred-bootstrap/angular-deferred-bootstrap.js"></script>
+ 	<script src="../../bower_components/bootstrap/dist/js/bootstrap.js"></script>
+ 	<script src="../../bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+ 	<script src="../../bower_components/angular-resource/angular-resource.js"></script>
+ 	<script src="../../bower_components/angular-cookies/angular-cookies.js"></script>
+ 	<script src="../../bower_components/angular-translate/angular-translate.js"></script>
+ 	<script src="../../bower_components/angular-route/angular-route.min.js"></script>
+ 	<script src="../../bower_components/angular-animate/angular-animate.min.js"></script>
+ 	<script src="../../bower_components/moment/moment.js"></script>
+ 	<script src="../../bower_components/jquery.easy-pie-chart/dist/angular.easypiechart.js"></script>
+ 	<script src="../../bower_components/ng-table/dist/ng-table.js"></script>
+ 	<script src="../../bower_components/ng-file-upload/angular-file-upload-shim.min.js"></script>
+	<script src="../../bower_components/ng-file-upload/angular-file-upload.js"></script>
+	<script src="../../bower_components/angular-chosen-localytics/chosen.js"></script>
+	<script src="../../bower_components/chosen/chosen.jquery.js"></script>
+	<script src="../../bower_components/angular-daterangepicker/js/angular-daterangepicker.js"></script>
+	<script src="../../bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
+	<script src="../../bower_components/angular-loading-bar/build/loading-bar.js"></script>
+	<script src="../../bower_components/ngQuickDate/dist/ng-quick-date.min.js"></script>
+	<script src="../../bower_components/angular-xeditable/dist/js/xeditable.min.js"></script>
+	<script src="../../bower_components/angular-bootstrap-colorpicker/js/bootstrap-colorpicker-module.js"></script>
+	<script src="../../bower_components/angular-filter/dist/angular-filter.min.js"></script>
+	<script src="../../bower_components/jquery.gritter/js/jquery.gritter.min.js"></script>
+	<script src="../../bower_components/moment-range/lib/moment-range.js"></script>
+	<script src="../../bower_components/angular-breadcrumb/dist/angular-breadcrumb.min.js"></script>
+	<script src="../../bower_components/ng-finder/ng-finder.src.js"></script>
+	<script src="../../bower_components/metisMenu/dist/metisMenu.js"></script>
+	<script src="../../bower_components/elfinder/js/elfinder.min.js"></script>
+	<script src="../../bower_components/angular-cache-buster/angular-cache-buster.js"></script>
+ 	<script src="../../bower_components/angular-translate-storage-cookie/angular-translate-storage-cookie.js"></script>
+ 	<script src="../../bower_components/angular-dynamic-locale/src/tmhDynamicLocale.js"></script>
+ 	<script src="../../bower_components/fullcalendar/fullcalendar.js"></script>
+ 	<script src="../../bower_components/angular-ui-calendar/src/calendar.js"></script>
+ 	<script src="../../bower_components/angular-local-storage/angular-local-storage.js"></script>
+ 	<script src="../../bower_components/angular-strap/dist/angular-strap.js"></script>
+ 	<script src="../../bower_components/angular-strap/dist/angular-strap.tpl.js"></script>
+ 	<script src="../../bower_components/angular-translate-loader-static-files/angular-translate-loader-static-files.js"></script>
+ 	<script src="../../bower_components/angular-timer/dist/angular-timer.js"></script>
+ 	<script src="../../bower_components/sockjs-client/dist/sockjs.js"></script>
+ 	<script src="../../bower_components/stomp-websocket/lib/stomp.js"></script>
+ 	<script src="../../bower_components/angular-media-queries/match-media.js"></script>
+ 	<script src="../../bower_components/angular-ui-sortable/sortable.js"></script>
+ 	<script src="../../bower_components/iCheck/icheck.js"></script>
+ 	<script src="../../bower_components/angular-notify/dist/angular-notify.js"></script>
+    <!-- endbuild -->
+
+<!-- build:js /scripts/app/app.js -->
+	<script src="../../scripts/app/homer.js"></script>
+	<script src="../../scripts/app/app.js"></script>
+	<script src="../../scripts/app/app.constants.js"></script>
+	<script src="../../scripts/common-app.js"></script>
+	<script src="../../scripts/app/constants.js"></script>
+	<script	src="../../scripts/app/home/home.controllers.js"></script>
+	<script	src="../../scripts/app/home/home.js"></script>
+	<script	src="../../scripts/app/activityreport/activityreport.controllers.js"></script>
+	<script	src="../../scripts/app/activityreport/activityreport.js"></script>
+	<script	src="../../scripts/app/error/error.js"></script>
+	<script	src="../../scripts/app/error/error.controller.js"></script>
+	<script	src="../../scripts/app/absences/absences.controllers.js"></script>
+	<script	src="../../scripts/app/absences/absences.js"></script>
+	<script	src="../../scripts/app/frais/frais.controllers.js"></script>
+	<script	src="../../scripts/app/frais/frais.js"></script>
+	<script	src="../../scripts/app/tasks/tasks.controllers.js"></script>
+	<script	src="../../scripts/app/tasks/tasks.js"></script>
+	<script	src="../../scripts/app/timesheet/timesheet.controllers.js"></script>
+	<script	src="../../scripts/app/timesheet/timesheet.js"></script>
+	<script	src="../../scripts/app/users/profile/users.profile.controllers.js"></script>
+	<script	src="../../scripts/app/users/profile/users.profile.js"></script>
+	<script	src="../../scripts/app/users/settings/users.settings.controllers.js"></script>
+	<script	src="../../scripts/app/users/settings/users.settings.js"></script>
+	<script	src="../../scripts/app/users/messages/users.messages.controllers.js"></script>
+	<script	src="../../scripts/app/users/messages/users.messages.js"></script>
+	<script	src="../../scripts/app/documents/documents.controllers.js"></script>
+	<script	src="../../scripts/app/documents/documents.js"></script>
+	<script	src="../../scripts/app/admin/admin.js"></script>
+	<script	src="../../scripts/app/admin/company/admin.company.controllers.js"></script>
+	<script	src="../../scripts/app/admin/company/admin.company.js"></script>
+	<script	src="../../scripts/app/admin/docs/admin.docs.controllers.js"></script>
+	<script	src="../../scripts/app/admin/docs/admin.docs.js"></script>
+	<script	src="../../scripts/app/admin/home/admin.home.controllers.js"></script>
+	<script	src="../../scripts/app/admin/home/admin.home.js"></script>
+	<script	src="../../scripts/app/admin/logs/admin.logs.controllers.js"></script>
+	<script	src="../../scripts/app/admin/logs/admin.logs.js"></script>
+	<script	src="../../scripts/app/admin/configuration/admin.configuration.controllers.js"></script>
+	<script	src="../../scripts/app/admin/configuration/admin.configuration.js"></script>
+	<script	src="../../scripts/app/admin/metrics/admin.metrics.controllers.js"></script>
+	<script	src="../../scripts/app/admin/metrics/admin.metrics.js"></script>
+	<script	src="../../scripts/app/company/company.js"></script>
+	<script	src="../../scripts/app/company/invoices/company.invoices.controllers.js"></script>
+	<script	src="../../scripts/app/company/invoices/company.invoices.js"></script>
+	<script	src="../../scripts/app/company/activities/company.activities.controllers.js"></script>
+	<script	src="../../scripts/app/company/activities/company.activities.js"></script>
+	<script	src="../../scripts/app/company/clients/company.clients.controllers.js"></script>
+	<script	src="../../scripts/app/company/clients/company.clients.js"></script>
+	<script	src="../../scripts/app/company/employees/company.employees.controllers.js"></script>
+	<script	src="../../scripts/app/company/employees/company.employees.js"></script>
+	<script	src="../../scripts/app/company/home/company.home.controllers.js"></script>
+	<script	src="../../scripts/app/company/home/company.home.js"></script>
+	<script	src="../../scripts/app/company/projects/company.projects.controllers.js"></script>
+	<script	src="../../scripts/app/company/projects/company.projects.js"></script>
+	<script	src="../../scripts/app/company/settings/company.settings.controllers.js"></script>
+	<script	src="../../scripts/app/company/settings/company.settings.js"></script>
+	<script src="../../scripts/bootstrap.file-input.js"></script>
+	<script src="../../scripts/http-auth-interceptor.js"></script>
+	<script src="../../scripts/colResizable-1.3.min.js"></script>
+	<script src="../../scripts/components/filters/commons-filters.js"></script>
+	<script src="../../scripts/components/factories/common-factories.js"></script>
+	<script src="../../scripts/components/services/common-services.js"></script>
+	<script	src="../../scripts/components/directives/commons-directives.js"></script>
+	<script	src="../../scripts/components/directives/homer-directives.js"></script>
+	<script	src="../../scripts/components/directives/angular-criterias.js"></script>
+	<script	src="../../scripts/components/widgets/widgets.controllers.js"></script>
+	<script	src="../../scripts/components/others/ace.js"></script>
+	<!-- endbuild -->
+	
+	<script th:inline="javascript" type="text/javascript">
+		var _contextPath = [[@{/}]] ;
+		/* var _userId = [[${userId}]];
+		var _userCompanyName = [[${userCompanyName}]];
+		var _userCompanyId = "[[${userCompanyId}]]"; */
+		window.deferredBootstrapper.bootstrap({
+		  element: window.document,
+		  module: 'yaCRAApp',
+		  resolve: {
+		    USERINFO: ['$http', function ($http) {
+		      return $http.get(_contextPath + 'app/api/users/user-info');
+		    }]
+		  },
+		  onError: function (error) {
+			    alert('Could not bootstrap, error: ' + error);
+			  }
+		});
+	</script>
+
+</html>

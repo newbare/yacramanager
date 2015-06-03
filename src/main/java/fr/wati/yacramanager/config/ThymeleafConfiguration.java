@@ -67,7 +67,10 @@ public class ThymeleafConfiguration  implements EnvironmentAware{
 		ServletContextTemplateResolver webTemplateResolver = new ServletContextTemplateResolver();
 		if (env.acceptsProfiles(Constants.SPRING_PROFILE_PRODUCTION,Constants.SPRING_PROFILE_TEST)) {
 			webTemplateResolver.setPrefix("/dist/views/");
-		}else {
+		}else if (env.acceptsProfiles(Constants.SPRING_PROFILE_HOMER)) {
+			webTemplateResolver.setPrefix("/homer/views/");
+		}
+		else {
 			webTemplateResolver.setPrefix("/views/");
 		}
 		

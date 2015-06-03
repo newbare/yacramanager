@@ -1,0 +1,16 @@
+<div class="hpanel" data-ng-show="client">
+	<ul class="nav nav-tabs responsive" role="tablist">
+	  <li data-ui-sref-active="active"><a  role="tab" data-ui-sref="company.clients.view.quick.overview.infos({ id: client.id })"><i class="ace-icon fa fa-info-circle"></i>Infos</a></li>
+	  <li data-ui-sref-active="active"><a  role="tab" data-ui-sref="company.clients.view.quick.overview.projects({ id: client.id })" >Project<span class="badge badge-info">{{client.projects.length}}</span></a></li>
+	  <li data-ui-sref-active="active"><a  role="tab" data-ui-sref="company.clients.view.quick.overview.contacts({ id: client.id })" >Contacts<span class="badge badge-info">{{client.contacts.length}}</span></a></li>
+	  <li data-ui-sref-active="active"><a  role="tab" data-ui-sref="company.clients.view.quick.overview.activities({ id: client.id })"><i class="ace-icon fa fa-rss orange"></i> Recent activities</a></li>
+	</ul> 
+	<div class="tab-content responsive">
+		  <div data-ui-view=""></div>
+	</div>
+</div>
+<div class="hpanel" data-ng-show="!client">
+	<div class="panel-body">
+		No Client found
+	</div>
+</div>

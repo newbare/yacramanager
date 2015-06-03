@@ -1,0 +1,130 @@
+<div class="tab-pane">
+	<div class="panel-body">
+<div class="alert alert-warning text-center" role="alert" ng-show="approvementTotal==0">
+	<h4>No data found</h4>
+</div>
+<div id="activity-report-fragment" data-ng-repeat="approvement in approvements">
+	<div class=""
+		data-ng-repeat="employeCraDetail in approvement.employeCraDetailsDTOs">
+		<div class="row">
+			<div class="btn-toolbar" role="toolbar">
+				<div class="btn-group">
+					<h4>
+						<span class="text-muted"><strong>{{employeCraDetail.employeName}}</strong></span>
+					</h4>
+				</div>
+				<div class="btn-group btn-group-sm pull-right">
+					<button class="btn btn-success btn-sm"
+						data-ng-if="employeCraDetail.activityReport!=null && employeCraDetail.activityReport.validationStatus=='WAIT_FOR_APPROVEMENT'"
+						data-ng-click="approveActivityReport(employeCraDetail.employeId,employeCraDetail.activityReport.startDate,employeCraDetail.activityReport.endDate)">
+						<i class="fa fa-check"></i> Validate
+					</button>
+					<button class="btn btn-danger btn-sm"
+						data-ng-if=" employeCraDetail.activityReport!=null && employeCraDetail.activityReport.validationStatus=='WAIT_FOR_APPROVEMENT'"
+						data-ng-click="rejectActivityReport(employeCraDetail.employeId,employeCraDetail.activityReport.startDate,employeCraDetail.activityReport.endDate)">
+						<i class="fa fa-ban"></i> Reject
+					</button>
+				</div>
+			</div>
+		</div>
+		<div class="cra-container">
+			<div class="table-responsive">
+				<table class="table table-condensed table-bordered">
+					<!-- data-fixed-table-column="" -->
+					<thead>
+						<tr>
+							<th class="cra-table-task">Task</th>
+							<th style="width: 100px"
+								data-ng-repeat="day in employeCraDetail.days"
+								data-ng-class="{'cra-we' : day.dayOff , 'cra-today' : isToday(day.date)}">
+								<small><i data-ng-show='day.approved'
+									class="fa fa-lock"></i>{{day.date | date : craDateFormat}}</small>
+							</th>
+							<th style="vertical-align: middle; text-align: center;">Total</th>
+						</tr>
+					</thead>
+					<tbody>
+						<!-- Simple task rows -->
+						<tr data-ng-repeat="taskRow in employeCraDetail.taskRows">
+							<td class=""><h6>
+									<span><strong>{{taskRow.task.name}}</strong></span>
+								</h6>
+								<h6>
+									<span class="text-muted">{{taskRow.project.client.name}}
+										- {{taskRow.project.name}}</span>
+								</h6></td>
+							<td data-ng-repeat="day in employeCraDetail.days"
+								data-ng-class="{'cra-we' : day.dayOff, 'cra-today' : isToday(day.date)}"
+								style="vertical-align: middle; text-align: center;">
+								<span	data-editable-number="taskRow.duration[day.date]"
+								e-form="textBtnForm" data-e-style="width: 50px;">{{
+									taskRow.duration[day.date] || 0 | duration }}</span></td>
+							<td style="vertical-align: middle; text-align: center;"><span
+								class="text-muted">{{taskRowTotal(taskRow,employeCraDetail.days)
+									| duration}}</span></td>
+						</tr>
+						<!-- ExtraTimeRows -->
+						<tr data-ng-repeat="extraRow in employeCraDetail.extraTimeRows">
+							<td class="">
+								<h5>
+									<span class="label label-danger"><strong><i
+											class="fa fa-usd"></i></strong> Extra time</span>
+								</h5>
+								<h6>
+									<span><strong>{{extraRow.task.name}}</strong></span>
+								</h6>
+								<h6>
+									<span class="text-muted">{{extraRow.project.client.name}}
+										- {{extraRow.project.name}}</span>
+								</h6>
+							</td>
+							<td data-ng-repeat="day in employeCraDetail.days"
+								data-ng-class="{'cra-we' : day.dayOff, 'cra-today' : isToday(day.date)}"
+								style="vertical-align: middle; text-align: center;"><span
+								data-editable-number="extraRow.duration[day.date]"
+								e-form="textBtnForm" data-e-style="width: 50px;">{{
+									extraRow.duration[day.date] || 0 | duration }}</span> </td>
+							<td style="vertical-align: middle; text-align: center;"><span
+								class="text-muted">{{taskRowTotal(extraRow,employeCraDetail.days)
+									| duration}}</span></td>
+						</tr>
+						<!-- Time off rows -->
+						<tr data-ng-show="employeCraDetail.craAbsenceDetail">
+							<td><h6>
+									<span><strong>Time off</strong></span>
+								</h6></td>
+							<td data-ng-repeat="day in employeCraDetail.days"
+								data-ng-class="{'cra-we' : day.dayOff , 'cra-today' : isToday(day.date)}"
+								style="vertical-align: middle; text-align: center;">
+								 <span>{{employeCraDetail.craAbsenceDetail.duration[day.date] || 0 |
+									duration }}</span></td>
+							<td style="vertical-align: middle; text-align: center;"><span
+								class="text-muted">{{taskRowTotal(employeCraDetail.craAbsenceDetail,employeCraDetail.days)
+									| duration}}</span></td>
+						</tr>
+					</tbody>
+					<tfoot>
+						<tr>
+							<td>
+							</td>
+							<td data-ng-repeat="day in employeCraDetail.days"
+								data-ng-class="{'cra-we' : day.dayOff , 'cra-today' : isToday(day.date)}"
+								style="width: 40px; vertical-align: middle; text-align: center;">
+								<span class="text-muted">{{dayColumnTotal(employeCraDetail,day)
+									| duration}}</span>
+							</td>
+							<td style="vertical-align: middle; text-align: center;">
+								<h5>
+									<strong>{{craTotal(employeCraDetail) | duration}}</strong>
+								</h5>
+							</td>
+						</tr>
+					</tfoot>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+</div>
+</div>
+	

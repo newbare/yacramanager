@@ -1,0 +1,18 @@
+<div class="hpanel" data-ng-show="employe">
+	<ul class="nav nav-tabs responsive" role="tablist">
+		  <li data-ui-sref-active="active"><a  role="tab" data-ui-sref="company.employees.view.quick.overview.basic({ id: employe.id })"><i class="ace-icon fa fa-info-circle"></i>Basic infos</a></li>
+		  <li data-ui-sref-active="active"><a  role="tab" data-ui-sref="company.employees.view.quick.overview.administration({ id: employe.id })" >Administration</a></li>
+		  <li data-ui-sref-active="active"><a  role="tab" data-ui-sref="company.employees.view.quick.overview.salary({ id: employe.id })" >Salary</a></li>
+		  <li data-ui-sref-active="active"><a  role="tab" data-ui-sref="company.employees.view.quick.overview.activities({ id: employe.id })"><i class="fa fa-rss orange"></i> Recent activities</a></li>
+		</ul>
+		<div class="tab-content responsive">
+			  <div data-ui-view=""></div>
+		</div>
+</div>
+<div class="hpanel" data-ng-show="employe==undefined">
+	<div class="panel-body">
+		No Employe found
+	</div>
+</div>
+
+ 

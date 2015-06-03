@@ -3,8 +3,11 @@ package fr.wati.yacramanager.web.filter;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.google.common.base.Function;
+
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
+
 import java.io.IOException;
 
 /**
@@ -17,7 +20,18 @@ import java.io.IOException;
  */
 public class StaticResourcesProductionFilter implements Filter {
 
-    @Override
+	private Function<String, String> uriTransformer;
+	
+    /**
+	 * @param uriTransformer
+	 */
+	public StaticResourcesProductionFilter(
+			Function<String, String> uriTransformer) {
+		super();
+		this.uriTransformer = uriTransformer;
+	}
+
+	@Override
     public void init(FilterConfig filterConfig) throws ServletException {
         // Nothing to initialize
     }
@@ -33,10 +47,7 @@ public class StaticResourcesProductionFilter implements Filter {
         String contextPath = ((HttpServletRequest) request).getContextPath();
         String requestURI = httpRequest.getRequestURI();
         requestURI = StringUtils.substringAfter(requestURI, contextPath);
-//        if (StringUtils.equals("/", requestURI)) {
-//            requestURI = "/views/index.html";
-//        }
-        String newURI = "/dist" + requestURI;
+        String newURI =uriTransformer.apply(requestURI) ;
         request.getRequestDispatcher(newURI).forward(request, response);
     }
 }

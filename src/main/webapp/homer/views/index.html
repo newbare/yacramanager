@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en" data-ng-app="yaCRAApp">
+<head>
+<meta charset="utf-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<meta name="description" content=""/>
+<meta name="author" content=""/>
+<link rel="icon" href="../../favicon.ico"/>
+
+<title data-update-title=""></title>
+ <!-- build:css /assets/styles/vendor.css -->
+<link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.css" />
+<link rel="stylesheet" href="../bower_components/font-awesome/css/font-awesome.css"/>
+<!-- endbuild -->
+<!-- build:css /assets/styles/main.css -->
+	<link rel="stylesheet" href="../assets/styles/style.css"/>>
+<!-- endbuild -->
+<!-- Custom styles for this template -->
+
+<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+<script th:inline="javascript" type="text/javascript">
+	var _contextPath = [[@{/}]] ;
+</script>
+<script th:if=" ${userName} !=null" th:inline="javascript"
+	type="text/javascript">
+			var _userName = [[${userName}]];
+</script>
+</head>
+
+<body data-ng-controller="AppCtrl" class="landing-page" data-landing-scrollspy="" data-tour="" data-backdrop="true">
+	<div data-ui-view=""></div>
+	<!-- Bootstrap core JavaScript
+    ================================================== -->
+	<!-- Placed at the end of the document so the pages load faster -->
+	<!-- build:js /scripts/vendor.js -->
+    <script src="../bower_components/jquery/dist/jquery.js"></script>
+    <script src="../bower_components/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="../bower_components/angular/angular.js"></script>
+    <script src="../bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+    <script src="../bower_components/angular-resource/angular-resource.js"></script>
+    <script src="../bower_components/angular-cookies/angular-cookies.js"></script>
+    <script src="../bower_components/angular-translate/angular-translate.js"></script>
+    <script src="../bower_components/angular-translate-storage-cookie/angular-translate-storage-cookie.js"></script>
+    <script src="../bower_components/angular-dynamic-locale/src/tmhDynamicLocale.js"></script>
+    <script src="../bower_components/angular-strap/dist/angular-strap.min.js"></script>
+    <script src="../bower_components/angular-strap/dist/angular-strap.tpl.min.js"></script>
+    <script src="../bower_components/angular-breadcrumb/dist/angular-breadcrumb.min.js"></script>
+    <script src="../bower_components/angular-translate-loader-static-files/angular-translate-loader-static-files.js"></script>
+    <!-- endbuild -->
+    
+    <!-- build:js scripts/app.js --> 
+    <script src="../scripts/yacra.js"></script>
+	<script src="../scripts/app/constants.js"></script>
+	<script src="../scripts/app/app.constants.js"></script>
+	<script	src="../scripts/components/directives/homer-directives.js"></script>
+	<!-- endbuild -->
+	
+</body>
+</html>

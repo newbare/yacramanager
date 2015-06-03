@@ -41,6 +41,7 @@ import com.codahale.metrics.servlet.InstrumentedFilter;
 import com.codahale.metrics.servlets.MetricsServlet;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.joda.JodaModule;
+import com.google.common.base.Function;
 
 import fr.wati.yacramanager.services.CustomObjectMapper;
 import fr.wati.yacramanager.web.filter.CachingHttpHeadersFilter;
@@ -161,6 +162,24 @@ public class WebConfiguration implements ServletContextInitializer,
 		if (!env.acceptsProfiles(Constants.SPRING_PROFILE_FAST)) {
 			initMetrics(servletContext, disps);
 		}
+		if (env.acceptsProfiles(Constants.SPRING_PROFILE_HOMER)){
+			log.debug("Registering static resources production Filter");
+			FilterRegistration.Dynamic staticResourcesProductionFilter = servletContext
+					.addFilter("staticResourcesHomerThemeFilter",
+							new StaticResourcesProductionFilter(new Function<String, String>() {
+								@Override
+								public String apply(String requestURI) {
+									return "/homer" + requestURI;
+								}
+							}));
+			staticResourcesProductionFilter.addMappingForUrlPatterns(disps, true,
+					"/assets/*");
+			staticResourcesProductionFilter.addMappingForUrlPatterns(disps, true,
+					"/scripts/*");
+			staticResourcesProductionFilter.addMappingForUrlPatterns(disps, true,
+					"/views/*");
+			staticResourcesProductionFilter.setAsyncSupported(true);
+		}
 		if (env.acceptsProfiles(Constants.SPRING_PROFILE_PRODUCTION,
 				Constants.SPRING_PROFILE_TEST)) {
 			initCachingHttpHeadersFilter(servletContext, disps);
@@ -215,7 +234,12 @@ public class WebConfiguration implements ServletContextInitializer,
 		log.debug("Registering static resources production Filter");
 		FilterRegistration.Dynamic staticResourcesProductionFilter = servletContext
 				.addFilter("staticResourcesProductionFilter",
-						new StaticResourcesProductionFilter());
+						new StaticResourcesProductionFilter(new Function<String, String>() {
+							@Override
+							public String apply(String requestURI) {
+								return "/dist" + requestURI;
+							}
+						}));
 		staticResourcesProductionFilter.addMappingForUrlPatterns(disps, true,
 				"/assets/*");
 		staticResourcesProductionFilter.addMappingForUrlPatterns(disps, true,

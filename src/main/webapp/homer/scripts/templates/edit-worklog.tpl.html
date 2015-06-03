@@ -1,0 +1,89 @@
+<div class="modal" id="editionFormModal" tabindex="-1"
+	role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog" style="width: 40%;">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" ng-click="$hide()">
+					<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+				</button>
+				<h3 data-ng-show="!edition" class="panel-title">Add entry</h3>
+				<h3 data-ng-show="edition" class="panel-title">Edit entry</h3>
+			</div>
+			<div class="modal-body" >
+				<form role="form" class="form-horizontal">
+					<div class="form-group">
+						<label for="project-select" class="col-md-2" >Project</label>
+						<div class="col-md-7">
+							<select data-chosen data-ng-change="selectProject(project)"
+						          data-placeholder="Select a project"
+						          data-ng-model="project"
+						           data-allow-single-deselect="true"
+						          data-ng-options="p.name for p in projects">
+						           <option value=""></option>
+						  </select>
+							<!-- <input id="project-select" data-ui-select2="projectSelectOptions" data-ng-change="selectProject(project)" data-ng-model="model.project" data-placeholder="Select a project"> -->
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="task-select" class="col-md-2">Task</label>
+						<div class="col-md-7">
+							<select data-chosen data-ng-change="selectTask(task)"
+						          data-placeholder="Select a task"
+						          data-ng-model="task"
+						          data-ng-options="t.name for t in tasks">
+						           <option value=""></option>
+						  </select>
+							<!-- <input id="task-select" data-ui-select2="taskSelectOptions" data-ng-change="selectTask(task)" data-ng-model="task" data-placeholder="Select a Task"> -->
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="radio-inline col-md-4 col-md-offset-2">
+						  <input type="radio" name="optionsRadios" data-ng-model="worklog.timeType" id="durationCheckBox" value="DURATION"> Duration
+						</label>
+						<label class="radio-inline  col-md-4 col-md-offset-2">
+						  <input type="radio" name="optionsRadios" data-ng-model="worklog.timeType" id="timeCheckBox" value="TIME"> Time
+						</label>
+					</div>
+					<div class="form-group" data-ng-show="worklog.timeType=='TIME'">
+						<label for="timeStartDate" class="control-label col-md-2"
+							style="text-align: left;">When</label>
+						<div class="col-md-10 controls">
+							<div class="input-group col-md-10 ">
+								<input id="timeStartDate" type="datetime-local" class="form-control" data-ng-model="worklog.timeStartDate" data-autoclose="1"	placeholder="Select start date">
+								<span class="input-group-addon">To</span>
+								<input type="datetime-local" class="form-control" data-ng-model="worklog.timeEndDate" data-autoclose="1" placeholder="Select end date">
+							</div>
+						</div>
+					</div>
+					<div class="form-group" data-ng-show="worklog.timeType=='DURATION'">
+						<label for="durationStartDate" class="control-label col-md-2" style="text-align: left;">Date</label>
+						<div class="col-md-4">
+							<input type="date" class="form-control" ng-model="worklog.durationStartDate"
+								data-autoclose="1" placeholder="Date" >
+						</div>
+						<div class="col-md-3">
+							<input type="text" class="form-control" data-ng-model="worklog.durationTime"	 placeholder="Minutes">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="noteDescription" class="control-label col-md-2" style="text-align: left;">Description</label> 
+						<div class="col-md-9">
+							<textarea  id="noteDescription" class="form-control"
+								data-ng-model="worklog.description"		placeholder="Description (facultatif)"></textarea>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary"
+					data-ng-click="postWorkLog($hide)" data-ng-show="!edition">Post</button>
+				<button type="button" class="btn btn-primary"
+					data-ng-click="putNote()" data-ng-show="edition">Edit</button>
+				<button type="button" class="btn btn-link" data-ng-click="$hide()" data-dismiss="modal">Cancel</button>
+			</div>
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->

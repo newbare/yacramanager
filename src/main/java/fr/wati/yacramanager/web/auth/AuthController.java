@@ -6,6 +6,7 @@ import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.env.Environment;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.social.connect.Connection;
@@ -39,6 +40,8 @@ public class AuthController {
 
 	private final Logger log = LoggerFactory.getLogger(AuthController.class);
 
+	@Inject 
+	private Environment env;
 	@Inject
 	private UserService userService;
 	
@@ -57,7 +60,7 @@ public class AuthController {
 			HttpSession httpSession, Model model) {
 
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName("auth/login");
+			modelAndView.setViewName("auth/login");
 		if (error) {
 			modelAndView.addObject("error", true);
 			String exeptionMessage = null;

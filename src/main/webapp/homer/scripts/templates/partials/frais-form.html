@@ -1,0 +1,31 @@
+<form role="form">
+	<div class="form-group">
+		<label for="datepicker">Date</label>
+		<div class="input-group">
+			<input type="date" class=" form-control " name="start"
+				data-ng-model="currentNote.date" placeholder="Date" /> <span
+				class="input-group-addon"><i class="fa fa-calendar"></i></span>
+		</div>
+	</div>
+	<div class="form-group">
+		<label for="noteMontant">Montant</label>
+		<div class="input-group">
+			<input type="number" class="form-control" id="noteMontant"
+				data-ng-model="currentNote.amount" placeholder="Montant"
+				data-auto-select> <span class="input-group-addon"><i
+				class="fa fa-eur"></i></span>
+		</div>
+	</div>
+	<div class="form-group">
+		<label for="noteDescription">Description</label> <input type="text"
+			class="form-control" id="noteDescription"
+			data-ng-model="currentNote.description"
+			placeholder="Description (facultatif)">
+	</div>
+	<div class="form-group">
+		<!--  <label for="attachement">Attachement</label> -->
+		<input type="file" id="attachement" data-selected-file="selectedFile"
+			data-filename-placement="inside" data-file-Input>
+	</div>
+
+</form>
