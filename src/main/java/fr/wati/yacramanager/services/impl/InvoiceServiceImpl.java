@@ -241,4 +241,12 @@ public class InvoiceServiceImpl implements InvoiceService {
 		}
 		return invoice;
 	}
+
+	/* (non-Javadoc)
+	 * @see fr.wati.yacramanager.services.InvoiceService#findByInvoiceNumber(java.lang.String)
+	 */
+	@Override
+	public Invoice findByInvoiceNumber(String invoiceNumber) {
+		return invoiceRepository.findByInvoiceNumber(invoiceNumber);
+	}
 }

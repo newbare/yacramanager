@@ -19,6 +19,8 @@ import fr.wati.yacramanager.web.dto.InvoiceDTO;
 public interface InvoiceService extends CrudService<Invoice, Long>,SpecificationFactory<Invoice> {
 
 	Page<Invoice> findByClient_Id(Long clientId,Specification<Invoice> specification,Pageable pageable);
+	
+	Invoice findByInvoiceNumber(String invoiceNumber);
 
 	/**
 	 * @param findBySpecificationAndOrder

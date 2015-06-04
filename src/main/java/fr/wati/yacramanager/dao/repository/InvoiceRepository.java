@@ -18,4 +18,6 @@ import fr.wati.yacramanager.beans.Invoice;
 public interface InvoiceRepository extends JpaRepository<Invoice, Long>,JpaSpecificationExecutor<Invoice>{
 
 	Page<Invoice> findByClient_Id(Long clientId,Specification<Invoice> specification,Pageable pageable);
+	
+	Invoice findByInvoiceNumber(String invoiceNumber);
 }

@@ -1,14 +1,17 @@
 <div class="hpanel m-b-xs">
-<div class="panel-body"> 
-	<button class="btn btn-default btn-sm pull-right m-l-sm">
+<div class="panel-body">
+		
+	<a class="btn btn-success btn-sm btn-outline pull-right m-l-sm" data-ng-href="/app/report/invoice/{{invoice.invoiceNumber}}.xls"><i class="fa fa-file-excel-o"></i>Excel</a>
+	<a class="btn btn-success btn-sm btn-outline pull-right m-l-sm" data-ng-href="/app/report/invoice/{{invoice.invoiceNumber}}.pdf"><i class="fa fa-file-pdf-o"></i>Pdf</a>
+	<button class="btn btn-success btn-sm btn-outline pull-right m-l-sm">
 		<i class="fa fa-print"></i>
 		Print
 	</button>
-	<button class="btn btn-default btn-sm pull-right m-l-sm">
+	<button class="btn btn-success btn-sm btn-outline pull-right m-l-sm">
 		<i class="fa fa-paper-plane"></i>
 		Send to client
 	</button>
-	<button class="btn btn-default btn-sm pull-right m-l-sm" data-ng-click="cancelEdition()">
+	<button class="btn btn-danger btn-sm btn-outline pull-right m-l-sm" data-ng-click="cancelEdition()">
 		<i class="fa fa-times"></i>
 		Cancel
 	</button>
@@ -32,7 +35,7 @@
             <abbr title="Phone">P:</abbr> (123) 601-4590
         </address>
 	</div>
-	<div class="col-md-6 align-right">
+	<div class="col-md-6 text-right">
 		<h4>Invoice No.</h4>
         <h4 class="green">{{invoice.invoiceNumber}}</h4>
         <span>To:</span>
@@ -45,14 +48,16 @@
        	<div class="form-group form-group-sm">
 			<label class="col-sm-offset-4 col-md-offset-3 col-sm-4 col-md-4 control-label">Invoice Date:</label>
 			<div class="col-sm-4 col-md-5 no-padding">
-				<input type="date" data-ng-model="invoice.invoiceDate" class="form-control">
+				<a href="#" data-editable-date="invoice.invoiceDate" data-buttons="no">{{ invoice.invoiceDate || 'empty' }}</a>
+				<!-- <input type="date" data-ng-model="invoice.invoiceDate" class="form-control"> -->
 			</div>
 		</div>
 		<br>
 		<div class="form-group form-group-sm">
 			<label class="col-sm-offset-4 col-md-offset-3 col-sm-4 col-md-4 control-label">Due Date:</label>
 			<div class="col-sm-4 col-md-5 no-padding">
-				<input type="date" data-ng-model="invoice.dueDate" class="form-control">
+				<a href="#" data-editable-date="invoice.dueDate" data-buttons="no" data-format="YYYY-MM-DD">{{ invoice.dueDate || 'empty' }}</a>
+				<!-- <input type="date" data-ng-model="invoice.dueDate" class="form-control"> -->
 			</div>
 		</div>
 	</div>

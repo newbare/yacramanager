@@ -486,6 +486,11 @@
 			<artifactId>spring-cloud-localconfig-connector</artifactId>
 			<version>${spring-cloud.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi</artifactId>
+			<version>3.9</version>
+		</dependency>
 	</dependencies>
 
 	<repositories>
