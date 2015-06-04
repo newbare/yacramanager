@@ -220,6 +220,11 @@ public class UserServiceImpl implements UserService{
 	public byte[] getAvatar(Long userId) {
 		return findOne(userId).getAvatar();
 	}
+
+	@Override
+	public Specification<Employe> getGlobalSpecification(String text) {
+		return null;
+	}
 	
 }
 

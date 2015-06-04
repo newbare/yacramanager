@@ -1,8 +1,29 @@
 <div class="hpanel">
 	<div class="panel-heading">
-		Search with {{searchText}}
+		{{searchResult.resultCount}} results found for: {{searchResult.textToSearch}}
 	</div>
 	<div class="panel-body">
-		<h3>Result</h3>
+		<div class="search-result" data-ng-repeat=" employe in searchResult.result['employe']">
+           <a data-ui-sref="company.employees.view.quick.overview.basic({ id: employe.id })">{{employe.firstName}} {{employe.lastName}}</a>
+           <div class="row">
+               <div class="col-md-3 project-people">
+               		<img alt="image" class="img-circle" data-ng-src="/app/api/users/avatar/{{employe.id}}">
+               </div>
+               <div class="col-md-9">
+               
+               </div>
+           </div>
+       </div>
+       <div class="search-result" data-ng-repeat=" project in searchResult.result['project']">
+           <a data-ui-sref="company.projects.view.quick.overview({ id: project.id })">{{project.name}}</a>
+           <div class="row">
+               <div class="col-md-3">
+               		<i class="fa fa-folder"></i>
+               </div>
+               <div class="col-md-9">
+               
+               </div>
+           </div>
+       </div>
 	</div>
 </div>

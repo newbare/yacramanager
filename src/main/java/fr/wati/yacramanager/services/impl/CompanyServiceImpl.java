@@ -233,4 +233,10 @@ public class CompanyServiceImpl implements CompanyService {
 	public byte[] getLogo(Long companyId) {
 		return findOne(companyId).getLogo();
 	}
+
+	@Override
+	public Specification<Company> getGlobalSpecification(String text) {
+		return CommonSpecifications.likeIgnoreCase(
+				text, Company_.name);
+	}
 }

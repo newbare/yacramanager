@@ -1,6 +1,7 @@
 /**
  * 
  */
-App.controller('SearchController',function ($rootScope,$scope,searchText){
-	$scope.searchText=searchText;
+App.controller('SearchController',function ($rootScope,$scope,$http,searchResult){
+	$scope.searchResult=searchResult.data;
+	
 });

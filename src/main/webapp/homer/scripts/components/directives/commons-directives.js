@@ -385,7 +385,7 @@ App.directive('ngConfirm',function($modal,sweetAlert) {
 					                	scope.$eval(clickAction);
 					                    sweetAlert.swal("Done !", "", "success");
 					                } else {
-					                    sweetAlert.swal("Cancelled", "Your imaginary file is safe :)", "error");
+//					                    sweetAlert.swal("Cancelled", "Your imaginary file is safe :)", "error");
 					                }
 					            });
 								//scope.showModal();

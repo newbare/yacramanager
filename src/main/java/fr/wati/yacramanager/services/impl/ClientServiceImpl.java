@@ -186,9 +186,7 @@ public class ClientServiceImpl implements ClientService {
 					return CommonSpecifications.likeIgnoreCase(filterText.getValue(), Client_.name);
 				}
 				if("global".equals(filterText.getField())){
-					return Specifications
-							.where(CommonSpecifications.likeIgnoreCase(
-									filterText.getValue(), Client_.name));
+					return getGlobalSpecification(filterText.getValue());
 				}
 				break;
 			default:
@@ -219,5 +217,12 @@ public class ClientServiceImpl implements ClientService {
 	@Transactional
 	public byte[] getLogo(Long clientId) {
 		return findOne(clientId).getLogo();
+	}
+
+	@Override
+	public Specification<Client> getGlobalSpecification(String text) {
+		return Specifications
+				.where(CommonSpecifications.likeIgnoreCase(
+						text, Client_.name));
 	}
 }

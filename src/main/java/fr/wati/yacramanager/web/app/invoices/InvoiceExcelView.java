@@ -12,35 +12,25 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.view.document.AbstractExcelView;
 
 import fr.wati.yacramanager.beans.InvoiceItem;
+import fr.wati.yacramanager.web.api.AbsenceController;
 import fr.wati.yacramanager.web.dto.InvoiceDTO;
 
 /**
  * @author Rachid Ouattara
  *
  */
-@Component
-public class InvoiceExcelView extends AbstractExcelView {
+@Component("report/invoice.xls")
+public class InvoiceExcelView extends AbstractExcelView implements InitializingBean{
 
-	/* (non-Javadoc)
-	 * @see org.springframework.web.servlet.view.document.AbstractExcelView#buildExcelDocument(java.util.Map, org.apache.poi.hssf.usermodel.HSSFWorkbook, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
-	 */
-	@Override
-	protected void buildExcelDocument(Map model, HSSFWorkbook workbook,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
-
-		HSSFSheet excelSheet = workbook.createSheet("Invoice items");
-		setExcelHeader(excelSheet);
-		
-		List<InvoiceItem> invoiceItems = ((InvoiceDTO)model.get("invoice")).getInvoiceItems();
-		setExcelRows(excelSheet,invoiceItems);
-		
-	}
-
+	private final Logger log = LoggerFactory.getLogger(InvoiceExcelView.class);
+	
 	public void setExcelHeader(HSSFSheet excelSheet) {
 		HSSFRow excelHeader = excelSheet.createRow(0);
 		excelHeader.createCell(0).setCellValue("Label");
@@ -60,6 +50,22 @@ public class InvoiceExcelView extends AbstractExcelView {
 //			excelRow.createCell(3).setCellValue(animal.getAggressive());
 //			excelRow.createCell(4).setCellValue(animal.getWeight());
 		}
+	}
+
+	@Override
+	public void afterPropertiesSet() throws Exception {
+		log.debug("Excel view is created by spring");
+	}
+
+	@Override
+	protected void buildExcelDocument(Map<String, Object> model,
+			HSSFWorkbook workbook, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		HSSFSheet excelSheet = workbook.createSheet("Invoice items");
+		setExcelHeader(excelSheet);
+		
+		List<InvoiceItem> invoiceItems = ((InvoiceDTO)model.get("invoice")).getInvoiceItems();
+		setExcelRows(excelSheet,invoiceItems);
 	}
 
 }

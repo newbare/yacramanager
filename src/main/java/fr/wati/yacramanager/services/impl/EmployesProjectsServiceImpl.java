@@ -171,4 +171,10 @@ public class EmployesProjectsServiceImpl implements EmployesProjectsService {
 		return employesProjectsDTOs;
 	}
 
+	@Override
+	public Specification<EmployesProjects> getGlobalSpecification(String text) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

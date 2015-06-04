@@ -24,6 +24,7 @@ import fr.wati.yacramanager.beans.Activities.ActivityOperation;
 import fr.wati.yacramanager.beans.Employe;
 import fr.wati.yacramanager.beans.EmployesProjects;
 import fr.wati.yacramanager.beans.Project;
+import fr.wati.yacramanager.beans.Project_;
 import fr.wati.yacramanager.beans.Task;
 import fr.wati.yacramanager.beans.TaskStatus;
 import fr.wati.yacramanager.beans.Task_;
@@ -299,5 +300,12 @@ public class TaskServiceImpl implements TaskService {
 			dtos.add(toTaskDTO(task));
 		}
 		return dtos;
+	}
+
+	@Override
+	public Specification<Task> getGlobalSpecification(String text) {
+		return Specifications
+				.where(CommonSpecifications.likeIgnoreCase(text, Task_.name))
+				.or(CommonSpecifications.likeIgnoreCase(text, Task_.description));
 	}
 }

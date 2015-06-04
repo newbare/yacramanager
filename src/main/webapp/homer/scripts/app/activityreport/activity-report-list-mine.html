@@ -193,14 +193,15 @@
 										</h6></td>
 									<td data-ng-repeat="day in employeCraDetail.days"
 										data-ng-class="{'cra-we' : day.dayOff , 'cra-today' : isToday(day.date)}"
-										style="vertical-align: middle; text-align: center;"><a
-										href="" data-ng-if="!day.dayOff && !day.approved"
+										style="vertical-align: middle; text-align: center;">
+										<span class="">{{employeCraDetail.craAbsenceDetail.duration[day.date] || 0 |duration }}</span>
+										<a	href="" data-ng-if="!day.dayOff && !day.approved"
 										data-ng-disabled="day.dayOff"
 										data-title=" Add to {{day.date | date : 'shortDate'}}"
 										data-content-template="cra/timeoff/edit-timeoff-popover.html"
-										data-bs-popover="">{{
-											employeCraDetail.craAbsenceDetail.duration[day.date] || 0 |
-											duration }}</a> <span data-ng-if="day.dayOff || day.approved">{{
+										data-bs-popover="" class="btn-xs">
+										<i class="fa fa-plus-circle "></i></a> 
+										<span data-ng-if="day.dayOff || day.approved">{{
 											employeCraDetail.craAbsenceDetail.duration[day.date] || 0 |
 											duration }}</span> <span class="text-warning"
 										data-title="Some entries are not approuved yet"

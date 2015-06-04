@@ -314,4 +314,11 @@ public class ProjectServiceImpl implements ProjectService{
 		projectFound.getEmployes().remove(employesProjects);
 		employesProjectsRepository.delete(new EmployesProjectsId(employeId, projectId));
 	}
+
+	@Override
+	public Specification<Project> getGlobalSpecification(String text) {
+		return Specifications
+				.where(CommonSpecifications.likeIgnoreCase(text, Project_.name))
+				.or(CommonSpecifications.likeIgnoreCase(text, Project_.description));
+	}
 }

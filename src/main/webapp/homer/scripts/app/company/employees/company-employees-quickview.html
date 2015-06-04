@@ -29,13 +29,13 @@
 		</div>
 		<div class="table-responsive">
 			<table
-				class="table table-hover ng-table-rowselected "
+				class="mini-list table  table-hover ng-table-rowselected "
 				data-ng-table="tableParams" >
 				<tr align="left" data-ng-repeat="employe in $data" style="height: 50px"
 					data-ng-click="employe.$selected = !user.$selected; changeSelection(user)">
-					<td data-sortable="'lastName'" data-ui-sref="company.employees.view.quick.overview.basic({ id: employe.id })">
+					<td data-sortable="'lastName'" data-ng-class="{ active: $state.includes('company.employees.view.quick.overview',{ id: ''+employe.id+'' })}" data-ui-sref="company.employees.view.quick.overview.basic({ id: employe.id })">
 							{{employe.lastName}} {{employe.firstName}}
-						<i data-ng-if="$state.includes('company.employees.view.quick.overview',{ id: ''+employe.id+'' })" class="fa fa-hand-o-right text-primary" style="float: right;"></i>
+						<!-- <i data-ng-if="$state.includes('company.employees.view.quick.overview',{ id: ''+employe.id+'' })" class="fa fa-hand-o-right text-primary" style="float: right;"></i> -->
 					</td>
 				</tr>
 			</table>

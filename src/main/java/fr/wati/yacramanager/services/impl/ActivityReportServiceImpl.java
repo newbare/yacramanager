@@ -3,6 +3,10 @@ package fr.wati.yacramanager.services.impl;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 
 import org.joda.time.LocalDate;
 import org.slf4j.Logger;
@@ -11,12 +15,17 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import fr.wati.yacramanager.beans.Activities.ActivityOperation;
 import fr.wati.yacramanager.beans.ActivityReport;
+import fr.wati.yacramanager.beans.ActivityReport_;
+import fr.wati.yacramanager.beans.Client;
+import fr.wati.yacramanager.beans.Client_;
 import fr.wati.yacramanager.beans.Employe;
+import fr.wati.yacramanager.beans.Employe_;
 import fr.wati.yacramanager.beans.ValidationStatus;
 import fr.wati.yacramanager.dao.repository.ActivityReportRepository;
 import fr.wati.yacramanager.listeners.ActivityEvent;
@@ -225,6 +234,12 @@ public class ActivityReportServiceImpl implements ActivityReportService {
 	public List<ActivityReport> findApprovedBetweenDate(
 			Long employeId, LocalDate startDate, LocalDate endDate,	List<ValidationStatus> validationStatus) {
 		return activityReportRepository.findApprovedBetweenDate(employeId, startDate, endDate, validationStatus);
+	}
+
+	@Override
+	public List<ActivityReport> findForClientAndDateBetween(final Long clientId,
+			LocalDate startDate, LocalDate endDate) {
+		return null;
 	}
 
 }

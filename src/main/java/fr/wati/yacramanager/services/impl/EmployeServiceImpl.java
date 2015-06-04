@@ -355,9 +355,7 @@ public class EmployeServiceImpl implements EmployeService {
 					return EmployeSpecifications.firstNamelike(filterText.getValue());
 				}
 				if("global".equals(filterText.getField())){
-					return Specifications
-							.where(EmployeSpecifications.firstNamelike(filterText.getValue()))
-							.or(EmployeSpecifications.lastNamelike(filterText.getValue()));
+					return getGlobalSpecification(filterText.getValue());
 				}
 				break;
 			case DATE:
@@ -500,6 +498,13 @@ public class EmployeServiceImpl implements EmployeService {
 			}
 		});
 		return assignedEmployeesIds;
+	}
+
+	@Override
+	public Specification<Employe> getGlobalSpecification(String text) {
+		return Specifications
+				.where(EmployeSpecifications.firstNamelike(text))
+				.or(EmployeSpecifications.lastNamelike(text));
 	}
 
 }

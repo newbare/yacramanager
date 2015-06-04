@@ -76,8 +76,10 @@ table.mini-list td.invoice .invoice-number{
 table.mini-list td.invoice .invoice-client-name{
 	color: #777;
 }
-table.mini-list td.invoice.active{
-	background-color: #5cb85c;
+table.mini-list td.invoice.active,
+table.mini-list td.active{
+	background-color: #5cb85c !important;
+	color: white !important;
 }
 
 table.mini-list td.invoice.active .invoice-number,

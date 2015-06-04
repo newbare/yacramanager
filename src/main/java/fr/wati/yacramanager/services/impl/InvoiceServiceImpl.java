@@ -19,7 +19,9 @@ import com.google.common.collect.Lists;
 
 import fr.wati.yacramanager.beans.Invoice;
 import fr.wati.yacramanager.beans.InvoiceItem;
+import fr.wati.yacramanager.beans.Invoice_;
 import fr.wati.yacramanager.dao.repository.InvoiceRepository;
+import fr.wati.yacramanager.dao.specifications.CommonSpecifications;
 import fr.wati.yacramanager.services.ClientService;
 import fr.wati.yacramanager.services.InvoiceService;
 import fr.wati.yacramanager.utils.Filter;
@@ -248,5 +250,10 @@ public class InvoiceServiceImpl implements InvoiceService {
 	@Override
 	public Invoice findByInvoiceNumber(String invoiceNumber) {
 		return invoiceRepository.findByInvoiceNumber(invoiceNumber);
+	}
+
+	@Override
+	public Specification<Invoice> getGlobalSpecification(String text) {
+		return CommonSpecifications.likeIgnoreCase(text, Invoice_.invoiceNumber);
 	}
 }

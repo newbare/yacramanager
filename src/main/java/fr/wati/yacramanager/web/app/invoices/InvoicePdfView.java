@@ -9,6 +9,8 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.stereotype.Component;
+
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
@@ -24,6 +26,7 @@ import fr.wati.yacramanager.web.views.AbstractPdfView;
  * @author Rachid Ouattara
  * 
  */
+@Component("report/invoice.pdf")
 public class InvoicePdfView extends AbstractPdfView {
 
 	/*

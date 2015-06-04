@@ -31,6 +31,7 @@ import fr.wati.yacramanager.web.api.ClientController;
 import fr.wati.yacramanager.web.api.CompanyController;
 import fr.wati.yacramanager.web.api.CustomMapEditor;
 import fr.wati.yacramanager.web.api.EmployesProjectsController;
+import fr.wati.yacramanager.web.api.GlobalSearchController;
 import fr.wati.yacramanager.web.api.InvoiceController;
 import fr.wati.yacramanager.web.api.NoteDeFraisController;
 import fr.wati.yacramanager.web.api.ProjectController;
@@ -48,8 +49,10 @@ import fr.wati.yacramanager.web.dto.ExceptionDto;
 @ControllerAdvice(assignableTypes = { NoteDeFraisController.class,
 		AbsenceController.class, CompanyController.class,
 		ClientController.class, UserRestController.class,
-		ProjectController.class, WorkLogRestController.class,EmployesProjectsController.class,
-		TaskRestController.class,ActivityReportController.class,AuthenticationController.class,InvoiceController.class})
+		ProjectController.class, WorkLogRestController.class,
+		EmployesProjectsController.class, TaskRestController.class,
+		ActivityReportController.class, AuthenticationController.class,
+		InvoiceController.class,GlobalSearchController.class })
 public class RestControllerAdvice {
 
 	private Logger logger=LoggerFactory.getLogger(RestControllerAdvice.class);

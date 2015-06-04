@@ -14,10 +14,10 @@ import org.springframework.web.servlet.view.ResourceBundleViewResolver;
 @Configuration
 public class ViewsConfiguration {
 
-	@Bean
-	public ResourceBundleViewResolver resourceBundleViewResolver() {
-		ResourceBundleViewResolver resolver = new ResourceBundleViewResolver();
-		resolver.setBasename("spring-mvc-views");
-		return resolver;
-	}
+//	@Bean
+//	public ResourceBundleViewResolver resourceBundleViewResolver() {
+//		ResourceBundleViewResolver resolver = new ResourceBundleViewResolver();
+//		resolver.setBasename("spring-mvc-views");
+//		return resolver;
+//	}
 }

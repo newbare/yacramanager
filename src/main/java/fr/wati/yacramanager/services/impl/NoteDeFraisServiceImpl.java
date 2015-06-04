@@ -328,4 +328,9 @@ public class NoteDeFraisServiceImpl implements NoteDeFraisService {
 		this.applicationEventPublisher=applicationEventPublisher;
 	}
 
+	@Override
+	public Specification<NoteDeFrais> getGlobalSpecification(String text) {
+		return CommonSpecifications.likeIgnoreCase(text, NoteDeFrais_.description);
+	}
+
 }

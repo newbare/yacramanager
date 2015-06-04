@@ -52,9 +52,8 @@
 <!-- Simple splash screen-->
 	<div class="splash" data-events-to-wait="eventsToWait" data-application-loading-support="">
 		<div class="splash-title">
-			<h1>Homer - Responsive Admin Theme</h1>
-			<p>Special AngularJS Admin Theme for small and medium webapp with
-				very clean and aesthetic style and feel.</p>
+			<h1>YACRA Manager</h1>
+			<p>Manage project timesheet & invoice...</p>
 			<img src="../../assets/images/loading-bars.svg" width="64" height="64" />
 		</div>
 	</div>
@@ -77,8 +76,10 @@
                         <i class="fa fa-arrow-down"></i>
                     </div>
                 </a>
- 				
-                <div id="hbreadcrumb" class="pull-right m-t-xs">
+                <h2 class="font-light m-b-xs">
+                    {{ $state.current.data.pageTitle }}<small> {{ $state.current.data.pageDesc }}</small>
+                </h2>
+                <div id="hbreadcrumb" class="m-t-xs">
                     <div data-ncy-breadcrumb="" data-ng-if="desktopScreen"></div>
                     <!-- <ol class="hbreadcrumb breadcrumb">
                         <li><a ui-sref="dashboard">Dashboard</a></li>
@@ -88,10 +89,6 @@
                         </li>
                     </ol> -->
                 </div>
-                <h2 class="font-light m-b-xs">
-                    {{ $state.current.data.pageTitle }}
-                </h2>
-                <small>{{ $state.current.data.pageDesc }}</small>
             </div>
         </div>
     </div>

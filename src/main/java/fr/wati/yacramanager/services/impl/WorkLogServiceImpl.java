@@ -9,6 +9,7 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,7 +20,9 @@ import fr.wati.yacramanager.beans.ActivityReport;
 import fr.wati.yacramanager.beans.Employe;
 import fr.wati.yacramanager.beans.ValidationStatus;
 import fr.wati.yacramanager.beans.WorkLog;
+import fr.wati.yacramanager.beans.WorkLog_;
 import fr.wati.yacramanager.dao.repository.WorkLogRepository;
+import fr.wati.yacramanager.dao.specifications.CommonSpecifications;
 import fr.wati.yacramanager.listeners.ActivityEvent;
 import fr.wati.yacramanager.services.ActivityReportService;
 import fr.wati.yacramanager.services.EmployeService;
@@ -263,5 +266,11 @@ public class WorkLogServiceImpl implements WorkLogService,SpecificationFactory<W
 			throw new ServiceException("You cannot post worklog for this date as an activity report has already vaidated");
 		}
 		save(workLog);
+	}
+
+	@Override
+	public Specification<WorkLog> getGlobalSpecification(String text) {
+		return Specifications
+				.where(CommonSpecifications.likeIgnoreCase(text, WorkLog_.description));
 	}
 }

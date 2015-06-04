@@ -33,4 +33,6 @@ public interface ActivityReportService extends CrudService<ActivityReport, Long>
 	
 	ActivityReport findByEmployeAndStartDateAndEndDate(Employe employe,LocalDate startDate,LocalDate endDate);
 	List<ActivityReport> findByEmployeInAndValidationStatusIn(List<Long> employeId,List<ValidationStatus> validationStatus);
+	
+	List<ActivityReport> findForClientAndDateBetween(Long clientId,LocalDate startDate,LocalDate endDate);
 }

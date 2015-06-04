@@ -26,6 +26,7 @@ import fr.wati.yacramanager.beans.Employe;
 import fr.wati.yacramanager.beans.ValidationStatus;
 import fr.wati.yacramanager.dao.repository.AbsenceRepository;
 import fr.wati.yacramanager.dao.specifications.CommonSpecifications;
+import fr.wati.yacramanager.dao.specifications.EmployeSpecifications;
 import fr.wati.yacramanager.listeners.ActivityEvent;
 import fr.wati.yacramanager.services.AbsencePortfolioService;
 import fr.wati.yacramanager.services.AbsenceService;
@@ -361,6 +362,12 @@ public class AbsenceServiceImpl implements AbsenceService {
 				absencePortfolioService.save(absencePortfolio);
 			}
 		}
+	}
+
+	@Override
+	public Specification<Absence> getGlobalSpecification(String text) {
+		return Specifications
+				.where(CommonSpecifications.likeIgnoreCase(text, Absence_.description));
 	}
 
 }
