@@ -1,3 +1,6 @@
+/* #wrapper{
+	background-color: #bdc0c4;
+} */
 @media ( max-width :768px) {
 	.navbar-form-custom,.navbar-right>ul.navbar-nav>li:not(.timer-widget),#logo {
 		display: none
@@ -1330,7 +1333,7 @@ a .badge {
 }
 
 .cra-table-task {
-	min-width: 250px;
+	min-width: 200px;
 }
 
 .scrollable-x {

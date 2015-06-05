@@ -23,6 +23,8 @@ import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 import org.thymeleaf.templateresolver.ITemplateResolver;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
+import fr.wati.yacramanager.web.thymeleaf.ThymeleafPdfViewResolver;
+
 @Configuration
 public class ThymeleafConfiguration  implements EnvironmentAware{
 
@@ -52,14 +54,14 @@ public class ThymeleafConfiguration  implements EnvironmentAware{
 	}
 
 
-//	@Bean
-//	public ViewResolver pdfViewResolver(ResourceLoader resourceLoader) {
-//		ThymeleafPdfViewResolver thymeleafPdfViewResolver = new ThymeleafPdfViewResolver();
-//		thymeleafPdfViewResolver.setViewNames(new String[] { "*PDF" });
-//		thymeleafPdfViewResolver.setTemplateEngine(pdfTemplateEngine());
-//		thymeleafPdfViewResolver.setCharacterEncoding("UTF-8");
-//		return thymeleafPdfViewResolver;
-//	}
+	@Bean
+	public ViewResolver pdfViewResolver(ResourceLoader resourceLoader) {
+		ThymeleafPdfViewResolver thymeleafPdfViewResolver = new ThymeleafPdfViewResolver();
+		thymeleafPdfViewResolver.setViewNames(new String[] { "*.pdf" });
+		thymeleafPdfViewResolver.setTemplateEngine(templateEngine());
+		thymeleafPdfViewResolver.setCharacterEncoding("UTF-8");
+		return thymeleafPdfViewResolver;
+	}
 
 	@Bean
 	@Description("Thymeleaf template resolver serving HTML 5 app page")

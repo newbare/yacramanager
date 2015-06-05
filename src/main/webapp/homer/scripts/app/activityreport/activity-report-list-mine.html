@@ -125,7 +125,7 @@
 											<span class="text-muted">{{taskRow.project.client.name}}
 												- {{taskRow.project.name}}</span>
 												<button class="btn btn-link btn-sm red pull-right" data-ng-if="taskRow.isNew" data-ng-click="deleteTaskRow(employeCraDetail.taskRows,$index)">
-													<strong><i class="fa fa-trash-o"></i> Remove</strong></button>
+													<strong><i class="fa fa-trash-o"></i></strong></button>
 										</h6></td>
 									<td data-ng-repeat="day in employeCraDetail.days"
 										data-ng-class="{'cra-we' : day.dayOff, 'cra-today' : isToday(day.date)}"
@@ -194,7 +194,7 @@
 									<td data-ng-repeat="day in employeCraDetail.days"
 										data-ng-class="{'cra-we' : day.dayOff , 'cra-today' : isToday(day.date)}"
 										style="vertical-align: middle; text-align: center;">
-										<span class="">{{employeCraDetail.craAbsenceDetail.duration[day.date] || 0 |duration }}</span>
+										<span class="" data-ng-if="!day.dayOff && !day.approved">{{employeCraDetail.craAbsenceDetail.duration[day.date] || 0 |duration }}</span>
 										<a	href="" data-ng-if="!day.dayOff && !day.approved"
 										data-ng-disabled="day.dayOff"
 										data-title=" Add to {{day.date | date : 'shortDate'}}"

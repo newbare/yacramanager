@@ -23,7 +23,7 @@
 			             <span class="text-muted m-l-sm"><i class="fa fa-clock-o m-r-xs"></i>{{totalDurations[group.data[0].project.id] | duration}} logged</span>
 			             <span class="text-warning m-l-md">{{group.data[0].project.numberOfEmployes}} employees assigned</span>
 			             <span class="text-warning m-l-md">{{group.data[0].project.numberOfTasks}} task</span>
-			             <button  type="button" class="btn btn-success btn-white btn-xs m-l-md" data-ng-click="selectActiveProject(group.data[0].project)" data-placement="top " data-title="Select employee ..." data-template="{{appContextPath}}scripts/templates/partials/search-employees-popover.tpl.html" data-animation="am-flip-x" data-auto-close="1" data-bs-popover><i class="fa fa-plus"></i> <strong>Assign employe to this project</strong></button>
+			             <button  type="button" class="btn btn-primary btn-outline btn-xs m-l-md" data-ng-click="selectActiveProject(group.data[0].project)" data-placement="top " data-title="Select employee ..." data-template="{{appContextPath}}scripts/templates/partials/search-employees-popover.tpl.html" data-animation="am-flip-x" data-auto-close="1" data-bs-popover><i class="fa fa-plus"></i> <strong>Assign employe to this project</strong></button>
 			         </td>
 			     </tr>
 			     <tr class="project-element" data-ng-style="{'border-left-color' : employeesProject.project.color}"  data-ng-hide="group.$hideRows" data-ng-repeat="employeesProject in group.data | searchField: 'name': 'description' | filter: projectFilter" data-ng-if="employeesProject.employe">

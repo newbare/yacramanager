@@ -26,7 +26,7 @@ import fr.wati.yacramanager.web.views.AbstractPdfView;
  * @author Rachid Ouattara
  * 
  */
-@Component("report/invoice.pdf")
+
 public class InvoicePdfView extends AbstractPdfView {
 
 	/*
@@ -52,7 +52,8 @@ public class InvoicePdfView extends AbstractPdfView {
 				BaseColor.BLACK);
 		Font fontTag = new Font(FontFamily.HELVETICA, 10, Font.BOLD,
 				BaseColor.WHITE);
-
+		document.add(new Chunk(invoiceDTO.getInvoiceNumber()));
+		document.add(Chunk.NEWLINE);
 		for (InvoiceItem item : invoiceItems) {
 
 			// 1.Label
