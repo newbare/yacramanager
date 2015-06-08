@@ -65,7 +65,7 @@ function sideNavigation($timeout) {
 function minimalizaMenu($rootScope) {
     return {
         restrict: 'EA',
-        template: '<div class="header-link hide-menu" ng-click="minimalize()"><i class="fa fa-bars"></i></div>',
+        template: '<a class="btn btn-info hide-menu" ng-click="minimalize()"><i class="fa fa-bars"></i></a>',
         controller: function ($scope, $element) {
 
             $scope.minimalize = function () {

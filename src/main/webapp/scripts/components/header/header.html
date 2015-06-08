@@ -12,9 +12,10 @@
         <a href="/"><span class="icon-yacra-full"></span></a>
     </div>
     <form role="search" class="navbar-form-custom" ng-submit="onGlobalSearch(globalSearchText)" data-ng-controller="GlobalSearchController">
-        <div class="form-group">
+        <span class="input-icon">
             <input type="text" placeholder="Search something special" class="form-control" data-ng-model="globalSearchText" name="search">
-        </div>
+            <i class="pe-7s-search ace-icon "></i>
+        </span>
     </form>
     <div class="navbar-right">
         <ul class="nav navbar-nav no-borders" >
@@ -55,29 +56,6 @@
 				</div>
 			</li>
             <li class="dropdown" dropdown>
-                <a class="dropdown-toggle" href="#" dropdown-toggle>
-                    <i class="pe-7s-speaker"></i>
-                </a>
-                <ul class="dropdown-menu hdropdown notification animated flipInX">
-                    <li>
-                        <a>
-                            <span class="label label-success">NEW</span> It is a long established.
-                        </a>
-                    </li>
-                    <li>
-                        <a>
-                            <span class="label label-warning">WAR</span> There are many variations.
-                        </a>
-                    </li>
-                    <li>
-                        <a>
-                            <span class="label label-danger">ERR</span> Contrary to popular belief.
-                        </a>
-                    </li>
-                    <li class="summary"><a href="#">See all notifications</a></li>
-                </ul>
-            </li>
-            <li class="dropdown" dropdown>
                 <a class="dropdown-toggle label-menu-corner" href="#" dropdown-toggle>
                     <i class="pe-7s-mail"></i>
                     <span class="label label-success">4</span>
@@ -109,6 +87,19 @@
                     <li class="summary"><a href="#">See All Messages</a></li>
                 </ul>
             </li>
+            <li class="dropdown" data-ng-controller="LanguageController">
+				 <a class="dropdown-toggle" data-toggle="dropdown" style="font-weight: normal; font-size: 110% ;margin-top: 3px;" href="javascript:;">
+                   <span>
+                       <i class="fa fa-globe"></i>
+                       <span class="hidden-tablet">{{currentLanguage | uppercase}}</span>
+                   </span>
+	           	</a>
+	           	<ul class="dropdown-menu">
+	            	<li data-active-menu="{{key}}" data-ng-repeat="(key, language) in languages">
+	                	<a href="" data-ng-click="changeLanguage(key)">{{language}}</a>
+	               	</li>
+	          	</ul>
+			</li>
             <li class="dropdown">
                 <a href="/auth/logout">
                     <i class="pe-7s-power"></i>

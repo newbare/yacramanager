@@ -301,6 +301,7 @@ public class ProjectServiceImpl implements ProjectService{
 		employesProjectsRepository.save(employesProjects);
 		employeFound.getProjects().add(employesProjects);
 		projectFound.getEmployes().add(employesProjects);
+		taskService.assignEmployeToTask(employeId, projectFound.getTasks().get(0).getId());
 	}
 
 	@Override

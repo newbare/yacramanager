@@ -356,11 +356,10 @@ App.controller('LanguageController', function ($scope, $translate, LanguageServi
     
 });
 App.controller('GlobalSearchController', function ($rootScope,$scope,$state) {
-	 
 	$scope.onGlobalSearch=function(globalSearchText){
 		$state.go('search', {'searchText':globalSearchText});
+		$rootScope.globalSearchText="";
 	}
-    
 });
 
 
