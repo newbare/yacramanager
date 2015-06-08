@@ -1,9 +1,25 @@
-<div class="row">
-	<div data-ui-view="taskWidget"></div>
-	<div data-ui-view="expensesWidget"></div>
-</div>
-<div class="row">
-	<div data-ui-view="activitiesWidget"></div>
-	<div class="col-sm-6 widget-container-col" data-widget-container="">
+<!-- 
+<div class="hpanel">
+	<div class="panel-body">
+		<div class="row">
+			<div data-ui-view="taskWidget"></div>
+			<div data-ui-view="expensesWidget"></div>
+		</div>
+		<div class="row">
+			<div data-ui-view="activitiesWidget"></div>
+			<div class="col-sm-6 widget-container-col" data-widget-container="">
+			</div>
+		</div>
 	</div>
+</div> -->
+
+
+<div class="col-xs-12 col-md-6 connectPanels" data-ui-sortable="sortableOptions">
+    <div data-ui-view="taskWidget"></div>
+    <div data-ui-view="activitiesWidget"></div>
+</div>
+<div class=" col-xs-12 col-md-6 connectPanels" data-ui-sortable="sortableOptions">
+    <div data-ui-view="expensesWidget"></div>
+</div>
+<div class="col-xs-12 col-md-6 connectPanels" data-ui-sortable="sortableOptions">
 </div>

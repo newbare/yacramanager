@@ -187,20 +187,21 @@ App.directive('collapsibleFieldset',	function() {
 			}
 		};
 });
-App.directive('authApplicationSupport', function($timeout,$modal) {
+App.directive('authApplicationSupport', function($timeout,$modal,$state) {
     return {
         restrict: 'A',
         priority : -1,
         link: function(scope, elem, attrs) {
           var login = elem.find('#app-login-content');
-          var main = elem.find('#app-content');
-          var mainFooter = elem.find('.footer-v1');
+          var header = elem.find('#header');
+          var menu = elem.find('#menu');
+          var wrapper = elem.find('#wrapper');
 		  var loginModal = undefined;
 		  var modalInitialized=false;
           var initModal=function(){
         	  loginModal = $modal({
   				scope : scope,
-  				template : _contextPath	+ 'scripts/templates/partials/login-modal.tpl.html',
+  				template : _contextPath	+ 'scripts/templates/lock-screen.html',
   				show : false,
   				backdrop : 'static',
   				placement : 'center'
@@ -213,10 +214,12 @@ App.directive('authApplicationSupport', function($timeout,$modal) {
 //        		  initModal();
 //        	  }
         	  //if(!loginModal.$element.is(':visible')){
-        		  loginModal.$promise.then(loginModal.show);
-        		  if(main.is(':visible')){
-        			  main.hide();
-        			  mainFooter.hide();
+//        	  $state.go('lock');
+        	  loginModal.$promise.then(loginModal.show);
+        		  if(wrapper.is(':visible')){
+        			  header.hide();
+        			  menu.hide();
+        			  wrapper.hide();
         		  }
         	  //}
           });
@@ -225,10 +228,12 @@ App.directive('authApplicationSupport', function($timeout,$modal) {
 //        		  initModal();
 //        	  }
 //        	  if(loginModal.$element.is(':visible')){
-        		  loginModal.$promise.then(loginModal.hide);
-        		  if(!main.is(':visible')){
-        			  main.show();
-        			  mainFooter.show();
+//        	  $state.go('home');
+        	  loginModal.$promise.then(loginModal.hide);
+        		  if(!wrapper.is(':visible')){
+        			  header.show();
+        			  menu.show();
+        			  wrapper.show();
         		  }
         	  //}
           });
@@ -310,6 +315,7 @@ App.directive('applicationLoadingSupport', function($timeout) {
 	        				//once Angular is started, remove class:
 	    		        	$timeout(function() {
 	    		        		elem.removeClass('waiting-for-angular');
+	    		        		elem.css('display', 'none');
 	    					},0);
 	        			}
         	          });
@@ -340,7 +346,7 @@ App.directive('connectionLostSupport', function($modal) {
 	};
 });
 
-App.directive('ngConfirm',function($modal) {
+App.directive('ngConfirm',function($modal,sweetAlert) {
 	return {
 		priority : -1,
 						link : function(scope, element, attr) {
@@ -368,7 +374,26 @@ App.directive('ngConfirm',function($modal) {
 								hide();
 							};
 							element.bind('click', function(event) {
-								scope.showModal();
+
+								sweetAlert.swal({
+					                title: msg,
+					                text: "Your will not be able to recover this imaginary file!",
+					                type: "warning",
+					                showCancelButton: true,
+					                confirmButtonColor: "#DD6B55",
+					                confirmButtonText: "Yes, delete it!",
+					                cancelButtonText: "No, cancel plx!",
+					                closeOnConfirm: true,
+					                closeOnCancel: true },
+					            function (isConfirm) {
+					                if (isConfirm) {
+					                	scope.$eval(clickAction);
+					                    sweetAlert.swal("Done !", "", "success");
+					                } else {
+//					                    sweetAlert.swal("Cancelled", "Your imaginary file is safe :)", "error");
+					                }
+					            });
+								//scope.showModal();
 								event.stopImmediatePropagation();
 								event.preventDefault();
 							});

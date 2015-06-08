@@ -1,4 +1,5 @@
-
+	<div class="hpanel">
+		<div class="panel-body">
 <div class="row">
 	<form class="form-inline">
 	  <div class="form-group">
@@ -28,6 +29,10 @@
 	  <button class="btn btn-success btn-sm" type="button" data-ng-disabled="!canAddTask()" data-ng-click="addTask(projectToAdd)">Add task</button>
 	</form>
 </div>
+</div>
+</div>
+<div class="hpanel">
+	<div class="panel-body">
 <div data-ng-criteria-bar data-criteria-bar-config="criteriaBarConfig" data-do-filter="doFilter(criteriaBarConfig.filters)"></div>
 <div class="row" data-ng-show="hasDatas"> 
 	<span style="vertical-align: middle;" data-ng-show="tableParams.settings().total>0"><b>{{startIndex}}</b> - <b>{{endIndex}}</b> of <b>{{tableParams.settings().total}}</b></span>
@@ -58,7 +63,7 @@
 						</div>
 				   </div>
 				   <div class="infobox-data">
-				      <span class="infobox-text"><small>{{userDurations[task.id] | duration}} logged by you</small></span>
+				      <span class="infobox-text"><small>{{userDurations[task.id] | duration}} <small class="text-muted">logged by you</small></small></span>
 				      <div class="infobox-content"><strong>Total:</strong>{{totalDurations[task.id] | duration}}</div>
 				   </div>
 				</div>
@@ -80,4 +85,6 @@
 	   	</tr>
 	     </tbody>
 	</table>
+</div>
+</div>
 </div>

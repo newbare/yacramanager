@@ -75,6 +75,8 @@ App.config(function ($stateProvider) {
 		templateUrl : _contextPath+'scripts/app/company/clients/company-clients-contacts.html',
 		controller : 'CompanyClientsOverviewController',
 		data : {
+			pageTitle: 'Contacts',
+			pageDesc: '',
 			ncyBreadcrumbLabel : 'Contacts'
 		}
 	})

@@ -1,41 +1,34 @@
-<div class="col-sm-6 widget-container-col" data-widget-container="">
-	<div class="widget-box light-border" data-widget-box="" data-refresh-action="refreshExpenses">
-		<div class="widget-header widget-header-small">
-			<span class="widget-title">Expenses</span>
-			<div class="widget-toolbar no-border">
-				<a data-action="reload" href="#" > <i class="ace-icon fa fa-refresh green"></i></a>
-				<a data-toggle="collapse" data-target="#expensesWidgetBody" href=""> <i class="ace-icon fa fa-chevron-up"></i></a>
-			</div>
-		</div>
-		<div class="widget-body collapse in" id="expensesWidgetBody">
-			<div class="widget-main no-padding">
-				<table class="table table-hover">
-			      <thead class="thin-border-bottom">
-			      		<tr>
-			      			<th>Date</th>
-			      			<th>Amount</th>
-			      			<th>Status</td>
-			      			<th></th>
-			      		</tr>
-			      </thead>
-			      <tbody>
-			      	<tr data-ng-repeat="expense in expenses">
-			      		<td>{{expense.date | date :'short'}}</td>
-			      		<td>{{expense.amount}}</td>
-			      		<td>
-			      			<span class="label" data-ng-class="{'label-success' : isValidated(expense) , 'label-warning' : isWaiting(expense), 'label-danger' : isRejected(expense)}">
-								{{expense.validationStatus}}
-							</span>
-			      		</td>
-			      		<td>
-			      			<a data-ui-sref="frais.detail({id:expense.id})">
-								<i class="fa fa-arrow-right"></i>
-							</a>
-			      		</td>
-			      	</tr>
-			      </tbody>
-				</table>
-			</div>
-		</div>
+<div class="hpanel widget-panel">
+	<div class="panel-heading hbuilt">
+		<div data-panel-tools=""></div>
+		Expenses
+	</div>
+	<div class="panel-body no-padding">
+		<table class="table table-hover">
+	      <thead class="thin-border-bottom">
+	      		<tr>
+	      			<th>Date</th>
+	      			<th>Amount</th>
+	      			<th>Status</td>
+	      			<th></th>
+	      		</tr>
+	      </thead>
+	      <tbody>
+	      	<tr data-ng-repeat="expense in expenses">
+	      		<td>{{expense.date | date :'short'}}</td>
+	      		<td>{{expense.amount}}</td>
+	      		<td>
+	      			<span class="label" data-ng-class="{'label-success' : isValidated(expense) , 'label-warning' : isWaiting(expense), 'label-danger' : isRejected(expense)}">
+						{{expense.validationStatus}}
+					</span>
+	      		</td>
+	      		<td>
+	      			<a data-ui-sref="frais.detail({id:expense.id})">
+						<i class="fa fa-arrow-right"></i>
+					</a>
+	      		</td>
+	      	</tr>
+	      </tbody>
+		</table>
 	</div>
 </div>

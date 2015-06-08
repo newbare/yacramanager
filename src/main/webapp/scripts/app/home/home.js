@@ -1,6 +1,7 @@
 App.config(function ($stateProvider) {
 	$stateProvider.state('home', {
 		url : "/home",
+		controller: 'HomeController',
 		views:{
 			'': {
 				templateUrl : _contextPath+'scripts/app/home/home.html',

@@ -1,0 +1,105 @@
+<div id="navigation">
+    <div class="profile-picture">
+        <a data-ui-sref="home">
+            <img data-ng-src="/app/api/users/avatar/{{userInfo.id}}" class="img-circle m-b" alt="logo" style="width: 80px;height: 80px;">
+        </a>
+
+        <div class="stats-label text-color">
+            <span class="font-extra-bold font-uppercase">{{userInfo.firstName}} {{userInfo.lastName}}</span>
+
+            <div class="dropdown"  >
+                <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                    <small class="text-muted">Founder of App <b class="caret"></b></small>
+                </a>
+                <ul class="dropdown-menu animated fadeInRight m-t-xs">
+                   	<li data-ui-sref-active="active" >
+						<a data-ui-sref="user-messages">Messages</a>
+					</li>
+					<li data-ui-sref-active="active"><a data-ui-sref="user-settings">{{'app.navbar.menu.settings' | translate}}</a></li>
+					<li data-ui-sref-active="active"><a data-ui-sref="user-profile">{{'app.navbar.menu.profile' | translate}}</a></li>
+					<li data-ui-sref-active="active" data-has-role="ROLE_ADMIN" ><a data-ui-sref="api-docs">{{'app.navbar.menu.api.doc' | translate}}</a></li>
+					<li><a href="/auth/logout"><i
+							class="fa fa-sign-out"></i>{{'app.navbar.menu.logout' | translate}}</a></li>
+                </ul>
+            </div>
+
+           <!--  <div class="small-chart m-t-sm">
+            <div sparkline spark-data="barProfileData" spark-options="barProfileOptions"></div>
+            </div> -->
+            <!-- <div>
+                <h4 class="font-extra-bold m-b-xs">
+                    $260 104,200
+                </h4>
+                <small class="text-muted">Your income from the last year in sales product X.</small>
+            </div> -->
+        </div>
+    </div>
+
+    <ul data-side-navigation class="nav" id="side-menu">
+        <li data-ng-cloak=""	data-ng-class="{ active: $state.includes('frais') || $state.includes('activity-report') || $state.includes('absence') || $state.includes('timesheet') || $state.includes('files') || $state.includes('tasks')}" >
+       		<a href="#">
+       			<i class="fa fa-desktop"></i>
+       			<span class="nav-label">{{'app.navbar.menu.workspace' | translate}}</span><span class="fa arrow"></span>
+       		</a>
+       		<ul class="nav nav-second-level" data-ng-class="{in: $state.includes('frais') || $state.includes('activity-report') || $state.includes('absence') || $state.includes('timesheet') || $state.includes('files') || $state.includes('tasks')}">
+				<li data-ui-sref-active="active"  class="">
+					<a data-ui-sref="tasks">
+						<i class="fa fa-tasks"></i>{{'app.navbar.menu.tasks' | translate}}
+					</a>
+				</li>
+				<li data-ui-sref-active="active" ><a data-ui-sref="frais.list.mine">{{'app.navbar.menu.frais' | translate}}</a></li>
+				<li data-ui-sref-active="active" ><a data-ui-sref="activity-report.list.mine">{{'app.navbar.menu.cra' | translate}}</a></li>
+				<li data-ui-sref-active="active" ><a
+					data-ui-sref="absence.list.mine">{{'app.navbar.menu.absences' | translate}}</a></li>
+				<li data-ui-sref-active="active"><a
+					data-ui-sref="timesheet">{{'app.navbar.menu.timesheet' | translate}}</a></li>
+				<li data-ui-sref-active="active"><a
+					data-ui-sref="files">{{'app.navbar.menu.files' | translate}}</a></li>
+			</ul>
+		</li>
+		<li data-has-role="ROLE_SSII_ADMIN" data-ng-cloak="" data-ng-class="{ active: $state.includes('company') }" >
+			<a	data-ui-sref="company.home"><i class="fa fa-university"></i>
+				<span class="nav-label">{{userInfo.company.name}}</span><span class="fa arrow"></span>
+			</a>
+			<ul class="nav nav-second-level" data-ng-class="{in: $state.includes('company')}"> 
+				<li data-ui-sref-active="active"><a
+					data-ui-sref="company.home">Home</a></li>
+				<li data-ui-sref-active="active"><a
+					data-ui-sref="company.employees.view.quick">Employees</a></li>
+				<li data-ui-sref-active="active"><a
+					data-ui-sref="company.clients.view.quick">Clients</a></li>
+				<li data-ui-sref-active="active"><a
+					data-ui-sref="company.projects.view.quick">Projects</a></li>
+				<li data-ui-sref-active="active"><a
+				data-ui-sref="company.invoices.view.quick">Invoices</a></li>
+				<!-- <li data-ng-class="{ active: $state.includes('company.messages') }"><a
+					data-ui-sref="company.messages">Messages</a></li> -->
+				<li data-ui-sref-active="active"><a
+					data-ui-sref="company.settings">Settings</a></li>
+				<li data-ui-sref-active="active"><a
+				data-ui-sref="company.activities">Activities</a></li>
+			</ul>
+		</li>
+		<li data-has-role="ROLE_ADMIN" data-ng-class="{ active: $state.includes('admin') }">
+			<a	data-ui-sref="admin.home"><i class="fa fa-star"></i>
+				<span class="nav-label">{{'app.navbar.menu.admin' | translate}}</span><span class="fa arrow"></span>
+			</a>
+			<ul class="nav nav-second-level" ng-class="{in: $state.includes('admin')}">
+               <li data-ui-sref-active="active"><a
+					data-ui-sref="admin.home">Home</a></li>
+				<li data-ui-sref-active="active"><a
+					data-ui-sref="admin.company.view.quick">Companies</a></li>
+				<!-- <li data-ng-class="navClass('admin/messages')"><a
+					data-ui-sref="admin.messages">Messages</a></li>
+				<li data-ng-class="navClass('admin/settings')"><a
+					data-ui-sref="admin.settings">Settings</a></li> -->
+				<li data-ui-sref-active="active"><a
+				data-ui-sref="admin.logs">Logs</a></li>
+				<li data-ui-sref-active="active"><a
+				data-ui-sref="admin.configuration">App configuration</a></li>
+				<li data-ui-sref-active="active"><a
+				data-ui-sref="admin.metrics">Metrics</a></li>
+            </ul>
+		</li>
+    </ul>
+</div>

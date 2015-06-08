@@ -4,6 +4,7 @@ App.config(function ($stateProvider) {
 		templateUrl : _contextPath+'scripts/app/users/settings/user-settings.html',
 		controller : 'UserSettingsController',
 		data: {
+			pageTitle: 'User settings',
 	        ncyBreadcrumbLabel: 'User settings'
 	      }
 	});

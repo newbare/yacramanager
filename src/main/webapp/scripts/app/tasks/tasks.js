@@ -5,6 +5,7 @@ App.config(function ($stateProvider) {
 		controller : 'TasksController',
 		data: {
 	        pageTitle: 'Tasks',
+	        pageDesc: 'Manage your tasks',
 	        ncyBreadcrumbLabel: 'Tasks'
 	      }
 	});

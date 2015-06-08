@@ -278,21 +278,23 @@ App.controller('CompanyClientsOverviewController',function ($scope,ClientsREST,$
 					 		.success(function(data, status) {
 					 			$scope.totalDurations[project.project.id]=data;
 					 			
-					 			$http.get(_contextPath + "app/api/worklog/project/"+project.project.id,{params:{'employeId':''+project.id.employeeId+''}})
-					 				.success(function(data, status) {
-					 					$scope.userDurations[project.id.employeeId]=[];
-					 					$scope.userDurations[project.id.employeeId][project.project.id]=data;
-					 					$scope.percents[project.id.employeeId]=[];
-					 					var percent=0;
-					 					if($scope.totalDurations[project.project.id]==0){
-					 						percent=0;
-					 					}else {
-					 						percent= Math.round( ((data/$scope.totalDurations[project.project.id])*100) * 100 ) / 100;
-										}
-					 					$timeout(function(){
-					 						$scope.percents[project.id.employeeId][project.project.id]=percent;
-									     }, 1000);
-					 				});
+					 			if(project.id.employeeId!==null){
+						 			$http.get(_contextPath + "app/api/worklog/project/"+project.project.id,{params:{'employeId':''+project.id.employeeId+''}})
+						 				.success(function(data, status) {
+						 					$scope.userDurations[project.id.employeeId]=[];
+						 					$scope.userDurations[project.id.employeeId][project.project.id]=data;
+						 					$scope.percents[project.id.employeeId]=[];
+						 					var percent=0;
+						 					if($scope.totalDurations[project.project.id]==0){
+						 						percent=0;
+						 					}else {
+						 						percent= Math.round( ((data/$scope.totalDurations[project.project.id])*100) * 100 ) / 100;
+											}
+						 					$timeout(function(){
+						 						$scope.percents[project.id.employeeId][project.project.id]=percent;
+										     }, 1000);
+						 				});
+					 		}
 					 		});
 			    	 });
 					

@@ -1,4 +1,5 @@
 <div class="tab-pane" data-ng-class="{'active' : isActiveTab('myTimeOff') }">
+	<div class="panel-body">
   	<div class="row">
 		<div class="btn-toolbar" role="toolbar">
 		  <div class="btn-group ">
@@ -8,7 +9,6 @@
 		  </div>
 		</div>
 	</div>
-  	<absence-portfolio></absence-portfolio>
   	<div data-ng-criteria-bar data-criteria-bar-config="criteriaBarConfig" data-do-filter="doFilter(criteriaBarConfig.filters)"></div>		
 	<div class="alert alert-warning text-center" role="alert" ng-show="!hasDatas">
 		<h4>No data found for selected criterias</h4>
@@ -60,5 +60,6 @@
 						<span class="lbl"></span>
 					</label>
    		</script>
+	</div>
 	</div>
   </div>

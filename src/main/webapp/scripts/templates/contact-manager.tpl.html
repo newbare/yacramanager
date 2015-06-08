@@ -1,20 +1,26 @@
-<div class="row">
-	<div class="col-lg-6">
-		<div class="input-group input-group-sm">
-			<span class="input-group-addon "><i class="fa fa-search"></i></span>
-			<input type="text" data-ng-model="contactFilter" class="form-control"
-				placeholder="Filter contacts"> <span class="input-group-btn">
-				<button class="btn btn-success"
-					data-ng-click="addContact(dataObject)">
-					<i class="fa fa-plus"></i> Add contact
-				</button>
-			</span>
+<div class="hpanel">
+	<div class="panel-body">
+		<div class="row">
+			<div class="col-lg-6">
+				<div class="input-group input-group-sm">
+					<span class="input-group-addon "><i class="fa fa-search"></i></span>
+					<input type="text" data-ng-model="contactFilter"
+						class="form-control" placeholder="Filter contacts"> <span
+						class="input-group-btn">
+						<button class="btn btn-success"
+							data-ng-click="addContact(dataObject)">
+							<i class="fa fa-plus"></i> Add contact
+						</button>
+					</span>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>
 <div class="row">
 	<div class="col-md-6 col-lg-4 am-fade" data-ng-repeat="contact in dataObject.contacts | searchField: 'name': 'email' | filter: contactFilter">
-	    <div class="contact-box">
+	    <div class="hpanel contact-panel">
+		<div class="panel-body">
 	        <button type="button" class="close" data-ng-confirm="Do you want to delete contact {{contact.name}} ?" data-ng-click="deleteContact(dataObject,$index)" ><i class="fa fa-times text-danger"></i><span class="sr-only">Close</span></button>
 	        <!-- <div class="col-sm-4">
 	            <div class="text-center">
@@ -22,7 +28,39 @@
 	                <div class="m-t"><strong><a href="#" onaftersave="update()" buttons="no" editable-text="contact.role">{{ contact.role || 'Role' }}</a></strong></div>
 	            </div>
 	        </div> -->
-	        <div class="col-sm-12">
+	         <div class="col-sm-4">
+                 <div class="text-center">
+                     <img alt="image" class="img-circle m-t-xs img-responsive" src="img/a4.jpg">
+                     <div class="m-t-xs font-bold">Sales manager</div>
+                 </div>
+             </div>
+             <div class="col-sm-8">
+                 <h3><strong><a href="#" onaftersave="update()" buttons="no" editable-text="contact.name">{{ contact.name || 'Name' }}</a></strong></h3>
+                 <a href="#" onaftersave="update()" buttons="no" editable-email="contact.email">{{ contact.email || 'Email' }}</a>
+                 <br>
+                 <a href="#" onaftersave="update()" buttons="no" editable-text="contact.adresse.adress">{{ contact.adresse.adress || 'Address' }}</a>
+                 <br>
+                 <a href="#" onaftersave="update()" buttons="no" editable-text="contact.adresse.postCode">{{ contact.adresse.postCode || 'Post Code' }}</a>
+                 <br>
+                 <a href="#" onaftersave="update()" buttons="no" editable-text="contact.adresse.city">{{ contact.adresse.city || 'City' }}</a>
+                 <br>
+                 <a href="#" onaftersave="update()" buttons="no" editable-text="contact.adresse.country">{{ contact.adresse.country || 'Country' }}</a>
+                 <br>
+               	<ul class="list-inline">
+					<li><i class="fa fa-phone text-primary"></i></li>
+					<li data-ng-repeat="phoneNumber in contact.phoneNumbers track by $index">
+						<a href="#"  buttons="no" onaftersave="update()" editable-tel="contact.phoneNumbers[$index]">{{ contact.phoneNumbers[$index] || 'Tel' }}</a>
+						<button href="" class="btn btn-link btn-xs" data-ng-click="removePhoneNumbers(contact,$index)"><i class="fa fa-minus-circle text-danger"></i></button>
+					</li>
+					<li>
+						<a href="" class="btn btn-link btn-xs" data-ng-click="addPhoneNumbers(contact)"><i class="fa fa-plus-circle"></i></a>
+					</li>
+				</ul>
+             </div>
+             <div class="clearfix"></div>
+	        
+	        
+	        <!-- <div class="col-sm-12">
 	            <dl class="dl-horizontal">
 				  	<dt></dt>
 				  	<dd><h4><strong><a href="#" onaftersave="update()" buttons="no" editable-text="contact.name">{{ contact.name || 'Name' }}</a></strong></h4></dd>
@@ -52,8 +90,9 @@
 	            <address>
 	                 
 	            </address>
-	        </div>
+	        </div> -->
 	        <div class="clearfix"></div>
+	    </div>
 	    </div>
 	</div>
 </div>

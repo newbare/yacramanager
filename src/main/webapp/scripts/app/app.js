@@ -73,12 +73,12 @@ var App = angular.module('yaCRAApp', [ 'ngResource', 'mgcrea.ngStrap',
 		'daterangepicker', 'pascalprecht.translate', 'angular-loading-bar',
 		'ngQuickDate', 'xeditable', 'colorpicker.module', 'angular.filter',
 		'truncate','ncy-angular-breadcrumb','ngCookies','tmh.dynamicLocale','ngFinder',
-		'ngCacheBuster','LocalStorageModule','matchMedia','easypiechart']);
+		'ngCacheBuster','LocalStorageModule','matchMedia','easypiechart','ui.sortable','cgNotify']);
 
 
-App.config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
-    cfpLoadingBarProvider.parentSelector = '.main';
-  }]);
+//App.config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
+//    cfpLoadingBarProvider.parentSelector = '#wrapper';
+//  }]);
 
   
   
@@ -88,6 +88,7 @@ App.run(function($rootScope,$q, $templateCache, UsersREST,$state,ENV,VERSION,USE
 	$rootScope.appContextPath=_contextPath;
 	$rootScope.ENV = ENV;
     $rootScope.VERSION = VERSION;
+    $rootScope.globalSearchText="";
     
     $rootScope.desktopScreen = screenSize.on('md, lg', function(match){
     	$rootScope.desktopScreen = match;
@@ -152,6 +153,16 @@ App.run(function(editableOptions,editableThemes) {
 
 
 App.config(function ($stateProvider,$translateProvider,$httpProvider,tmhDynamicLocaleProvider,httpRequestInterceptorCacheBusterProvider,localStorageServiceProvider,$locationProvider) {
+	
+//	$stateProvider.state('lock', {
+//         url: "/lock",
+//         templateUrl: "/scripts/templates/lock-screen.html",
+//         controller: 'LoginCtrl',
+//         data: {
+//             pageTitle: 'Lock page',
+//             specialClass: 'blank'
+//         }
+//     })
 	
 	
 	$locationProvider.html5Mode(true).hashPrefix('!');
@@ -344,6 +355,14 @@ App.controller('LanguageController', function ($scope, $translate, LanguageServi
      });
     
 });
+App.controller('GlobalSearchController', function ($rootScope,$scope,$state) {
+	 
+	$scope.onGlobalSearch=function(globalSearchText){
+		$state.go('search', {'searchText':globalSearchText});
+	}
+    
+});
+
 
 
 

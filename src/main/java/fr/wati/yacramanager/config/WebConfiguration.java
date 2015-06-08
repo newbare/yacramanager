@@ -253,6 +253,8 @@ public class WebConfiguration implements ServletContextInitializer,
 				"/assets/*");
 		staticResourcesProductionFilter.addMappingForUrlPatterns(disps, true,
 				"/scripts/*");
+		staticResourcesProductionFilter.addMappingForUrlPatterns(disps, true,
+				"/views/*");
 		staticResourcesProductionFilter.setAsyncSupported(true);
 	}
 

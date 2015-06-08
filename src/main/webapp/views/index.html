@@ -14,12 +14,7 @@
 <link rel="stylesheet" href="../bower_components/font-awesome/css/font-awesome.css"/>
 <!-- endbuild -->
 <!-- build:css /assets/styles/main.css -->
-	<link rel="stylesheet" href="../assets/styles/yacra-fonts.css"/>
-	<link rel="stylesheet" href="../assets/styles/yacranav.css"/>
-	<link rel="stylesheet" href="../assets/styles/app.css"/>
-	<link rel="stylesheet" href="../assets/styles/yacrafooter.css"/>
-	<link rel="stylesheet" href="../assets/styles/pricing-table-style.css"/>
-	<link rel="stylesheet" href="../assets/styles/ace.css"/>
+	<link rel="stylesheet" href="../assets/styles/style.css"/>
 <!-- endbuild -->
 <!-- Custom styles for this template -->
 
@@ -31,117 +26,14 @@
 <script th:inline="javascript" type="text/javascript">
 	var _contextPath = [[@{/}]] ;
 </script>
+<script th:if=" ${userName} !=null" th:inline="javascript"
+	type="text/javascript">
+			var _userName = [[${userName}]];
+</script>
 </head>
 
-<body data-ng-controller="AppCtrl">
-	<div id="app-content">
-	<div class="navbar navbar-custom navbar-fixed-top" role="navigation" data-ng-cloak="">
-		<div class="container">
-			<div class="navbar-header">
-				<button type="button" class="navbar-toggle" data-toggle="collapse"
-					data-target=".navbar-collapse">
-					<span class="sr-only">Toggle navigation</span> <span
-						class="icon-bar"></span> <span class="icon-bar"></span> <span
-						class="icon-bar"></span>
-				</button>
-				<a class="navbar-brand" data-ui-sref="home">
-					<span class="icon-yacra-full"></span>
-					<span class="navbar-version hidden-xs hidden-sm" data-ng-show="{{ENV !== 'prod'}}">[{{ENV | uppercase}}] v{{VERSION}}</span>
-				</a>
-			</div>
-			<div class="navbar-collapse collapse">
-				<ul class="nav navtop navbar-nav navbar-right">
-					<li  data-ui-sref-active="active">
-						<a	data-ui-sref="quick-tour">{{'app.navbar.menu.quicktour' | translate}}</a>
-					</li>
-					<li  data-ui-sref-active="active">
-						<a	data-ui-sref="pricing">{{'app.navbar.menu.pricing' | translate}}</a>
-					</li>
-					<li  data-ui-sref-active="active">
-						<a	data-ui-sref="about">{{'app.navbar.menu.about' | translate}}</a>
-					</li>
-					<li class="dropdown" data-ng-controller="LanguageController">
-						 <a class="dropdown-toggle" data-toggle="dropdown" href="javascript:;">
-                             <span>
-                                 <i class="fa fa-globe"></i>
-                                 <span class="hidden-tablet" data-ng-cloak="">{{currentLanguage | uppercase}}</span>
-                             </span>
-                         </a>
-                         <ul class="dropdown-menu">
-                             <li data-active-menu="{{key}}" data-ng-repeat="(key, language) in languages">
-                                 <a href="" data-ng-click="changeLanguage(key)">{{language}}</a>
-                             </li>
-                         </ul>
-					</li>
-					<li th:if="${userName == null}">
-						<a href="/auth/">
-							<i class="fa fa-sign-in"></i> Login 
-						</a>
-					</li>
-					<li th:if="${userName != null}">
-						<a href="/app/view/">
-							<i class="fa fa-user"></i>
-							 <span th:text="${userName.getFullName()}"></span>
-						</a>
-					</li>
-				</ul>
-				
-			</div>
-			<!--/.navbar-collapse -->
-		</div>
-	</div>
-
-	<!-- container -->
-	<div class="container" data-ng-cloak="">
-		<div class="main">
-			<div data-ncy-breadcrumb=""></div>
-			<div id="main-view" >
-				<div class="panel panel-default">
-					<div class="panel-body">
-					<div id="alerts-container"></div>
-					<div id="main-view" data-ui-view="" class="" data-ng-cloak=""></div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!-- /container -->
-
-	<div class="footer">
-		<div class="container">
-			<p>@Wati - Copyrigth 2014</p>
-			<div class="col-md-4">
-				<ul>
-					<li>Social</li>
-					<li><a href=""><i class="fa fa-twitter"></i> Twitter</a></li>
-					<li><a href=""><i class="fa fa-facebook"></i> Facebook</a></li>
-					<li><a href=""><i class="fa fa-youtube"></i> YouTube</a></li>
-
-				</ul>
-			</div>
-			<div class="col-md-4">
-				<ul>
-					<li>Quick links</li>
-					<li><a href="">Home</a></li>
-					<li><a href="">Company</a></li>
-					<li><a href="">Clients</a></li>
-
-				</ul>
-			</div>
-			<div class="col-md-4">
-				<ul>
-					<li>Contact us</li>
-					<li><a href=""><i class="fa fa-envelope"></i> YACRA
-							support team</a></li>
-					<li><a href=""><i class="fa fa-facebook"></i> Facebook</a></li>
-					<li><a href=""><i class="fa fa-youtube"></i> YouTube</a></li>
-
-				</ul>
-			</div>
-
-		</div>
-	</div>
-	</div>
+<body data-ng-controller="AppCtrl" class="landing-page" data-landing-scrollspy="" data-tour="" data-backdrop="true">
+	<div id="content" ng-include="'/views/home.html'"></div>
 	<!-- Bootstrap core JavaScript
     ================================================== -->
 	<!-- Placed at the end of the document so the pages load faster -->
@@ -165,6 +57,7 @@
     <script src="../scripts/yacra.js"></script>
 	<script src="../scripts/app/constants.js"></script>
 	<script src="../scripts/app/app.constants.js"></script>
+	<script	src="../scripts/components/directives/homer-directives.js"></script>
 	<!-- endbuild -->
 	
 </body>

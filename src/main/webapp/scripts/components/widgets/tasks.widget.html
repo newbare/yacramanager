@@ -1,47 +1,41 @@
-<div class="col-sm-6 widget-container-col" data-widget-container="">
-	<div class="widget-box light-border" data-widget-box="" data-refresh-action="refreshTask">
-		<div class="widget-header widget-header-small ">
-			<span class="widget-title">Task</span>
-			<div class="widget-toolbar no-border">
-				<a data-action="reload" href="#" > <i class="ace-icon fa fa-refresh green"></i></a>
-				<a data-toggle="collapse" data-target="#taskWidgetBody" href=""> <i class="ace-icon fa fa-chevron-up"></i></a>
-			</div>
-		</div>
-		<div class="widget-body collapse in" id="taskWidgetBody">
-			<div class="widget-main no-padding">
-				<table class="table table-hover task-list">
-			      <thead class="thin-border-bottom">
-			      		<tr>
-			      			<th>Name</th>
-			      			<th>Description</th>
-			      			<th>Status</td>
-			      			<th colspan="2"></th>
-			      		</tr>
-			      </thead>
-			      <tbody>
-			      	<tr data-ng-repeat="task in tasks">
-			      		<td>{{task.name}}</td>
-			      		<td>{{task.description}}</td>
-			      		<td>
-			      			<span class="label" data-ng-class="{'label-success' : task.taskStatus==='OPEN' , 'label-danger' : task.taskStatus==='COMPLETED'}">
-								{{task.taskStatus}}
-							</span>
-			      		</td>
-			      		<td class="task-people">
-			      			<!-- {{task.assignedEmployeesIds.length}} <i class="fa fa-male"></i> -->
-			      			<a href="" data-ng-repeat="employeesId in task.assignedEmployeesIds">
-								<img alt="image" class="img-circle" data-ng-src="/app/api/users/avatar/{{employeesId}}">
-							</a>
-			      		</td>
-			      		<td>
-			      			<a data-ui-sref="tasks({id:task.id})">
-								<i class="fa fa-arrow-right"></i>
-							</a>
-			      		</td>
-			      	</tr>
-			      </tbody>
-			    </table>
-			</div>
-		</div>
-	</div>
+<div class="hpanel widget-panel">
+    <div class="panel-heading hbuilt">
+        <div data-panel-tools="">
+        </div>
+       Task
+    </div>
+    <div class="panel-body no-padding">
+        <table class="table table-hover task-list">
+	      <thead class="thin-border-bottom">
+	      		<tr>
+	      			<th>Name</th>
+	      			<th>Description</th>
+	      			<th>Status</td>
+	      			<th colspan="2"></th>
+	      		</tr>
+	      </thead>
+	      <tbody>
+	      	<tr data-ng-repeat="task in tasks">
+	      		<td>{{task.name}}</td>
+	      		<td>{{task.description}}</td>
+	      		<td>
+	      			<span class="label" data-ng-class="{'label-success' : task.taskStatus==='OPEN' , 'label-danger' : task.taskStatus==='COMPLETED'}">
+						{{task.taskStatus}}
+					</span>
+	      		</td>
+	      		<td class="task-people">
+	      			<!-- {{task.assignedEmployeesIds.length}} <i class="fa fa-male"></i> -->
+	      			<a href="" data-ng-repeat="employeesId in task.assignedEmployeesIds">
+						<img alt="image" class="img-circle" data-ng-src="/app/api/users/avatar/{{employeesId}}">
+					</a>
+	      		</td>
+	      		<td>
+	      			<a data-ui-sref="tasks({id:task.id})">
+						<i class="fa fa-arrow-right"></i>
+					</a>
+	      		</td>
+	      	</tr>
+	      </tbody>
+	    </table>
+    </div>
 </div>

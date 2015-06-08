@@ -1,19 +1,15 @@
-<div class="navbar navbar-default" role="navigation">
-	<div class="navbar-header">
-       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#frais-menu-navbar">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-    </div>
-    <div class="collapse navbar-collapse" id="frais-menu-navbar">
-    	<ul class="nav nav-pills sub-menu" role="tablist" id="tabs">
-		  <li data-ui-sref-active="active"><a href="" role="tab"  data-ui-sref="absence.list.mine">{{'app.timeoff.mytimeoff' | translate}}</a></li>
-		  <li data-ui-sref-active="active"><a href="" role="tab"  data-ui-sref="absence.list.tobeapproved">{{'app.timeoff.tobeapprouved' | translate}}<span class="badge">{{approvementTotal}}</span></a></li>
-		</ul>
-    </div>
-</div>
-<div class="tab-content">
-  	<div data-ui-view=""></div>
+<absence-portfolio></absence-portfolio>
+<div class="hpanel">
+	<ul class="nav nav-tabs" role="tablist">
+		<li data-ui-sref-active="active"><a href="" role="tab"
+			data-ui-sref="absence.list.mine">{{'app.timeoff.mytimeoff' |
+				translate}}</a></li>
+		<li data-ui-sref-active="active"><a href="" role="tab"
+			data-ui-sref="absence.list.tobeapproved">{{'app.timeoff.tobeapprouved'
+				| translate}}<span class="badge">{{approvementTotal}}</span>
+		</a></li>
+	</ul>
+	<div class="tab-content">
+		<div data-ui-view=""></div>
+	</div>
 </div>

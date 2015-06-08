@@ -7,9 +7,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <base th:href="@{/app/view/}" />
 
-<!-- build:css /assets/styles/app/vendor.css -->
+    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+    <!--<link rel="shortcut icon" type="image/ico" href="favicon.ico" />-->
+
+    <!-- build:css /assets/styles/app/vendor.css -->
 <link rel="stylesheet" href="../../bower_components/bootstrap-additions/dist/bootstrap-additions.min.css"/>
 <link rel="stylesheet" href="../../bower_components/angular-motion/dist/angular-motion.css"/>
+<link rel="stylesheet" href="../../bower_components/animate.css/animate.css" />
+<link rel="stylesheet" href="../../bower_components/sweetalert/dist/sweet-alert.css" />
 <link rel="stylesheet" href="../../bower_components/angular-loading-bar/build/loading-bar.css"/>
 <link rel="stylesheet" href="../../bower_components/bootstrap-daterangepicker/daterangepicker-bs3.css"/>
 <link rel="stylesheet" href="../../bower_components/ng-table/dist/ng-table.css"/>
@@ -23,222 +28,80 @@
 <link rel="stylesheet" href="../../bower_components/jquery.gritter/css/jquery.gritter.css"/>
 <link rel="stylesheet" href="../../bower_components/bootstrap/dist/css/bootstrap.css" />
 <link rel="stylesheet" href="../../bower_components/font-awesome/css/font-awesome.min.css"/>
+<link rel="stylesheet" href="../../bower_components/angular-notify/dist/angular-notify.css" />
 <!-- endbuild -->
 
 <!-- build:css /assets/styles/app/main.css -->
-<link rel="stylesheet"	href="../../assets/styles/flags/flags.css"/>
 <link rel="stylesheet"	href="../../assets/styles/angular-criterias.css"/>
-<link rel="stylesheet"	href="../../assets/styles/jquery.jOrgChart.css"/>
-<link rel="stylesheet"	href="../../assets/styles/gritter.css"/>
+<link rel="stylesheet" href="../../assets/fonts/pe-icon-7-stroke/css/pe-icon-7-stroke.css" />
+<link rel="stylesheet" href="../../assets/fonts/pe-icon-7-stroke/css/helper.css" />
 <link rel="stylesheet"	href="../../assets/styles/yacra-fonts.css"/>
+<!--<link rel="stylesheet"	href="../../assets/styles/yacrafooter.css"/> -->
+<link rel="stylesheet"	href="../../assets/styles/insignia-custom.css"/>
+<link rel="stylesheet"	href="../../assets/styles/custom-ace.css"/>
+<link rel="stylesheet"	href="../../assets/styles/style.css"/>
 <link rel="stylesheet"	href="../../assets/styles/app.css"/>
-<link rel="stylesheet"	href="../../assets/styles/yacranav.css"/>
-<link rel="stylesheet"	href="../../assets/styles/yacrafooter.css"/>
-<link rel="stylesheet"	href="../../assets/styles/ace.css"/>
-<!-- endbuild -->
-</head>
-<body data-ng-controller="AppCtrl" data-auth-application-support="" class="waiting-for-angular" data-events-to-wait="eventsToWait" data-application-loading-support="" data-connection-lost-support="">
-	<div id="initializing-panel"></div>
-	<div id="app-content">
-	<!-- Fixed navbar -->
-	<div class="navbar navbar-custom navbar-fixed-top" role="navigation"
-		data-ng-cloak="">
-		<div data-ng-class="userLocalSettings.container">
-			<div class="navbar-header">
-				<button type="button" class="navbar-toggle" data-toggle="collapse"
-					data-target=".navbar-collapse">
-					<span class="sr-only">Toggle navigation</span> <span
-						class="icon-bar"></span> <span class="icon-bar"></span> <span
-						class="icon-bar"></span>
-				</button>
-				<a class="navbar-brand" href="/">
-					<span class="icon-yacra-full"></span>
-					<span class="navbar-version hidden-xs hidden-sm" data-ng-show="{{ENV !== 'prod'}}">[{{ENV | uppercase}}] v{{VERSION}}</span>
-				</a>
-			</div>
-			<div class="navbar-collapse collapse">
-				<ul class="nav navtop navbar-nav navbar-left">
-					<li data-has-role="ROLE_ADMIN" data-ng-class="{ active: $state.includes('admin') }">
-						<a	data-ui-sref="admin.home"><i class="fa fa-star"></i>{{'app.navbar.menu.admin' | translate}}</a>
-					</li>
-					<li data-has-role="ROLE_SSII_ADMIN" data-ng-cloak=""
-						data-ng-class="{ active: $state.includes('company') }" ><a
-						data-ui-sref="company.home"><i class="fa fa-university"></i>{{userInfo.company.name}}</a></li>
-					<li class="dropdown" data-ng-class="navClass('frais') + navClass('activity-report') + navClass('absence') + navClass('timesheet')">
-						<a href="" class="dropdown-toggle" data-toggle="dropdown">{{'app.navbar.menu.workspace' | translate}}<span class="caret"></span></a>
-						<ul class="workspace-menu dropdown-menu " role="menu">
-							<li data-ui-sref-active="active"  class="visible-xs-inline visible-sm-inline">
-								<a data-ui-sref="tasks"><i class="fa fa-tasks"></i>{{'app.navbar.menu.tasks' | translate}}</a>
-							</li>
-							<li data-ui-sref-active="active" ><a data-ui-sref="frais.list.mine">{{'app.navbar.menu.frais' | translate}}</a></li>
-							<li data-ui-sref-active="active" ><a data-ui-sref="activity-report.list.mine">{{'app.navbar.menu.cra' | translate}}</a></li>
-							<li data-ui-sref-active="active" ><a
-								data-ui-sref="absence.list.mine">{{'app.navbar.menu.absences' | translate}}</a></li>
-							<li data-ui-sref-active="active"><a
-								data-ui-sref="timesheet">{{'app.navbar.menu.timesheet' | translate}}</a></li>
-							<li data-ui-sref-active="active"><a
-								data-ui-sref="files">{{'app.navbar.menu.files' | translate}}</a></li>
-						</ul>
-					</li>
-					<li data-ui-sref-active="active" class="visible-md-inline visible-lg-inline">
-						<a data-ui-sref="tasks"><i class="fa fa-tasks"></i>{{'app.navbar.menu.tasks' | translate}}</a>
-					</li>
-				</ul>
-				<div data-ng-controller="WorkLogCtrl">
-					<ul class="nav navtop navbar-nav navbar-right">
-						<li class="dropdown timer-widget" >
-							<a data-toggle="dropdown" class="dropdown-toggle" href="">
-								<i class="fa fa-clock-o" ></i>
-								<span  data-ng-class="{'visible-lg-inline visible-md-inline' : timerRunning}" data-ng-show="timerRunning">[{{task.name}}]</span>
-								<timer autostart="false" interval="1000" data-ng-show="timerRunning">{{hhours}}:{{mminutes}}:{{sseconds}}</timer>
-							</a>
-							<div class="timer-widget-content dropdown-menu">
-									<form role="form">
-										<div class="form-group">
-	   										<!-- <label for="project">{{'app.navbar.timer.project' | translate}}</label> -->
-											<select id="project" class="form-control"  data-chosen="" data-ng-change="selectProject(project)"
-									          data-placeholder="Select a project"
-									          data-ng-model="project"
-									          data-ng-options="p.name for p in projects">
-							           		<option value=""></option>
-								  			</select>
-								  		</div>
-								  		<div class="form-group">
-	   										<!-- <label for="task">Task</label> -->
-								  			<select id="task" class="form-control"  data-chosen="" data-ng-change="selectTask(task)"
-										          data-placeholder="Select a task"
-										          data-ng-model="task"
-										          data-ng-options="t.name for t in tasks">
-								           		<option value=""></option>
-								  			</select>
-								  		</div>
-							  			 <div class="form-group">
-										    <label for="description">Note</label>
-										    <textarea id="description" data-ng-model="description" class="form-control" data-placeholder="Enter a note"></textarea>
-										  </div>
-										<button type="button" class="btn btn-success btn-xs btn-block" data-ng-click="startTimer()" data-ng-disabled="!startable">Start</button>
-									</form>
-							</div>
-						</li>
-						<li>
-							<button type="button" class="btn btn-danger btn-xs navbar-btn"  data-ng-click="stopTimer();" data-ng-show="timerRunning" >
-								 <i class="fa fa-stop"></i>
-							</button>
-						</li>
-						<li data-ui-sref-active="active" data-ng-show="userInfo.hasNewMessages"><a
-						data-ui-sref="messages"><i class="fa fa-envelope"></i></a></li>
-					<!-- <li data-ng-class="navClass('notifications')"><a
-						data-ui-sref="notifications"><i class="fa fa-bell"></i></a></li> -->
-					<li class="dropdown" data-ng-controller="LanguageController">
-						 <a class="dropdown-toggle" data-toggle="dropdown" href="javascript:;">
-                             <span>
-                                 <i class="fa fa-globe"></i>
-                                 <span class="hidden-tablet">{{currentLanguage | uppercase}}</span>
-                             </span>
-                         </a>
-                         <ul class="dropdown-menu">
-                             <li data-active-menu="{{key}}" data-ng-repeat="(key, language) in languages">
-                                 <a href="" data-ng-click="changeLanguage(key)">{{language}}</a>
-                             </li>
-                         </ul>
-					</li>
-					<li
-						data-ng-class="navClass('user-settings') + navClass('user-profile')"
-						class="dropdown"><a href="" class="dropdown-toggle"
-						data-toggle="dropdown">
-						<img data-ng-src="/app/api/users/avatar/{{userInfo.id}}" class="img-circle" height="20" width="20"/>
-			         		{{userInfo.firstName}} {{userInfo.lastName}}
-			         		<span class="caret"></span></a>
-						<ul class="dropdown-menu" role="menu">
-							<li data-ui-sref-active="active" >
-								<a data-ui-sref="user-messages">Messages</a>
-							</li>
-							<li data-ui-sref-active="active"><a data-ui-sref="user-settings">{{'app.navbar.menu.settings' | translate}}</a></li>
-							<li data-ui-sref-active="active"><a data-ui-sref="user-profile">{{'app.navbar.menu.profile' | translate}}</a></li>
-							<li data-ui-sref-active="active" data-has-role="ROLE_ADMIN" ><a data-ui-sref="api-docs">{{'app.navbar.menu.api.doc' | translate}}</a></li>
-							<li><a href="/auth/logout"><i
-									class="fa fa-sign-out"></i>{{'app.navbar.menu.logout' | translate}}</a></li>
-						</ul></li>
-					</ul>
-				</div>
-			</div>
-			<!--/.nav-collapse -->
-		</div>
-	</div>
-	<!-- End Fixed navbar -->
-	<div data-ng-class="userLocalSettings.container" data-ng-cloak="" data-http-request-error=""><!-- class="global-container" --> 
-		<!-- <div class="sidebar sidebar-fixed">hey i'am a side bar</div> -->
-		<div class="main"><!-- <div class="main-content"> -->
-			<!-- <div class="page-header">
-				<h4>
-					{{page.title | translate}} <i class="fa fa-angle-double-right"
-						style="font-size: 80%"></i><small> {{page.description | translate}}</small>
-				</h4>
-			</div> -->
-			<div data-ncy-breadcrumb="" data-ng-if="desktopScreen"></div>
-			
-			<div id="main-view" >
-				<div class="panel panel-default">
-					<div class="panel-body" data-ng-class="{ 'with-sub-navbar': $state.includes('company') || $state.includes('admin') }">
-					<div id="alerts-container"></div>
-					<div id="main-view" data-ui-view="" class="" data-ng-cloak=""></div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	</div>
-	<div class="footer-v1" data-ng-if="desktopScreen">
-        <div class="copyright">
-            <div data-ng-class="userLocalSettings.container">
-                <div class="row">
-                    <div class="col-md-6">                     
-                        <p>
-                            2015 © All Rights Reserved.
-                           <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a>
-                        </p>
-                    </div>
 
-                    <!-- Social Links -->
-                    <div class="col-md-6">
-                        <ul class="footer-socials list-inline">
-                            <li>
-                                <a href="#" class="tooltips" data-toggle="tooltip" data-placement="top" title="" data-original-title="Facebook">
-                                    <i class="fa fa-facebook"></i>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" class="tooltips" data-toggle="tooltip" data-placement="top" title="" data-original-title="Google Plus">
-                                    <i class="fa fa-google-plus"></i>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" class="tooltips" data-toggle="tooltip" data-placement="top" title="" data-original-title="Linkedin">
-                                    <i class="fa fa-linkedin"></i>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" class="tooltips" data-toggle="tooltip" data-placement="top" title="" data-original-title="Twitter">
-                                    <i class="fa fa-twitter"></i>
-                                </a>
-                            </li>
-                        </ul>
+<!-- endbuild -->
+
+</head>
+
+<!-- Body -->
+<!-- appCtrl controller with serveral data used in theme on diferent view -->
+<body data-ng-controller="AppCtrl" class="{{$state.current.data.specialClass}} fixed-navbar fixed-sidebar fixed-breadcrumb" data-auth-application-support="" data-connection-lost-support="">
+
+<!-- Simple splash screen-->
+	<div class="splash" data-events-to-wait="eventsToWait" data-application-loading-support="">
+		<div class="splash-title">
+			<h1>YACRA Manager</h1>
+			<p>Manage project timesheet & invoice...</p>
+			<img src="../../assets/images/loading-bars.svg" width="64" height="64" />
+		</div>
+	</div>
+	<!--[if lt IE 7]>
+<p class="alert alert-danger">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+<![endif]-->
+
+	<!-- Header -->
+	<div id="header" ng-include="'/scripts/components/header/header.html'"></div>
+	
+	<!-- Navigation -->
+	<aside id="menu" ng-include="'/scripts/components/navigation/navigation.html'"></aside>
+	
+	<div id="wrapper">
+    <div small-header class="normalheader transition animated fadeIn small-header">
+        <div class="hpanel">
+            <div class="panel-body">
+                <a ng-click="small()" href="">
+                    <div class="clip-header">
+                        <i class="fa fa-arrow-down"></i>
                     </div>
-                    <!-- End Social Links -->
+                </a>
+                <h2 class="font-light m-b-xs">
+                    {{ $state.current.data.pageTitle }}<small> {{ $state.current.data.pageDesc }}</small>
+                </h2>
+                <div id="hbreadcrumb" class="m-t-xs">
+                    <div data-ncy-breadcrumb="" data-ng-if="desktopScreen"></div>
+                    <!-- <ol class="hbreadcrumb breadcrumb">
+                        <li><a ui-sref="dashboard">Dashboard</a></li>
+                        <li ng-repeat="state in $state.$current.path" ng-switch="$last || !!state.abstract" ng-class="{active: $last}">
+                            <a ng-switch-when="false" href="#{{state.url.format($stateParams)}}">{{state.data.pageTitle}}</a>
+                            <span ng-switch-when="true">{{state.data.pageTitle}}</span>
+                        </li>
+                    </ol> -->
                 </div>
-            </div> 
-        </div><!--/copyright-->
+            </div>
+        </div>
     </div>
-		<div id="topcontrol" data-scroll-to-top="50" title="Scroll Back to Top" ></div>
-		<!-- <div class="scroll-top-wrapper" data-scroll-to-top="100">
-			<span class="scroll-top-inner">
-				<i class="fa fa-2x fa-arrow-circle-up"></i>
-			</span>
-		</div> -->
-	<!-- Bootstrap core JavaScript
-    ================================================== -->
-	<!-- Placed at the end of the document so the pages load faster -->
- 	<!-- build:js /scripts/app/vendor.js -->
+    <div class="content">
+        <div ui-view animate-panel></div>
+    </div>
+ 	<!-- <div ng-include="'/homer/scripts/components/footer/footer.html'"></div> -->
+</div>
+<div id="topcontrol" data-scroll-to-top="50" title="Scroll Back to Top" ></div>
+</body>
+
+<!-- build:js /scripts/app/vendor.js -->
  	<script src="../../bower_components/jquery/dist/jquery.js"></script>
  	<script src="../../bower_components/jquery-ui/jquery-ui.js"></script>
  	<script src="../../bower_components/angular/angular.js"></script>
@@ -268,6 +131,8 @@
 	<script src="../../bower_components/moment-range/lib/moment-range.js"></script>
 	<script src="../../bower_components/angular-breadcrumb/dist/angular-breadcrumb.min.js"></script>
 	<script src="../../bower_components/ng-finder/ng-finder.src.js"></script>
+	<script src="../../bower_components/sweetalert/dist/sweet-alert.js"></script>
+	<script src="../../bower_components/metisMenu/dist/metisMenu.js"></script>
 	<script src="../../bower_components/elfinder/js/elfinder.min.js"></script>
 	<script src="../../bower_components/angular-cache-buster/angular-cache-buster.js"></script>
  	<script src="../../bower_components/angular-translate-storage-cookie/angular-translate-storage-cookie.js"></script>
@@ -282,9 +147,13 @@
  	<script src="../../bower_components/sockjs-client/dist/sockjs.js"></script>
  	<script src="../../bower_components/stomp-websocket/lib/stomp.js"></script>
  	<script src="../../bower_components/angular-media-queries/match-media.js"></script>
+ 	<script src="../../bower_components/angular-ui-sortable/sortable.js"></script>
+ 	<script src="../../bower_components/iCheck/icheck.js"></script>
+ 	<script src="../../bower_components/angular-notify/dist/angular-notify.js"></script>
     <!-- endbuild -->
-	
-	<!-- build:js /scripts/app/app.js -->
+
+<!-- build:js /scripts/app/app.js -->
+	<script src="../../scripts/app/homer.js"></script>
 	<script src="../../scripts/app/app.js"></script>
 	<script src="../../scripts/app/app.constants.js"></script>
 	<script src="../../scripts/common-app.js"></script>
@@ -293,6 +162,8 @@
 	<script	src="../../scripts/app/home/home.js"></script>
 	<script	src="../../scripts/app/activityreport/activityreport.controllers.js"></script>
 	<script	src="../../scripts/app/activityreport/activityreport.js"></script>
+	<script	src="../../scripts/app/search/search.js"></script>
+	<script	src="../../scripts/app/search/search.controller.js"></script>
 	<script	src="../../scripts/app/error/error.js"></script>
 	<script	src="../../scripts/app/error/error.controller.js"></script>
 	<script	src="../../scripts/app/absences/absences.controllers.js"></script>
@@ -339,8 +210,6 @@
 	<script	src="../../scripts/app/company/projects/company.projects.js"></script>
 	<script	src="../../scripts/app/company/settings/company.settings.controllers.js"></script>
 	<script	src="../../scripts/app/company/settings/company.settings.js"></script>
-	
-	
 	<script src="../../scripts/bootstrap.file-input.js"></script>
 	<script src="../../scripts/http-auth-interceptor.js"></script>
 	<script src="../../scripts/colResizable-1.3.min.js"></script>
@@ -348,6 +217,7 @@
 	<script src="../../scripts/components/factories/common-factories.js"></script>
 	<script src="../../scripts/components/services/common-services.js"></script>
 	<script	src="../../scripts/components/directives/commons-directives.js"></script>
+	<script	src="../../scripts/components/directives/homer-directives.js"></script>
 	<script	src="../../scripts/components/directives/angular-criterias.js"></script>
 	<script	src="../../scripts/components/widgets/widgets.controllers.js"></script>
 	<script	src="../../scripts/components/others/ace.js"></script>
@@ -371,5 +241,5 @@
 			  }
 		});
 	</script>
-</body>
+
 </html>

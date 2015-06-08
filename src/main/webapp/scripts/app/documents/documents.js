@@ -5,6 +5,7 @@ App.config(function ($stateProvider) {
 		controller : 'FilesController',
 		data: {
 	        pageTitle: 'Files',
+	        pageDesc: 'Manage your documents',
 	        ncyBreadcrumbLabel: 'Files'
 	      }
 	});
