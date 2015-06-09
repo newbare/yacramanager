@@ -60,8 +60,8 @@ App.controller('CompanyInvoicesQuickViewController',function ($scope,USERINFO,In
 
 App.controller('CompanyInvoicesOverviewController',function ($scope,USERINFO,invoice,alertService,InvoicesREST,$state,$stateParams){
 	$scope.invoice=invoice;
-	$scope.invoice.invoiceDate=new Date(invoice.invoiceDate);
-	$scope.invoice.dueDate=new Date(invoice.dueDate);
+//	$scope.invoice.invoiceDate=new Date(invoice.invoiceDate);
+//	$scope.invoice.dueDate=new Date(invoice.dueDate);
 	var dateFormat="YYYY-MM-DD";
 	$scope.addEmptyInvoiceItemRow=function(){
 		$scope.invoice.invoiceItems.push({

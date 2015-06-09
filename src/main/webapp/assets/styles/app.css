@@ -10,6 +10,16 @@
 	color: #337ab7;
 }
 
+#nav-search form.form-search span.input-icon{
+	top: 15px;
+}
+#nav-search form.form-search span.input-icon .nav-search-icon{
+	top:0;
+}
+.nav-search .nav-search-input{
+	width: auto;
+}
+
 #header,
 .small-logo>a{
 	background-color:  #2b7dbc;

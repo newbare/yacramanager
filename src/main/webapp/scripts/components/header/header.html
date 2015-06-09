@@ -11,12 +11,20 @@
     <div class="small-logo">
         <a href="/"><span class="icon-yacra-full"></span></a>
     </div>
-    <form role="search" class="navbar-form-custom" ng-submit="onGlobalSearch(globalSearchText)" data-ng-controller="GlobalSearchController">
+    <div id="nav-search" class="nav-search hidden-xs">
+	    <form class="form-search" ng-submit="onGlobalSearch(globalSearchText)" data-ng-controller="GlobalSearchController">
+	      <span class="input-icon">
+	        <input type="text" class="nav-search-input" data-ng-model="globalSearchText" id="nav-search-input" autocomplete="off" placeholder="Search ..." />
+	        <i class="ace-icon fa fa-search nav-search-icon"></i>
+	      </span>
+	    </form>
+	 </div>
+    <!-- <form role="search" class="navbar-form-custom" ng-submit="onGlobalSearch(globalSearchText)" data-ng-controller="GlobalSearchController">
         <span class="input-icon">
             <input type="text" placeholder="Search something special" class="form-control" data-ng-model="globalSearchText" name="search">
             <i class="pe-7s-search ace-icon "></i>
         </span>
-    </form>
+    </form> -->
     <div class="navbar-right">
         <ul class="nav navbar-nav no-borders" >
             <li class="dropdown timer-widget" data-ng-controller="WorkLogCtrl">
