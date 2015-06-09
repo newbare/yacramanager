@@ -6,6 +6,10 @@
   	border-radius: 4px
 }
 
+.hbreadcrumb >li > a{
+	color: #337ab7;
+}
+
 #header,
 .small-logo>a{
 	background-color:  #2b7dbc;
@@ -283,7 +287,7 @@ border-color: #e5e5e5;
 }
 
 .hbreadcrumb {
-	font-size: 12px;
+	font-size: 13px;
 }
 
 #logo.light-version{
