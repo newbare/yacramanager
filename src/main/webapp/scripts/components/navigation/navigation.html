@@ -47,13 +47,13 @@
 						<i class="fa fa-tasks"></i>{{'app.navbar.menu.tasks' | translate}}
 					</a>
 				</li>
-				<li data-ui-sref-active="active" ><a data-ui-sref="frais.list.mine">{{'app.navbar.menu.frais' | translate}}</a></li>
-				<li data-ui-sref-active="active" ><a data-ui-sref="activity-report.list.mine">{{'app.navbar.menu.cra' | translate}}</a></li>
-				<li data-ui-sref-active="active" ><a
+				<li data-ng-class="{ active: $state.includes('frais')}" ><a data-ui-sref="frais.list.mine">{{'app.navbar.menu.frais' | translate}}</a></li>
+				<li data-ng-class="{ active: $state.includes('activity-report')}" ><a data-ui-sref="activity-report.list.mine">{{'app.navbar.menu.cra' | translate}}</a></li>
+				<li data-ng-class="{ active: $state.includes('absence')}" ><a
 					data-ui-sref="absence.list.mine">{{'app.navbar.menu.absences' | translate}}</a></li>
-				<li data-ui-sref-active="active"><a
+				<li data-ng-class="{ active: $state.includes('timesheet')}"><a
 					data-ui-sref="timesheet">{{'app.navbar.menu.timesheet' | translate}}</a></li>
-				<li data-ui-sref-active="active"><a
+				<li data-ng-class="{ active: $state.includes('files')}"><a
 					data-ui-sref="files">{{'app.navbar.menu.files' | translate}}</a></li>
 			</ul>
 		</li>

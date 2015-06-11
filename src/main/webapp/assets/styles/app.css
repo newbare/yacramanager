@@ -1,3 +1,19 @@
+.fc-event-title,
+.fc-event-time{
+	color: #ffffff;
+}
+.fc-event-time{
+	background-color:#2b7dbc !important;
+}
+.yacra-blue-color{
+	color:#2b7dbc
+}
+
+.yacra-blue-bg-color{
+	background:#2b7dbc;
+	color: #ffffff;
+}
+
 #wrapper .content .hpanel{
 	border: 1px solid transparent;
 	border-top-width: 2px;
