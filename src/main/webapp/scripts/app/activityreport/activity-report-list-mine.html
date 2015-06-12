@@ -126,25 +126,36 @@
 												- {{taskRow.project.name}}</span>
 												<button class="btn btn-link btn-sm red pull-right" data-ng-if="taskRow.isNew" data-ng-click="deleteTaskRow(employeCraDetail.taskRows,$index)">
 													<strong><i class="fa fa-trash-o"></i></strong></button>
+												<form editable-form name="taskRowform" data-ng-show="taskRowform.$visible" class="form-buttons form-inline">
+													<button type="submit" class="btn btn-link btn-sm bleue pull-right" >
+													<strong><i class="fa fa-floppy-o"></i></strong></button>
+												</form>
+												<button class="btn btn-link btn-sm red pull-right" data-ng-show="!taskRowform.$visible" data-ng-click="taskRowform.$show()">
+													<strong><i class="fa fa-pencil"></i></strong></button>
+												<!-- <form e<form editable-form name="taskRowform"  ng-show="taskRowform.$visible" class="form-buttons form-inline">
+													<button class="btn btn-link btn-sm red pull-right" >
+													<strong><i class="fa fa-pencil"></i></strong></button>
+												</form> -->
 										</h6></td>
 									<td data-ng-repeat="day in employeCraDetail.days"
 										data-ng-class="{'cra-we' : day.dayOff, 'cra-today' : isToday(day.date)}"
-										style="vertical-align: middle; text-align: center;"><a
-										href="#" data-ng-if="!day.dayOff && !day.approved"
+										style="vertical-align: middle; text-align: center;"><span
+										data-ng-if="!day.dayOff && !day.approved"
+										data-e-name="duration"
 										data-ng-disabled="day.dayOff"
+										data-e-form="taskRowform"
 										data-editable-number="taskRow.duration[day.date]"
-										data-buttons="no" data-e-style="width: 50px;" data-e-required
-										data-onbeforesave="updateCraValue($data,taskRow,day,employeCraDetail.days)">{{
-											taskRow.duration[day.date] || 0 | duration }}</a> <span
-										data-ng-if="day.dayOff || day.approved"
-										data-editable-number="taskRow.duration[day.date]"
-										e-form="textBtnForm" data-e-style="width: 50px;">{{
-											taskRow.duration[day.date] || 0 | duration }}</span> <span
-										class="text-warning"
+										data-buttons="no" data-e-style="width: 50px;" data-e-required=""
+										>{{taskRow.duration[day.date] || 0 | duration }}</span> 
+										<span	data-ng-if="day.dayOff || day.approved"
+										data-e-style="width: 50px;">{{
+											taskRow.duration[day.date] || 0 | duration }}</span>
+										<span	class="text-warning"
 										data-title="Some entries are not approuved yet"
 										data-bs-tooltip=""
 										data-ng-show="taskRow.validationStatus[day.date]!=undefined && taskRow.validationStatus[day.date]!='APPROVED'"><span
-											class="glyphicon glyphicon-warning-sign"></span></span></td>
+											class="glyphicon glyphicon-warning-sign"></span></span>
+									</td>
 									<td style="vertical-align: middle; text-align: center;"><span
 										class="text-muted">{{taskRowTotal(taskRow,employeCraDetail.days)
 											| duration}}</span></td>
@@ -166,13 +177,13 @@
 									</td>
 									<td data-ng-repeat="day in employeCraDetail.days"
 										data-ng-class="{'cra-we' : day.dayOff, 'cra-today' : isToday(day.date)}"
-										style="vertical-align: middle; text-align: center;"><a
+										style="vertical-align: middle; text-align: center;"><span
 										href="#" data-ng-if="!day.dayOff && !day.approved"
 										data-ng-disabled="day.dayOff"
 										data-editable-number="extraRow.duration[day.date]"
 										data-buttons="no" data-e-style="width: 50px;" data-e-required
 										data-onbeforesave="updateCraValue($data,extraRow,day,employeCraDetail.days)">{{
-											extraRow.duration[day.date] || 0 | duration }}</a> <span
+											extraRow.duration[day.date] || 0 | duration }}</span> <span
 										data-ng-if="day.dayOff || day.approved"
 										data-editable-number="extraRow.duration[day.date]"
 										e-form="textBtnForm" data-e-style="width: 50px;">{{
