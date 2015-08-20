@@ -148,10 +148,13 @@ App.controller('RegisterController',function ($scope, $location,$window,Registra
 		$scope.user.captchaToken=$scope.response;
 		RegistrationRest.save($scope.user)
 			.$promise.then(function(result) {
+				$scope.error=false;
 				alertService.show('success','Saved','Account has been created !');
 				$scope.postLogin();
 		},function(reason){
-			console.log('Failed validation');
+			console.log('Failed validation: '+reason);
+			$scope.error=true;
+			$scope.errorMessage=reason.data.errorMessage;
 			//$window.location.reload();
 			// In case of a failed validation you need to reload the captcha
             // because each response can be checked just once

@@ -28,7 +28,7 @@ spring:
         database-platform: org.hibernate.dialect.PostgreSQL82Dialect
         database: POSTGRESQL
         openInView: false
-        show_sql: false
+        show_sql: true
         generate-ddl: false
         hibernate:
         #update create-drop
@@ -76,6 +76,7 @@ spring:
                 secret: vV8FqVcgA0z6HTAt		
 google:
     recaptcha:
+        enabled: false
         secretKey: 6LeHhQUTAAAAABZrel9yr-Dj_W9U_lDlrk-m01-L
         publicKey: 6LeHhQUTAAAAAO4m-IuE3KnLfGK061bzTBZhlxik
         url: https://www.google.com/recaptcha/api/siteverify

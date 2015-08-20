@@ -30,164 +30,160 @@ import org.springframework.web.util.UriComponentsBuilder;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service
-public class GoogleReCaptchaService implements InitializingBean,EnvironmentAware {
+public class GoogleReCaptchaService implements InitializingBean, EnvironmentAware {
 
-	private RestOperations restOperations;
-	private String serviceUrl;
-	private RelaxedPropertyResolver propertyResolver;
+    private RestOperations restOperations;
+    private String serviceUrl;
+    private RelaxedPropertyResolver propertyResolver;
 
+    @Override
+    public void setEnvironment(Environment env) {
+        this.propertyResolver = new RelaxedPropertyResolver(env, "google.recaptcha.");
+    }
 
-	@Override
-	public void setEnvironment(Environment env) {
-		this.propertyResolver = new RelaxedPropertyResolver(env,
-				"google.recaptcha.");
-	}
+    public GoogleReCaptchaService() {
+        List<HttpMessageConverter<?>> converters = new ArrayList<>();
+        converters.add(new GoogleReCaptchaResponseMessageConverter());
+        converters.add(new GoogleReCaptchaRequestMessageConverter());
+        this.restOperations = new RestTemplate(converters);
+    }
 
-	public GoogleReCaptchaService() {
-		List<HttpMessageConverter<?>> converters = new ArrayList<>();
-		converters.add(new GoogleReCaptchaResponseMessageConverter());
-		converters.add(new GoogleReCaptchaRequestMessageConverter());
-		this.restOperations = new RestTemplate(converters);
-	}
+    public GoogleReCaptchaResponse validateCaptcha(String clientResponseToken) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Accept", "application/json");
+        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(this.serviceUrl).queryParam("secret", propertyResolver.getProperty("secretKey")).queryParam("response",
+                clientResponseToken);
+        HttpEntity<?> entity = new HttpEntity<>(headers);
+        if (propertyResolver.getProperty("enabled", Boolean.class, true)) {
+            HttpEntity<GoogleReCaptchaResponse> response = restOperations.exchange(builder.build().toUri(), HttpMethod.POST, null, GoogleReCaptchaResponse.class);
+            return response.getBody();
+        } else {
+            GoogleReCaptchaResponse alwaysOKResponse = new GoogleReCaptchaResponse();
+            alwaysOKResponse.setSuccess(true);
+            return alwaysOKResponse;
+        }
+    }
 
-	public GoogleReCaptchaResponse validateCaptcha(String clientResponseToken) {
-		HttpHeaders headers = new HttpHeaders();
-		headers.set("Accept", "application/json");
-		UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(this.serviceUrl)
-		        .queryParam("secret", propertyResolver.getProperty("secretKey"))
-		        .queryParam("response", clientResponseToken);
-		HttpEntity<?> entity = new HttpEntity<>(headers);
-		HttpEntity<GoogleReCaptchaResponse> response = restOperations.exchange(builder.build().toUri(), HttpMethod.POST, null, GoogleReCaptchaResponse.class);
-		return response.getBody();
-	}
+    public String getServiceUrl() {
+        return serviceUrl;
+    }
 
-	public String getServiceUrl() {
-		return serviceUrl;
-	}
+    public void setServiceUrl(String serviceUrl) {
+        this.serviceUrl = serviceUrl;
+    }
 
-	public void setServiceUrl(String serviceUrl) {
-		this.serviceUrl = serviceUrl;
-	}
+    public RestOperations getRestOperations() {
+        return restOperations;
+    }
 
-	public RestOperations getRestOperations() {
-		return restOperations;
-	}
+    public static class GoogleReCaptchaRequest {
+        private String secret;
+        private String response;
+        private String remoteip;
 
-	public static class GoogleReCaptchaRequest {
-		private String secret;
-		private String response;
-		private String remoteip;
+        public GoogleReCaptchaRequest(String secret, String response) {
+            super();
+            this.secret = secret;
+            this.response = response;
+        }
 
-		public GoogleReCaptchaRequest(String secret, String response) {
-			super();
-			this.secret = secret;
-			this.response = response;
-		}
+        public String getSecret() {
+            return secret;
+        }
 
-		public String getSecret() {
-			return secret;
-		}
+        public void setSecret(String secret) {
+            this.secret = secret;
+        }
 
-		public void setSecret(String secret) {
-			this.secret = secret;
-		}
+        public String getResponse() {
+            return response;
+        }
 
-		public String getResponse() {
-			return response;
-		}
+        public void setResponse(String response) {
+            this.response = response;
+        }
 
-		public void setResponse(String response) {
-			this.response = response;
-		}
+        public String getRemoteip() {
+            return remoteip;
+        }
 
-		public String getRemoteip() {
-			return remoteip;
-		}
+        public void setRemoteip(String remoteip) {
+            this.remoteip = remoteip;
+        }
 
-		public void setRemoteip(String remoteip) {
-			this.remoteip = remoteip;
-		}
+    }
 
-	}
+    public static class GoogleReCaptchaResponse {
+        private boolean success;
+        private List<String> errorCodes = new ArrayList<>();
 
-	public static class GoogleReCaptchaResponse {
-		private boolean success;
-		private List<String> errorCodes = new ArrayList<>();
+        public boolean isSuccess() {
+            return success;
+        }
 
-		public boolean isSuccess() {
-			return success;
-		}
+        public void setSuccess(boolean success) {
+            this.success = success;
+        }
 
-		public void setSuccess(boolean success) {
-			this.success = success;
-		}
+        public List<String> getErrorCodes() {
+            return errorCodes;
+        }
 
-		public List<String> getErrorCodes() {
-			return errorCodes;
-		}
+        public void setErrorCodes(List<String> errorCodes) {
+            this.errorCodes = errorCodes;
+        }
 
-		public void setErrorCodes(List<String> errorCodes) {
-			this.errorCodes = errorCodes;
-		}
+    }
 
-	}
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        this.serviceUrl = propertyResolver.getProperty("url");
+    }
 
-	@Override
-	public void afterPropertiesSet() throws Exception {
-		this.serviceUrl = propertyResolver.getProperty("url");
-	}
+    public static class GoogleReCaptchaResponseMessageConverter extends AbstractHttpMessageConverter<GoogleReCaptchaResponse> {
 
-	public static class GoogleReCaptchaResponseMessageConverter extends
-			AbstractHttpMessageConverter<GoogleReCaptchaResponse> {
+        @Override
+        protected boolean supports(Class<?> clazz) {
+            return clazz.isAssignableFrom(GoogleReCaptchaResponse.class);
+        }
 
-		@Override
-		protected boolean supports(Class<?> clazz) {
-			return clazz.isAssignableFrom(GoogleReCaptchaResponse.class);
-		}
+        @Override
+        protected boolean canRead(MediaType mediaType) {
+            if (mediaType == null) {
+                return true;
+            }
+            return MediaType.APPLICATION_JSON.includes(mediaType);
+        }
 
-		@Override
-		protected boolean canRead(MediaType mediaType) {
-			if (mediaType == null) {
-				return true;
-			}
-			return MediaType.APPLICATION_JSON.includes(mediaType);
-		}
+        @Override
+        protected GoogleReCaptchaResponse readInternal(Class<? extends GoogleReCaptchaResponse> clazz, HttpInputMessage inputMessage)
+            throws IOException, HttpMessageNotReadableException {
 
-		@Override
-		protected GoogleReCaptchaResponse readInternal(
-				Class<? extends GoogleReCaptchaResponse> clazz,
-				HttpInputMessage inputMessage) throws IOException,
-				HttpMessageNotReadableException {
+            Map<String, ?> result = new ObjectMapper().readValue(IOUtils.toString(inputMessage.getBody()), HashMap.class);
+            GoogleReCaptchaResponse response = new GoogleReCaptchaResponse();
+            response.setSuccess((Boolean) result.get("success"));
+            if (result.containsKey("error-codes")) {
+                response.setErrorCodes((List<String>) result.get("error-codes"));
+            } else {
+                response.setErrorCodes(new ArrayList<String>());
+            }
+            return response;
+        }
 
-			Map<String, ?> result = new ObjectMapper().readValue(
-					IOUtils.toString(inputMessage.getBody()), HashMap.class);
-			GoogleReCaptchaResponse response = new GoogleReCaptchaResponse();
-			response.setSuccess((Boolean) result.get("success"));
-			if (result.containsKey("error-codes")) {
-				response.setErrorCodes((List<String>) result.get("error-codes"));
-			} else {
-				response.setErrorCodes(new ArrayList<String>());
-			}
-			return response;
-		}
+        @Override
+        protected void writeInternal(GoogleReCaptchaResponse t, HttpOutputMessage outputMessage) throws IOException, HttpMessageNotWritableException {
+            System.out.println("");
+        }
 
-		@Override
-		protected void writeInternal(GoogleReCaptchaResponse t,
-				HttpOutputMessage outputMessage) throws IOException,
-				HttpMessageNotWritableException {
-			System.out.println("");
-		}
+    }
 
-	}
+    public static class GoogleReCaptchaRequestMessageConverter extends MappingJackson2HttpMessageConverter {
 
-	public static class GoogleReCaptchaRequestMessageConverter extends
-			MappingJackson2HttpMessageConverter {
+        @Override
+        protected boolean supports(Class<?> clazz) {
+            return clazz.isAssignableFrom(GoogleReCaptchaRequest.class);
+        }
 
-		@Override
-		protected boolean supports(Class<?> clazz) {
-			return clazz.isAssignableFrom(GoogleReCaptchaRequest.class);
-		}
-
-	}
+    }
 
 }

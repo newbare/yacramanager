@@ -81,7 +81,11 @@
         </thead>
         <tbody>
 	        <tr data-ng-repeat="invoiceItem in invoice.invoiceItems">
-	        	<td><button class="btn btn-link" data-ng-click="deleteInvoiceItemRow($index)"><span class="fa fa-trash text-danger"></span></button></td>
+	        	<td>
+	        		<button class="btn btn-link" data-ng-click="deleteInvoiceItemRow($index)" data-ng-confirm="Are you sure to want to delete this entry?">
+	        			<span class="fa fa-trash text-danger"></span>
+	        		</button>
+	        	</td>
 	            <td>
 	            	<div><strong><a href="#" data-editable-text="invoiceItem.itemLabel" data-buttons="no">{{ invoiceItem.itemLabel || 'Item label'}}</a></strong></div>
 	                <small><a href="#" data-editable-text="invoiceItem.itemDescription" data-buttons="no">{{ invoiceItem.itemDescription || 'Item description'}}</a></small>

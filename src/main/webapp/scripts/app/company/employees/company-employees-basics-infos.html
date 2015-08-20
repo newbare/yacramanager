@@ -72,13 +72,17 @@
 					<div class="profile-info-name hidden-sm hidden-xs">Tel</div>
 					<div class="profile-info-value">
 						<ul class="list-inline">
-							<li data-ng-repeat="phoneNumber in employe.phoneNumbers"><i
+							<li data-ng-repeat="phoneNumber in employe.phoneNumbers track by $index"><i
 								class="fa fa-phone"></i> <a href="#" onaftersave="updateEmploye()"
 								editable-tel="employe.phoneNumbers[$index]">{{
-									employe.phoneNumbers[$index] || 'empty' }}</a></li>
+									employe.phoneNumbers[$index] || 'empty' }}</a>
+								<button href="" class="btn btn-link btn-xs" data-ng-click="removePhoneNumbers(employe,$index)">
+									<i class="fa fa-minus-circle text-danger"></i>
+								</button>
+							</li>
 							<li>
-								<button class="btn btn-primary btn-xs"
-									data-ng-click="addPhoneNumbers(employe)">Add</button>
+								<button class="btn btn-link btn-xm"
+									data-ng-click="addPhoneNumbers(employe)"><i class="fa fa-plus-circle text-success"></i></button>
 							</li>
 						</ul>
 					</div>

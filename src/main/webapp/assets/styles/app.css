@@ -390,8 +390,8 @@ table.mini-list td.invoice.active .invoice-date{
 }
 
 .invoice-table .editable-input{
-	border: none;
-	background-color: inherit;
+	/* border: none;
+	background-color: inherit; */
 	font-size: inherit;
 }
 

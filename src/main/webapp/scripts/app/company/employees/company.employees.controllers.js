@@ -152,6 +152,10 @@ App.controller('CompanyEmployeesOverviewController',function ($scope,employe,Emp
 	$scope.addPhoneNumbers=function(employe){
 		employe.phoneNumbers.push('');
 	};
+	$scope.removePhoneNumbers=function(employe,index){
+		employe.phoneNumbers.splice(index,1);
+	};
+	
 	$scope.format=function(employee){
 		return employee.firstName +' '+employee.lastName;
 	};

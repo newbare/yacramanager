@@ -12,6 +12,8 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -40,6 +42,7 @@ import fr.wati.yacramanager.services.MailService;
 import fr.wati.yacramanager.services.ServiceException;
 import fr.wati.yacramanager.services.security.GoogleReCaptchaService;
 import fr.wati.yacramanager.services.security.GoogleReCaptchaService.GoogleReCaptchaResponse;
+import fr.wati.yacramanager.web.api.RestServiceException;
 import fr.wati.yacramanager.web.dto.RegistrationDTO;
 
 /**
@@ -50,87 +53,84 @@ import fr.wati.yacramanager.web.dto.RegistrationDTO;
 @RequestMapping("/auth/api")
 public class AuthenticationController {
 
-	@Inject
-	private EmployeService employeService;
+    private final Logger log = LoggerFactory.getLogger(AuthenticationController.class);
 
-	@Inject
-	private MailService mailService;
-	
-	@Inject
-	private SignInAdapter signInAdapter;
-	
-	@Inject
-	private GoogleReCaptchaService reCaptchaService;
-	
-	@Resource(name="templateEngine")
-	private SpringTemplateEngine templateEngine;
+    @Inject
+    private EmployeService employeService;
 
-	@RequestMapping(value = "/register", method = RequestMethod.POST)
-	@Timed
-	public ResponseEntity<String> register(
-			@RequestBody RegistrationDTO registrationDTO,
-			HttpServletRequest request,NativeWebRequest webRequest, HttpServletResponse response,
-			Locale locale) throws ServiceException {
-		//Google ReCaptcha check first
-		GoogleReCaptchaResponse captchaResponse = reCaptchaService.validateCaptcha(registrationDTO.getCaptchaToken());
-		if(!captchaResponse.isSuccess()){
-			return new ResponseEntity<String>(captchaResponse.getErrorCodes().toString(), HttpStatus.FORBIDDEN);
-		}
-		registrationDTO.setLocale(locale);
-		Employe registerEmploye = employeService
-				.registerEmploye(registrationDTO,registrationDTO.isSocialUser());
-		if(!registrationDTO.isSocialUser() && registrationDTO.getCompanyInvitation()==null){
-			String content = createHtmlContentFromTemplate(registerEmploye, locale,
-					request, response);
-			mailService.sendActivationEmail(
-					registerEmploye.getContact().getEmail(), content, locale);
-		}else if(registrationDTO.isSocialUser()) {
-			if(SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken){
-				ProviderSignInAttempt providerSignInAttempt=(ProviderSignInAttempt) webRequest.getAttribute(ProviderSignInAttempt.SESSION_ATTRIBUTE, RequestAttributes.SCOPE_SESSION);
-				if(providerSignInAttempt!=null){
-					new ProviderSignInUtils().doPostSignUp(registrationDTO.getSocialUserId(), webRequest);
-					signInAdapter.signIn(registerEmploye.getUserName(), providerSignInAttempt.getConnection(), webRequest);
-				}
-				
-			}
-		}
-		return new ResponseEntity<>(HttpStatus.CREATED);
-	}
+    @Inject
+    private MailService mailService;
 
+    @Inject
+    private SignInAdapter signInAdapter;
 
-	@RequestMapping(value = "/password-recovery", method = RequestMethod.POST,produces={MediaType.APPLICATION_JSON_VALUE})
-	@Timed
-	public ResponseEntity<String> recoverPassword(@RequestBody String email,HttpServletRequest request, HttpServletResponse response,
-			Locale locale) {
-		Employe employe = employeService.findByEmail(email);
-		if(employe!=null){
-			String resetPassword = employeService.resetPassword(employe);
-			Map<String, Object> variables = new HashMap<String, Object>();
-			variables.put("user", employe);
-			variables.put("resetPassword", resetPassword);
-			IWebContext context = new SpringWebContext(request, response,
-					request.getServletContext(), locale, variables,
-					WebApplicationContextUtils.getWebApplicationContext(request
-							.getServletContext()));
-			String content =templateEngine.process("recoveryPasswordEmail", context);
-			mailService.sendEmail(employe.getContact().getEmail(), "Password recovery", content, false, true);
-			return new ResponseEntity<>(HttpStatus.OK);
-		}
-		return new ResponseEntity<>("No registered user found with this id",HttpStatus.INTERNAL_SERVER_ERROR);
-	}
+    @Inject
+    private GoogleReCaptchaService reCaptchaService;
 
-	private String createHtmlContentFromTemplate(final Users user,
-			final Locale locale, final HttpServletRequest request,
-			final HttpServletResponse response) {
-		Map<String, Object> variables = new HashMap<String, Object>();
-		variables.put("user", user);
-		variables.put("baseUrl", request.getScheme() + "://" + // "http" + "://
-				request.getServerName() + // "myhost"
-				":" + request.getServerPort()+request.getContextPath());
-		IWebContext context = new SpringWebContext(request, response,
-				request.getServletContext(), locale, variables,
-				WebApplicationContextUtils.getWebApplicationContext(request
-						.getServletContext()));
-		return templateEngine.process("activationEmail", context);
-	}
+    @Resource(name = "templateEngine")
+    private SpringTemplateEngine templateEngine;
+
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    @Timed
+    public ResponseEntity<String> register(@RequestBody RegistrationDTO registrationDTO, HttpServletRequest request, NativeWebRequest webRequest, HttpServletResponse response,
+            Locale locale) throws ServiceException, RestServiceException {
+        try {
+            // Google ReCaptcha check first
+            GoogleReCaptchaResponse captchaResponse = reCaptchaService.validateCaptcha(registrationDTO.getCaptchaToken());
+            if (!captchaResponse.isSuccess()) {
+                return new ResponseEntity<String>(captchaResponse.getErrorCodes().toString(), HttpStatus.FORBIDDEN);
+            }
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            throw new RestServiceException(e);
+        }
+
+        registrationDTO.setLocale(locale);
+        Employe registerEmploye = employeService.registerEmploye(registrationDTO, registrationDTO.isSocialUser());
+        if (!registrationDTO.isSocialUser() && registrationDTO.getCompanyInvitation() == null) {
+            String content = createHtmlContentFromTemplate(registerEmploye, locale, request, response);
+            mailService.sendActivationEmail(registerEmploye.getContact().getEmail(), content, locale);
+        } else if (registrationDTO.isSocialUser()) {
+            if (SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken) {
+                ProviderSignInAttempt providerSignInAttempt = (ProviderSignInAttempt) webRequest.getAttribute(ProviderSignInAttempt.SESSION_ATTRIBUTE,
+                        RequestAttributes.SCOPE_SESSION);
+                if (providerSignInAttempt != null) {
+                    new ProviderSignInUtils().doPostSignUp(registrationDTO.getSocialUserId(), webRequest);
+                    signInAdapter.signIn(registerEmploye.getUserName(), providerSignInAttempt.getConnection(), webRequest);
+                }
+
+            }
+        }
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @RequestMapping(value = "/password-recovery", method = RequestMethod.POST, produces = { MediaType.APPLICATION_JSON_VALUE })
+    @Timed
+    public ResponseEntity<String> recoverPassword(@RequestBody String email, HttpServletRequest request, HttpServletResponse response, Locale locale) {
+        Employe employe = employeService.findByEmail(email);
+        if (employe != null) {
+            String resetPassword = employeService.resetPassword(employe);
+            Map<String, Object> variables = new HashMap<String, Object>();
+            variables.put("user", employe);
+            variables.put("resetPassword", resetPassword);
+            IWebContext context = new SpringWebContext(request, response, request.getServletContext(), locale, variables,
+                    WebApplicationContextUtils.getWebApplicationContext(request.getServletContext()));
+            String content = templateEngine.process("recoveryPasswordEmail", context);
+            mailService.sendEmail(employe.getContact().getEmail(), "Password recovery", content, false, true);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        return new ResponseEntity<>("No registered user found with this id", HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    private String createHtmlContentFromTemplate(final Users user, final Locale locale, final HttpServletRequest request, final HttpServletResponse response) {
+        Map<String, Object> variables = new HashMap<String, Object>();
+        variables.put("user", user);
+        variables.put("baseUrl",
+                request.getScheme() + "://" + // "http" + "://
+                        request.getServerName() + // "myhost"
+                        ":" + request.getServerPort() + request.getContextPath());
+        IWebContext context = new SpringWebContext(request, response, request.getServletContext(), locale, variables,
+                WebApplicationContextUtils.getWebApplicationContext(request.getServletContext()));
+        return templateEngine.process("activationEmail", context);
+    }
 }
