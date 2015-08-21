@@ -75,6 +75,7 @@
 	            <th>Item List</th>
 	            <th>Quantity</th>
 	            <th>Unit Price</th>
+	            <th>Tax %</th>
 	            <th>Tax</th>
 	            <th>Total Price</th>
 	        </tr>
@@ -92,6 +93,7 @@
 	            </td>
 	            <td><a href="#" data-editable-number="invoiceItem.quantity" data-buttons="no" data-e-style="width: 90px;">{{ invoiceItem.quantity || 0}}</a></td>
 	            <td><a href="#" data-editable-number="invoiceItem.unitPrice" data-buttons="no" data-e-style="width: 90px;">{{ invoiceItem.unitPrice || 0 | currency}}</a></td>
+	            <td><a href="#" data-editable-number="invoiceItem.taxesPercent" data-onaftersave="updateItemTaxes(invoiceItem)" data-buttons="no" data-e-style="width: 90px;">{{ invoiceItem.taxesPercent || 0 }}</a></td>
 	            <td><a href="#" data-editable-number="invoiceItem.taxes" data-buttons="no" data-e-style="width: 90px;">{{ invoiceItem.taxes || 0 | currency}}</a></td>
 	            <td><strong>{{invoiceItemTotal(invoiceItem) || 0 | currency}}</strong></td>
 	        </tr>

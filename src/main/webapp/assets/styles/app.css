@@ -10,13 +10,14 @@
 }
 
 .yacra-blue-bg-color{
-	background:#2b7dbc;
-	color: #ffffff;
+	background:#2b7dbc !important;
+	background-color:#2b7dbc !important;
+	color: #ffffff !important;
 }
 
 #wrapper .content .hpanel{
 	border: 1px solid transparent;
-	border-top-width: 2px;
+	border-top-width: 1px;
 	border-color: #cfdbe2;
 	border-top-color: #2980B9;
   	border-radius: 4px

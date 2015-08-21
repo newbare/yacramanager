@@ -1,3 +1,8 @@
+.yacra-blue-bg-color{
+	background:#2b7dbc !important;
+	background-color:#2b7dbc !important;
+	color: #ffffff !important;
+}
 @import
 	url(//fonts.googleapis.com/css?family=Open+Sans:300,400,600,700&lang=en)
 	;
@@ -3403,7 +3408,8 @@ ul.mailbox-list li:hover a {
 
 .landing-page .navbar-default .navbar-toggle:hover,.landing-page .navbar-default .navbar-toggle:focus
 	{
-	background: #62cb31
+	/* background: #62cb31; */
+	background: #2b7dbc;
 }
 
 .landing-page .navbar-default .navbar-toggle:hover .icon-bar,.landing-page .navbar-default .navbar-toggle:focus .icon-bar
@@ -3411,10 +3417,13 @@ ul.mailbox-list li:hover a {
 	background-color: #fff !important
 }
 
-.landing-page .navbar-default .navbar-nav>.active>a,.landing-page .navbar-default .navbar-nav>.active>a:hover,.landing-page .navbar-default .navbar-nav>.active>a:focus
+.landing-page .navbar-default .navbar-nav>.active>a,
+.landing-page .navbar-default .navbar-nav>.active>a:hover,
+.landing-page .navbar-default .navbar-nav>.active>a:focus,
+.landing-page .navbar-default .navbar-nav>li>a:hover
 	{
 	background-color: transparent;
-	color: #62cb31;
+	color: #2b35bc;
 	border: none
 }
 

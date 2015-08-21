@@ -105,12 +105,12 @@
 		    </div>
 		
 		    <ul data-side-navigation class="nav" id="side-menu">
-		        <li data-ng-cloak=""	data-ng-class="{ active: $state.includes('frais') || $state.includes('activity-report') || $state.includes('absence') || $state.includes('timesheet') || $state.includes('files') || $state.includes('tasks')}" >
+		        <li data-ng-cloak=""	data-ng-class="{ active: $state.includes('home') || $state.includes('frais') || $state.includes('activity-report') || $state.includes('absence') || $state.includes('timesheet') || $state.includes('files') || $state.includes('tasks')}" >
 		       		<a href="#">
 		       			<i class="fa fa-desktop"></i>
 		       			<span class="nav-label">{{'app.navbar.menu.workspace' | translate}}</span><span class="fa arrow"></span>
 		       		</a>
-		       		<ul class="nav nav-second-level" data-ng-class="{in: $state.includes('frais') || $state.includes('activity-report') || $state.includes('absence') || $state.includes('timesheet') || $state.includes('files') || $state.includes('tasks')}">
+		       		<ul class="nav nav-second-level" data-ng-class="{in: $state.includes('home') || $state.includes('frais') || $state.includes('activity-report') || $state.includes('absence') || $state.includes('timesheet') || $state.includes('files') || $state.includes('tasks')}">
 						<li data-ui-sref-active="active"  class="">
 							<a data-ui-sref="tasks">
 								<i class="fa fa-tasks"></i>{{'app.navbar.menu.tasks' | translate}}
@@ -201,7 +201,7 @@
         </div>
     </div>
     <div class="content">
-        <div ui-view animate-panel></div>
+        <div data-ui-view="" ></div>
     </div>
  	<!-- <div ng-include="'/homer/scripts/components/footer/footer.html'"></div> -->
 </div>

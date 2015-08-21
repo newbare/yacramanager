@@ -67,8 +67,10 @@ App.controller('CompanyInvoicesOverviewController',function ($scope,USERINFO,inv
 		$scope.invoice.invoiceItems.push({
 			itemLabel:'',
 			itemDescription:'',
-			quantity:0,
-			unitPrice:0
+			quantity:1,
+			unitPrice:0,
+			taxesPercent:0,
+			taxes:0
 		});
 	};
 	$scope.cancelEdition=function(){
@@ -83,7 +85,11 @@ App.controller('CompanyInvoicesOverviewController',function ($scope,USERINFO,inv
 		$scope.invoice.invoiceItems.splice(index,1);
 	};
 	$scope.invoiceItemTotal=function(invoiceItem){
-		return invoiceItem.quantity*invoiceItem.unitPrice;
+		return invoiceItem.quantity*invoiceItem.unitPrice - invoiceItem.taxes;
+	}
+	
+	$scope.updateItemTaxes=function(invoiceItem){
+		invoiceItem.taxes= ($scope.invoiceItemTotal(invoiceItem)*invoiceItem.taxesPercent/100);
 	}
 	$scope.invoiceSubTotal=function(){
 		var subTotal=0;
